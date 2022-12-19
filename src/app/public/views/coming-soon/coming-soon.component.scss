@@ -44,7 +44,7 @@ header .github {
 /* Main */
 main {
   @include flex-col();
-  gap: 2rem;
+  gap: 3rem;
   margin: 4rem 0 2rem;
   text-align: center;
   font-size: calc(4rem + 2vw);
