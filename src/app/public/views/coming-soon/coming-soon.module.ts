@@ -6,13 +6,14 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { ReactiveFormsModule } from "@angular/forms";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule, MatIconModule,
   MatFormFieldModule, MatInputModule
 ];
 
-const CORE_MODULES = [CommonModule];
+const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
 const COMPONENTS = [ComingSoonComponent];
 

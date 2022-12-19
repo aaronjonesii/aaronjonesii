@@ -11,11 +11,12 @@
     <span class="launching">LAUNCHING</span>
     <span>VERY SOON<span class="period"><mat-icon fontIcon="circle" color="accent"></mat-icon></span></span>
   </div>
-  <form class="subscribe">
+  <form class="subscribe" [formGroup]="subscribeForm" (ngSubmit)="onSubscribe()">
     <mat-form-field appearance="outline" color="accent" class="email-field" floatLabel="auto">
-      <input matInput type="email" id="email" name="email" autocomplete="off" placeholder="ENTER EMAIL ADDRESS" />
+      <input matInput type="email" id="email" name="email" formControlName="email" autocomplete="off" placeholder="ENTER EMAIL ADDRESS" />
+      <mat-error *ngIf="subscribeForm.controls.email.errors">Please enter a valid email address.</mat-error>
     </mat-form-field>
-    <button mat-stroked-button type="submit">SUBSCRIBE</button>
+    <button mat-stroked-button type="submit" [disabled]="loading">SUBSCRIBE</button>
   </form>
 </main>
 
