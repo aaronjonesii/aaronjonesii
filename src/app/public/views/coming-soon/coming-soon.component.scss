@@ -3,11 +3,11 @@
   flex-direction: column;
 }
 
+$page-padding: 2rem;
 :host {
   @include flex-col();
-  $padding: 2rem;
-  padding: $padding;
-  height: calc(100% - calc($padding * 2));
+  padding: $page-padding;
+  height: calc(100% - calc($page-padding * 2));
 
   background: linear-gradient(
       0deg,
@@ -15,7 +15,9 @@
       rgba(26, 26, 26, 0.44)
   ), url("../../../../assets/imgs/textured-background.png") no-repeat center center fixed;
   background-size: cover;
+  position: relative;
 }
+/* Header */
 header {
   @include flex-col();
   gap: 1rem;
@@ -29,4 +31,12 @@ header .github {
   width: $size;
   height: $size;
   font-size: $size;
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: calc(100% - calc($page-padding * 2));
 }

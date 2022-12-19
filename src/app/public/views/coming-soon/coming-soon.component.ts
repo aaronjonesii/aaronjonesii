@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class ComingSoonComponent {
   public readonly name = 'Aaron Jones II';
+  public readonly currentYear = new Date().getFullYear();
 }
