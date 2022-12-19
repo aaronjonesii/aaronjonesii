@@ -1,15 +1,9 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'views/coming-soon/coming-soon-theme' as comingSoon;
-
-@mixin componentColorMixins($theme) {
-  @include comingSoon.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include comingSoon.typography($theme);
-}
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab+Highlight:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
@@ -20,25 +14,27 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  @include componentColorMixins($theme);
+  aj-coming-soon {
+    .name {
+      color: mat.get-color-from-palette($accent-palette);
+    }
+  }
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
 
-  @include componentTypographyMixins($theme);
+  aj-coming-soon {
+    header .name {
+      font-family: 'Zilla Slab Highlight', system-ui;
+    }
+  }
 }
 
 @mixin theme($theme) {
   $color-config: mat.get-color-config($theme);
-  @if $color-config != null {
-    @include color($theme);
-    @include componentColorMixins($theme);
-  }
+  @if $color-config != null { @include color($theme); }
 
   $typography-config: mat.get-typography-config($theme);
-  @if $typography-config != null {
-    @include typography($theme);
-    @include componentTypographyMixins($theme);
-  }
+  @if $typography-config != null { @include typography($theme); }
 }

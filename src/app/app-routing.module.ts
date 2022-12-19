@@ -11,9 +11,8 @@ export const nav_path = {
 };
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./public/public.module').then(m => m.PublicModule) },
-  { path: '', loadChildren: () => import('./private/private.module').then(m => m.PrivateModule) },
-  { path: '', loadChildren: () => import('./core/components/errors/errors.module').then(m => m.ErrorsModule) }
+  { path: '', loadChildren: () => import('./public/views/coming-soon/coming-soon.module').then(m => m.ComingSoonModule) },
+  { path: '**', loadChildren: () => import('./public/views/coming-soon/coming-soon.module').then(m => m.ComingSoonModule) }
 ];
 
 @NgModule({

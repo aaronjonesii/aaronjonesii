@@ -1,0 +1,32 @@
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+:host {
+  @include flex-col();
+  $padding: 2rem;
+  padding: $padding;
+  height: calc(100% - calc($padding * 2));
+
+  background: linear-gradient(
+      0deg,
+      rgba(26, 26, 26, 0.44),
+      rgba(26, 26, 26, 0.44)
+  ), url("../../../../assets/imgs/textured-background.png") no-repeat center center fixed;
+  background-size: cover;
+}
+header {
+  @include flex-col();
+  gap: 1rem;
+  align-items: center;
+}
+header .name {
+  font-size: 64px;
+}
+header .github {
+  $size: 100px;
+  width: $size;
+  height: $size;
+  font-size: $size;
+}
