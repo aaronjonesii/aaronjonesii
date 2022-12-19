@@ -1,6 +1,9 @@
 <header>
-  <span class="name">{{name}}</span>
-  <mat-icon svgIcon="github" class="github"></mat-icon>
+  <a class="name" [routerLink]="[nav_path.home]">{{name}}</a>
+
+  <a mat-icon-button class="github" [href]="github" target="_blank">
+    <mat-icon svgIcon="github"></mat-icon>
+  </a>
 </header>
 
 <main>

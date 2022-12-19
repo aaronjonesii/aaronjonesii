@@ -8,6 +8,12 @@
   display: flex;
   flex-direction: row;
 }
+@mixin select-none {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 $page-padding: 1rem;
 :host {
@@ -34,8 +40,20 @@ header {
 header .name {
   font-size: 64px;
 }
-header .github {
-  $size: 100px;
+$size: 100px;
+header a.github {
+  padding: 0;
+  width: $size;
+  height: $size;
+  font-size: $size;
+  mat-icon {
+    display: flex;
+    width: $size;
+    height: $size;
+    font-size: $size;
+  }
+}
+::ng-deep header a.github.mat-mdc-icon-button svg {
   width: $size;
   height: $size;
   font-size: $size;
@@ -48,6 +66,8 @@ main {
   margin: 4rem 0 2rem;
   text-align: center;
   font-size: calc(4rem + 2vw);
+
+  @include select-none();
 }
 main div.text {
   @include flex-col();
@@ -89,6 +109,8 @@ footer {
   bottom: 0;
   text-align: center;
   width: calc(100% - calc($page-padding * 2));
+
+  @include select-none();
 }
 
 /* Min Medium Screen Size */
