@@ -45,6 +45,7 @@ $dark-theme: mat.define-dark-theme((
 @include mat.button-theme($dark-theme);
 @include mat.form-field-theme($dark-theme);
 @include mat.input-theme($dark-theme);
+@include mat.snack-bar-theme($dark-theme);
 
 /* Dark theme feature components below */
 @include core.theme($dark-theme);
@@ -62,6 +63,7 @@ $dark-theme: mat.define-dark-theme((
   @include mat.button-color($light-theme);
   @include mat.form-field-color($light-theme);
   @include mat.input-color($light-theme);
+  @include mat.snack-bar-color($light-theme);
 
   /* Light theme feature components below */
   @include core.color($light-theme);

@@ -13,6 +13,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 const FIREBASE_MODULES = [
   provideAuth(() => getAuth()),
@@ -35,7 +36,7 @@ const FIREBASE_MODULES = [
   provideFunctions(() => getFunctions())
 ];
 
-const GLOBAL_ANGULAR_MATERIAL_MODULES = []!;
+const GLOBAL_ANGULAR_MATERIAL_MODULES = [MatSnackBarModule];
 
 const GLOBAL_COMPONENTS = []!;
 
