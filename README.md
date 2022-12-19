@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @aaronjonesii
-- 👀 I’m interested in CyberSecurity, CryptoCurrency, and Video Games.
+- 👀 I’m interested in CyberSecurity, CryptoCurrency, Web Devlopment and Video Games.
 - 🌱 I’m currently learning many things...
 - 💞️ I’m looking to collaborate on something that I find interesting...
 - 📫 How to reach me? Email me -> anonsystems@protonmail.com
