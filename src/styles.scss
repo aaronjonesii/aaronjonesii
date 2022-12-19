@@ -1,0 +1,31 @@
+@import "src/assets/scss/default-theme";
+@import "src/assets/scss/partials/extras";
+
+/* Angular Material Default Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui;
+  letter-spacing: normal;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  ::-webkit-scrollbar {
+    width: $scrollbar-width;
+    height: $scrollbar-height;
+  }
+  ::-webkit-scrollbar-track { box-shadow: $scrollbar-box-shadow; }
+  ::-webkit-scrollbar-thumb {
+    background-color: $scrollbar-background-color;
+    outline: $scrollbar-outline;
+    border-radius: $scrollbar-border-radius;
+  }
+}
+/* remove margin for headings */
+h1, h2, h3, h4, h5, h6,
+.mat-typography h1, .mat-typography h2,
+.mat-typography h3, .mat-typography h4,
+.mat-typography h5, .mat-typography h6 {
+  margin: 0;
+  font-weight: initial;
+}
