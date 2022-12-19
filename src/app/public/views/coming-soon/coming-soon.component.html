@@ -3,14 +3,18 @@
   <mat-icon svgIcon="github" class="github"></mat-icon>
 </header>
 
-<!--<main>-->
-<!--  <div>LAUNCHING</div>-->
-<!--  <div>VERY SOON<span><mat-icon fontIcon="circle" color="accent"></mat-icon></span></div>-->
-<!--  <form>-->
-<!--    <input />-->
-<!--    <button mat-stroked-button>SUBSCRIBE</button>-->
-<!--  </form>-->
-<!--</main>-->
+<main>
+  <div class="text">
+    <span class="launching">LAUNCHING</span>
+    <span>VERY SOON<span class="period"><mat-icon fontIcon="circle" color="accent"></mat-icon></span></span>
+  </div>
+  <form class="subscribe">
+    <mat-form-field appearance="outline" color="accent" class="email-field" floatLabel="auto">
+      <input matInput type="email" id="email" name="email" autocomplete="off" placeholder="ENTER EMAIL ADDRESS" />
+    </mat-form-field>
+    <button mat-stroked-button type="submit">SUBSCRIBE</button>
+  </form>
+</main>
 
 <footer>
   <small class="name">&copy; {{name}} {{currentYear}}</small>

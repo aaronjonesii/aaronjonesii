@@ -1,9 +1,15 @@
+@import 'src/assets/scss/partials/media_queries';
+
 @mixin flex-col {
   display: flex;
   flex-direction: column;
 }
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
 
-$page-padding: 2rem;
+$page-padding: 1rem;
 :host {
   @include flex-col();
   padding: $page-padding;
@@ -16,7 +22,9 @@ $page-padding: 2rem;
   ), url("../../../../assets/imgs/textured-background.png") no-repeat center center fixed;
   background-size: cover;
   position: relative;
+  overflow: auto;
 }
+
 /* Header */
 header {
   @include flex-col();
@@ -33,10 +41,73 @@ header .github {
   font-size: $size;
 }
 
+/* Main */
+main {
+  @include flex-col();
+  gap: 2rem;
+  margin: 4rem 0 2rem;
+  text-align: center;
+  font-size: calc(4rem + 2vw);
+}
+main div.text {
+  @include flex-col();
+}
+main div.text .period mat-icon {
+  $size: 32px;
+  width: $size;
+  height: $size;
+  font-size: $size;
+}
+main form.subscribe {
+  @include flex-col();
+  align-items: center;
+}
+main form.subscribe mat-form-field {
+  width: 100%;
+  font-size: 2rem;
+  max-width: 600px;
+}
+::ng-deep main form.subscribe mat-form-field  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
+::ng-deep main form.subscribe mat-form-field  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__notch,
+::ng-deep main form.subscribe mat-form-field  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__trailing {
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+
+  border-bottom-width: 6px;
+}
+main form.subscribe button {
+  font-size: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  border-width: 6px;
+  border-radius: 0.5rem;
+}
+
 /* Footer */
 footer {
   position: fixed;
   bottom: 0;
   text-align: center;
   width: calc(100% - calc($page-padding * 2));
+}
+
+/* Min Medium Screen Size */
+@media (min-width: $md) {
+  header {
+    @include flex-row();
+    justify-content: space-between;
+  }
+  main form.subscribe {
+    @include flex-row();
+    justify-content: center;
+    gap: 3rem;
+  }
+}
+@media (min-width: $xl) {
+  main div.text .period mat-icon {
+    $size: 40px;
+    width: $size;
+    height: $size;
+    font-size: $size;
+  }
 }

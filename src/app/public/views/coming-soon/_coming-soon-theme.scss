@@ -18,6 +18,39 @@
     .name {
       color: mat.get-color-from-palette($accent-palette);
     }
+    /* Force Form Field Border Bottom Color when not in focus */
+    main form.subscribe mat-form-field .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
+    main form.subscribe mat-form-field .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__notch,
+    main form.subscribe mat-form-field .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__trailing {
+      border-bottom-color: mat.get-color-from-palette($accent-palette);
+    }
+    /* Force Form Field Border Bottom Color when hovering */
+    main form.subscribe mat-form-field .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline .mdc-notched-outline__leading,
+    main form.subscribe mat-form-field .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline .mdc-notched-outline__notch,
+    main form.subscribe mat-form-field .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline .mdc-notched-outline__trailing {
+      border-bottom-color: mat.get-color-from-palette($accent-palette);
+    }
+    /* Button Border Color */
+    main form.subscribe button.mat-mdc-outlined-button:not(:disabled) {
+      border-color: mat.get-color-from-palette($accent-palette);
+    }
+    /* Input Placeholder Color */
+    // Chrome/Opera/Safari
+    main form.subscribe mat-form-field #email::-webkit-input-placeholder {
+      color: map.get($foreground-palette, 'text');
+    }
+    // Firefox 19+
+    main form.subscribe mat-form-field #email::-moz-placeholder {
+      color: map.get($foreground-palette, 'text');
+    }
+    // IE 10+
+    main form.subscribe mat-form-field #email:-ms-input-placeholder {
+      color: map.get($foreground-palette, 'text');
+    }
+    // Firefox 18-
+    main form.subscribe mat-form-field #email:-moz-placeholder {
+      color: map.get($foreground-palette, 'text');
+    }
   }
 }
 
@@ -27,6 +60,9 @@
   aj-coming-soon {
     header .name {
       font-family: 'Zilla Slab Highlight', system-ui;
+    }
+    main div.text .launching {
+      font-family: 'Fredoka One', system-ui;
     }
   }
 }

@@ -12,6 +12,7 @@ import { initializeAppCheck, provideAppCheck, ReCaptchaV3Provider } from '@angul
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 const FIREBASE_MODULES = [
   provideAuth(() => getAuth()),
@@ -44,6 +45,7 @@ const GLOBAL_MODULES = [CommonModule];
   declarations: [...GLOBAL_COMPONENTS],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ...GLOBAL_MODULES,
     // ...FIREBASE_MODULES,
     ...GLOBAL_ANGULAR_MATERIAL_MODULES

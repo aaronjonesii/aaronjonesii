@@ -4,9 +4,12 @@ import { RouterModule, Routes } from "@angular/router";
 import { ComingSoonComponent } from "./coming-soon.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 const ANGULAR_MATERIAL_MODULES = [
-  MatButtonModule, MatIconModule
+  MatButtonModule, MatIconModule,
+  MatFormFieldModule, MatInputModule
 ];
 
 const CORE_MODULES = [CommonModule];
