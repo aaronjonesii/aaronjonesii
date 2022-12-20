@@ -1,0 +1,33 @@
+<header>
+  <a class="accent-color" [routerLink]="[nav_path.home]">{{name}}</a>
+
+  <a mat-icon-button class="github" [href]="github" target="_blank">
+    <mat-icon svgIcon="github"></mat-icon>
+  </a>
+</header>
+
+<main>
+  <div class="text">
+    <span class="launching">LAUNCHING</span>
+    <span>VERY SOON<span class="period"><mat-icon fontIcon="circle" color="accent"></mat-icon></span></span>
+  </div>
+  <ng-container *ngIf="success;else showForm">
+    <div class="accent-color thanks">
+      <h1>Thank you for your interest!</h1>
+      <p>We'll keep you in the loop...</p>
+    </div>
+  </ng-container>
+  <ng-template #showForm>
+    <form class="subscribe" [formGroup]="subscribeForm" (ngSubmit)="onSubscribe()">
+      <mat-form-field appearance="outline" color="accent" class="email-field" floatLabel="auto">
+        <input matInput type="email" id="email" name="email" formControlName="email" autocomplete="off" placeholder="ENTER EMAIL ADDRESS" />
+        <mat-error *ngIf="subscribeForm.controls.email.errors">Please enter a valid email address.</mat-error>
+      </mat-form-field>
+      <button mat-stroked-button type="submit" [disabled]="loading">{{loading ? 'SUBSCRIBING...' : 'SUBSCRIBE'}}</button>
+    </form>
+  </ng-template>
+</main>
+
+<footer>
+  <small class="accent-color">&copy; {{name}} {{currentYear}}</small>
+</footer>

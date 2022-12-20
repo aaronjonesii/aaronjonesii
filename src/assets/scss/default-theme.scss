@@ -1,0 +1,73 @@
+@use '@angular/material' as mat;
+
+@use 'src/app/core/core-theme' as core;
+@use 'src/app/public/public-theme' as public;
+@use 'src/app/private/private-theme' as private;
+@use 'src/app/shared/shared-theme' as shared;
+
+/* IMPORT BELOW ONLY ONCE */
+@include mat.core();
+//@include mat.strong-focus-indicators();
+
+$aj-typography: mat.define-typography-config($font-family: system-ui);
+
+@import 'src/assets/scss/partials/colors';
+/* Light Theme */
+$light-primary: mat.define-palette($aj-blue-palette, 900);
+$light-accent: mat.define-palette($aj-gold-palette, 200);
+
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: $light-primary,
+    accent: $light-accent
+  )
+));
+
+/* Dark Theme */
+$dark-primary: mat.define-palette($aj-blue-palette, 900);
+$dark-accent: mat.define-palette($aj-gold-palette, 200);
+
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent
+  ),
+  // Only include `typography` and `density` in the default theme.
+  typography: $aj-typography,
+  density: 0
+));
+
+/* Dark theme core & components below */
+@include mat.core-theme($dark-theme);
+@include mat.strong-focus-indicators-theme($dark-theme);
+@include mat.icon-theme($dark-theme);
+@include mat.icon-button-theme($dark-theme);
+@include mat.button-theme($dark-theme);
+@include mat.form-field-theme($dark-theme);
+@include mat.input-theme($dark-theme);
+@include mat.snack-bar-theme($dark-theme);
+
+/* Dark theme feature components below */
+@include core.theme($dark-theme);
+@include public.theme($dark-theme);
+@include private.theme($dark-theme);
+@include shared.theme($dark-theme);
+
+
+/* Light theme core & components below */
+.light-theme {
+  @include mat.core-color($light-theme);
+  @include mat.strong-focus-indicators-color($light-theme);
+  @include mat.icon-color($light-theme);
+  @include mat.icon-button-color($light-theme);
+  @include mat.button-color($light-theme);
+  @include mat.form-field-color($light-theme);
+  @include mat.input-color($light-theme);
+  @include mat.snack-bar-color($light-theme);
+
+  /* Light theme feature components below */
+  @include core.color($light-theme);
+  @include public.color($light-theme);
+  @include private.color($light-theme);
+  @include shared.color($light-theme);
+}
