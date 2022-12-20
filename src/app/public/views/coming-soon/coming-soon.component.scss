@@ -82,6 +82,7 @@ main form.subscribe {
 }
 main form.subscribe mat-form-field {
   width: 100%;
+  font-size: 5vw;
   max-width: 600px;
 }
 ::ng-deep main form.subscribe mat-form-field  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
@@ -96,14 +97,17 @@ main form.subscribe mat-form-field {
 main form.subscribe button {
   border-width: 6px;
   border-radius: 0.5rem;
+
+  font-size: 5vw;
+  padding: 5vw 5.5vw;
 }
 
 /* Thanks */
 main div.thanks h1 {
-  font-size: calc(2.75rem + 1.375vw);
+  font-size: 10vw;
 }
 main div.thanks p {
-  font-size: calc(1.75rem + 0.875vw);
+  font-size: 6vw;
 }
 
 /* Footer */
@@ -149,6 +153,13 @@ footer {
   main form.subscribe button {
     font-size: 1.5rem;
     padding: 1.5rem 1.75rem;
+  }
+  /* Thanks */
+  main div.thanks h1 {
+    font-size: calc(2.75rem + 1.375vw);
+  }
+  main div.thanks p {
+    font-size: calc(1.75rem + 0.875vw);
   }
 }
 /* Min Medium Screen Size */
