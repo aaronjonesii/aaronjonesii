@@ -37,10 +37,8 @@ header {
   gap: 1rem;
   align-items: center;
 }
-header a:first-child {
-  font-size: 64px;
-}
-$size: 100px;
+header a:first-child { font-size: 12vw; }
+$size: 14vw;
 header a.github {
   padding: 0;
   width: $size;
@@ -65,7 +63,7 @@ main {
   gap: 3rem;
   margin: 4rem 0 2rem;
   text-align: center;
-  font-size: calc(4rem + 2vw);
+  font-size: 14vw;
 
   @include select-none();
 }
@@ -73,7 +71,7 @@ main div.text {
   @include flex-col();
 }
 main div.text .period mat-icon {
-  $size: 32px;
+  $size: 5vw;
   width: $size;
   height: $size;
   font-size: $size;
@@ -84,7 +82,6 @@ main form.subscribe {
 }
 main form.subscribe mat-form-field {
   width: 100%;
-  font-size: 2rem;
   max-width: 600px;
 }
 ::ng-deep main form.subscribe mat-form-field  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
@@ -97,8 +94,6 @@ main form.subscribe mat-form-field {
   border-bottom-width: 6px;
 }
 main form.subscribe button {
-  font-size: 1.5rem;
-  padding: 1.5rem 1.75rem;
   border-width: 6px;
   border-radius: 0.5rem;
 }
@@ -121,8 +116,43 @@ footer {
   @include select-none();
 }
 
+@media (min-width: $small) {
+  /* Header */
+  header a:first-child { font-size: 64px; }
+  $size: 100px;
+  header a.github {
+    padding: 0;
+    width: $size;
+    height: $size;
+    font-size: $size;
+    mat-icon {
+      display: flex;
+      width: $size;
+      height: $size;
+      font-size: $size;
+    }
+  }
+  ::ng-deep header a.github.mat-mdc-icon-button svg {
+    width: $size;
+    height: $size;
+    font-size: $size;
+  }
+  /* Main */
+  main { font-size: calc(4rem + 2vw); }
+  main div.text .period mat-icon {
+    $size: 32px;
+    width: $size;
+    height: $size;
+    font-size: $size;
+  }
+  main form.subscribe mat-form-field { font-size: 2rem; }
+  main form.subscribe button {
+    font-size: 1.5rem;
+    padding: 1.5rem 1.75rem;
+  }
+}
 /* Min Medium Screen Size */
-@media (min-width: $md) {
+@media (min-width: $medium) {
   header {
     @include flex-row();
     justify-content: space-between;
@@ -133,7 +163,7 @@ footer {
     gap: 3rem;
   }
 }
-@media (min-width: $xl) {
+@media (min-width: $large) {
   main div.text .period mat-icon {
     $size: 40px;
     width: $size;
