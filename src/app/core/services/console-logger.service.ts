@@ -30,7 +30,7 @@ export class ConsoleLoggerService {
   }
 
 
-  public openSnackBar(message: string, action: string = 'OK', config: MatSnackBarConfig): MatSnackBarRef<any> {
+  public openSnackBar(message: string, action: string | undefined, config: MatSnackBarConfig | undefined): MatSnackBarRef<any> {
     return this.snackBar.open(message, action, config);
   }
 }

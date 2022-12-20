@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { nav_path } from "../../../app-routing.module";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
+import { FunctionsService } from "../../../shared/services/functions.service";
 
 @Component({
   selector: 'aj-coming-soon',
@@ -16,29 +17,40 @@ export class ComingSoonComponent {
   public subscribeForm = new FormGroup({
     email: new FormControl<string>(
       '',
-      { nonNullable:true, validators: [Validators.required, Validators.email ] }
+      { nonNullable:true, validators: [Validators.required, Validators.email] }
     )
   });
   public loading = false;
+  public success = false;
 
-  constructor(private cLog: ConsoleLoggerService) {}
+  constructor(
+    private cLog: ConsoleLoggerService,
+    private fun: FunctionsService
+  ) {}
   get email() { return this.subscribeForm.controls.email; }
 
-  public onSubscribe(): void {
-    if (this.subscribeForm.invalid) {
-      this.cLog.warn(`Please enter a valid email address.`);
-      return;
+  public async onSubscribe(): Promise<void> {
+    try {
+      this.loading = true;
+
+      if (this.email.invalid) {
+        throw new Error('Please enter a valid email address.')
+      }
+
+      this.subscribeForm.disable();
+      const email = this.email.value;
+
+      await this.fun.httpsCallable('subscribe', {email})
+        .then(result => {
+          this.cLog.log(`Thanks, your in the loop`, result);
+          this.success = true;
+        })
+        .catch(error => {throw new Error(error.message)});
+    } catch (error: any) {
+      this.cLog.error(error.message)
+    } finally {
+      this.subscribeForm.enable();
+      this.loading = false;
     }
-
-    this.loading = true;
-    this.subscribeForm.disable();
-
-    const email = this.email.value;
-    this.cLog.openSnackBar(`subscribe email: '${email}'`, '🆗', {
-      duration: 0
-    });
-
-    this.subscribeForm.enable();
-    this.loading = false;
   }
 }
