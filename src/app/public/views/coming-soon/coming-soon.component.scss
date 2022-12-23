@@ -18,6 +18,7 @@
 $page-padding: 1rem;
 :host {
   @include flex-col();
+  gap: 4rem;
   padding: $page-padding;
   height: calc(100% - calc($page-padding * 2));
 
@@ -61,7 +62,6 @@ header a.github {
 main {
   @include flex-col();
   gap: 3rem;
-  margin: 4rem 0 2rem;
   text-align: center;
   font-size: 14vw;
 
@@ -112,12 +112,9 @@ main div.thanks p {
 
 /* Footer */
 footer {
-  position: fixed;
-  bottom: 0;
   text-align: center;
-  width: calc(100% - calc($page-padding * 2));
-
   @include select-none();
+  margin-top: auto;
 }
 
 @media (min-width: $small) {

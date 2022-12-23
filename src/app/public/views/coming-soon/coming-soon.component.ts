@@ -3,6 +3,8 @@ import { nav_path } from "../../../app-routing.module";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { FunctionsService } from "../../../shared/services/functions.service";
+import { appInformation } from "../../../information";
+import { SeoService } from "../../../core/services/seo.service";
 
 @Component({
   selector: 'aj-coming-soon',
@@ -11,9 +13,8 @@ import { FunctionsService } from "../../../shared/services/functions.service";
 })
 export class ComingSoonComponent {
   public readonly nav_path = nav_path;
-  public readonly name = 'Aaron Jones II';
   public readonly currentYear = new Date().getFullYear();
-  public readonly github = 'https://github.com/aaronjonesii';
+  public readonly appInformation = appInformation;
   public subscribeForm = new FormGroup({
     email: new FormControl<string>(
       '',
@@ -25,8 +26,14 @@ export class ComingSoonComponent {
 
   constructor(
     private cLog: ConsoleLoggerService,
-    private fun: FunctionsService
-  ) {}
+    private fun: FunctionsService,
+    private seo: SeoService
+  ) {
+    this.seo.generateTags({
+      title: 'Coming Soon page',
+      route: nav_path.comingSoon
+    });
+  }
   get email() { return this.subscribeForm.controls.email; }
 
   public async onSubscribe(): Promise<void> {
