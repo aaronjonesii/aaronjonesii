@@ -1,7 +1,7 @@
 <header>
-  <a class="accent-color" [routerLink]="[nav_path.home]">{{name}}</a>
+  <a class="accent-color" [routerLink]="[nav_path.home]">{{appInformation.name}}</a>
 
-  <a mat-icon-button class="github" [href]="github" target="_blank">
+  <a mat-icon-button class="github" [href]="appInformation.socials.github" target="_blank">
     <mat-icon svgIcon="github"></mat-icon>
   </a>
 </header>
@@ -29,5 +29,5 @@
 </main>
 
 <footer>
-  <small class="accent-color">{{name}} {{currentYear}}</small>
+  <small class="accent-color">{{appInformation.name}} {{currentYear}}</small>
 </footer>

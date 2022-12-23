@@ -3,6 +3,7 @@ import { nav_path } from "../../../app-routing.module";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { FunctionsService } from "../../../shared/services/functions.service";
+import { appInformation } from "../../../information";
 import { SeoService } from "../../../core/services/seo.service";
 
 @Component({
@@ -12,9 +13,8 @@ import { SeoService } from "../../../core/services/seo.service";
 })
 export class ComingSoonComponent {
   public readonly nav_path = nav_path;
-  public readonly name = 'Aaron Jones II';
   public readonly currentYear = new Date().getFullYear();
-  public readonly github = 'https://github.com/aaronjonesii';
+  public readonly appInformation = appInformation;
   public subscribeForm = new FormGroup({
     email: new FormControl<string>(
       '',
