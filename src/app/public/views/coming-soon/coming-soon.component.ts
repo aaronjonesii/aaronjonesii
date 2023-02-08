@@ -49,7 +49,7 @@ export class ComingSoonComponent {
 
       await this.fun.httpsCallable('subscribe', {email})
         .then(result => {
-          this.cLog.log(`Thanks, your in the loop`, result);
+          this.cLog.log(`Thanks, you're in the loop`, result);
           this.success = true;
         })
         .catch(error => {throw new Error(error.message)});
