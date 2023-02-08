@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { getFunctions, provideFunctions } from "@angular/fire/functions";
 import { getAnalytics, isSupported } from "@angular/fire/analytics";
+import { ServiceWorkerModule } from "@angular/service-worker";
 
 const FIREBASE_MODULES = [
   provideFirebaseApp(() => {
@@ -37,6 +38,12 @@ const GLOBAL_MODULES = [CommonModule];
   declarations: [...GLOBAL_COMPONENTS],
   imports: [
     BrowserModule.withServerTransition({ appId: 'aaronjonesiiDev' }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     BrowserAnimationsModule,
     ...GLOBAL_MODULES,
     ...FIREBASE_MODULES,
