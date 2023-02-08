@@ -36,7 +36,7 @@ const GLOBAL_MODULES = [CommonModule];
 @NgModule({
   declarations: [...GLOBAL_COMPONENTS],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'aaronjonesiiDev' }),
     BrowserAnimationsModule,
     ...GLOBAL_MODULES,
     ...FIREBASE_MODULES,
