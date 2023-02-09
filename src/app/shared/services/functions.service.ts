@@ -1,14 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Functions, httpsCallableData, HttpsCallableOptions } from '@angular/fire/functions';
-import { lastValueFrom } from 'rxjs';
+import { Functions, httpsCallableData, HttpsCallableOptions, FunctionsError } from '@angular/fire/functions';
+import { lastValueFrom, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FunctionsService {
 
   constructor(private functions: Functions) {}
 
-  /** Call Functions */
-  httpsCallable(name: string, data?: unknown | null, options?: HttpsCallableOptions): Promise<unknown> {
-    return lastValueFrom(httpsCallableData(this.functions, name, options)(data));
+  /**
+   * Create a promise to return last value from Firebase Function observable
+   *
+   * @param functionName - The firebase function's name.
+   * @param data - The firebase function's request data.
+   *
+   * @public
+   */
+  public httpsCallable<RequestData = unknown, ResponseData = unknown>(
+    functionName: string,
+    data?: unknown | null,
+    options?: HttpsCallableOptions
+  ): Promise<ResponseData | FunctionsError> {
+    return lastValueFrom(httpsCallableData(this.functions, functionName, options)(data) as Observable<ResponseData | FunctionsError>);
   }
 }
