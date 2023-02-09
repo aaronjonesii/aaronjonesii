@@ -1,0 +1,21 @@
+@import 'src/assets/scss/partials/media_queries';
+
+:host {
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
+}
+
+mat-toolbar {
+  height: 56px;
+  gap: 1rem;
+}
+
+.content { padding: 0 1rem; }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.fab-btn { padding: 1.75rem 1rem; }

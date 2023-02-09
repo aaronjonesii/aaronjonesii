@@ -1,0 +1,46 @@
+<mat-toolbar>
+  <button mat-icon-button color="primary" class="fab-icon-btn"><mat-icon fontIcon="arrow_back"></mat-icon></button>
+  <h1>{{title}}</h1>
+</mat-toolbar>
+
+<div class="content">
+  <h2 class="mat-headline-2">Welcome back</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Email address</mat-label>
+      <input matInput id="email" type="email" name="email" autocomplete="email" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput id="password" name="password" autocomplete="password" formControlName="password"
+             [type]="hidePassword ? 'password' : 'text'" />
+      <button mat-icon-button matSuffix type="button"
+              (click)="hidePassword = !hidePassword"
+              [attr.aria-label]="hidePassword ? 'Show' : 'Hide'+' Password'"
+              [attr.aria-pressed]="hidePassword">
+        <mat-icon [fontIcon]="hidePassword ? 'visibility_off' : 'visibility'"></mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="flex-row justify-content-end">
+      <button mat-button color="accent" [routerLink]="[nav_path.forgotPassword]" type="button">Forgot password?</button>
+    </div>
+
+    <button mat-flat-button color="primary" class="fab-btn" type="submit">Sign in</button>
+
+    <button mat-stroked-button class="fab-btn" (click)="auth.googleLogin()" type="button">
+      <span class="flex-row align-items-center gap-1">
+        <img class="mat-icon" src="assets/imgs/g-logo.png" alt="Image of Google Icon with a transparent background"
+             width="80" height="80" />
+        Sign in with Google
+      </span>
+    </button>
+
+    <p class="text-center">
+      Don't have an account?
+      <a mat-button color="accent" [routerLink]="[nav_path.signUp]">Sign up</a>
+    </p>
+  </form>
+</div>
