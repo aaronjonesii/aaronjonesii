@@ -1,10 +1,7 @@
-<mat-toolbar>
-  <button mat-icon-button color="primary" class="fab-icon-btn"><mat-icon fontIcon="arrow_back"></mat-icon></button>
-  <h1>{{title}}</h1>
-</mat-toolbar>
+<aj-auth-top-app-bar [title]="title"></aj-auth-top-app-bar>
 
-<div class="content">
-  <h2 class="mat-headline-2">Welcome back</h2>
+<main class="page-padding">
+  <h2 class="mat-headline-4">Welcome back</h2>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline">
@@ -28,9 +25,9 @@
       <button mat-button color="accent" [routerLink]="[nav_path.forgotPassword]" type="button">Forgot password?</button>
     </div>
 
-    <button mat-flat-button color="primary" class="fab-btn" type="submit">Sign in</button>
+    <button mat-flat-button color="primary" class="fab-btn-padding" type="submit">Sign in</button>
 
-    <button mat-stroked-button class="fab-btn" (click)="auth.googleLogin()" type="button">
+    <button mat-stroked-button class="fab-btn-padding" (click)="auth.googleLogin()" type="button">
       <span class="flex-row align-items-center gap-1">
         <img class="mat-icon" src="assets/imgs/g-logo.png" alt="Image of Google Icon with a transparent background"
              width="80" height="80" />
@@ -43,4 +40,4 @@
       <a mat-button color="accent" [routerLink]="[nav_path.signUp]">Sign up</a>
     </p>
   </form>
-</div>
+</main>

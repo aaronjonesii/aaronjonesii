@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { nav_path } from 'src/app/app-routing.module';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SeoService } from '../../../../core/services/seo.service';
+import { SeoService } from '../../../../../core/services/seo.service';
+import { appInformation } from "../../../../../information";
 
 @Component({
   selector: 'aj-sign-in',
@@ -30,14 +31,14 @@ export class SignInComponent {
   ) {
     seo.generateTags({
       title: this.title,
-      description: `Anonymous Systems ${this.title}`,
+      description: `Authentication ${this.title} page for ${appInformation.website}`,
       route: nav_path.signIn
     });
   }
   public get email() { return this.loginForm.controls.email; }
   public get password() { return this.loginForm.controls.password; }
 
-  public onSubmit() {
-    this.auth.signIn(this.email.value, this.password.value);
+  public async onSubmit() {
+    await this.auth.signIn(this.email.value, this.password.value);
   }
 }
