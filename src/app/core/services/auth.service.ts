@@ -6,7 +6,7 @@ import {
   authState, createUserWithEmailAndPassword,
   deleteUser, sendEmailVerification, signInAnonymously,
   signInWithEmailAndPassword, signInWithPopup, signOut,
-  sendPasswordResetEmail, updateEmail,
+  sendPasswordResetEmail, updateEmail, getIdTokenResult,
 } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { nav_path } from 'src/app/app-routing.module';
@@ -55,8 +55,23 @@ export class AuthService {
   }
 
   /**
-  * Create a promise to return boolean of deserialized JSON Web Token (JWT)
-  * admin claim.
+   * Returns a deserialized JSON Web Token (JWT) used to identitfy the user to a Firebase service.
+   *
+   * @remarks
+   * Returns the current token if it has not expired or if it will not expire in the next five
+   * minutes. Otherwise, this will refresh the token and return a new one.
+   *
+   * @param user - The user.
+   * @param forceRefresh - Force refresh regardless of token expiration.
+   *
+   * @public
+   */
+  public loadUserToken(user: User, forceRefresh?: boolean): Promise<IdTokenResult> {
+    return getIdTokenResult(user, forceRefresh);
+  }
+
+  /**
+  * Create a promise to return boolean of whether the current user is an Admin.
    *
    * @public
   */
