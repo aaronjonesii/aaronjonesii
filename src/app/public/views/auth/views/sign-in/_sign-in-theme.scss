@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '@angular/material' as mat;
+@use 'node_modules/@angular/material/index' as mat;
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
@@ -10,12 +10,7 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-sign-in {
-    .fab-icon-btn {
-      background-color: mat.get-color-from-palette($primary-palette, 100);
-      color: mat.get-color-from-palette($primary-palette, 900);
-    }
-  }
+  aj-sign-in {}
 }
 
 @mixin typography($theme) {
