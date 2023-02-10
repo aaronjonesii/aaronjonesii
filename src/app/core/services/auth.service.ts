@@ -214,7 +214,7 @@ export class AuthService {
   public async signIn(email: string, password: string): Promise<UserCredential | AuthError> {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
-        this.cLog.log(`Welcome back`);
+        this.cLog.log(`Welcome back ${userCredential.user.displayName ?? userCredential.user.email}`);
         this.routeRedirect(userCredential.user);
         return userCredential;
       }).catch((error: AuthError) => {
