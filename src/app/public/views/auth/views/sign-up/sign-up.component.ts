@@ -45,6 +45,7 @@ export class SignUpComponent {
   public async onSubmit() {
     this.loading = true;
 
-    await this.auth.signUp(this.email.value, this.password.value).finally(() => this.loading = false);
+    await this.auth.signUp(this.email.value, this.password.value)
+      .finally(() => this.loading = false);
   }
 }

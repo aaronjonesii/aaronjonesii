@@ -11,6 +11,8 @@ import { appInformation } from "../../../../../information";
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent {
+  public readonly title = "Sign in"
+  public readonly nav_path = nav_path;
   public loginForm = new FormGroup({
     email: new FormControl<string>(
       '',
@@ -21,9 +23,8 @@ export class SignInComponent {
       {nonNullable: true, validators: [Validators.required, Validators.minLength(8)]}
       )
   });
-  public readonly nav_path = nav_path;
-  public readonly title = "Sign in"
   public hidePassword = true;
+  public loading = false;
 
   constructor(
     public auth: AuthService,
@@ -39,6 +40,9 @@ export class SignInComponent {
   public get password() { return this.loginForm.controls.password; }
 
   public async onSubmit() {
-    await this.auth.signIn(this.email.value, this.password.value);
+    this.loading = true;
+
+    await this.auth.signIn(this.email.value, this.password.value)
+      .finally(() => this.loading = false);
   }
 }
