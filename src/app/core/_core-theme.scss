@@ -31,14 +31,8 @@
 
 @mixin theme($theme) {
   $color-config: mat.get-color-config($theme);
-  @if $color-config != null {
-    @include color($theme);
-    @include componentColorMixins($theme);
-  }
+  @if $color-config != null { @include color($theme); }
 
   $typography-config: mat.get-typography-config($theme);
-  @if $typography-config != null {
-    @include typography($theme);
-    @include componentTypographyMixins($theme);
-  }
+  @if $typography-config != null { @include typography($theme); }
 }
