@@ -9,6 +9,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { getFunctions, provideFunctions } from "@angular/fire/functions";
 import { getAnalytics, isSupported } from "@angular/fire/analytics";
 import { ServiceWorkerModule } from "@angular/service-worker";
+import { getAuth, provideAuth } from "@angular/fire/auth";
 
 const FIREBASE_MODULES = [
   provideFirebaseApp(() => {
@@ -21,6 +22,7 @@ const FIREBASE_MODULES = [
 
     return app;
   }),
+  provideAuth(() => getAuth()),
   provideAppCheck(() =>  {
     const provider = new ReCaptchaV3Provider(environment.recaptcha3SiteKey);
     return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
