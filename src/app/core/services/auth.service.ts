@@ -17,7 +17,7 @@ import { FunctionsError } from "@angular/fire/functions";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private user$: Observable<User|null> = of(null);
+  public user$: Observable<User|null> = of(null);
   private user: User | null = null;
   private idTokenResultPromise: Promise<IdTokenResult> | null = null;
 
