@@ -1,0 +1,7 @@
+<button mat-button color="primary" *ngFor="let segment of segments"
+        [routerLink]="segment.routerLink" routerLinkActive="active">
+  <span class="flex-col align-items-center">
+    <mat-icon class="material-icons-outlined" [fontIcon]="segment.icon"></mat-icon>
+    {{segment.name}}
+  </span>
+</button>
