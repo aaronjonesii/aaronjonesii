@@ -52,3 +52,5 @@ exports.subscribe = functions.runWith({enforceAppCheck: true})
         throw new functions.https.HttpsError('unknown', errorMessage, errorMessage);
       });
   });
+
+exports.firestoreSendEmail = require('./firestoreSendEmail');
