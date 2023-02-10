@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+mat-toolbar {
+  height: 56px;
+  gap: 1rem;
+}
+
+main { flex-grow: 1; }
