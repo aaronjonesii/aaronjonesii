@@ -23,7 +23,8 @@ exports.onCreation = functions.auth.user().onCreate(async (user) => {
       email,
       photoURL,
       phoneNumber,
-      joined: admin.firestore.FieldValue.serverTimestamp()
+      joined: admin.firestore.FieldValue.serverTimestamp(),
+      admin: false
     }, {merge: true});
 
     /** send welcome email */
