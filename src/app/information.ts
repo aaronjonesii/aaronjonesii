@@ -6,7 +6,8 @@ export const appInformation = {
   email: 'contact@aaronjonesii.dev',
   socials: {
     github: 'https://github.com/aaronjonesii',
-    twitter: 'https://twitter.com/aaronjonesii'
+    twitter: 'https://twitter.com/aaronjonesii',
+    linkedin: 'https://linkedin.com/in/aaronjonesii'
   },
   website: 'aaronjonesii.dev'
 };
