@@ -10,6 +10,7 @@ import { getFunctions, provideFunctions } from "@angular/fire/functions";
 import { getAnalytics, isSupported } from "@angular/fire/analytics";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { getAuth, provideAuth } from "@angular/fire/auth";
+import { LayoutModule } from "../shared/components/layout/layout.module";
 
 const FIREBASE_MODULES = [
   provideFirebaseApp(() => {
@@ -34,7 +35,7 @@ const GLOBAL_ANGULAR_MATERIAL_MODULES = [MatSnackBarModule];
 
 const GLOBAL_COMPONENTS = []!;
 
-const GLOBAL_MODULES = [CommonModule];
+const GLOBAL_MODULES = [CommonModule, LayoutModule];
 
 @NgModule({
   declarations: [...GLOBAL_COMPONENTS],
