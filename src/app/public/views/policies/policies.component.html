@@ -1,0 +1,10 @@
+<main class="page-padding">
+  <h3 class="mat-headline-3">Policies</h3>
+
+  <mat-nav-list>
+    <a mat-list-item *ngFor="let policy of policies" [routerLink]="policy.routerLink">
+      <mat-icon matListItemIcon>{{policy.icon}}</mat-icon>
+      <h3 matListItemTitle>{{policy.name}}</h3>
+    </a>
+  </mat-nav-list>
+</main>
