@@ -53,4 +53,6 @@ exports.subscribe = functions.runWith({enforceAppCheck: true})
       });
   });
 
+exports.user = require('./user/index');
+
 exports.firestoreSendEmail = require('./firestoreSendEmail');
