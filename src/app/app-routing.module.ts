@@ -11,12 +11,16 @@ export const nav_path = {
 };
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./public/views/coming-soon/coming-soon.module').then(m => m.ComingSoonModule) },
-  { path: '**', loadChildren: () => import('./public/views/coming-soon/coming-soon.module').then(m => m.ComingSoonModule) }
+  { path: '', loadChildren: () => import('./public/public.module').then(m => m.PublicModule) },
+  { path: '', loadChildren: () => import('./private/private.module').then(m => m.PrivateModule) },
+  { path: '', loadChildren: () => import('./core/components/errors/errors.module').then(m => m.ErrorsModule) }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled', initialNavigation: 'enabledBlocking' })],
+  imports: [RouterModule.forRoot(routes, {
+    anchorScrolling: 'enabled',
+    initialNavigation: 'enabledBlocking'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
