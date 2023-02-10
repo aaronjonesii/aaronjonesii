@@ -1,0 +1,15 @@
+<div class="cards">
+  <ng-container *ngIf="items.length; else empty">
+    <mat-card class="card" *ngFor="let item of items" [routerLink]="item.routerLink">
+      <mat-card-title>{{item.name}}</mat-card-title>
+      <mat-card-subtitle *ngIf="item.description">{{item.description}}</mat-card-subtitle>
+    </mat-card>
+  </ng-container>
+
+  <ng-template #empty>
+    <div class="card">
+      <h2 class="word-wrap">No {{itemsName}} yet.</h2>
+      <p class="word-wrap" *ngIf="emptyText">{{emptyText}}</p>
+    </div>
+  </ng-template>
+</div>

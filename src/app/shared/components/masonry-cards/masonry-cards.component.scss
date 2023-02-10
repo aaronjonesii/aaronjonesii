@@ -1,0 +1,13 @@
+:host {}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.cards .card {
+  cursor: pointer;
+  flex: 1 auto;
+  padding: 1rem;
+  border-radius: 1rem;
+}
