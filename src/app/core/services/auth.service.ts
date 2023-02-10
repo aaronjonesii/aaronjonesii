@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   Auth, User, GoogleAuthProvider, IdTokenResult,
   UserCredential, AuthError, ActionCodeSettings,
@@ -17,8 +17,7 @@ import { FunctionsError } from "@angular/fire/functions";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  public user$: Observable<User|null> = of(null);
-  private user: User | null = null;
+  public user$: Observable<User|null> = this.loadUser;
   private idTokenResultPromise: Promise<IdTokenResult> | null = null;
 
   constructor(
@@ -28,20 +27,7 @@ export class AuthService {
     private fn: FunctionsService,
     private route: ActivatedRoute
   ) {
-    this.loadUser.forEach(user => this.setUser(user));
-  }
-
-  /**
-   * Sets the current user.
-   *
-   * @param user - The {@link User} instance.
-   *
-   * @public
-   */
-  public setUser(user: User | null): void {
-    this.user$ = of(user);
-    this.user = user;
-    this.idTokenResultPromise = user == null ? null : user.getIdTokenResult();
+    this.user$.forEach(user => this.idTokenResultPromise = user == null ? null : this.loadUserToken(user));
   }
 
   /**
@@ -71,13 +57,12 @@ export class AuthService {
   }
 
   /**
-  * Create a promise to return boolean of whether the current user is an Admin.
+   * Create a promise to return boolean of whether the provided user has an admin role in their user claims
    *
    * @public
-  */
-  public async isAdmin(): Promise<boolean> {
-    if (this.idTokenResultPromise == null) return false;
-    return (await this.idTokenResultPromise).claims["admin"] === true;
+   */
+  public async isAdmin(user: User | null): Promise<boolean> {
+    return user == null ? false : (await user.getIdTokenResult()).claims['admin'] == true;
   }
 
   /**
@@ -130,7 +115,6 @@ export class AuthService {
   public async logout(): Promise<void | AuthError> {
     await signOut(this.auth)
       .then(() => {
-        this.setUser(null);
         this.cLog.info(`Signed out`);
         this.router.navigate([nav_path.home]);
       })
@@ -306,7 +290,7 @@ export class AuthService {
     if (photoURL) updateUserData.photoURL = photoURL;
     return (this.fn.httpsCallable('user-update', updateUserData) as Promise<UpdateProfileResponse>)
       .then(res => {
-        if (res.ok && res.user) this.setUser(res.user);
+        if (res.ok && res.user) this.user$ = this.loadUser; // reload user auth state
 
         this.cLog.log(res.message);
         return res;
