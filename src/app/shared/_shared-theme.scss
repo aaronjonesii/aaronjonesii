@@ -1,14 +1,17 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'src/app/shared/components/navigation-bar/navigation-bar-theme' as navigationBar;
+@use 'components/navigation-bar/navigation-bar-theme' as navigationBar;
+@use 'components/masonry-cards/masonry-cards-theme' as masonryCards;
 
 @mixin componentColorMixins($theme) {
   @include navigationBar.color($theme);
+  @include masonryCards.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include navigationBar.typography($theme);
+  @include masonryCards.typography($theme);
 }
 
 @mixin color($theme) {
