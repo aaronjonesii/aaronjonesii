@@ -1,0 +1,25 @@
+<mat-toolbar>
+  <div>
+<!--    <button mat-icon-button>-->
+<!--      <img src="assets/imgs/apple-touch-icon.png" alt="Image of a cartoon style afro silhouette" width="180" height="180" />-->
+<!--    </button>-->
+<!--    <h1>{{title}}</h1>-->
+  </div>
+
+  <ng-container *ngIf="auth.user$ | async; else notSignedIn">
+    <button mat-button (click)="auth.logout()">
+      <mat-icon fontIcon="logout"></mat-icon>
+      Sign out
+    </button>
+  </ng-container>
+  <ng-template #notSignedIn>
+    <button mat-button [routerLink]="[nav_path.signIn]">
+      <mat-icon fontIcon="login"></mat-icon>
+      Sign in
+    </button>
+  </ng-template>
+</mat-toolbar>
+
+<main class="page-padding"><router-outlet></router-outlet></main>
+
+<aj-navigation-bar [segments]="segments"></aj-navigation-bar>
