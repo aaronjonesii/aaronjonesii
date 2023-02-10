@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
+import { Router } from "@angular/router";
+import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 
 @Component({
   selector: 'aj-sign-in',
@@ -27,9 +29,16 @@ export class SignInComponent {
   public loading = false;
 
   constructor(
+    private router: Router,
     public auth: AuthService,
-    private seo: SeoService
+    private seo: SeoService,
+    private cLog: ConsoleLoggerService
   ) {
+    auth.loadUser.forEach(user => {
+      if (user) this.router.navigate([nav_path.home])
+        .then(() => cLog.warn(`Already signed in`, user));
+    });
+
     seo.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,
