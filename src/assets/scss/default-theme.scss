@@ -9,65 +9,74 @@
 @include mat.core();
 //@include mat.strong-focus-indicators();
 
-$aj-typography: mat.define-typography-config($font-family: system-ui);
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+$aj-typography: mat.define-typography-config($font-family: 'Roboto Mono');
 
 @import 'src/assets/scss/partials/colors';
 /* Light Theme */
-$light-primary: mat.define-palette($aj-blue-palette, 900);
-$light-accent: mat.define-palette($aj-gold-palette, 200);
+$light-primary: mat.define-palette(mat.$brown-palette);
+$light-accent: mat.define-palette(mat.$blue-grey-palette);
 
 $light-theme: mat.define-light-theme((
   color: (
     primary: $light-primary,
     accent: $light-accent
-  )
-));
-
-/* Dark Theme */
-$dark-primary: mat.define-palette($aj-blue-palette, 900);
-$dark-accent: mat.define-palette($aj-gold-palette, 200);
-
-$dark-theme: mat.define-dark-theme((
-  color: (
-    primary: $dark-primary,
-    accent: $dark-accent
   ),
   // Only include `typography` and `density` in the default theme.
   typography: $aj-typography,
   density: 0
 ));
 
-/* Dark theme core & components below */
-@include mat.core-theme($dark-theme);
-@include mat.strong-focus-indicators-theme($dark-theme);
-@include mat.icon-theme($dark-theme);
-@include mat.icon-button-theme($dark-theme);
-@include mat.button-theme($dark-theme);
-@include mat.form-field-theme($dark-theme);
-@include mat.input-theme($dark-theme);
-@include mat.snack-bar-theme($dark-theme);
+/* Dark Theme */
+$dark-primary: mat.define-palette(mat.$brown-palette);
+$dark-accent: mat.define-palette(mat.$blue-grey-palette);
 
-/* Dark theme feature components below */
-@include core.theme($dark-theme);
-@include public.theme($dark-theme);
-@include private.theme($dark-theme);
-@include shared.theme($dark-theme);
-
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent
+  )
+));
 
 /* Light theme core & components below */
-.light-theme {
-  @include mat.core-color($light-theme);
-  @include mat.strong-focus-indicators-color($light-theme);
-  @include mat.icon-color($light-theme);
-  @include mat.icon-button-color($light-theme);
-  @include mat.button-color($light-theme);
-  @include mat.form-field-color($light-theme);
-  @include mat.input-color($light-theme);
-  @include mat.snack-bar-color($light-theme);
+@include mat.core-theme($light-theme);
+@include mat.strong-focus-indicators-theme($light-theme);
+@include mat.icon-theme($light-theme);
+@include mat.icon-button-theme($light-theme);
+@include mat.button-theme($light-theme);
+@include mat.fab-theme($light-theme);
+@include mat.form-field-theme($light-theme);
+@include mat.input-theme($light-theme);
+@include mat.snack-bar-theme($light-theme);
+@include mat.list-theme($light-theme);
+@include mat.divider-theme($light-theme);
 
-  /* Light theme feature components below */
-  @include core.color($light-theme);
-  @include public.color($light-theme);
-  @include private.color($light-theme);
-  @include shared.color($light-theme);
+/* Light theme feature components below */
+@include core.theme($light-theme);
+@include public.theme($light-theme);
+@include private.theme($light-theme);
+@include shared.theme($light-theme);
+
+/* Dark theme core & components below */
+.dark-theme {
+  @include mat.core-color($dark-theme);
+  @include mat.strong-focus-indicators-color($dark-theme);
+  @include mat.icon-color($dark-theme);
+  @include mat.icon-button-color($dark-theme);
+  @include mat.button-color($dark-theme);
+  @include mat.fab-color($dark-theme);
+  @include mat.form-field-color($dark-theme);
+  @include mat.input-color($dark-theme);
+  @include mat.snack-bar-color($dark-theme);
+  @include mat.list-color($dark-theme);
+  @include mat.divider-color($dark-theme);
+
+  /* Dark theme feature components below */
+  @include core.color($dark-theme);
+  @include public.color($dark-theme);
+  @include private.color($dark-theme);
+  @include shared.color($dark-theme);
 }
+
+/* Use typography CSS classes */
+@include mat.typography-hierarchy($aj-typography);
