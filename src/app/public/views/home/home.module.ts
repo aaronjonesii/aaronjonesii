@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
+import { NavigationBarModule } from "../../../shared/components/navigation-bar/navigation-bar.module";
 
 const ANGULAR_MATERIAL_MODULES = []!;
 
@@ -17,7 +18,7 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), CommonModule,
-    ...ANGULAR_MATERIAL_MODULES
+    ...ANGULAR_MATERIAL_MODULES, NavigationBarModule
   ],
   exports: [RouterModule]
 })
