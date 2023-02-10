@@ -1,0 +1,30 @@
+// Classes to reduce redundancy
+.word-wrap {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.align-items-center { align-items: center; }
+.justify-content-center { justify-content: center; }
+.justify-content-end { justify-content: end; }
+.gap-1 { gap: 1rem; }
+.text-center { text-align: center; }
+.w-100 { width: 100%; }
+.page-padding { padding: 0 1rem 1rem 1rem; }
