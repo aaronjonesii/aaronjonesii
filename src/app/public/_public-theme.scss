@@ -2,18 +2,24 @@
 @use '@angular/material' as mat;
 
 @use 'views/coming-soon/coming-soon-theme' as comingSoon;
+@use 'views/auth/auth-theme' as auth;
+@use 'views/policies/policies-theme' as policies;
 
 @mixin componentColorMixins($theme) {
   @include comingSoon.color($theme);
+  @include auth.color($theme);
+  @include policies.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include comingSoon.typography($theme);
+  @include auth.typography($theme);
+  @include policies.typography($theme);
 }
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
-  $primary-palette: mat.get-color-from-palette($color-config, 'primary');
+  $primary-palette: mat.get-color-from-palette($color-config, primary);
   $accent-palette: mat.get-color-from-palette($color-config, accent);
   $warn-palette: mat.get-color-from-palette($color-config, warn);
   $foreground-palette: mat.get-color-from-palette($color-config, foreground);
@@ -31,14 +37,8 @@
 
 @mixin theme($theme) {
   $color-config: mat.get-color-config($theme);
-  @if $color-config != null {
-    @include color($theme);
-    @include componentColorMixins($theme);
-  }
+  @if $color-config != null { @include color($theme); }
 
   $typography-config: mat.get-typography-config($theme);
-  @if $typography-config != null {
-    @include typography($theme);
-    @include componentTypographyMixins($theme);
-  }
+  @if $typography-config != null { @include typography($theme); }
 }
