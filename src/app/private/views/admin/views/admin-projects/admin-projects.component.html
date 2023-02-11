@@ -1,0 +1,15 @@
+<h1 class="mat-headline-3">{{title}}</h1>
+
+<ng-container *ngIf="projects$ | async as projects">
+  <ng-container *ngIf="projects.length; else noProjects">
+    <aj-admin-projects-grid [projects]="projects"></aj-admin-projects-grid>
+  </ng-container>
+
+  <ng-template #noProjects>
+    <h2>No projects yet</h2>
+  </ng-template>
+</ng-container>
+
+<button mat-fab color="accent" class="add-btn">
+  <mat-icon fontIcon="add"></mat-icon>
+</button>
