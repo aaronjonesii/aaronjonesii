@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Deny everything that is not specifcally allowed
+    match /{document=**} { allow read, write: if false; }
+
+    // functions
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return request.auth.token.admin == true; }
+
+    // projects collection
+    match /projects/{projectID} {
+      // project functions
+      function isDraft() { return resource.data.status == 'draft'; }
+      function isPublic() { return resource.data.visibility == 'public'; }
+      function isCommentsEnabled() { return resource.data.allowComments == true; }
+
+      allow read: if isAdmin() || (isPublic() && (isDraft() == false));
+      allow write: if isAdmin();
+
+      // project comments collection
+      match /comments/{commentID} {
+        // comment functions
+        function isValidComment() { return request.resource.data.user == /databases/$(database)/documents/users/$(request.auth.uid); }
+
+        allow create: if isCommentsEnabled() && isValidComment();
+        allow read: if isCommentsEnabled() && isPublic()
+      }
+    }
+  }
+}
