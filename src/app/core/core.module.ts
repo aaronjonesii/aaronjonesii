@@ -11,6 +11,7 @@ import { getAnalytics, isSupported } from "@angular/fire/analytics";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { LayoutModule } from "../shared/components/layout/layout.module";
+import { getFirestore, provideFirestore } from "@angular/fire/firestore";
 
 const FIREBASE_MODULES = [
   provideFirebaseApp(() => {
@@ -28,6 +29,7 @@ const FIREBASE_MODULES = [
     const provider = new ReCaptchaV3Provider(environment.recaptcha3SiteKey);
     return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
   }),
+  provideFirestore(() => getFirestore()),
   provideFunctions(() => getFunctions())
 ];
 
