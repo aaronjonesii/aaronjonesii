@@ -1,0 +1,32 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: mat.get-color-from-palette($color-config, 'primary');
+  $accent-palette: mat.get-color-from-palette($color-config, accent);
+  $warn-palette: mat.get-color-from-palette($color-config, warn);
+  $foreground-palette: mat.get-color-from-palette($color-config, foreground);
+  $background-palette: mat.get-color-from-palette($color-config, background);
+  $grey-palette: mat.$gray-palette;
+
+  bhb-admin-products-grid {
+    section.header .select-container, section.products figure.project {
+      border-color: mat.get-color-from-palette($grey-palette, 300);
+    }
+    section.products figure.project .unpublished {
+      color: mat.get-color-from-palette($accent-palette);
+    }
+    section.products figure.project .actions {
+      border-top-color: inherit;
+    }
+    section.products figure.project.selected {
+      border-color: mat.get-color-from-palette($primary-palette, 100);
+      background-color: mat.get-color-from-palette($primary-palette, 50);
+    }
+  }
+}
+@mixin theme($theme) {
+  $color-config: mat.get-color-config($theme);
+  @if $color-config != null { @include color($theme); }
+}
