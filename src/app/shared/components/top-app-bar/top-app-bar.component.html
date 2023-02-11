@@ -1,0 +1,22 @@
+<mat-toolbar>
+  <div class="flex-row gap-1 align-items-center">
+    <button mat-icon-button color="primary" class="back-btn" type="button" [style.visibility]="showBackBtn ? 'visible' : 'hidden'" (click)="location.back()" [disabled]="loading">
+      <mat-icon fontIcon="arrow_back"></mat-icon>
+    </button>
+
+    <h1>{{title}}</h1>
+  </div>
+
+  <ng-container *ngIf="auth.user$ | async; else notSignedIn">
+    <button mat-button (click)="auth.logout()" [disabled]="loading">
+      <mat-icon fontIcon="logout"></mat-icon>
+      Sign out
+    </button>
+  </ng-container>
+  <ng-template #notSignedIn>
+    <button mat-button [routerLink]="[nav_path.signIn]" [disabled]="loading">
+      <mat-icon fontIcon="login"></mat-icon>
+      Sign in
+    </button>
+  </ng-template>
+</mat-toolbar>
