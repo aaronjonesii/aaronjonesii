@@ -4,7 +4,7 @@
 }
 
 button.add-btn {
-  position: absolute;
+  position: fixed;
   $navigationBarHeight: 56px;
   bottom: calc(#{$navigationBarHeight} + 1rem);
   right: 1rem;
