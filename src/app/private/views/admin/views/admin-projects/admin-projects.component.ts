@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { catchError, Observable, throwError } from "rxjs";
-import { Project } from "../../../../../shared/interfaces/project";
+import { ProjectWithID } from "../../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
+import { nav_path } from "../../../../../app-routing.module";
 
 @Component({
   selector: 'aj-admin-projects',
@@ -11,13 +12,14 @@ import { ConsoleLoggerService } from "../../../../../core/services/console-logge
 })
 export class AdminProjectsComponent {
   public readonly title = 'Projects';
-  public projects$: Observable<Project[]>;
+  public readonly nav_path = nav_path;
+  public projects$: Observable<ProjectWithID[]>;
 
   constructor(
     private db: FirestoreService,
     private cLog: ConsoleLoggerService
   ) {
-    this.projects$ = (db.col$(`projects`, {idField: 'id'}) as Observable<Project[]>)
+    this.projects$ = (db.col$(`projects`, {idField: 'id'}) as Observable<ProjectWithID[]>)
       .pipe(catchError(error => {
         this.cLog.error(`Something went wrong loading projects`, error);
         return throwError(error);
