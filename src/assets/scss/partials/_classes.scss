@@ -24,7 +24,7 @@
 .align-items-center { align-items: center; }
 .justify-content-center { justify-content: center; }
 .justify-content-end { justify-content: end; }
-.gap-1 { gap: 1rem; }
+.app-gap { gap: $app-gap; }
 .text-center { text-align: center; }
 .w-100 { width: 100%; }
 .h-100 { height: 100%; }
