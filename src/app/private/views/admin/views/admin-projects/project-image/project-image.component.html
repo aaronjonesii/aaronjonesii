@@ -1,0 +1,22 @@
+<picture>
+  <div class="image-error-container" *ngIf="imageError">
+    <mat-error class="mat-headline-5">Something went wrong with the image</mat-error>
+  </div>
+
+  <ng-container *ngIf="imageFormControl.value">
+    <img [src]="imageFormControl.value | safe:'resourceUrl'" alt="Project image" (error)="imageError=$event" />
+  </ng-container>
+</picture>
+
+<div class="flex-row justify-content-center app-gap">
+  <button mat-button color="primary" (click)="inputElement.click()" [disabled]="loading">
+    <mat-icon class="material-icons-outlined" fontIcon="edit"></mat-icon> {{imageFormControl.value ? 'Change' : 'Upload'}}
+  </button>
+
+  <button mat-button color="primary" (click)="imageFormControl.reset(null)" [disabled]="loading || !imageFormControl.value">
+    <mat-icon class="material-icons-outlined" fontIcon="delete"></mat-icon> Remove
+  </button>
+</div>
+
+<input class="display-none" type="file" autocomplete="off" tabindex="-1" #inputElement
+       (change)="onFileUpload($event)" [accept]="allowedFileTypes.join(',')" />
