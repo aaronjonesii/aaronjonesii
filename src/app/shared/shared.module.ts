@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SafePipe } from './pipes/safe.pipe';
 
 const ANGULAR_MATERIAL_MODULES = []!;
 
@@ -7,7 +8,7 @@ const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = []!;
 
-const PIPES = []!;
+const PIPES = [SafePipe];
 const DIRECTIVES = []!;
 
 @NgModule({
