@@ -27,5 +27,11 @@ service cloud.firestore {
         allow read: if isCommentsEnabled() && isPublic()
       }
     }
+
+    // tags collection
+    match /tags/{tagID} {
+      allow read;
+      allow write: if isAdmin();
+    }
   }
 }
