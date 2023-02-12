@@ -1,14 +1,6 @@
-:host {
-  display: flex;
-  flex-direction: column;
+div.admin-router {
+  $navigationBarHeight: 56px;
 
-  width: 100vw;
-  height: 100vh;
+  height: calc(100vh - #{$navigationBarHeight});
+  overflow: hidden;
 }
-
-mat-toolbar {
-  height: 56px;
-  gap: 1rem;
-}
-
-main { flex-grow: 1; }
