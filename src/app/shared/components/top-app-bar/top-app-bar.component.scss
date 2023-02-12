@@ -1,3 +1,8 @@
+:host {
+  position: sticky;
+  top: 0px;
+}
+
 mat-toolbar {
   display: flex;
   justify-content: space-between;
