@@ -3,7 +3,7 @@ import { nav_path } from 'src/app/app-routing.module';
 import { SelectionModel } from "@angular/cdk/collections";
 import { MatDialog } from "@angular/material/dialog";
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
-import { Project } from "../../../../../shared/interfaces/project";
+import { ProjectWithID } from "../../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { ConfirmDialogComponent } from "../../../../../shared/components/confirm-dialog/confirm-dialog.component";
 
@@ -13,9 +13,9 @@ import { ConfirmDialogComponent } from "../../../../../shared/components/confirm
   styleUrls: ['./admin-projects-grid.component.scss']
 })
 export class AdminProjectsGridComponent {
-  @Input() projects: Project[] = [];
+  @Input() projects: ProjectWithID[] = [];
   public readonly nav_path = nav_path;
-  public selectionModel = new SelectionModel<Project>(true, []);
+  public selectionModel = new SelectionModel<ProjectWithID>(true, []);
   public loading = false;
 
   constructor(
