@@ -1,3 +1,7 @@
-<h1 class="mat-headline-3">{{title}}</h1>
+<aj-top-app-bar [title]="'Admin'"></aj-top-app-bar>
 
-<aj-masonry-cards [items]="adminPages" itemsName="admin pages" emptyText="Get to coding... 📃"></aj-masonry-cards>
+<main class="page-padding">
+  <h1 class="mat-headline-3">{{title}}</h1>
+
+  <aj-masonry-cards [items]="adminPages" itemsName="admin pages" emptyText="Get to coding... 📃"></aj-masonry-cards>
+</main>
