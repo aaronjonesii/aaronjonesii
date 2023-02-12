@@ -11,6 +11,7 @@ html, body {
   letter-spacing: normal;
   scroll-behavior: smooth;
   text-rendering: optimizeLegibility;
+  * { box-sizing: border-box; }
   ::-webkit-scrollbar {
     width: $scrollbar-width;
     height: $scrollbar-height;
@@ -41,7 +42,7 @@ button,
 .mat-mdc-icon-button, .mat-mdc-flat-button,
 .mat-mdc-raised-button, .mat-mdc-stroked-button,
 .mat-mdc-fab, .mat-mdc-mini-fab {
-  border-radius: 1rem !important;
+  border-radius: $app-shape-corner-radius !important;
 }
 
 button.fab-btn-padding { padding: 1.75rem 1rem; }
