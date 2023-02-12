@@ -12,6 +12,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { LayoutModule } from "../shared/components/layout/layout.module";
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
+import { getStorage, provideStorage } from "@angular/fire/storage";
 
 const FIREBASE_MODULES = [
   provideFirebaseApp(() => {
@@ -30,6 +31,7 @@ const FIREBASE_MODULES = [
     return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
   }),
   provideFirestore(() => getFirestore()),
+  provideStorage(() => getStorage()),
   provideFunctions(() => getFunctions())
 ];
 
