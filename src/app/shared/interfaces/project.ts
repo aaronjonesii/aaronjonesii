@@ -1,4 +1,4 @@
-import { firebaseTimestamp } from "./timestamp";
+import { firebaseTimestamp, TimeStamp } from "./timestamp";
 import { FieldValue } from "@angular/fire/firestore/firebase";
 
 export interface Project {
@@ -27,3 +27,4 @@ export const ProjectVisibilities = ["public", "private"];
 
 export interface ProjectWithID extends Project { id: string; }
 export interface WriteProject extends Project { created: FieldValue, updated: FieldValue | null }
+export interface ReadProject extends Project { created: TimeStamp, updated: TimeStamp | null }
