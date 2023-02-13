@@ -5,6 +5,7 @@ export interface Project {
   id?: string,
   name: string,
   description: string,
+  slug: string,
   content: string | null,
   image: string | null,
   tags: string[] | null,
