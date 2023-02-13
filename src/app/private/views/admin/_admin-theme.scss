@@ -4,17 +4,20 @@
 @use 'views/admin-projects/add-project/add-project-theme' as addProject;
 @use 'views/admin-projects/project-image/project-image-theme' as projectImage;
 @use 'shared/admin-projects-grid/admin-projects-grid-theme' as adminProjectsGrid;
+@use 'shared/admin-editor/admin-editor-theme' as adminEditor;
 
 @mixin componentColorMixins($theme) {
   @include addProject.color($theme);
   @include projectImage.color($theme);
   @include adminProjectsGrid.color($theme);
+  @include adminEditor.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include addProject.typography($theme);
   @include projectImage.typography($theme);
   @include adminProjectsGrid.typography($theme);
+  @include adminEditor.typography($theme);
 }
 
 @mixin color($theme) {

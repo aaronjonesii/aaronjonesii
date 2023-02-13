@@ -36,11 +36,6 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Content</mat-label>
-      <input matInput type="text" id="content" name="content" autocomplete="on" formControlName="content" aria-label="Project Content" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
         <mat-option *ngFor="let status of projectStatuses" [value]="status">{{status | titlecase}}</mat-option>
@@ -57,6 +52,16 @@
     <mat-checkbox formControlName="featured">Featured</mat-checkbox>
 
     <mat-checkbox formControlName="allowComments">Allow Comments</mat-checkbox>
+
+    <h3 class="mat-headline-5">Content</h3>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Content</mat-label>
+      <input matInput type="text" id="content" name="content" autocomplete="on" formControlName="content" aria-label="Project Content" />
+    </mat-form-field>
+    <aj-admin-editor [config]="editorConfig"
+                     [content]="this.content.value ?? ''"
+                     (editorChange)="onProjectContentChange($event)" [disabled]="loading"></aj-admin-editor>
   </form>
 </main>
 

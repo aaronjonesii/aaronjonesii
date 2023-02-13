@@ -15,6 +15,7 @@ import { SlugifyPipe } from "../../../../../../shared/pipes/slugify.pipe";
 import { Router } from "@angular/router";
 import { nav_path } from "../../../../../../app-routing.module";
 import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 
 @Component({
   selector: 'aj-add-project',
@@ -29,6 +30,15 @@ export class AddProjectComponent {
   public readonly projectVisibilities = ProjectVisibilities;
   public allTags$: Observable<Tag[]>;
   private allTags: Tag[] = [];
+  public editorConfig = {
+    placeholder: 'Write content here...',
+    wordCount: {
+      onUpdate: (stats:{characters: number, words: number}) => {
+        const storyCharacterCount = stats.characters;
+        const storyWordCount = stats.words;
+      }
+    }
+  };
 
   constructor(
     private db: FirestoreService,
@@ -58,6 +68,10 @@ export class AddProjectComponent {
   public get allowComments() { return this.addForm.controls.allowComments; }
   public get status() { return this.addForm.controls.status; }
   public get visibility() { return this.addForm.controls.visibility; }
+
+  public onProjectContentChange({editor}: ChangeEvent) {
+    if (editor) this.content?.setValue(editor.getData());
+  }
 
   public setSlug(event: any): void {
     this.slug?.setValue(this.slugify.transform(event.target.value));

@@ -24,6 +24,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { ProjectTagsComponent } from './views/admin-projects/project-tags/project-tags.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatSelectModule } from "@angular/material/select";
+import { AdminEditorModule } from "./shared/admin-editor/admin-editor.module";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule, MatButtonModule, MatMenuModule,
@@ -61,7 +62,7 @@ const routes: Routes = [
     RouterModule.forChild(routes), ...CORE_MODULES,
     ...ANGULAR_MATERIAL_MODULES, NavigationBarModule,
     MasonryCardsModule, ConfirmDialogModule, AdminProjectsGridModule,
-    TopAppBarModule, SharedModule
+    TopAppBarModule, SharedModule, AdminEditorModule
   ],
   exports: [...COMPONENTS]
 })
