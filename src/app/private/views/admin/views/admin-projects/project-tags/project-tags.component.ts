@@ -1,48 +1,39 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl } from "@angular/forms";
 import { COMMA, ENTER, SPACE } from "@angular/cdk/keycodes";
-import { catchError, Observable, startWith, throwError } from "rxjs";
+import { Observable, of, startWith } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { FirestoreService } from "../../../../../../shared/services/firestore.service";
 import { Tag } from "../../../../../../shared/interfaces/tag";
-import { ConsoleLoggerService } from "../../../../../../core/services/console-logger.service";
 
 @Component({
   selector: 'aj-project-tags',
   templateUrl: './project-tags.component.html',
   styleUrls: ['./project-tags.component.scss']
 })
-export class ProjectTagsComponent {
+export class ProjectTagsComponent implements OnInit {
   @Input('tagsFormArray') selectedTagsFormArray = new FormArray<FormControl<string>>([]);
+  @Input() allTags$: Observable<Tag[]> = of([]);
+  public tags$: Observable<string[]> = of([]);
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
   public tagCtrl = new FormControl('');
   public filteredTags$: Observable<string[]>;
-  private allTags$: Observable<string[]>;
   @ViewChild('tagInput') tagInput?: ElementRef<HTMLInputElement>;
 
-  constructor(
-    private db: FirestoreService,
-    private cLog: ConsoleLoggerService
-  ) {
-    this.allTags$ = (db.col$(`tags`) as Observable<Tag[]>)
-      .pipe(
-        map(tags => tags.map(tag => tag.slug)),
-        catchError(error => {
-        this.cLog.error(`Something went wrong loading tags`, error);
-        return throwError(error);
-      })
-      );
+  constructor() {
+
     this.filteredTags$ = this.tagCtrl.valueChanges.pipe(
       startWith(null),
       switchMap((inputValue: string | null) => (
         inputValue ?
           this._filter(inputValue).pipe(map(this.filterSelectedTags)) :
-          this.allTags$.pipe(map(this.filterSelectedTags))
+          this.tags$.pipe(map(this.filterSelectedTags))
       ))
     );
   }
+  ngOnInit() { this.tags$ = this.allTags$.pipe(map(tags => tags.map(tag => tag.slug))); }
+
   private filterSelectedTags = (tags: string[]) => tags.filter(tag => !this.selectedTagsFormArray.value?.includes(tag));
 
   public add(event: MatChipInputEvent): void {
@@ -76,6 +67,6 @@ export class ProjectTagsComponent {
   private _filter(inputValue: string): Observable<string[]> {
     const filterValue = inputValue.toLowerCase();
 
-    return this.allTags$.pipe(map(tags => tags.filter(tag => tag.toLowerCase().includes(filterValue))));
+    return this.tags$.pipe(map(tags => tags.filter(tag => tag.toLowerCase().includes(filterValue))));
   }
 }
