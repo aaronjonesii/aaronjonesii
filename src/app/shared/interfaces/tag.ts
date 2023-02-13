@@ -1,4 +1,5 @@
 import { firebaseTimestamp } from './timestamp';
+import { FieldValue } from "@angular/fire/firestore/firebase";
 
 export interface Tag {
   id?: string;
@@ -8,5 +9,5 @@ export interface Tag {
   created?: firebaseTimestamp;
   updated?: firebaseTimestamp;
   featured: boolean;
-  projects: string[] | null;
+  projects: FieldValue | string[] | null;
 }
