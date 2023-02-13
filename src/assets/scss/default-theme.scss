@@ -56,6 +56,7 @@ $dark-theme: mat.define-dark-theme((
 @include mat.tooltip-theme($light-theme);
 @include mat.menu-theme($light-theme);
 @include mat.checkbox-theme($light-theme);
+@include mat.dialog-theme($light-theme);
 
 
 /* Light theme feature components below */
@@ -83,6 +84,7 @@ $dark-theme: mat.define-dark-theme((
   @include mat.tooltip-color($dark-theme);
   @include mat.menu-color($dark-theme);
   @include mat.checkbox-color($dark-theme);
+  @include mat.dialog-color($dark-theme);
 
   /* Dark theme feature components below */
   @include core.color($dark-theme);
