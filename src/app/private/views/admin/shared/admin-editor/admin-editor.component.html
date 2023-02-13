@@ -1,0 +1,8 @@
+<ckeditor
+  [disabled]="disabled"
+  [editor]="Editor"
+  [config]="config"
+  (ready)="onReady($event)"
+  (change)="onChange($event)"
+  [(ngModel)]="content"
+  [tagName]="tagName"></ckeditor>
