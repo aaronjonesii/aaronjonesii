@@ -26,6 +26,8 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatSelectModule } from "@angular/material/select";
 import { AdminEditorModule } from "./shared/admin-editor/admin-editor.module";
 import { EditProjectComponent } from './views/admin-projects/edit-project/edit-project.component';
+import { AdminFileManagerComponent } from "./views/admin-file-manager/admin-file-manager.component";
+import { FileManagerModule } from "./shared/file-manager/file-manager.module";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule, MatButtonModule, MatMenuModule,
@@ -40,19 +42,21 @@ const COMPONENTS = [
   AdminComponent, AdminDashboardComponent,
   AdminProjectsComponent, AddProjectComponent,
   ProjectImageComponent, ProjectTagsComponent,
-  EditProjectComponent
+  EditProjectComponent, AdminFileManagerComponent
 ];
 
 export const admin_nav_path = {
   adminDashboard: '/admin/dashboard',
   adminProjects: '/admin/projects',
-  adminAddProject: '/admin/projects/add'
+  adminAddProject: '/admin/projects/add',
+  adminFileManager: '/admin/file-manager'
 };
 
 const routes: Routes = [
   { path: '', component: AdminComponent, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'file-manager', component: AdminFileManagerComponent },
       { path: 'projects', component: AdminProjectsComponent },
       { path: 'projects/add', component: AddProjectComponent },
       { path: 'projects/:projectID/edit', component: EditProjectComponent }
@@ -65,7 +69,7 @@ const routes: Routes = [
     RouterModule.forChild(routes), ...CORE_MODULES,
     ...ANGULAR_MATERIAL_MODULES, NavigationBarModule,
     MasonryCardsModule, ConfirmDialogModule, AdminProjectsGridModule,
-    TopAppBarModule, SharedModule, AdminEditorModule
+    TopAppBarModule, SharedModule, AdminEditorModule, FileManagerModule
   ],
   exports: [...COMPONENTS]
 })

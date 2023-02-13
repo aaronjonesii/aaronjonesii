@@ -1,0 +1,11 @@
+<ng-container *ngIf="error; else loading">
+  <div class="error">
+    <h2>Error!</h2>
+    <p><ng-container *ngIf="error.message">{{error.message}}</ng-container>
+      <ng-template>Something weird happened. Keep calm and try again later.</ng-template></p>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <aj-loading [height]="250"></aj-loading>
+</ng-template>

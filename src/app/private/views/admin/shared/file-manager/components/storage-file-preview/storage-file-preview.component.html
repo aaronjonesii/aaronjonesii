@@ -1,0 +1,35 @@
+<div class="header">
+  <div class="name">
+    <storage-item-icon [type]="item.type!" [contentType]="item.contentType!"></storage-item-icon>
+    <span [matTooltip]="item.name" matTooltipShowDelay="500">{{item.name}}</span>
+  </div>
+
+  <button mat-icon-button (click)="close.emit()"><mat-icon>close</mat-icon></button>
+</div>
+
+<ng-container *ngIf="downloadURL">
+  <img class="file-preview" *ngIf="item.contentType?.startsWith('image/')" [src]="downloadURL" [alt]="item.fullPath" (error)="downloadURL=undefined;previewError=true" />
+  <video class="file-preview" *ngIf="item.contentType?.startsWith('video/')" controls autoplay loop>
+    <source [type]="item.contentType" [src]="downloadURL" (error)="downloadURL=undefined;previewError=true"/>
+  </video>
+</ng-container>
+<ng-container *ngIf="previewError">
+  <h3 class="file-preview">Preview Not Available.</h3>
+</ng-container>
+
+<dl class="metadata">
+  <dt>Name</dt>
+  <dd><a [href]="downloadURL" target="_blank">{{item.name}}</a></dd>
+
+  <dt>Size</dt>
+  <dd>{{item.size | formatBytes}}</dd>
+
+  <dt>Type</dt>
+  <dd>{{item.contentType}}</dd>
+
+  <dt>Created</dt>
+  <dd>{{item.timeCreated | date:'short'}}</dd>
+
+  <dt>Last modified</dt>
+  <dd>{{item.updated | date:'short'}}</dd>
+</dl>

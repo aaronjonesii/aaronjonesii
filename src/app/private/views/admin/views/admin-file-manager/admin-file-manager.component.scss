@@ -10,11 +10,3 @@ main {
   height: calc(100vh - #{$app-top-app-bar-height} - #{$app-navigation-bar-height});
   overflow: auto;
 }
-
-button.add-btn {
-  position: fixed;
-  $navigationBarHeight: 56px;
-  bottom: calc(#{$navigationBarHeight} + 1rem);
-  right: 1rem;
-  z-index: 100;
-}

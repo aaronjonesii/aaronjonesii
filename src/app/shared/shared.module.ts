@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { SafePipe } from './pipes/safe.pipe';
 import { SlugifyPipe } from "./pipes/slugify.pipe";
 import { LoadingComponent } from "./components/loading/loading.component";
+import { LoadingOrErrorComponent } from "./components/loading-or-error/loading-or-error.component";
 
 const ANGULAR_MATERIAL_MODULES = []!;
 
 const CORE_MODULES = [CommonModule];
 
-const COMPONENTS = [LoadingComponent];
+const COMPONENTS = [LoadingComponent, LoadingOrErrorComponent];
 
 const PIPES = [SafePipe, SlugifyPipe];
 const DIRECTIVES = []!;
