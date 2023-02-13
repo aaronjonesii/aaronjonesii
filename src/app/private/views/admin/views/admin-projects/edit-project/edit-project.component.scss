@@ -1,0 +1,18 @@
+@import "src/assets/scss/partials/extras";
+
+:host {
+  display: block;
+  height: 100vh;
+}
+
+main {
+  display: block;
+  height: calc(100vh - #{$app-top-app-bar-height} - #{$app-navigation-bar-height});
+  overflow: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+}

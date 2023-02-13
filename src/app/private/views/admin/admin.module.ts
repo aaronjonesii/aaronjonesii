@@ -25,6 +25,7 @@ import { ProjectTagsComponent } from './views/admin-projects/project-tags/projec
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatSelectModule } from "@angular/material/select";
 import { AdminEditorModule } from "./shared/admin-editor/admin-editor.module";
+import { EditProjectComponent } from './views/admin-projects/edit-project/edit-project.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule, MatButtonModule, MatMenuModule,
@@ -38,7 +39,8 @@ const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 const COMPONENTS = [
   AdminComponent, AdminDashboardComponent,
   AdminProjectsComponent, AddProjectComponent,
-  ProjectImageComponent, ProjectTagsComponent
+  ProjectImageComponent, ProjectTagsComponent,
+  EditProjectComponent
 ];
 
 export const admin_nav_path = {
@@ -52,7 +54,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'projects', component: AdminProjectsComponent },
-      { path: 'projects/add', component: AddProjectComponent }
+      { path: 'projects/add', component: AddProjectComponent },
+      { path: 'projects/:projectID/edit', component: EditProjectComponent }
     ] }
 ];
 

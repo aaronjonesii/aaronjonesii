@@ -117,7 +117,7 @@ export class AddProjectComponent {
           const projectTag = project.tags[i];
           if (this.allTags.some(tag => tag.slug == projectTag)) {
             const tagUpdates: Partial<Tag> = { projects: arrayRemove(projectTag), updated: this.db.timestamp };
-            batch.update(this.db.doc(`tags,${projectTag}`), tagUpdates);
+            batch.update(this.db.doc(`tags/${projectTag}`), tagUpdates);
           } else {
             const newTag: Tag = {
               slug: projectTag,
