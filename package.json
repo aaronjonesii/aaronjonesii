@@ -10,7 +10,8 @@
     "serve:ssr": "node dist/server/main.js",
     "build:ssr": "ng build && ng run aaronjonesii:server",
     "prerender": "ng run aaronjonesii:prerender",
-    "emulators": "firebase emulators:start --import seed --export-on-exit seed"
+    "emulators": "firebase emulators:start --import seed --export-on-exit seed",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
