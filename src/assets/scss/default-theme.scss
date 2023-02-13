@@ -52,6 +52,10 @@ $dark-theme: mat.define-dark-theme((
 @include mat.divider-theme($light-theme);
 @include mat.chips-theme($light-theme);
 @include mat.autocomplete-theme($light-theme);
+@include mat.select-theme($light-theme);
+@include mat.tooltip-theme($light-theme);
+@include mat.menu-theme($light-theme);
+@include mat.checkbox-theme($light-theme);
 
 
 /* Light theme feature components below */
@@ -75,6 +79,10 @@ $dark-theme: mat.define-dark-theme((
   @include mat.divider-color($dark-theme);
   @include mat.chips-color($dark-theme);
   @include mat.autocomplete-color($dark-theme);
+  @include mat.select-color($dark-theme);
+  @include mat.tooltip-color($dark-theme);
+  @include mat.menu-color($dark-theme);
+  @include mat.checkbox-color($dark-theme);
 
   /* Dark theme feature components below */
   @include core.color($dark-theme);
