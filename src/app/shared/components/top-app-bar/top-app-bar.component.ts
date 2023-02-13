@@ -14,6 +14,9 @@ export class TopAppBarComponent {
   @Input() showBackBtn = false;
   @Input() loading = false;
   @Input() actionButton?: GenericButton;
+  @Input() disabledButton = false;
+  @Input() buttonAction?: () => void;
+  @Input() buttonRouterLink?: string | string[]
   public readonly nav_path = nav_path;
 
   constructor(

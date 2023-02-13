@@ -8,14 +8,9 @@
     <h1>{{title}}</h1>
   </div>
 
-  <ng-container *ngIf="actionButton; else showAuthBtns">
-    <button mat-flat-button [color]="actionButton.color"
-            [routerLink]="actionButton.routerLink"
-            (click)="(actionButton.click == undefined) ? $event : actionButton.click($event)" [disabled]="actionButton.disabled">
-      <mat-icon *ngIf="actionButton.icon" class="material-icons-outlined" [fontIcon]="actionButton.icon"></mat-icon>{{actionButton.text}}
-    </button>
-  </ng-container>
-  <ng-template #showAuthBtns>
+  <div #content><ng-content></ng-content></div>
+
+  <ng-container *ngIf="!content.children.length">
     <ng-container *ngIf="auth.user$ | async; else notSignedIn">
       <button mat-button (click)="auth.logout()" [disabled]="loading">
         <mat-icon fontIcon="logout"></mat-icon>
@@ -28,5 +23,5 @@
         Sign in
       </button>
     </ng-template>
-  </ng-template>
+  </ng-container>
 </mat-toolbar>
