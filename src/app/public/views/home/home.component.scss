@@ -1,0 +1,14 @@
+@import "src/assets/scss/partials/extras";
+
+.card {
+  padding: $app-spacing;
+  gap: $app-spacing;
+}
+
+button.mini-fab-btn {
+  padding: 0;
+}
+
+mat-card-title, mat-card-subtitle {
+  margin: 0 !important;
+}
