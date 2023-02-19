@@ -1,0 +1,13 @@
+<ng-container *ngIf="user?.photoURL && !userPhotoError; else noPhoto">
+  <img class="user-photo"
+       (error)="userPhotoError=true"
+       [src]="user?.photoURL"
+       [alt]="user?.displayName+' profile photo'"
+       [ngStyle]="{'opacity': dim ? '0.5' : '1'}" />
+</ng-container>
+<ng-template #noPhoto>
+  <mat-icon class="material-icons-round user-icon"
+            [ngStyle]="{'opacity': dim ? '0.5' : '1'}">
+    account_circle
+  </mat-icon>
+</ng-template>
