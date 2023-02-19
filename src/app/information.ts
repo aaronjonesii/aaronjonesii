@@ -9,5 +9,6 @@ export const appInformation = {
     twitter: 'https://twitter.com/aaronjonesii',
     linkedin: 'https://linkedin.com/in/aaronjonesii'
   },
-  website: 'aaronjonesii.dev'
+  website: 'aaronjonesii.dev',
+  altEmail: 'hello@aaronjonesii.dev',
 };

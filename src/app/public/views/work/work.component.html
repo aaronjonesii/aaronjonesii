@@ -1,7 +1,7 @@
 <mat-chip-listbox aria-label="Filter selection" (change)="filterSubject.next($event.value)">
-  <mat-chip-option [selected]="(filter$ | async) == 'all'" value="all">All</mat-chip-option>
-  <mat-chip-option [selected]="(filter$ | async) == 'active'" value="active">Active</mat-chip-option>
-  <mat-chip-option [selected]="(filter$ | async) == 'inactive'" value="inactive">Inactive</mat-chip-option>
+  <mat-chip-option [selected]="(filter$ | async) === 'all'" value="all">All</mat-chip-option>
+  <mat-chip-option [selected]="(filter$ | async) === 'active'" value="active">Active</mat-chip-option>
+  <mat-chip-option [selected]="(filter$ | async) === 'inactive'" value="inactive">Inactive</mat-chip-option>
 </mat-chip-listbox>
 
 <div class="flex-col app-gap">
