@@ -37,6 +37,7 @@ const COMPONENTS = [
 
 const routes: Routes = [
   { path: '', component: AdminProjectsComponent, pathMatch: 'full' },
+  { path: 'add', component: AddProjectComponent },
   { path: ':projectID/edit', component: EditProjectComponent },
 ];
 
