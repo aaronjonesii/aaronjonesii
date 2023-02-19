@@ -2,20 +2,21 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { FIREBASE_API_KEY, RECAPTCHA3_SITE_KEY } from "./keys";
+
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "Your Firebase API Key",
-    authDomain: "project-id.firebaseapp.com",
-    databaseURL: 'https://project-id-default-rtdb.firebaseio.com',
-    projectId: "project-id",
-    storageBucket: "project-id.appspot.com",
-    messagingSenderId: "Your Firebase Messaging Sender ID",
-    appId: "Your Firebase App ID",
-    measurementId: "Your Firebase Measurement ID"
+    apiKey: FIREBASE_API_KEY,
+    authDomain: "aaronjonesii.firebaseapp.com",
+    databaseURL: 'https://aaronjonesii-default-rtdb.firebaseio.com',
+    projectId: "aaronjonesii",
+    storageBucket: "aaronjonesii.appspot.com",
+    messagingSenderId: "787409657894",
+    appId: "1:787409657894:web:b849ed20de78a963e2c6e7",
+    measurementId: "G-MQ2QLLLEQ7"
   },
-  vapidKey: 'Your Firebase Vapid Key',
-  recaptcha3SiteKey: ' Your reCAPTCHA v3 Site Key'
+  recaptcha3SiteKey: RECAPTCHA3_SITE_KEY,
 };
 
 /*
