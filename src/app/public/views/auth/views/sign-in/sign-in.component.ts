@@ -31,12 +31,10 @@ export class SignInComponent {
   constructor(
     private router: Router,
     public auth: AuthService,
-    private seo: SeoService,
-    private cLog: ConsoleLoggerService
+    private seo: SeoService
   ) {
     auth.loadUser.forEach(user => {
-      if (user) this.router.navigate([nav_path.home])
-        .then(() => cLog.warn(`Already signed in`, user));
+      if (user) this.router.navigate([nav_path.home]);
     });
 
     seo.generateTags({
