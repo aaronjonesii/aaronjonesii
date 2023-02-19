@@ -1,0 +1,32 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@use './admin-user-detail/admin-user-detail-theme' as adminUserDetail;
+
+@mixin componentColorMixins($theme) {
+  @include adminUserDetail.color($theme);
+}
+
+@mixin color($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: mat.get-color-from-palette($color-config, 'primary');
+  $accent-palette: mat.get-color-from-palette($color-config, accent);
+  $warn-palette: mat.get-color-from-palette($color-config, warn);
+  $foreground-palette: mat.get-color-from-palette($color-config, foreground);
+  $background-palette: mat.get-color-from-palette($color-config, background);
+  $grey-palette: mat.$gray-palette;
+
+  aj-admin-users {
+    section.customers mat-list mat-list-item {
+      border-color: mat.get-color-from-palette($foreground-palette, 'divider');
+      background-color: mat.get-color-from-palette($background-palette, 'card');
+    }
+  }
+}
+@mixin theme($theme) {
+  $color-config: mat.get-color-config($theme);
+  @if $color-config != null {
+    @include color($theme);
+    @include componentColorMixins($theme);
+  }
+}
