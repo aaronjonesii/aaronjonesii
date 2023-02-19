@@ -122,10 +122,10 @@ export class FirebaseStorageService {
     const paths = selection.map(item => item.fullPath);
     return await Promise.all(
       paths.map(async (path: string) => {
-        const item = selection.find((item) => item.fullPath === path)!;
+        const item = selection.find((item) => item.fullPath === path);
 
-        if (item.type === 'folder') return await this.deleteFolder(item.fullPath)
-        else if (item.type === 'file') return await this.deleteFile(item.fullPath)
+        if (item?.type === 'folder') return await this.deleteFolder(item.fullPath)
+        else if (item?.type === 'file') return await this.deleteFile(item.fullPath)
       })
     );
   }

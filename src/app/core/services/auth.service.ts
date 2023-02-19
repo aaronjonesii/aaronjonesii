@@ -77,7 +77,7 @@ export class AuthService {
   public async loginAnonymously(): Promise<UserCredential | AuthError> {
     return await signInAnonymously(this.auth)
       .then(userCredential => {
-        this.routeRedirect(userCredential.user);
+        this.routeRedirect();
         return userCredential;
       }).catch((error: AuthError) => {
         this.cLog.error(`Something went wrong signing in anonymously`, [error, this.auth]);
@@ -98,7 +98,7 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     return await signInWithPopup(this.auth, provider)
       .then(newCredential => {
-        this.routeRedirect(newCredential.user!);
+        this.routeRedirect();
         return newCredential;
       })
       .catch((error: AuthError) => {
@@ -167,7 +167,7 @@ export class AuthService {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then(userCredential => {
         this.sendVerificationEmail(userCredential.user);
-        this.routeRedirect(userCredential.user);
+        this.routeRedirect();
         return userCredential;
       }).catch((error: AuthError) => {
         if (error.code == 'auth/email-already-exists') {
@@ -199,7 +199,7 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         this.cLog.log(`Welcome back ${userCredential.user.displayName ?? userCredential.user.email}`);
-        this.routeRedirect(userCredential.user);
+        this.routeRedirect();
         return userCredential;
       }).catch((error: AuthError) => {
         this.cLog.error(`Something went wrong signing in`, [error, email, password]);
@@ -304,13 +304,11 @@ export class AuthService {
   /**
    * Redirect the user to previous page if any.
    *
-   * @param user - The current user.
-   *
    * @private
    */
-  private routeRedirect(user: User) {
+  private routeRedirect() {
     const routeParams = this.route.snapshot.queryParams;
-    let route = routeParams['redirectURL'] ?? nav_path.home;
+    const route = routeParams['redirectURL'] ?? nav_path.home;
     this.router.navigate([route]);
   }
 }

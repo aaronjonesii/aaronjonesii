@@ -14,12 +14,11 @@ const CORE_MODULES = [CommonModule];
 const COMPONENTS = [LoadingComponent, LoadingOrErrorComponent, UserPhotoComponent];
 
 const PIPES = [SafePipe, SlugifyPipe];
-const DIRECTIVES = []!;
 
 @NgModule({
   providers: [...PIPES],
   imports: [...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES],
-  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
-  exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES]
+  declarations: [...COMPONENTS, ...PIPES],
+  exports: [...COMPONENTS, ...PIPES]
 })
 export class SharedModule { }

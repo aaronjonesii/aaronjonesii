@@ -5,7 +5,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
 import { Router } from "@angular/router";
-import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 
 @Component({
   selector: 'aj-sign-in',

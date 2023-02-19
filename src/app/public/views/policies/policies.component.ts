@@ -4,7 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
 
 @Component({
-  selector: 'bhb-policies',
+  selector: 'aj-policies',
   templateUrl: './policies.component.html',
   styleUrls: ['./policies.component.scss']
 })

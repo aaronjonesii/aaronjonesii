@@ -1,10 +1,10 @@
 <div class="header">
   <div class="name">
-    <storage-item-icon [type]="item.type!" [contentType]="item.contentType!"></storage-item-icon>
+    <aj-storage-item-icon [type]="item.type!" [contentType]="item.contentType!"></aj-storage-item-icon>
     <span [matTooltip]="item.name" matTooltipShowDelay="500">{{item.name}}</span>
   </div>
 
-  <button mat-icon-button (click)="close.emit()"><mat-icon>close</mat-icon></button>
+  <button mat-icon-button (click)="_close.emit(undefined)"><mat-icon>close</mat-icon></button>
 </div>
 
 <ng-container *ngIf="downloadURL">

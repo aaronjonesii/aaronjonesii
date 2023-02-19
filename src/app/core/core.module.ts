@@ -37,12 +37,10 @@ const FIREBASE_MODULES = [
 
 const GLOBAL_ANGULAR_MATERIAL_MODULES = [MatSnackBarModule];
 
-const GLOBAL_COMPONENTS = []!;
-
 const GLOBAL_MODULES = [CommonModule, LayoutModule];
 
 @NgModule({
-  declarations: [...GLOBAL_COMPONENTS],
+  declarations: [],
   imports: [
     BrowserModule.withServerTransition({ appId: 'aaronjonesiiDev' }),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -56,9 +54,6 @@ const GLOBAL_MODULES = [CommonModule, LayoutModule];
     ...FIREBASE_MODULES,
     ...GLOBAL_ANGULAR_MATERIAL_MODULES
   ],
-  exports: [
-    ...GLOBAL_COMPONENTS,
-    ...GLOBAL_MODULES
-  ]
+  exports: [ ...GLOBAL_MODULES ]
 })
 export class CoreModule { }

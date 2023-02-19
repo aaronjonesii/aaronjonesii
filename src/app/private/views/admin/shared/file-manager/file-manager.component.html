@@ -11,7 +11,7 @@
           </button>
           <ng-container *ngFor="let crumb of currentPath.split('/') as pathArray;
           let i=index; let last=last">
-            <mat-icon *ngIf="currentPath!=''" [style.overflow]="'visible'">chevron_right</mat-icon>
+            <mat-icon *ngIf="currentPath!==''" [style.overflow]="'visible'">chevron_right</mat-icon>
             <button mat-button [disabled]="last"
                     (click)="setStoragePath(getCrumbPath(pathArray, i))">{{crumb}}</button>
           </ng-container>
@@ -60,7 +60,7 @@
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> Name </th>
               <td mat-cell class="name-column" *matCellDef="let item">
-                <storage-item-icon [type]="item.type" [contentType]="item.contentType"></storage-item-icon>
+                <aj-storage-item-icon [type]="item.type" [contentType]="item.contentType"></aj-storage-item-icon>
                 <span>{{item.name}}</span>
               </td>
             </ng-container>
@@ -90,18 +90,18 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
-            <tr mat-row (click)="storageItemSelected(item)" [class.selected]="selectedFile == item" *matRowDef="let item; columns: tableColumns;"></tr>
+            <tr mat-row (click)="storageItemSelected(item)" [class.selected]="selectedFile === item" *matRowDef="let item; columns: tableColumns;"></tr>
           </table>
         </div>
 
         <aside class="sidebar" *ngIf="selectedFile" [style.grid-column-end]="'span 4'">
-          <storage-file-preview [item]="selectedFile" (close)="selectedFile = undefined"></storage-file-preview>
+          <aj-storage-file-preview [item]="selectedFile" (_close)="selectedFile = undefined"></aj-storage-file-preview>
         </aside>
       </div>
 
-      <div *ngIf="!items.length" anon-file-dropzone class="empty-folder"
+      <div *ngIf="!items.length" ajFileDropzone class="empty-folder"
            (click)="inputUpload.click()"
-           (dropped)="uploadItems($event)" hover-class="hovering">
+           (dropped)="uploadItems($event)" hoverClass="hovering">
         <div>No files found</div>
         <div>Drag and drop files to upload</div>
       </div>

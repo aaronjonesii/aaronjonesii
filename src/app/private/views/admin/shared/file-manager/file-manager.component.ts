@@ -19,7 +19,7 @@ import { ConsoleLoggerService } from "../../../../../core/services/console-logge
 export class FileManagerComponent implements OnInit {
   tableColumns: string[] = ['checkbox', 'name', 'size', 'type', 'lastModified'];
   public items$?: Promise<StorageItem[]> | undefined;
-  public currentPath: string = '';
+  public currentPath = '';
   error?: FirebaseError;
   company = appInformation;
   @Input() public selection = new SelectionModel<StorageItem>(true, []);
@@ -84,7 +84,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   async getAllStorageItems(path: string): Promise<StorageItem[]> {
-    let storageRef: StorageReference = this.storageService.getRef(path);
+    const storageRef: StorageReference = this.storageService.getRef(path);
     return this.storageService.listAll(storageRef)
       .then(async ({items, prefixes}) => {
         const allItems: StorageItem[] = [
@@ -133,7 +133,7 @@ export class FileManagerComponent implements OnInit {
       return;
     }
 
-    let uploadedFiles: UploadResult[] = [];
+    const uploadedFiles: UploadResult[] = [];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const fileRef = await this.storageService.getRef(`${this.currentPath}/${file.name}`);

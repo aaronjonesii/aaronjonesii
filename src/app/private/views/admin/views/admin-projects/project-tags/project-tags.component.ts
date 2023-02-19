@@ -13,7 +13,7 @@ import { Tag } from "../../../../../../shared/interfaces/tag";
   styleUrls: ['./project-tags.component.scss']
 })
 export class ProjectTagsComponent implements OnInit {
-  @Input('tagsFormArray') selectedTagsFormArray = new FormArray<FormControl<string>>([]);
+  @Input() selectedTagsFormArray = new FormArray<FormControl<string>>([]);
   @Input() allTags$: Observable<Tag[]> = of([]);
   public tags$: Observable<string[]> = of([]);
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
@@ -47,7 +47,7 @@ export class ProjectTagsComponent implements OnInit {
     if (value) this.selectedTagsFormArray.push(new FormControl<string>(value, {nonNullable: true}));
 
     // Clear the input value
-    event.chipInput!.clear();
+    event.chipInput?.clear();
 
     this.tagCtrl.setValue(null);
   }

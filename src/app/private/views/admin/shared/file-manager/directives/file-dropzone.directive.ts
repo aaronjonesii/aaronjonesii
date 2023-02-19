@@ -1,10 +1,10 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
-@Directive({ selector: '[anon-file-dropzone]' })
+@Directive({ selector: '[ajFileDropzone]' })
 export class FileDropzoneDirective {
   @Output() public dropped = new EventEmitter<FileList>();
   @Output() public hovered = new EventEmitter<boolean>();
-  @Input('hover-class') hoverClass: string = 'hovered';
+  @Input() hoverClass = 'hovered';
 
   constructor(private elementRef: ElementRef) {}
 

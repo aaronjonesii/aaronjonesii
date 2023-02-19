@@ -13,7 +13,7 @@
 
       <button mat-stroked-button color="accent" (click)="updateAdminRole(user)">
         <mat-icon fontIcon="admin_panel_settings"></mat-icon>
-        {{user?.admin == true ? 'Revoke' : 'Grant'}} Admin
+        {{user?.admin === true ? 'Revoke' : 'Grant'}} Admin
       </button>
     </div>
 

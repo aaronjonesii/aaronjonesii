@@ -14,20 +14,27 @@ export class AdminEditorComponent {
       onUpdate: (stats:{characters: number, words: number}) => {
         const storyCharacterCount = stats.characters;
         const storyWordCount = stats.words;
+        /* todo: use these values */
+        console.log(`content character count`, storyCharacterCount);
+        console.log(`content word count`, storyWordCount);
       }
     }
   };
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
   @Output() readyChange = new EventEmitter<CKEditor5.Editor>();
   @Output() editorChange = new EventEmitter<ChangeEvent>();
   public Editor?:  CKEditor5.EditorConstructor;
   @Input() content?: string = '';
-  @Input() tagName: string = 'div';
+  @Input() tagName = 'div';
+  public loaded = false;
 
   constructor() {
     if (AppComponent.isBrowser) {
-      const CustomEditor = require("./CustomInlineEditor/ckeditor.js");
-      this.Editor = CustomEditor.Editor;
+      import('./CustomInlineEditor/ckeditor.js' as string)
+        .then(e => {
+          this.Editor = e.Editor;
+          this.loaded = true;
+        });
     }
   }
 

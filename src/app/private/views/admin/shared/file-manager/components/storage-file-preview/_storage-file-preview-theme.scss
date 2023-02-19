@@ -10,7 +10,7 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  storage-file-preview {
+  aj-storage-file-preview {
     border-left-color: map.get($foreground-palette, 'divider');
     background-color: map.get($background-palette, 'app-bar');
   }

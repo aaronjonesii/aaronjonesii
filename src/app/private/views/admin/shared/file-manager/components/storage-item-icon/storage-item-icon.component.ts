@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'storage-item-icon',
+  selector: 'aj-storage-item-icon',
   templateUrl: './storage-item-icon.component.html',
   styleUrls: ['./storage-item-icon.component.scss']
 })

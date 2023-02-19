@@ -6,6 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./loading-or-error.component.scss']
 })
 export class LoadingOrErrorComponent {
-  @Input()
-  error: any;
+  @Input() error?: Error;
 }

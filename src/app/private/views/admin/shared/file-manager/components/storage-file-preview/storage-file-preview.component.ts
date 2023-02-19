@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { StorageFile } from '../../interfaces/storage-file';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 
 @Component({
-  selector: 'storage-file-preview',
+  selector: 'aj-storage-file-preview',
   templateUrl: './storage-file-preview.component.html',
   styleUrls: ['./storage-file-preview.component.scss']
 })
@@ -14,7 +14,7 @@ export class StorageFilePreviewComponent implements OnChanges {
   public item!: StorageFile;
 
   @Output()
-  public close: EventEmitter<any> = new EventEmitter<any>();
+  public _close: EventEmitter<undefined> = new EventEmitter<undefined>();
 
   public downloadURL: string | undefined;
 
@@ -25,7 +25,7 @@ export class StorageFilePreviewComponent implements OnChanges {
     private cLog: ConsoleLoggerService
   ) {}
 
-  async ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges() {
     this.downloadURL = await this.firebaseStorage.getDownloadURL(this.firebaseStorage.getRef(this.item.fullPath))
       .catch((error: FirebaseError) => {
         this.cLog.error(`error getting download URL for '${this.item.name}'`, error, this.item);

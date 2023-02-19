@@ -7,7 +7,8 @@ import {
   Query, onSnapshot, collectionSnapshots,
   QueryDocumentSnapshot, QuerySnapshot, Unsubscribe,
   runTransaction, TransactionOptions, Transaction,
-  writeBatch, WriteBatch, getDocs
+  writeBatch, WriteBatch, getDocs, WithFieldValue,
+  PartialWithFieldValue, UpdateData,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
@@ -125,17 +126,20 @@ export class FirestoreService {
   get timestamp() { return serverTimestamp(); }
 
   /** Write data */
-  add<T>(ref: CollectionPredicate<T>, data: any): Promise<DocumentReference> {
+  add<T>(ref: CollectionPredicate<T>, data: WithFieldValue<T>): Promise<DocumentReference<T>> {
     const timestamp = this.timestamp;
-    return addDoc(this.col(ref), {...data, created: timestamp, updated: timestamp});
+    data = Object.assign({created: timestamp, updated: timestamp}, data);
+    return addDoc(this.col(ref), data);
   }
-  set<T>(ref: DocumentPredicate<T>, data: any, options: SetOptions = {}): Promise<void> {
+  set<T>(ref: DocumentPredicate<T>, data: PartialWithFieldValue<T>, options: SetOptions = {}): Promise<void> {
     const timestamp = this.timestamp;
-    return setDoc(this.doc(ref), {...data, created: timestamp, updated: timestamp}, options);
+    data = Object.assign({created: timestamp, updated: timestamp}, data);
+    return setDoc(this.doc(ref), data, options);
   }
-  update<T>(ref: DocumentPredicate<T>, data: any): Promise<void> {
+  update<T>(ref: DocumentPredicate<T>, data: UpdateData<T>): Promise<void> {
     const timestamp = this.timestamp;
-    return updateDoc(this.doc(ref), {...data, updated: timestamp});
+    data = Object.assign({updated: timestamp}, data);
+    return updateDoc(this.doc(ref), data);
   }
   async docExists<T>(ref: DocumentPredicate<T>): Promise<boolean> {
     const snapshot = await getDoc(this.doc(ref));
@@ -154,16 +158,16 @@ export class FirestoreService {
 
   /** Batch */
   async batch(updateFunction: (batch: WriteBatch) => Promise<void>): Promise<void> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       try {
         const batch = writeBatch(this.db);
 
-        await updateFunction(batch);
+        updateFunction(batch);
 
-        await batch.commit()
+        batch.commit()
           .then(() => resolve(undefined))
           .catch(error => { throw new Error(error.message); });
-      } catch (error: any) { reject(error); }
+      } catch (error) { reject(error); }
     });
   }
 }

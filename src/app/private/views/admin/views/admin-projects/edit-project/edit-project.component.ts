@@ -42,6 +42,9 @@ export class EditProjectComponent implements OnInit {
       onUpdate: (stats:{characters: number, words: number}) => {
         const storyCharacterCount = stats.characters;
         const storyWordCount = stats.words;
+        /** todo: use these values */
+        console.log(`content character count`, storyCharacterCount);
+        console.log(`content word count`, storyWordCount);
       }
     }
   };
@@ -110,8 +113,8 @@ export class EditProjectComponent implements OnInit {
     if (editor) this.content?.setValue(editor.getData());
   }
 
-  public setSlug(event: any): void {
-    this.slug?.setValue(this.slugify.transform(event.target.value));
+  public setSlug(event: Event): void {
+    this.slug?.setValue(this.slugify.transform((event.target as HTMLInputElement).value));
   }
 
   public async save() {
@@ -190,7 +193,7 @@ export class EditProjectComponent implements OnInit {
 
         /** remove old slug and add new slug to tags */
         if (project.tags?.length) {
-          for (let tag of project.tags) {
+          for (const tag of project.tags) {
             const tagRef = this.db.doc(`tags/${tag}`);
             batch.update(tagRef, {products: arrayRemove(this.projectSnapshot?.slug)});
             batch.update(tagRef, {products: arrayUnion(project.slug)});
