@@ -7,7 +7,7 @@ export class MenuService {
   public readonly navigationBarMenu = [
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
     { name: 'About', icon: 'person', routerLink: [nav_path.about] },
-    // { name: 'Work', icon: 'work_history', routerLink: ['/work'] },
+    { name: 'Work', icon: 'work_history', routerLink: [nav_path.work] },
     // { name: 'Contact', icon: 'contact_mail', routerLink: ['/contact'] }
   ];
 
