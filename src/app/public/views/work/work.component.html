@@ -1,0 +1,40 @@
+<mat-chip-listbox aria-label="Filter selection" (change)="filterSubject.next($event.value)">
+  <mat-chip-option [selected]="(filter$ | async) == 'all'" value="all">All</mat-chip-option>
+  <mat-chip-option [selected]="(filter$ | async) == 'active'" value="active">Active</mat-chip-option>
+  <mat-chip-option [selected]="(filter$ | async) == 'inactive'" value="inactive">Inactive</mat-chip-option>
+</mat-chip-listbox>
+
+<div class="flex-col app-gap">
+  <ng-container *ngIf="projects$ | async as projects">
+    <ng-container *ngIf="projects.length; else noProjects">
+      <mat-card *ngFor="let project of projects" class="card">
+        <img mat-card-image *ngIf="project.image" [src]="project.image" [alt]="project.name" />
+
+        <div class="info-container mat-body-1 flex-col app-gap">
+          <h3 class="mat-headline-5 m-0">{{project.name}}</h3>
+          <p class="mat-body-1 m-0">{{project.description}}</p>
+          <mat-chip-set role="list" *ngIf="project.tags?.length">
+            <mat-chip role="listitem" *ngFor="let tag of project.tags">{{tag}}</mat-chip>
+          </mat-chip-set>
+
+          <mat-divider></mat-divider>
+
+          <mat-card-actions class="justify-space-between">
+            <button mat-button color="primary">
+              <mat-icon class="material-icons-outlined" fontIcon="comment_bank"></mat-icon> Comments
+            </button>
+
+            <button mat-flat-button color="primary">
+              <mat-icon class="material-icons-outlined" fontIcon="share"></mat-icon> Share
+            </button>
+          </mat-card-actions>
+        </div>
+      </mat-card>
+    </ng-container>
+  </ng-container>
+</div>
+
+
+<ng-template #noProjects>
+  <h3 class="mat-headline-5 text-center">No projects yet, check back soon.</h3>
+</ng-template>
