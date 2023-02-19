@@ -3,12 +3,12 @@
   flex-direction: column;
   gap: 1rem;
 }
-section.customers mat-list {
+section.user mat-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-section.customers mat-list mat-list-item {
+section.users mat-list mat-list-item {
   align-items: center;
   border-width: 1px;
   border-style: solid;
