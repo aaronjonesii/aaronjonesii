@@ -1,0 +1,43 @@
+<aj-top-app-bar title="Admin"></aj-top-app-bar>
+
+<main class="page-padding">
+  <section class="users">
+    <ng-container *ngIf="users$ | async as users; else loadingOrError">
+      <ng-container *ngIf="users.length > 0; else noUsers">
+        <em>{{users.length}} {{users.length === 1 ? 'user' : 'users'}}</em>
+
+        <mat-list>
+          <mat-list-item *ngFor="let user of users">
+            <anon-user-photo matListItemAvatar [user]="user"></anon-user-photo>
+            <span matListItemTitle>{{user.displayName ?? 'Unknown name'}}</span>
+            <span matListItemLine>Joined: {{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</span>
+            <span matListItemLine>{{user.email ?? 'Unknown email'}}</span>
+            <span matListItemLine>{{user.id}}</span>
+            <span matListItemLine *ngIf="user.admin">
+            <mat-icon matTooltip="Admin" color="accent" fontIcon="admin_panel_settings"></mat-icon>
+          </span>
+            <button mat-icon-button matListItemMeta [matMenuTriggerFor]="userActionMenu">
+              <mat-icon fontIcon="more_vert"></mat-icon>
+            </button>
+            <mat-menu #userActionMenu='matMenu'>
+              <button mat-menu-item [routerLink]="[nav_path.adminUsers, user.id]">
+                <mat-icon fontIcon="person"></mat-icon>
+                View User
+              </button>
+            </mat-menu>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-template #noUsers>
+        <div class="">
+          <h2 class="">No users yet!</h2>
+          <p class="">Spread the word and invite others to join the platform.</p>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #loadingOrError>
+      <aj-loading-or-error [error]="error"></aj-loading-or-error>
+    </ng-template>
+  </section>
+</main>

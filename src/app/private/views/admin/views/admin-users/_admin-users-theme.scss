@@ -1,30 +1,13 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'views/admin-projects/add-project/add-project-theme' as addProject;
-@use 'views/admin-projects/project-image/project-image-theme' as projectImage;
-@use 'shared/admin-projects-grid/admin-projects-grid-theme' as adminProjectsGrid;
-@use 'shared/admin-editor/admin-editor-theme' as adminEditor;
-@use 'shared/file-manager/file-manager-theme' as fileManager;
-@use 'views/admin-users/admin-users-theme' as adminUsers;
+@use './admin-user-detail/admin-user-detail-theme' as adminUserDetail;
 
 @mixin componentColorMixins($theme) {
-  @include addProject.color($theme);
-  @include projectImage.color($theme);
-  @include adminProjectsGrid.color($theme);
-  @include adminEditor.color($theme);
-  @include fileManager.color($theme);
-  @include adminUsers.color($theme);
+  @include adminUserDetail.color($theme);
 }
 
-@mixin componentTypographyMixins($theme) {
-  @include addProject.typography($theme);
-  @include projectImage.typography($theme);
-  @include adminProjectsGrid.typography($theme);
-  @include adminEditor.typography($theme);
-  @include fileManager.typography($theme);
-  @include adminUsers.typography($theme);
-}
+@mixin componentTypographyMixins($theme) {}
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
@@ -34,6 +17,13 @@
   $foreground-palette: mat.get-color-from-palette($color-config, foreground);
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
+
+  aj-admin-users {
+    section.users mat-list mat-list-item {
+      border-color: mat.get-color-from-palette($foreground-palette, 'divider');
+      background-color: mat.get-color-from-palette($background-palette, 'card');
+    }
+  }
 
   @include componentColorMixins($theme);
 }

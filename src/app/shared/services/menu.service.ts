@@ -16,7 +16,7 @@ export class MenuService {
     { name: 'File Manager', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager] },
     { name: 'Projects', icon: 'supervised_user_circle', routerLink: ['/admin/projects'] },
     // { name: 'Comments', icon: 'work_history', routerLink: ['/admin/comments'] },
-    // { name: 'Users', icon: 'contact_mail', routerLink: ['/admin/users'] },
+    { name: 'Users', icon: 'contact_mail', routerLink: [nav_path.adminUsers] },
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] }
   ];
 
@@ -29,7 +29,7 @@ export class MenuService {
       routerLink: ['/admin/projects'], tooltip: 'Products', icon: 'work_history' },
     // { name: 'Comments', icon: 'comment', routerLink: ['/admin/comments'],
     //   description: 'Manage story comments.' },
-    // { name: 'Customers', description: 'Manage this websites customers.',
-    //   routerLink: ['/admin/users'], tooltip: 'Customers', icon: 'manage_accounts' },
+    { name: 'Users', description: 'Manage this websites users.',
+      routerLink: [nav_path.adminUsers], tooltip: 'Users', icon: 'manage_accounts' },
   ]
 }
