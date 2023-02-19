@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from "@angular/router";
 import { AboutComponent } from "./about.component";
 
-const ANGULAR_MATERIAL_MODULES = []!;
-
 const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = [AboutComponent];
@@ -15,7 +13,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES],
+  imports: [RouterModule.forChild(routes), ...CORE_MODULES],
   exports: [...COMPONENTS]
 })
 export class AboutModule { }
