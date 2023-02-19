@@ -9,10 +9,12 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 import { SharedModule } from "../../../../../shared/shared.module";
+import { TopAppBarModule } from "../../../../../shared/components/top-app-bar/top-app-bar.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const ANGULAR_MATERIAL_MODULES = [
-  MatListModule, MatIconModule,
-  MatButtonModule, MatMenuModule, MatTooltipModule
+  MatListModule, MatIconModule, MatButtonModule,
+  MatMenuModule, MatTooltipModule, MatDialogModule,
 ];
 
 const CORE_MODULES = [CommonModule];
@@ -28,7 +30,7 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES,
-    ...ANGULAR_MATERIAL_MODULES, SharedModule
+    ...ANGULAR_MATERIAL_MODULES, SharedModule, TopAppBarModule,
   ],
   exports: [...COMPONENTS]
 })

@@ -10,7 +10,7 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  bhb-admin-user-detail {
+  aj-admin-user-detail {
     section.orders mat-list mat-list-item {
       background-color: mat.get-color-from-palette($background-palette, 'card');
       border-color: mat.get-color-from-palette($foreground-palette, 'divider');

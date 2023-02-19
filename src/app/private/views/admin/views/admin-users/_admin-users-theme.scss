@@ -7,6 +7,8 @@
   @include adminUserDetail.color($theme);
 }
 
+@mixin componentTypographyMixins($theme) {}
+
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
   $primary-palette: mat.get-color-from-palette($color-config, 'primary');
@@ -17,16 +19,25 @@
   $grey-palette: mat.$gray-palette;
 
   aj-admin-users {
-    section.customers mat-list mat-list-item {
+    section.users mat-list mat-list-item {
       border-color: mat.get-color-from-palette($foreground-palette, 'divider');
       background-color: mat.get-color-from-palette($background-palette, 'card');
     }
   }
+
+  @include componentColorMixins($theme);
 }
+
+@mixin typography($theme) {
+  $typography-config: mat.get-typography-config($theme);
+
+  @include componentTypographyMixins($theme);
+}
+
 @mixin theme($theme) {
   $color-config: mat.get-color-config($theme);
-  @if $color-config != null {
-    @include color($theme);
-    @include componentColorMixins($theme);
-  }
+  @if $color-config != null { @include color($theme); }
+
+  $typography-config: mat.get-typography-config($theme);
+  @if $typography-config != null { @include typography($theme); }
 }

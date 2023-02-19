@@ -11,11 +11,12 @@ import { FunctionsService } from "../../../../../../shared/services/functions.se
 import { ConfirmDialogComponent } from "../../../../../../shared/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
-  selector: 'bhb-admin-user-detail',
+  selector: 'aj-admin-user-detail',
   templateUrl: './admin-user-detail.component.html',
   styleUrls: ['./admin-user-detail.component.scss']
 })
 export class AdminUserDetailComponent {
+  public readonly title = 'User Detail';
   public readonly nav_path = nav_path;
   public user$: Observable<readUser>;
   public error?: Error;
