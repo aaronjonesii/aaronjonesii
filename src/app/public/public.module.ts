@@ -9,13 +9,15 @@ import { HomeComponent } from "./views/home/home.component";
 export const public_nav_path = {
   home: '/', ...home_nav_path,
   comingSoon: '/coming-soon',
+  about: '/about',
   auth: '/auth', ...auth_nav_path,
   policies: '/policies', ...policies_nav_path
 };
 
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'about', loadChildren: () => import('./views/about/about.module').then(m => m.AboutModule) },
     ] },
   { path: 'auth', loadChildren: () => import('./views/auth/auth.module').then(m => m.AuthModule) },
   { path: 'policies', loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule) }

@@ -6,7 +6,7 @@ import { GenericItem } from "../interfaces/generic-item";
 export class MenuService {
   public readonly navigationBarMenu = [
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
-    // { name: 'About', icon: 'supervised_user_circle', routerLink: ['/about'] },
+    { name: 'About', icon: 'person', routerLink: [nav_path.about] },
     // { name: 'Work', icon: 'work_history', routerLink: ['/work'] },
     // { name: 'Contact', icon: 'contact_mail', routerLink: ['/contact'] }
   ];
