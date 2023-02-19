@@ -21,11 +21,11 @@ exports.updateClaims = functions.https.onCall(
         'The function must be called while authenticated.'
       );
     }
-    if (!context.auth?.token.admin && context.auth?.uid != 'SIQ5ICAHDfQaY5tBmt1PfiVw8UB2') {
+    if (!context.auth?.token.admin) {
       logs.notAdmin(requestor);
       throw new functions.https.HttpsError(
         'permission-denied',
-        'The function must be called from an admin.'
+        'The function must be called as an admin.'
       );
     }
     const requestee = data.user;
