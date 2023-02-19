@@ -1,12 +1,32 @@
 import { Component } from '@angular/core';
+import { catchError, Observable, throwError } from "rxjs";
+import { Project } from "../../../shared/interfaces/project";
+import { FirestoreService } from "../../../shared/services/firestore.service";
+import { where } from "@angular/fire/firestore";
+import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 
 @Component({
   selector: 'aj-home',
-  template: `
-    <h1 class="mat-headline-3">{{title}}</h1>
-  `,
-  styles: []
+  templateUrl: 'home.component.html',
+  styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
   public readonly title = "Home page";
+  public featuredProjects$?: Observable<Project[]>;
+
+  constructor(
+    private db: FirestoreService,
+    private cLog: ConsoleLoggerService,
+  ) {
+    (this.featuredProjects$ = db.colQuery$(
+      `projects`,
+      {idField: 'id'},
+      where('featured', '==', true),
+    ) as Observable<Project[]>).pipe(
+      catchError(error => {
+        cLog.error(`Something went wring loading featured projects`, error);
+        return throwError(error);
+      }),
+    );
+  }
 }

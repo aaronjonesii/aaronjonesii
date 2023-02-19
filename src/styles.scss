@@ -41,7 +41,11 @@ button,
 .mdc-button, .mat-mdc-button, .mat-mdc-button-base,
 .mat-mdc-icon-button, .mat-mdc-flat-button,
 .mat-mdc-raised-button, .mat-mdc-stroked-button,
-.mat-mdc-fab, .mat-mdc-mini-fab {
+.mat-mdc-fab, .mat-mdc-mini-fab,
+/* Update card shape */
+.mat-card, .mat-mdc-card, .mdc-card,
+/* Update image shape */
+img {
   border-radius: $app-shape-corner-radius !important;
 }
 

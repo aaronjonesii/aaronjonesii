@@ -24,6 +24,7 @@
 .align-items-center { align-items: center; }
 .justify-content-center { justify-content: center; }
 .justify-content-end { justify-content: end; }
+.justify-space-between { justify-content: space-between; }
 .app-gap { gap: $app-gap; }
 .text-center { text-align: center; }
 .w-100 { width: 100%; }
@@ -31,3 +32,4 @@
 .page-padding { padding: $app-page-padding; }
 .display-none { display: none; }
 .overflow-auto { overflow: auto; }
+.flex-grow { flex-grow: 1; }

@@ -4,8 +4,12 @@ import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NavigationBarModule } from "../../../shared/components/navigation-bar/navigation-bar.module";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
 
-const ANGULAR_MATERIAL_MODULES = [MatButtonModule];
+const ANGULAR_MATERIAL_MODULES = [
+  MatButtonModule, MatIconModule, MatCardModule,
+];
 
 const COMPONENTS = [HomeComponent];
 
