@@ -5,8 +5,6 @@ import { AdminComponent } from "./admin.component";
 import { NavigationBarModule } from "../../../shared/components/navigation-bar/navigation-bar.module";
 import { ReactiveFormsModule } from "@angular/forms";
 
-const ANGULAR_MATERIAL_MODULES = []!;
-
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
 const COMPONENTS = [ AdminComponent ];
@@ -35,10 +33,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [
-    RouterModule.forChild(routes), ...CORE_MODULES,
-    ...ANGULAR_MATERIAL_MODULES, NavigationBarModule,
-  ],
+  imports: [ RouterModule.forChild(routes), ...CORE_MODULES, NavigationBarModule ],
   exports: [...COMPONENTS]
 })
 export class AdminModule { }

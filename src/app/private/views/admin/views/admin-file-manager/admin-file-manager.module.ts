@@ -5,8 +5,6 @@ import { AdminFileManagerComponent } from "./admin-file-manager.component";
 import { TopAppBarModule } from "../../../../../shared/components/top-app-bar/top-app-bar.module";
 import { FileManagerModule } from "../../shared/file-manager/file-manager.module";
 
-const ANGULAR_MATERIAL_MODULES = []!;
-
 const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = [AdminFileManagerComponent];
@@ -18,7 +16,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
-    RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
+    RouterModule.forChild(routes), ...CORE_MODULES,
     TopAppBarModule, FileManagerModule,
   ],
   exports: [...COMPONENTS]

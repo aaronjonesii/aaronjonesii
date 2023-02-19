@@ -58,7 +58,7 @@ export class AdminProjectsGridComponent {
 
     dialogRef.afterClosed().forEach(async _delete => {
       if (_delete) {
-        let removedProjects: string[] = [];
+        const removedProjects: string[] = [];
 
         for (const project of this.selectionModel.selected) {
           await this.db.delete(`projects/${project.id}`)
@@ -97,7 +97,7 @@ export class AdminProjectsGridComponent {
       this.cLog.error(`Something went wrong publishing projects`, error);
     } finally { this.loading = false; }
   }
-  public async publishProject(id: string, notify: boolean = true) {
+  public async publishProject(id: string, notify = true) {
     this.loading = true;
 
     return await this.db.update(
@@ -111,7 +111,7 @@ export class AdminProjectsGridComponent {
       .finally(() => this.loading = false);
   }
 
-  public async deleteProject(id: string, notify: boolean = true) {
+  public async deleteProject(id: string, notify = true) {
 
       this.loading = true;
 

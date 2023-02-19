@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'delete-files-dialog',
+  selector: 'aj-delete-files-dialog',
   templateUrl: './delete-files-dialog.component.html',
   styleUrls: ['./delete-files-dialog.component.scss']
 })

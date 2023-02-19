@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'new-folder-dialog',
+  selector: 'aj-new-folder-dialog',
   templateUrl: './new-folder-dialog.component.html',
   styleUrls: ['./new-folder-dialog.component.scss']
 })

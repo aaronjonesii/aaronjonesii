@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class TagsService {
 
-  constructor() { }
-
   public removedTags(previousTags: string[], currentTags: string[]): string[] {
     return previousTags.filter(oldTag => !currentTags.includes(oldTag));
   }

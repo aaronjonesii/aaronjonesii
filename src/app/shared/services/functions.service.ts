@@ -15,7 +15,7 @@ export class FunctionsService {
    *
    * @public
    */
-  public httpsCallable<RequestData = unknown, ResponseData = unknown>(
+  public httpsCallable<ResponseData = unknown>(
     functionName: string,
     data?: unknown | null,
     options?: HttpsCallableOptions

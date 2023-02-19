@@ -124,7 +124,9 @@ export class StorageService {
        * not exist, we just swallow the error.
        */
       await this.deleteFile(folderPath + `%2f`);
-    } catch { } // quietly swallow any errors.
+    } catch {
+      // quietly swallow any errors.
+    }
 
     /** delete folder sub folders */
     const prefixesPromise: Promise<void>[] = prefixes.map(async (prefix) => {

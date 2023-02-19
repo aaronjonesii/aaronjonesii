@@ -23,7 +23,7 @@
       <input matInput type="text" id="description" name="description" autocomplete="on" formControlName="description" aria-label="Project Description" />
     </mat-form-field>
 
-    <aj-project-tags [tagsFormArray]="tags" [allTags$]="allTags$"></aj-project-tags>
+    <aj-project-tags [selectedTagsFormArray]="tags" [allTags$]="allTags$"></aj-project-tags>
 
     <mat-form-field appearance="outline">
       <mat-label>Live Preview Link</mat-label>

@@ -53,8 +53,8 @@ export class ComingSoonComponent {
           this.success = true;
         })
         .catch(error => {throw new Error(error.message)});
-    } catch (error: any) {
-      this.cLog.error(error.message)
+    } catch (error) {
+      this.cLog.error((error as Error).message)
     } finally {
       this.subscribeForm.enable();
       this.loading = false;

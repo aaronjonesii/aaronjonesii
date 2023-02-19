@@ -36,6 +36,9 @@ export class AddProjectComponent {
       onUpdate: (stats:{characters: number, words: number}) => {
         const storyCharacterCount = stats.characters;
         const storyWordCount = stats.words;
+        /** todo: use these values */
+        console.log(`content character count`, storyCharacterCount);
+        console.log(`content word count`, storyWordCount);
       }
     }
   };
@@ -73,8 +76,8 @@ export class AddProjectComponent {
     if (editor) this.content?.setValue(editor.getData());
   }
 
-  public setSlug(event: any): void {
-    this.slug?.setValue(this.slugify.transform(event.target.value));
+  public setSlug(event: Event): void {
+    this.slug?.setValue(this.slugify.transform((event.target as HTMLInputElement).value));
   }
 
   private resetForm() {

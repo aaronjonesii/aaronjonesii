@@ -5,8 +5,6 @@ import { AdminDashboardComponent } from "./admin-dashboard.component";
 import { TopAppBarModule } from "../../../../../shared/components/top-app-bar/top-app-bar.module";
 import { MasonryCardsModule } from "../../../../../shared/components/masonry-cards/masonry-cards.module";
 
-const ANGULAR_MATERIAL_MODULES = []!;
-
 const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = [AdminDashboardComponent];
@@ -18,7 +16,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
-    RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
+    RouterModule.forChild(routes), ...CORE_MODULES,
     TopAppBarModule, MasonryCardsModule
   ],
   exports: [...COMPONENTS]
