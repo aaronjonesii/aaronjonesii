@@ -7,11 +7,11 @@
   align-items: center;
   height: 56px;
   overflow: hidden;
-  border-radius: 1rem 1rem;
+  border-radius: 1rem 1rem 0 0;
   z-index: 100;
 
   position: sticky;
-  bottom: 0px;
+  bottom: 0;
 }
 
 button.mat-mdc-button.mat-mdc-button-base {
