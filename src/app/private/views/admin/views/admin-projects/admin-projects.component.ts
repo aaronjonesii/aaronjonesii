@@ -17,7 +17,7 @@ export class AdminProjectsComponent {
 
   constructor(
     private db: FirestoreService,
-    private cLog: ConsoleLoggerService
+    private cLog: ConsoleLoggerService,
   ) {
     this.projects$ = (db.col$(`projects`, {idField: 'id'}) as Observable<ProjectWithID[]>)
       .pipe(catchError(error => {
