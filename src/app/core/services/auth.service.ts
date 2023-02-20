@@ -8,7 +8,7 @@ import {
   signInWithEmailAndPassword, signInWithPopup, signOut,
   sendPasswordResetEmail, updateEmail, getIdTokenResult,
 } from '@angular/fire/auth';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { nav_path } from 'src/app/app-routing.module';
 import { ConsoleLoggerService } from './console-logger.service';
 import { UpdateProfileResponse } from '../../shared/interfaces/functions';
@@ -25,7 +25,6 @@ export class AuthService {
     private router: Router,
     private cLog: ConsoleLoggerService,
     private fn: FunctionsService,
-    private route: ActivatedRoute
   ) {
     this.user$.forEach(user => this.idTokenResultPromise = user == null ? null : this.loadUserToken(user));
   }
@@ -307,8 +306,27 @@ export class AuthService {
    * @private
    */
   private routeRedirect() {
-    const routeParams = this.route.snapshot.queryParams;
+    const state = this.router.routerState;
+    const snapshot = state.snapshot;
+
+    const routeParams = snapshot.root.queryParams;
     const route = routeParams['redirectURL'] ?? nav_path.home;
     this.router.navigate([route]);
+  }
+
+  public checkIfSignedIn(urlToCheck: string, timeout = 5000) {
+    /** check if user is already signed in */
+    this.loadUser.forEach(user => {
+      if (user) {
+        /** wait 5 seconds */
+        setTimeout(() => {
+          const redirectURL = this.router.routerState.snapshot.root.queryParams['redirectURL'];
+          /** redirect to URL if present */
+          if (redirectURL) this.router.navigate([redirectURL]);
+          /** else redirect to home if signed in and still on sign in page */
+          else if (this.router.routerState.snapshot.url === urlToCheck) this.router.navigate([nav_path.home])
+        }, timeout);
+      }
+    });
   }
 }

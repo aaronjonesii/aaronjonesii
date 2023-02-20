@@ -32,6 +32,8 @@ export class SignUpComponent {
     private cLog: ConsoleLoggerService,
     private seo: SeoService
   ) {
+    auth.checkIfSignedIn(nav_path.signUp, 0);
+
     seo.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,
