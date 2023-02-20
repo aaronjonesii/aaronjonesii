@@ -17,7 +17,8 @@ export interface Project {
   updated: firebaseTimestamp | null,
   featured: boolean,
   allowComments: boolean,
-  roles: { [key: string]: "owner" | "writer" | "reader" | "commenter" }
+  roles: { [key: string]: "owner" | "writer" | "reader" | "commenter" },
+  shards: number,
 }
 export enum ProjectStatus {
   DRAFT = 'draft',

@@ -112,6 +112,7 @@ export class AddProjectComponent {
       created: this.db.timestamp,
       updated: null,
       roles: {[user.uid]: 'owner'},
+      shards: 5, // Initialize number of shards
     };
 
     await this.db.batch(async batch => {
@@ -132,6 +133,13 @@ export class AddProjectComponent {
             batch.set(this.db.doc(`tags/${projectTag}`), newTag);
           }
         }
+      }
+
+      /** shards for counts */
+      /** Initialize each shard */
+      for (let i = 0; i < project.shards; i++) {
+        const shardRef = this.db.doc(`projects/${project.slug}/shards/${i.toString()}`);
+        batch.set(shardRef, { views: 0 });
       }
 
       const projectRef = this.db.doc(`projects/${project.slug}`);
