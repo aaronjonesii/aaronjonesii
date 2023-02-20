@@ -8,7 +8,7 @@
   <ng-container *ngIf="projects$ | async as projects">
     <ng-container *ngIf="projects.length; else noProjects">
       <mat-card *ngFor="let project of projects" class="card">
-        <img mat-card-image *ngIf="project.image" [src]="project.image" [alt]="project.name" />
+        <img mat-card-image [routerLink]="[nav_path.work, project.slug]" *ngIf="project.image" [src]="project.image" [alt]="project.name" />
 
         <div class="info-container mat-body-1 flex-col app-gap">
           <h3 class="mat-headline-5 m-0">{{project.name}}</h3>
