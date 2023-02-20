@@ -20,6 +20,11 @@ service cloud.firestore {
       allow read: if isAdmin() || isOneOfRoles(resource, ['owner', 'writer', 'reader']) || isPublic(resource) && isNotDraft(resource);
       allow write: if isAdmin() && isOneOfRoles(request.resource, ['owner']);
 
+      // project shards collection
+      match /shards/{shardID} {
+        allow read, write;
+      }
+
       // project comments collection
       match /comments/{commentID} {
         // comment functions

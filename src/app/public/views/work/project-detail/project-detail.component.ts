@@ -11,6 +11,8 @@ import { User } from '@angular/fire/auth';
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
 import { appInformation } from "../../../../information";
+import { increment } from "@angular/fire/firestore";
+import { SeoService } from "../../../../core/services/seo.service";
 
 @Component({
   selector: 'aj-project-detail',
@@ -27,6 +29,7 @@ export class ProjectDetailComponent {
       else return of(user);
     }),
   );
+  public notAvailable = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +38,7 @@ export class ProjectDetailComponent {
     private cLog: ConsoleLoggerService,
     private router: Router,
     private dialog: MatDialog,
+    private seo: SeoService,
   ) {
     this.projectID$ = route.paramMap.pipe(
       map((params) => params.get('projectID')),
@@ -52,7 +56,39 @@ export class ProjectDetailComponent {
 
   private getProject(id: string | null): Observable<ReadProject | null> {
     return (this.db.doc$(`projects/${id}`) as Observable<ReadProject>)
-      .pipe(map(project => project ?? null));
+      .pipe(
+        switchMap(async (project) => {
+          if (!project) {
+            this.notAvailable = true;
+            return null;
+          }
+
+          /** seo service */
+          this.seo.generateTags({
+            title: project.name,
+            route: `${nav_path.work}/${project.slug}`,
+            author: appInformation.name,
+            description: project.description,
+            type: 'article',
+            image: project.image ?? '',
+          });
+
+          if (!project?.shards) return project;
+
+          /** increment view count */
+          const shard_id = Math.floor(Math.random() * project.shards).toString();
+          const shardRef = this.db.doc(`projects/${project.slug}/shards/${shard_id}`);
+          await this.db.update(shardRef, { views: increment(1) });
+
+          /** get view count from shards */
+          let views = 0;
+          for (let i = 0; i < project.shards; i++) {
+            views = views + (await this.db.docSnap(`projects/${project.slug}/shards/${i.toString()}`)).get('views');
+          }
+
+          return Object.assign({views: views}, project);
+        }),
+      );
   }
 
   public isOwner(project: ReadProject, user: UserWithID | null): boolean {

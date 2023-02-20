@@ -19,6 +19,7 @@ export interface Project {
   allowComments: boolean,
   roles: { [key: string]: "owner" | "writer" | "reader" | "commenter" },
   shards: number,
+  views?: number, // sharded distributed counter
 }
 export enum ProjectStatus {
   DRAFT = 'draft',
