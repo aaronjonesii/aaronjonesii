@@ -27,7 +27,7 @@ exports.onCreation = functions.auth.user().onCreate(async (user) => {
       admin: false
     }, {merge: true});
 
-    /** send welcome email */
+    /** todo: send welcome email with template */
     const mailRef = admin.firestore().collection('mail').doc();
     batch.set(mailRef, {
       to: user.email,

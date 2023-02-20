@@ -9,7 +9,7 @@ export const noRequestee = (uid?: string): void => {
 };
 
 export const notAdmin = (uid?: string): void => {
-  logger.log(`Requesting user is not a shop admin: '${uid}'`);
+  logger.log(`Requesting user is not a admin: '${uid}'`);
 };
 
 export const updatingClaims = (requestor: string, requestee: string, claims: {[key:string]: string|boolean}): void => {
