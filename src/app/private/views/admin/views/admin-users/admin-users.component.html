@@ -1,6 +1,8 @@
 <aj-top-app-bar title="Admin"></aj-top-app-bar>
 
 <main class="page-padding">
+  <h1 class="mat-headline-3">{{title}}</h1>
+
   <section class="users">
     <ng-container *ngIf="users$ | async as users; else loadingOrError">
       <ng-container *ngIf="users.length > 0; else noUsers">
