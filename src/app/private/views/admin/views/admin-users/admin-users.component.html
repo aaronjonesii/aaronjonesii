@@ -24,6 +24,11 @@
                 <mat-icon fontIcon="person"></mat-icon>
                 View User
               </button>
+
+              <button mat-menu-item (click)="updateUser(user.id)" [disabled]="!user.id">
+                <mat-icon class="material-icons-outlined" [fontIcon]="user.id ? 'update' : 'update_disabled'"></mat-icon>
+                Update User
+              </button>
             </mat-menu>
           </mat-list-item>
         </mat-list>
