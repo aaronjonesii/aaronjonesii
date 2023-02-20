@@ -11,20 +11,22 @@ service cloud.firestore {
     // projects collection
     match /projects/{projectID} {
       // project functions
-      function isDraft() { return resource.data.status == 'draft'; }
-      function isPublic() { return resource.data.visibility == 'public'; }
-      function isCommentsEnabled() { return resource.data.allowComments == true; }
+      function getRole(rsc) { return rsc.data.roles[request.auth.uid]; }
+      function isOneOfRoles(rsc, array) { return isSignedIn() && (getRole(rsc) in array); }
+      function isNotDraft(rsc) { return rsc.data.status != 'draft'; }
+      function isPublic(rsc) { return rsc.data.visibility == 'public'; }
+      function isCommentsEnabled(rsc) { return rsc.data.allowComments == true; }
 
-      allow read: if isAdmin() || (isPublic() && (isDraft() == false));
-      allow write: if isAdmin();
+      allow read: if isAdmin() || isOneOfRoles(resource, ['owner', 'writer', 'reader']) || isPublic(resource) && isNotDraft(resource);
+      allow write: if isAdmin() && isOneOfRoles(request.resource, ['owner']);
 
       // project comments collection
       match /comments/{commentID} {
         // comment functions
         function isValidComment() { return request.resource.data.user == /databases/$(database)/documents/users/$(request.auth.uid); }
 
-        allow create: if isCommentsEnabled() && isValidComment();
-        allow read: if isCommentsEnabled() && isPublic()
+        allow create: if isCommentsEnabled(resource) && isValidComment();
+        allow read: if isCommentsEnabled(resource) && isPublic(resource);
       }
     }
 
@@ -36,7 +38,11 @@ service cloud.firestore {
 
     // users
     match /users/{uid} {
+      // users functions
+      function isValidUpdate() { return (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['following', 'updated'])); }
+
       allow read: if request.auth.uid == uid || isAdmin();
+      allow update: if request.auth.uid == uid && isValidUpdate();
     }
   }
 }
