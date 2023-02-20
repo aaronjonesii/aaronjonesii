@@ -97,3 +97,6 @@ $dark-theme: mat.define-dark-theme((
 
 /* Use typography CSS classes */
 @include mat.typography-hierarchy($aj-typography);
+html body p {
+  font-size: mat.font-size($aj-typography, 'body-1');
+}
