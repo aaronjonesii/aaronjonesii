@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { getFunctions, provideFunctions } from "@angular/fire/functions";
-import { getAnalytics, isSupported } from "@angular/fire/analytics";
+import { getAnalytics, isSupported, ScreenTrackingService, UserTrackingService } from "@angular/fire/analytics";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { LayoutModule } from "../shared/components/layout/layout.module";
@@ -40,6 +40,7 @@ const GLOBAL_ANGULAR_MATERIAL_MODULES = [MatSnackBarModule];
 const GLOBAL_MODULES = [CommonModule, LayoutModule];
 
 @NgModule({
+  providers: [ScreenTrackingService, UserTrackingService],
   declarations: [],
   imports: [
     BrowserModule.withServerTransition({ appId: 'aaronjonesiiDev' }),
