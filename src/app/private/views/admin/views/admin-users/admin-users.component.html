@@ -11,7 +11,7 @@
             <aj-user-photo matListItemAvatar [user]="user"></aj-user-photo>
             <span matListItemTitle>{{user.displayName ?? 'Unknown name'}}</span>
             <span matListItemLine>Joined: {{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</span>
-            <span matListItemLine>{{user.email ?? 'Unknown email'}}</span>
+            <span matListItemLine>{{user.email ? user.email : 'Unknown email'}}</span>
             <span matListItemLine>{{user.id}}</span>
             <span matListItemLine *ngIf="user.admin">
             <mat-icon matTooltip="Admin" color="accent" fontIcon="admin_panel_settings"></mat-icon>
