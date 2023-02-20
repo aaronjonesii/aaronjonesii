@@ -11,19 +11,24 @@ export interface Project {
   tags: string[] | null,
   livePreviewLink: string | null,
   sourceCodeLink: string | null,
-  status: ProjectStatusType,
-  visibility: ProjectVisibilityType,
+  status: ProjectStatus,
+  visibility: ProjectVisibility,
   created: firebaseTimestamp,
   updated: firebaseTimestamp | null,
   featured: boolean,
-  allowComments: boolean
+  allowComments: boolean,
+  roles: { [key: string]: "owner" | "writer" | "reader" | "commenter" }
+}
+export enum ProjectStatus {
+  DRAFT = 'draft',
+  ARCHIVED = 'archived',
+  PUBLISHED = 'published',
 }
 
-export type ProjectStatusType = "draft" | "archived" | "published";
-export const ProjectStatuses = ["draft", "archived", "published"];
-
-export type ProjectVisibilityType = "public" | "private";
-export const ProjectVisibilities = ["public", "private"];
+export enum ProjectVisibility {
+  PUBLIC = 'public',
+  PRIVATE = 'private',
+}
 
 export interface ProjectWithID extends Project { id: string; }
 export interface WriteProject extends Project { created: FieldValue, updated: FieldValue | null }

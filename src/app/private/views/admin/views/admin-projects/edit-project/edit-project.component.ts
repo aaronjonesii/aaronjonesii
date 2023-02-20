@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { FirestoreService } from "../../../../../../shared/services/firestore.service";
 import {
-  ProjectStatuses,
-  ProjectStatusType, ProjectVisibilities,
-  ProjectVisibilityType,
+  ProjectStatus,
+  ProjectVisibility,
   ReadProject,
   WriteProject
 } from "../../../../../../shared/interfaces/project";
@@ -31,8 +30,8 @@ export class EditProjectComponent implements OnInit {
   private project?: ReadProject;
   private projectSnapshot?: ReadProject;
   public editForm = initialProjectForm;
-  public readonly projectStatuses = ProjectStatuses;
-  public readonly projectVisibilities = ProjectVisibilities;
+  public readonly projectStatuses = ProjectStatus;
+  public readonly projectVisibilities = ProjectVisibility;
   public loading = true;
   public allTags$: Observable<Tag[]> = of([]);
   private allTags: Tag[] = [];
@@ -102,8 +101,8 @@ export class EditProjectComponent implements OnInit {
       tags: new FormArray<FormControl<string>>(project.tags?.length ? project.tags?.map(tag => new FormControl<string>(tag, {nonNullable: true})) : []),
       livePreviewLink: new FormControl<string | null>(project.livePreviewLink),
       sourceCodeLink: new FormControl<string | null>(project.sourceCodeLink),
-      status: new FormControl<ProjectStatusType>(project.status, { nonNullable: true, validators: Validators.required }),
-      visibility: new FormControl<ProjectVisibilityType>(project.visibility, { nonNullable: true, validators: Validators.required }),
+      status: new FormControl<ProjectStatus>(project.status, { nonNullable: true, validators: Validators.required }),
+      visibility: new FormControl<ProjectVisibility>(project.visibility, { nonNullable: true, validators: Validators.required }),
       featured: new FormControl<boolean>(project.featured, { nonNullable: true, validators: Validators.required }),
       allowComments: new FormControl<boolean>(project.allowComments, { nonNullable: true, validators: Validators.required })
     });
