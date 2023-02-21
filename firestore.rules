@@ -7,6 +7,10 @@ service cloud.firestore {
     // functions
     function isSignedIn() { return request.auth != null; }
     function isAdmin() { return request.auth.token.admin == true; }
+    function verifyFields(required, optional) {
+      let allAllowedFields = required.concat(optional);
+      return request.resource.data.keys().hasAll(required) && request.resource.data.keys().hasOnly(allAllowedFields);
+    }
 
     // projects collection
     match /projects/{projectID} {
@@ -48,6 +52,18 @@ service cloud.firestore {
 
       allow read: if request.auth.uid == uid || isAdmin();
       allow update: if request.auth.uid == uid && isValidUpdate();
+    }
+
+    // contact
+    match /contact/{contactID} {
+      allow read: if isAdmin();
+      allow create: if verifyFields(['name', 'company', 'email', 'message', 'created'], []);
+    }
+
+    // mail
+    match /mail/{mailID} {
+      allow read: if isAdmin();
+      allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments']);
     }
   }
 }
