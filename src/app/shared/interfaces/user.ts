@@ -1,4 +1,5 @@
 import { firebaseTimestamp, TimeStamp } from "./timestamp";
+import { DocumentReference } from "@angular/fire/firestore";
 
 export interface User {
   displayName?: string,
@@ -10,6 +11,7 @@ export interface User {
   id?: string,
   following?: boolean,
   updated?: firebaseTimestamp,
+  reported?: DocumentReference[],
 }
 export interface readUser extends User {
   joined?: TimeStamp

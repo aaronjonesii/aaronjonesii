@@ -46,15 +46,20 @@
               <button mat-icon-button [matMenuTriggerFor]="commentOptionsMenu">
                 <mat-icon class="material-icons-outlined" fontIcon="more_vert"></mat-icon>
               </button>
+              <mat-menu #commentOptionsMenu="matMenu">
+                <button mat-menu-item (click)="onReport(comment, auth.user)" [disabled]="reported(comment, auth.user)">
+                  <mat-icon class="material-icons-outlined" fontIcon="flag"></mat-icon> {{reported(comment, auth.user) ? 'Reported' : 'Report'}}
+                </button>
+              </mat-menu>
             </div>
             <p>{{comment.content}}</p>
             <div class="flex-row align-items-center">
-              <button mat-icon-button (click)="onLikeComment(comment, auth.user)">
+              <button mat-icon-button (click)="onLikeComment(comment, auth.user)" [color]="likesComment(comment, auth.user) ? 'primary' : undefined">
                 <!-- fixme: find better way to fill material icons -->
-                <mat-icon class="material-icons-outlined" [ngClass]="{'material-icons-outlined': likesComment(comment, auth.user)}" fontIcon="thumb_up"></mat-icon>
+                <mat-icon [ngClass]="{'material-icons-outlined': !likesComment(comment, auth.user)}" fontIcon="thumb_up"></mat-icon>
               </button>
               <small *ngIf="comment?.likes?.length">{{comment.likes?.length}}</small>
-              <button mat-icon-button (click)="onDislikeComment(comment, auth.user)">
+              <button mat-icon-button (click)="onDislikeComment(comment, auth.user)" [color]="dislikesComment(comment, auth.user) ? 'primary' : undefined">
                 <mat-icon [ngClass]="{'material-icons-outlined': !dislikesComment(comment, auth.user)}" fontIcon="thumb_down"></mat-icon>
               </button>
   <!--            <button mat-icon-button>-->
@@ -70,9 +75,3 @@
 </ng-container>
 
 <ng-template #loading><aj-loading></aj-loading></ng-template>
-
-<mat-menu #commentOptionsMenu="matMenu">
-  <button mat-menu-item>
-    <mat-icon class="material-icons-outlined" fontIcon="flag"></mat-icon> Report
-  </button>
-</mat-menu>

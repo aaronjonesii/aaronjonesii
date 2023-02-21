@@ -53,7 +53,7 @@ service cloud.firestore {
     // users
     match /users/{uid} {
       // users functions
-      function isValidUpdate() { return (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['following', 'updated'])); }
+      function isValidUpdate() { return (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reported', 'following', 'updated'])); }
 
       allow read: if request.auth.uid == uid || isAdmin();
       allow update: if request.auth.uid == uid && isValidUpdate();
@@ -69,6 +69,15 @@ service cloud.firestore {
     match /mail/{mailID} {
       allow read: if isAdmin();
       allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments']);
+    }
+
+    // reports
+    match /reports/{reportID} {
+      // reports functions
+      function isValidReport() { return request.resource.data.by == /databases/$(database)/documents/users/$(request.auth.uid) }
+
+      allow create: if isValidReport() && verifyFields(['created', 'by', 'reason', 'document'], ['updated']);
+      allow read: if isAdmin();
     }
   }
 }
