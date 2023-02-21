@@ -48,7 +48,7 @@ export class CommentsDialogComponent {
 
       this.commentInputContainerInFocus = true;
     } catch (error) {
-      this.cLog.error(`Something went wrong`, error);
+      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -73,7 +73,7 @@ export class CommentsDialogComponent {
         .then(() => this.onCancelComment())
         .catch(error => this.cLog.error(`Something went wrong adding comment`, error, comment));
     } catch(error) {
-      this.cLog.error(`Something went wrong`, error);
+      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -95,7 +95,7 @@ export class CommentsDialogComponent {
         batch.update(commentRef, commentUpdates);
       }).catch(error => this.cLog.error(`Something went wrong liking comment`, error, comment, user));
     } catch (error) {
-      this.cLog.error(`Something went wrong`, error);
+      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -117,7 +117,7 @@ export class CommentsDialogComponent {
         batch.update(commentRef, commentUpdates);
       }).catch(error => this.cLog.error(`Something went wrong disliking comment`, error, comment, user));
     } catch(error) {
-      this.cLog.error(`Something went wrong`, error);
+      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -155,7 +155,7 @@ export class CommentsDialogComponent {
       }).then(() => this.cLog.log(`Submitted report, thank you for helping our community.`))
         .catch(error => this.cLog.error(`Something went wrong reporting comment`, error, report));
     } catch (error) {
-      this.cLog.error(`Something went wrong`, error);
+      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -167,9 +167,8 @@ export class CommentsDialogComponent {
   private _assertUser(user: UserWithID | null): asserts user {
     if (!user) {
       this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } })
-        .then(() => this.dialogRef.close())
-        .then(() => this.cLog.log(`You must be signed in`));
-      return;
+        .then(() => this.dialogRef.close());
+      throw new Error(`You must be signed in`);
     }
   }
 }
