@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { map, Observable, of, switchMap } from "rxjs";
-import { ReadProject } from "../../../../shared/interfaces/project";
+import { ProjectStatus, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
 import { nav_path } from "../../../../app-routing.module";
@@ -13,11 +13,14 @@ import { ConfirmDialogComponent } from "../../../../shared/components/confirm-di
 import { appInformation } from "../../../../information";
 import { increment } from "@angular/fire/firestore";
 import { SeoService } from "../../../../core/services/seo.service";
+import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
+import { CommentWithID } from "../../../../shared/interfaces/comment";
 
 @Component({
   selector: 'aj-project-detail',
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss']
+  styleUrls: ['./project-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ProjectDetailComponent {
   public readonly nav_path = nav_path;
@@ -30,6 +33,8 @@ export class ProjectDetailComponent {
     }),
   );
   public notAvailable = false;
+  public comments$?: Observable<CommentWithID[] | null>;
+  public readonly ProjectStatus = ProjectStatus;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +51,10 @@ export class ProjectDetailComponent {
 
     this.project$ = this.projectID$.pipe(
       switchMap((projectID) => this.getProject(projectID)),
+    );
+
+    this.comments$ = this.project$.pipe(
+      switchMap((project) => this.getComments$(project)),
     );
   }
 
@@ -91,36 +100,50 @@ export class ProjectDetailComponent {
       );
   }
 
+  public getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
+    return project ? this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, {idField: 'id'}) : of(null);
+  }
+
   public isOwner(project: ReadProject, user: UserWithID | null): boolean {
     return user ? project.roles[user.id] === 'owner' : false;
   }
 
-  private _assertUser(user: UserWithID | null): asserts user {
-    if (!user) {
-      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } })
-        .then(() => this.cLog.log(`You must be signed in`));
+  public async updateFollowingStatus(user: UserWithID | null) {
+    try {
+      this.auth.assertUser(user);
+
+      async function update(db: FirestoreService, user: UserWithID, cLog: ConsoleLoggerService): Promise<void> {
+        await db.update(`users/${user.id}`, { following: !user?.following ?? false })
+          .then(() => cLog.log(user?.following ? 'Unfollowed' : 'Followed'));
+      }
+
+      if (user?.following) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          id: 'confirm-unfollow-dialog',
+          data: {
+            description: `Unfollow from ${appInformation.name}`,
+            buttonText: `Unfollow`,
+          }
+        });
+
+        dialogRef.afterClosed()
+          .forEach(async confirm => confirm ? await update(this.db, user, this.cLog) : undefined);
+      } else await update(this.db, user, this.cLog);
+    } catch (error) {
+      /* swallow errors */
     }
   }
 
-  public async updateFollowingStatus(user: UserWithID | null) {
-    this._assertUser(user);
-
-    async function update(db: FirestoreService, user: UserWithID, cLog: ConsoleLoggerService): Promise<void> {
-      await db.update(`users/${user.id}`, { following: !user?.following ?? false })
-        .then(() => cLog.log(user?.following ? 'Unfollowed' : 'Followed'));
-    }
-
-    if (user?.following) {
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        id: 'confirm-unfollow-dialog',
-        data: {
-          description: `Unfollow from ${appInformation.name}`,
-          buttonText: `Unfollow`,
-        }
-      });
-
-      dialogRef.afterClosed()
-        .forEach(async confirm => confirm ? await update(this.db, user, this.cLog) : undefined);
-    } else await update(this.db, user, this.cLog);
+  public openComments(project: ReadProject): void {
+    this.dialog.open(CommentsDialogComponent, {
+      id: 'comments-dialog',
+      data: {
+        comments$: this.comments$,
+        selectedComment: undefined,
+        user$: this.user$,
+        parent: this.db.doc(`projects/${project.slug}`),
+      },
+      disableClose: true,
+    });
   }
 }

@@ -1,9 +1,44 @@
-button.edit-btn {
-  position: sticky;
-  bottom: 0;
-  left: 100%;
-}
+@import "src/assets/scss/partials/mixins";
+@import "src/assets/scss/partials/extras";
 
-.not-available-container img {
-  width: 50%;
+aj-project-detail {
+  button.edit-btn {
+    position: sticky;
+    bottom: 0;
+    left: 100%;
+  }
+
+  .not-available-container img {
+    width: 50%;
+  }
+
+  mat-tab-group { gap: $app-gap; }
+  mat-tab-group mat-tab-header.mat-mdc-tab-header {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+  }
+  mat-tab-group mat-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mdc-tab.mat-mdc-tab .mdc-tab__content .mdc-tab-indicator .mdc-tab-indicator__content {
+    border-top-width: 4px;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .comments-container {
+    display: flex;
+    overflow-x: auto;
+    gap: $app-gap;
+    padding-bottom: 0.5rem;
+  }
+  .comments-container .comment {
+    min-width: 300px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: $app-gap;
+    padding: $app-spacing;
+    border-radius: $app-shape-corner-radius;
+  }
+  .comments-container .comment div .message {
+    @include truncateText(2);
+  }
 }

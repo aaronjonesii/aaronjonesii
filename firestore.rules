@@ -33,9 +33,14 @@ service cloud.firestore {
       match /comments/{commentID} {
         // comment functions
         function isValidComment() { return request.resource.data.user == /databases/$(database)/documents/users/$(request.auth.uid); }
+        function projectRsc() {
+          let project = get(/databases/$(database)/documents/projects/$(projectID));
+          return project;
+        }
 
-        allow create: if isCommentsEnabled(resource) && isValidComment();
-        allow read: if isCommentsEnabled(resource) && isPublic(resource);
+        allow create: if isValidComment() && isCommentsEnabled(projectRsc()) && isPublic(get(/databases/$(database)/documents/projects/$(projectID)));
+        allow update: if isCommentsEnabled(projectRsc()) && isPublic(projectRsc()) && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'dislikes', 'updated']));
+        allow read: if isCommentsEnabled(projectRsc()) && isPublic(projectRsc()) || isOneOfRoles(projectRsc(), ["owner", "writer", "reader"]);
       }
     }
 

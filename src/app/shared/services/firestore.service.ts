@@ -162,11 +162,11 @@ export class FirestoreService {
       try {
         const batch = writeBatch(this.db);
 
-        updateFunction(batch)
+        return updateFunction(batch)
           .then(() => batch.commit())
           .then(() => resolve(undefined))
-          .catch(error => { throw new Error(error.message); });
-      } catch (error) { reject(error); }
+          .catch(error => { reject(error.message); });
+      } catch (error) { return reject(error); }
     });
   }
 }

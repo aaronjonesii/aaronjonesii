@@ -10,5 +10,7 @@ import { User } from '@angular/fire/auth';
 export class UserPhotoComponent {
   @Input() user?: User | dbUser | null;
   @Input() dim = false;
+  @Input() size = 50;
+  @Input() uid?: string; // todo: get user from db to load image
   public userPhotoError = false;
 }

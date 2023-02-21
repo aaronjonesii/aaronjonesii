@@ -7,10 +7,10 @@
 </ng-container>
 <ng-template #showProject>
   <ng-container *ngIf="project$ | async as project; else loading">
-    <ng-container *ngIf="user$ | async as user">
+    <ng-container *ngIf="{user: user$ | async} as auth">
       <article class="flex-col app-gap">
         <img *ngIf="project.image" class="project-image" [src]="project.image" [alt]="project.name" />
-        <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === 'draft' ? ' (draft)' : ''}}</h1>
+        <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
         <small>{{project.views}} {{project.views == 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
         <div class="flex-row align-items-center app-gap">
           <img src="assets/svgs/flat_afro.svg" alt="Silhouette of a cartoon style afro" width="50" height="50" />
@@ -19,13 +19,49 @@
             <small>15.1K followers</small>
           </div>
         </div>
-        <button mat-flat-button color="primary" (click)="updateFollowingStatus(user)">{{user?.following ? 'Unfollow' : 'Follow'}}</button>
+        <button mat-flat-button color="primary" (click)="updateFollowingStatus(auth.user)">{{auth.user?.following ? 'Unfollow' : 'Follow'}}</button>
         <p class="mat-body-2">{{project.description}}</p>
         <mat-divider></mat-divider>
         <p [innerHTML]="project.content"></p>
       </article>
 
-      <button *ngIf="isOwner(project, user)" mat-fab color="accent" class="edit-btn" [routerLink]="[nav_path.adminProjects, project.slug, 'edit']">
+      <mat-tab-group [fitInkBarToContent]="true" color="primary">
+        <!-- Comments -->
+        <mat-tab label="Comments" *ngIf="project.allowComments">
+          <ng-template matTabContent>
+            <button mat-button (click)="openComments(project)">
+              <mat-icon class="material-icons-outlined" fontIcon="add"></mat-icon> Comment
+            </button>
+            <div class="comments-container">
+              <ng-container *ngIf="comments$ | async as comments else loading">
+                <div class="comment" *ngFor="let comment of comments">
+                  <div class="flex-row app-gap">
+                    <aj-user-photo [user]="null" [size]="40"></aj-user-photo>
+                    <h4 class="truncate-text">
+                      {{comment.user.id}}
+                      <small>{{comment.created.seconds * 1000 | dateAgo}}</small>
+                    </h4>
+                  </div>
+
+                  <div class="flex-row align-items-center">
+                    <p class="message">{{comment.content}}</p>
+                    <button mat-icon-button color="accent" (click)="openComments(project)">
+                      <mat-icon class="material-icons-outlined" fontIcon="comment"></mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Related">
+          <ng-template matTabContent>
+            Show related projects here
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+
+      <button *ngIf="isOwner(project, auth.user)" mat-fab color="accent" class="edit-btn" [routerLink]="[nav_path.adminProjects, project.slug, 'edit']">
         <mat-icon class="material-icons-outlined" fontIcon="edit"></mat-icon>
       </button>
     </ng-container>

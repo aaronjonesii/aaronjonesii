@@ -14,6 +14,7 @@ import { ConsoleLoggerService } from './console-logger.service';
 import { UpdateProfileResponse } from '../../shared/interfaces/functions';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { FunctionsError } from "@angular/fire/functions";
+import { UserWithID } from "../../shared/interfaces/user";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -328,5 +329,13 @@ export class AuthService {
         }, timeout);
       }
     });
+  }
+
+  public assertUser(user: UserWithID | null): asserts user {
+    if (!user) {
+      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } })
+        .then(() => this.cLog.log(`You must be signed in`));
+      return;
+    }
   }
 }

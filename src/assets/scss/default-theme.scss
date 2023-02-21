@@ -58,6 +58,7 @@ $dark-theme: mat.define-dark-theme((
 @include mat.checkbox-theme($light-theme);
 @include mat.dialog-theme($light-theme);
 @include mat.card-theme($light-theme);
+@include mat.tabs-theme($light-theme);
 
 
 /* Light theme feature components below */
@@ -87,6 +88,7 @@ $dark-theme: mat.define-dark-theme((
   @include mat.checkbox-color($dark-theme);
   @include mat.dialog-color($dark-theme);
   @include mat.card-color($dark-theme);
+  @include mat.tabs-color($dark-theme);
 
   /* Dark theme feature components below */
   @include core.color($dark-theme);

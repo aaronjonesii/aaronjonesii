@@ -1,0 +1,78 @@
+<div class="header">
+  <span class="mat-headline-6 m-0">Comments</span>
+
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon class="material-icons-outlined" fontIcon="close"></mat-icon>
+  </button>
+</div>
+
+<ng-container *ngIf="comments$ | async as comments else loading">
+  <div class="flex-row justify-space-between">
+    <h3>{{comments?.length ?? 0}} {{(comments?.length ?? 0) == 1 ? 'Comment' : 'Comments'}}</h3>
+
+    <!-- todo: add feature for sorting comments -->
+    <button mat-button disabled>
+      <mat-icon class="material-icons-outlined" fontIcon="sort"></mat-icon>
+      Sort by
+    </button>
+  </div>
+
+  <!-- Add Comment Container -->
+  <ng-container *ngIf="{user: user$ | async} as auth">
+    <div class="flex-row app-gap align-items-center add-comment-container">
+      <aj-user-photo [user]="auth.user"></aj-user-photo>
+      <mat-form-field class="w-100">
+        <textarea matInput rows="1" placeholder="Add a comment..." [formControl]="commentFormControl" (focus)="focusCommentInputContainer(auth.user)" #commentInput></textarea>
+      </mat-form-field>
+    </div>
+    <div *ngIf="commentInputContainerInFocus" class="align-self-flex-end">
+      <button mat-button (click)="onCancelComment()">Cancel</button>
+      <button mat-flat-button color="primary" [disabled]="commentFormControl.invalid" (click)="addComment(auth.user)">Comment</button>
+    </div>
+
+
+    <div class="comments-container">
+      <div class="comment" *ngFor="let comment of comments">
+        <div class="flex-row app-gap">
+          <!-- todo: fetch user image from db -->
+          <aj-user-photo></aj-user-photo>
+
+          <div>
+            <div class="flex-row align-items-center">
+              <div class="flex-col">
+                <span class="truncate-text">{{comment.user.id}}</span>
+                <small>{{comment.created ? (comment.created.seconds * 1000 | dateAgo) : ''}}</small>
+              </div>
+              <button mat-icon-button [matMenuTriggerFor]="commentOptionsMenu">
+                <mat-icon class="material-icons-outlined" fontIcon="more_vert"></mat-icon>
+              </button>
+            </div>
+            <p>{{comment.content}}</p>
+            <div class="flex-row align-items-center">
+              <button mat-icon-button (click)="onLikeComment(comment, auth.user)">
+                <!-- fixme: find better way to fill material icons -->
+                <mat-icon class="material-icons-outlined" [ngClass]="{'material-icons-outlined': likesComment(comment, auth.user)}" fontIcon="thumb_up"></mat-icon>
+              </button>
+              <small *ngIf="comment?.likes?.length">{{comment.likes?.length}}</small>
+              <button mat-icon-button (click)="onDislikeComment(comment, auth.user)">
+                <mat-icon [ngClass]="{'material-icons-outlined': !dislikesComment(comment, auth.user)}" fontIcon="thumb_down"></mat-icon>
+              </button>
+  <!--            <button mat-icon-button>-->
+  <!--              <mat-icon class="material-icons-outlined" fontIcon="favorite_outline"></mat-icon>-->
+  <!--            </button>-->
+  <!--            <button mat-button>Reply</button>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading><aj-loading></aj-loading></ng-template>
+
+<mat-menu #commentOptionsMenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon class="material-icons-outlined" fontIcon="flag"></mat-icon> Report
+  </button>
+</mat-menu>
