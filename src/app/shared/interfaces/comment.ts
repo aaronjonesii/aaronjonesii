@@ -11,6 +11,7 @@ export interface Comment {
   updated?: firebaseTimestamp;
   likes?: DocumentReference[];
   dislikes?: DocumentReference[];
+  author: { name?: string, image?: string };
 }
 export interface WriteComment extends Comment {
   created: FieldValue;

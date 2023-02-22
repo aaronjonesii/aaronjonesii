@@ -38,7 +38,7 @@
               <div class="comments-container">
                 <ng-container *ngIf="comments$ | async as comments">
                   <aj-project-detail-comment *ngFor="let comment of comments"
-                                             [comment]="comment" [user]="auth.user"
+                                             [comment]="comment"
                                              (openComments)="openComments(project)"></aj-project-detail-comment>
                 </ng-container>
               </div>

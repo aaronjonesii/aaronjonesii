@@ -1,11 +1,11 @@
 <ng-container *ngIf="comment">
   <div class="flex-row app-gap">
-    <aj-user-photo [user]="author"></aj-user-photo>
+    <aj-user-photo [image]="comment.author.image"></aj-user-photo>
 
     <div>
       <div class="flex-row align-items-center">
         <div class="flex-col">
-          <span class="truncate-text">{{author?.displayName ?? this.comment.user.id}}</span>
+          <span class="truncate-text">{{comment.author.name ?? this.comment.user.id}}</span>
           <small>{{comment.created ? (comment.created.seconds * 1000 | dateAgo) : ''}}</small>
         </div>
         <button mat-icon-button [matMenuTriggerFor]="commentOptionsMenu">

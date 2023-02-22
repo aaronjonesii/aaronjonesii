@@ -66,6 +66,10 @@ export class CommentsDialogComponent {
         user: this.db.doc(`users/${user.id}`),
         content: this.commentFormControl.value,
         created: this.db.timestamp,
+        author: {
+          name: user?.displayName,
+          image: user?.photoURL
+        },
       };
 
       await this.db.add(`${comment.parent?.path}/comments`, comment)
@@ -78,7 +82,7 @@ export class CommentsDialogComponent {
 
   private _assertUser(user: UserWithID | null): asserts user {
     if (!user) {
-      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } })
+      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url }, fragment: 'comments' })
         .then(() => this.dialogRef.close());
       throw new Error(`You must be signed in`);
     }

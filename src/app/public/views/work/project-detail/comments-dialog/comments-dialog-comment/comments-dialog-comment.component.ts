@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommentWithID } from "../../../../../../shared/interfaces/comment";
 import { UserWithID } from "../../../../../../shared/interfaces/user";
 import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
@@ -15,31 +15,16 @@ import { CommentsDialogComponent } from "../comments-dialog.component";
   templateUrl: './comments-dialog-comment.component.html',
   styleUrls: ['./comments-dialog-comment.component.scss']
 })
-export class CommentsDialogCommentComponent implements OnInit {
+export class CommentsDialogCommentComponent {
   @Input() comment?: CommentWithID;
   @Input() dialogRef?: MatDialogRef<CommentsDialogComponent>;
   @Input() user: UserWithID | null = null;
-  public author: UserWithID | null = null;
 
   constructor(
     private router: Router,
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
-  ) {
-  }
-
-  ngOnInit() {
-    // fixme: investigate why this has to be delayed for the user to be present
-    setTimeout(async () => {
-      if (this.isCommentOwner) this.author = this.user;
-      else {
-        this._assertComment(this.comment);
-
-        const authorSnap = (await this.db.docSnap(this.comment.user));
-        this.author = Object.assign({id: this.comment.user.id}, authorSnap.data()) as UserWithID;
-      }
-    }, 100);
-  }
+  ) {}
 
   public async onLikeComment() {
     try {
@@ -134,10 +119,6 @@ export class CommentsDialogCommentComponent implements OnInit {
   public get reported(): boolean {
     if (!this.user || !this.comment) return false;
     return this.user?.reported?.some(report => report.id == this.comment?.id) ?? false;
-  }
-
-  public get isCommentOwner(): boolean {
-    return this.comment?.user?.id === this.user?.id;
   }
 
   private _assertUser(user: UserWithID | null): asserts user {
