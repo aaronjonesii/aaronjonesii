@@ -12,10 +12,10 @@ import { CommentsDialogComponent } from "../comments-dialog.component";
 
 @Component({
   selector: 'aj-comment',
-  templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.scss']
+  templateUrl: './comments-dialog-comment.component.html',
+  styleUrls: ['./comments-dialog-comment.component.scss']
 })
-export class CommentComponent implements OnInit {
+export class CommentsDialogCommentComponent implements OnInit {
   @Input() comment?: CommentWithID;
   @Input() dialogRef?: MatDialogRef<CommentsDialogComponent>;
   @Input() user: UserWithID | null = null;
