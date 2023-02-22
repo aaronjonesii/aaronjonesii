@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User as dbUser } from '../../interfaces/user';
 import { User } from '@angular/fire/auth';
 import { DocumentReference } from "@angular/fire/firestore";
@@ -8,10 +8,15 @@ import { DocumentReference } from "@angular/fire/firestore";
   templateUrl: './user-photo.component.html',
   styleUrls: ['./user-photo.component.scss']
 })
-export class UserPhotoComponent {
+export class UserPhotoComponent implements OnInit {
   @Input() user?: User | dbUser | null;
   @Input() dim = false;
   @Input() size = 50;
+  @Input() image?: string | null = null;
   @Input() ref?: DocumentReference; // todo: get user from db to load image
   public userPhotoError = false;
+
+  ngOnInit() {
+    if (!this.image && this.user) this.image = this.user.photoURL;
+  }
 }
