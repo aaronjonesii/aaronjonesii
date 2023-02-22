@@ -312,7 +312,8 @@ export class AuthService {
 
     const routeParams = snapshot.root.queryParams;
     const route = routeParams['redirectURL'] ?? nav_path.home;
-    this.router.navigate([route]);
+    const fragment = snapshot.root.fragment ?? undefined;
+    this.router.navigate([route], { fragment });
   }
 
   public checkIfSignedIn(urlToCheck: string, timeout = 5000) {
@@ -322,8 +323,9 @@ export class AuthService {
         /** wait 5 seconds */
         setTimeout(() => {
           const redirectURL = this.router.routerState.snapshot.root.queryParams['redirectURL'];
+          const fragment = this.router.routerState.snapshot.root.fragment ?? undefined;
           /** redirect to URL if present */
-          if (redirectURL) this.router.navigate([redirectURL]);
+          if (redirectURL) this.router.navigate([redirectURL], {fragment});
           /** else redirect to home if signed in and still on sign in page */
           else if (this.router.routerState.snapshot.url === urlToCheck) this.router.navigate([nav_path.home])
         }, timeout);
