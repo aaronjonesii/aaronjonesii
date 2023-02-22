@@ -9,6 +9,7 @@ import { MatInputModule } from "@angular/material/input";
 import { SharedModule } from "../../../../../shared/shared.module";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatMenuModule } from "@angular/material/menu";
+import { CommentComponent } from './comment/comment.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatDialogModule, MatButtonModule, MatIconModule,
@@ -17,7 +18,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
-const COMPONENTS = [CommentsDialogComponent];
+const COMPONENTS = [CommentsDialogComponent, CommentComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
