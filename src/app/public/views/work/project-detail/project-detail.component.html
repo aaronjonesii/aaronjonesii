@@ -34,22 +34,9 @@
             </button>
             <div class="comments-container">
               <ng-container *ngIf="comments$ | async as comments else loading">
-                <div class="comment" *ngFor="let comment of comments">
-                  <div class="flex-row app-gap">
-                    <aj-user-photo [user]="null" [size]="40"></aj-user-photo>
-                    <h4 class="truncate-text">
-                      {{comment.user.id}}
-                      <small>{{comment.created.seconds * 1000 | dateAgo}}</small>
-                    </h4>
-                  </div>
-
-                  <div class="flex-row align-items-center">
-                    <p class="message">{{comment.content}}</p>
-                    <button mat-icon-button color="accent" (click)="openComments(project)">
-                      <mat-icon class="material-icons-outlined" fontIcon="comment"></mat-icon>
-                    </button>
-                  </div>
-                </div>
+                <aj-project-detail-comment *ngFor="let comment of comments"
+                                           [comment]="comment" [user]="auth.user"
+                                           (openComments)="openComments(project)"></aj-project-detail-comment>
               </ng-container>
             </div>
           </ng-template>

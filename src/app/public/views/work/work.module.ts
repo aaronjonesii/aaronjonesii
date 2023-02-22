@@ -12,6 +12,7 @@ import { SharedModule } from "../../../shared/shared.module";
 import { ConfirmDialogModule } from "../../../shared/components/confirm-dialog/confirm-dialog.module";
 import { MatTabsModule } from "@angular/material/tabs";
 import { CommentsDialogModule } from "./project-detail/comments-dialog/comments-dialog.module";
+import { ProjectDetailCommentComponent } from './project-detail/project-detail-comment/project-detail-comment.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatChipsModule, MatCardModule, MatIconModule,
@@ -21,7 +22,8 @@ const ANGULAR_MATERIAL_MODULES = [
 const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = [
-  WorkComponent, ProjectDetailComponent,
+  WorkComponent,
+  ProjectDetailComponent, ProjectDetailCommentComponent,
 ];
 
 const routes: Routes = [

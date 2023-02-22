@@ -29,16 +29,4 @@ aj-project-detail {
     gap: $app-gap;
     padding-bottom: 0.5rem;
   }
-  .comments-container .comment {
-    min-width: 300px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: $app-gap;
-    padding: $app-spacing;
-    border-radius: $app-shape-corner-radius;
-  }
-  .comments-container .comment div .message {
-    @include truncateText(2);
-  }
 }

@@ -1,16 +1,6 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use './project-detail-comment/project-detail-comment-theme' as projectDetailComment;
-
-@mixin componentColorMixins($theme) {
-  @include projectDetailComment.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include projectDetailComment.typography($theme);
-}
-
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
   $primary-palette: mat.get-color-from-palette($color-config, 'primary');
@@ -20,19 +10,15 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-project-detail {
-    mat-tab-group mat-tab-header.mat-mdc-tab-header {
-      border-bottom-color: mat.get-color-from-palette($foreground-palette, 'divider');
-    }
+  aj-project-detail-comment {
+    background-color: mat.get-color-from-palette($primary-palette, 100);
+    color: mat.get-color-from-palette($primary-palette, 900);
   }
-
-  @include componentColorMixins($theme);
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
 
-  @include componentTypographyMixins($theme);
 }
 
 @mixin theme($theme) {
