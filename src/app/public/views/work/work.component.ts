@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, switchMap, throwError } from "rxjs";
-import { Project, ProjectStatus, ProjectVisibility } from "../../../shared/interfaces/project";
+import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../shared/interfaces/project";
 import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { QueryConstraint, where } from "@angular/fire/firestore";
 import { nav_path } from 'src/app/app-routing.module';
+import { DOCUMENT, Location } from "@angular/common";
+import { appInformation } from "../../../information";
 
 @Component({
   selector: 'aj-work',
@@ -15,11 +17,12 @@ export class WorkComponent {
   public readonly nav_path = nav_path;
   public filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('all');
   public filter$ = this.filterSubject.asObservable();
-  public projects$?: Observable<Project[]>;
+  public projects$?: Observable<ReadProject[]>;
 
   constructor(
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
+    @Inject(DOCUMENT) private document: Document,
   ) {
     this.projects$ = this.filter$.pipe(
       switchMap(filter => {
@@ -28,7 +31,7 @@ export class WorkComponent {
     );
   }
 
-  private getProjects$(filter: 'all' | 'active' | 'inactive'): Observable<Project[]> {
+  private getProjects$(filter: 'all' | 'active' | 'inactive'): Observable<ReadProject[]> {
     const queryConstraints: QueryConstraint[] = [
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
@@ -56,7 +59,7 @@ export class WorkComponent {
       `projects`,
       {idField: 'id'},
         ...queryConstraints,
-    ) as Observable<Project[]>).pipe(
+    ) as Observable<ReadProject[]>).pipe(
       /** sort by featured projects */
       map(projects => projects.sort((a, b) => b.featured.toString().localeCompare(a.featured.toString()))),
       catchError(error => {
@@ -64,5 +67,32 @@ export class WorkComponent {
         return throwError(error);
       })
     );
+  }
+
+  public async onShare(project: ReadProject) {
+    const host = `https://${appInformation.website}`;
+    const path = `${nav_path.work}/${project.slug}`;
+    const url = host + path;
+    const title = project.name;
+    const text = project.description;
+
+    // Feature detection to see if the Web Share API is supported.
+    if ('share' in navigator) {
+      return await navigator.share({
+        url,
+        text,
+        title,
+      }).catch(error => this.cLog.error(`Something went wrong sharing project`, error));
+    }
+
+    // Fallback to use Twitter's Web Intent URL.
+    // (https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent)
+    const shareURL = new URL('https://twitter.com/intent/tweet');
+    const params = new URLSearchParams();
+    params.append('text', text);
+    params.append('title', title);
+    params.append('url', url);
+    shareURL.search = params.toString();
+    window.open(shareURL, '_blank', 'popup,noreferrer,noopener');
   }
 }
