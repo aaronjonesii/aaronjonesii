@@ -7,10 +7,9 @@ import { Router } from "@angular/router";
 import { FormControl, Validators } from "@angular/forms";
 import { nav_path } from "../../../../../app-routing.module";
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
-import { arrayRemove, arrayUnion, DocumentReference } from "@angular/fire/firestore";
+import { DocumentReference } from "@angular/fire/firestore";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { tap } from "rxjs/operators";
-import { ReportReason, WriteReport } from "../../../../../shared/interfaces/report";
 
 @Component({
   selector: 'aj-comments-dialog',
@@ -75,93 +74,6 @@ export class CommentsDialogComponent {
     } catch(error) {
       this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
     }
-  }
-
-  public async onLikeComment(comment: CommentWithID, user: UserWithID | null) {
-    try {
-      this._assertUser(user);
-
-      const userRef = this.db.doc<UserWithID>(`users/${user?.id}`);
-      /** check if user already likes the comment */
-      if (comment?.likes?.includes(userRef) && !comment?.dislikes?.includes(userRef)) return;
-
-      await this.db.batch(async (batch) => {
-        const commentRef = this.db.doc(`${comment.parent.path}/comments/${comment.id}`);
-        const commentUpdates = {
-          likes: arrayUnion(userRef),
-          dislikes: arrayRemove(userRef),
-          updated: this.db.timestamp,
-        };
-        batch.update(commentRef, commentUpdates);
-      }).catch(error => this.cLog.error(`Something went wrong liking comment`, error, comment, user));
-    } catch (error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
-    }
-  }
-
-  public async onDislikeComment(comment: CommentWithID, user: UserWithID | null) {
-    try {
-      this._assertUser(user);
-
-      const userRef = this.db.doc<UserWithID>(`users/${user?.id}`);
-      /** check if user already likes the comment */
-      if (comment?.dislikes?.includes(userRef) && !comment?.likes?.includes(userRef)) return;
-
-      await this.db.batch(async (batch) => {
-        const commentRef = this.db.doc(`${comment.parent.path}/comments/${comment.id}`);
-        const commentUpdates = {
-          likes: arrayRemove(userRef),
-          dislikes: arrayUnion(userRef),
-          updated: this.db.timestamp,
-        };
-        batch.update(commentRef, commentUpdates);
-      }).catch(error => this.cLog.error(`Something went wrong disliking comment`, error, comment, user));
-    } catch(error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
-    }
-  }
-
-  public likesComment(comment: CommentWithID, user: UserWithID | null): boolean {
-    if (!user) return false;
-    return comment?.likes?.some(userRef => userRef.id === user.id) ?? false;
-  }
-
-  public dislikesComment(comment: CommentWithID, user: UserWithID | null): boolean {
-    if (!user) return false;
-    return comment?.dislikes?.some(userRef => userRef.id === user.id) ?? false;
-  }
-
-  public async onReport(comment: CommentWithID, user: UserWithID | null): Promise<void> {
-    try {
-      this._assertUser(user);
-
-      const userRef = this.db.doc<UserWithID>(`users/${user.id}`);
-      const commentRef = this.db.doc<CommentWithID>(`${comment.parent.path}/comments/${comment.id}`);
-      const report: WriteReport = {
-        created: this.db.timestamp,
-        by: userRef,
-        reason: ReportReason.TEST_REASON,
-        document: commentRef,
-      };
-      return await this.db.batch(async batch => {
-        const reportRef = this.db.doc(`reports/${this.db.newDocumentID}`);
-        batch.set(reportRef, report);
-
-        const userUpdates = {
-          reported: arrayUnion(commentRef),
-          updated: this.db.timestamp,
-        };
-        batch.update(userRef, userUpdates);
-      }).then(() => this.cLog.log(`Submitted report, thank you for helping our community.`))
-        .catch(error => this.cLog.error(`Something went wrong reporting comment`, error, report));
-    } catch (error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
-    }
-  }
-
-  public reported(comment: CommentWithID, user: UserWithID | null): boolean {
-    if (!user) return false;
-    return user?.reported?.some(report => report.id == comment.id) ?? false;
   }
 
   private _assertUser(user: UserWithID | null): asserts user {
