@@ -1,6 +1,6 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { map, Observable, of, switchMap } from "rxjs";
-import { ProjectStatus, ReadProject } from "../../../../shared/interfaces/project";
+import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
 import { nav_path } from "../../../../app-routing.module";
@@ -130,7 +130,14 @@ export class ProjectDetailComponent {
 
     // todo: get projects with the same tags that are in this project
     /** get all projects */
-    return this.db.col$<ReadProject>(`projects`)
+    return this.db.colQuery$<ReadProject>(
+      `projects`,
+      {},
+      /** filter out private projects */
+      where('visibility', '==', ProjectVisibility.PUBLIC),
+      /** filter out drafts */
+      where('status', '!=', ProjectStatus.DRAFT),
+    )
       .pipe(
         map((projects) => {
           /** filter projects if they don't match current project's tags */
