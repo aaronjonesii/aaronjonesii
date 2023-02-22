@@ -20,11 +20,16 @@
           <mat-divider></mat-divider>
 
           <mat-card-actions class="justify-space-between">
-            <button mat-button color="primary">
-              <mat-icon class="material-icons-outlined" fontIcon="comment_bank"></mat-icon> Comments
-            </button>
+            <ng-container *ngIf="project.allowComments else showViewBtn">
+              <button mat-button color="primary" [routerLink]="[nav_path.work, project.slug]" fragment="comments">
+                <mat-icon class="material-icons-outlined" fontIcon="comment_bank"></mat-icon> Comments
+              </button>
+            </ng-container>
+            <ng-template #showViewBtn>
+              <button mat-button color="primary" [routerLink]="[nav_path.work, project.slug]">View</button>
+            </ng-template>
 
-            <button mat-flat-button color="primary">
+            <button mat-flat-button color="primary" (click)="onShare(project)">
               <mat-icon class="material-icons-outlined" fontIcon="share"></mat-icon> Share
             </button>
           </mat-card-actions>
