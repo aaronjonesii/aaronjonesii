@@ -335,9 +335,8 @@ export class AuthService {
 
   public assertUser(user: UserWithID | null): asserts user {
     if (!user) {
-      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } })
-        .then(() => this.cLog.log(`You must be signed in`));
-      return;
+      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } });
+      throw new Error(`You must be signed in`);
     }
   }
 }
