@@ -9,3 +9,12 @@
 .card .info-container {
   padding: $app-spacing;
 }
+.project-name {
+  text-decoration: none;
+  color: inherit;
+}
+.project-name:hover {
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
+}

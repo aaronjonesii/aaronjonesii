@@ -1,36 +1,31 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'views/coming-soon/coming-soon-theme' as comingSoon;
-@use 'views/auth/auth-theme' as auth;
-@use 'views/policies/policies-theme' as policies;
-@use 'views/home/home-theme' as home;
-@use 'views/work/work-theme' as work;
+@use './project-detail/project-detail-theme' as projectDetail;
 
 @mixin componentColorMixins($theme) {
-  @include comingSoon.color($theme);
-  @include auth.color($theme);
-  @include policies.color($theme);
-  @include home.color($theme);
-  @include work.color($theme);
+  @include projectDetail.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
-  @include comingSoon.typography($theme);
-  @include auth.typography($theme);
-  @include policies.typography($theme);
-  @include home.typography($theme);
-  @include work.typography($theme);
+  @include projectDetail.typography($theme);
 }
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
-  $primary-palette: mat.get-color-from-palette($color-config, primary);
+  $primary-palette: mat.get-color-from-palette($color-config, 'primary');
   $accent-palette: mat.get-color-from-palette($color-config, accent);
   $warn-palette: mat.get-color-from-palette($color-config, warn);
   $foreground-palette: mat.get-color-from-palette($color-config, foreground);
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
+
+  aj-work {
+    .project-name:hover {
+      color: mat.get-color-from-palette($primary-palette);
+      text-decoration-color: mat.get-color-from-palette($primary-palette);
+    }
+  }
 
   @include componentColorMixins($theme);
 }
