@@ -32,7 +32,7 @@
 
 
     <div class="comments-container">
-      <aj-comment *ngFor="let comment of comments" [comment]="comment" [user]="auth.user"></aj-comment>
+      <aj-comment *ngFor="let comment of comments" [comment]="comment" [user]="auth.user" [dialogRef]="dialogRef"></aj-comment>
     </div>
   </ng-container>
 </ng-container>
