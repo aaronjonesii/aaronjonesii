@@ -5,7 +5,7 @@
   flex-direction: column;
   gap: $app-gap;
 }
-
+.card img { cursor: pointer; }
 .card .info-container {
   padding: $app-spacing;
 }
