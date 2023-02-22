@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { map, Observable, of, switchMap } from "rxjs";
 import { ProjectStatus, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -11,10 +11,12 @@ import { User } from '@angular/fire/auth';
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
 import { appInformation } from "../../../../information";
-import { increment } from "@angular/fire/firestore";
+import { increment, where } from "@angular/fire/firestore";
 import { SeoService } from "../../../../core/services/seo.service";
 import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
 import { CommentWithID } from "../../../../shared/interfaces/comment";
+import { DOCUMENT } from "@angular/common";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: 'aj-project-detail',
@@ -35,6 +37,7 @@ export class ProjectDetailComponent {
   public notAvailable = false;
   public comments$?: Observable<CommentWithID[] | null>;
   public readonly ProjectStatus = ProjectStatus;
+  public relatedProjects$?: Observable<ReadProject[] | null>;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +47,7 @@ export class ProjectDetailComponent {
     private router: Router,
     private dialog: MatDialog,
     private seo: SeoService,
+    @Inject(DOCUMENT) private document: Document,
   ) {
     this.projectID$ = route.paramMap.pipe(
       map((params) => params.get('projectID')),
@@ -51,11 +55,28 @@ export class ProjectDetailComponent {
 
     this.project$ = this.projectID$.pipe(
       switchMap((projectID) => this.getProject(projectID)),
+      tap(() => this._routeToFragment()),
     );
 
     this.comments$ = this.project$.pipe(
       switchMap((project) => this.getComments$(project)),
     );
+
+    this.relatedProjects$ = this.project$.pipe(
+      switchMap((project) => this.getRelatedProjects$(project)),
+    );
+  }
+
+  private _routeToFragment() {
+    this.router.routerState.root.fragment
+      .forEach(fragment => {
+        if (!fragment) return;
+
+        const el = this.document.querySelector(`#${fragment}`);
+        if (!el) return;
+
+        el?.scrollIntoView();
+      });
   }
 
   public getUser$(user: User) {
@@ -102,6 +123,33 @@ export class ProjectDetailComponent {
 
   public getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
     return project ? this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, {idField: 'id'}) : of(null);
+  }
+
+  private getRelatedProjects$(project: ReadProject | null): Observable<ReadProject[] | null> {
+    if (!project) return of(null);
+
+    // todo: get projects with the same tags that are in this project
+    /** get all projects */
+    return this.db.col$<ReadProject>(`projects`)
+      .pipe(
+        map((projects) => {
+          /** filter projects if they don't match current project's tags */
+          return projects.filter((p) => {
+            if (!p?.tags?.length) return false;
+            if (p.slug === project.slug) return false;
+
+            return p?.tags.some((t) => project?.tags?.includes(t));
+          });
+        }),
+        /** sort related projects by decreasing number of matching tags */
+        map((relatedProjects) => {
+          return relatedProjects.sort((a,b) => {
+            const aIntersection = a?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
+            const bIntersection = b?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
+            return bIntersection.length - aIntersection.length;
+          });
+        }),
+      );
   }
 
   public isOwner(project: ReadProject, user: UserWithID | null): boolean {

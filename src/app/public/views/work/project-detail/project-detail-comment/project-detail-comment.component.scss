@@ -10,6 +10,4 @@
   padding: $app-spacing;
   border-radius: $app-shape-corner-radius;
 }
-div .message {
-  @include truncateText(2);
-}
+div .message { @include truncateText(2); }

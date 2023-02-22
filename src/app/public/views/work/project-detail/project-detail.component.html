@@ -25,25 +25,41 @@
         <p [innerHTML]="project.content"></p>
       </article>
 
+      <div id="comments"></div>
+      <div id="related-projects"></div>
       <mat-tab-group [fitInkBarToContent]="true" color="primary">
         <!-- Comments -->
-        <mat-tab label="Comments" *ngIf="project.allowComments">
+        <mat-tab label="Comments">
           <ng-template matTabContent>
-            <button mat-button (click)="openComments(project)">
-              <mat-icon class="material-icons-outlined" fontIcon="add"></mat-icon> Comment
-            </button>
-            <div class="comments-container">
-              <ng-container *ngIf="comments$ | async as comments else loading">
-                <aj-project-detail-comment *ngFor="let comment of comments"
-                                           [comment]="comment" [user]="auth.user"
-                                           (openComments)="openComments(project)"></aj-project-detail-comment>
-              </ng-container>
-            </div>
+            <ng-container *ngIf="project.allowComments else commentsOff">
+              <button mat-button (click)="openComments(project)">
+                <mat-icon class="material-icons-outlined" fontIcon="add"></mat-icon> Comment
+              </button>
+              <div class="comments-container">
+                <ng-container *ngIf="comments$ | async as comments">
+                  <aj-project-detail-comment *ngFor="let comment of comments"
+                                             [comment]="comment" [user]="auth.user"
+                                             (openComments)="openComments(project)"></aj-project-detail-comment>
+                </ng-container>
+              </div>
+            </ng-container>
+            <ng-template #commentsOff>
+              <h3 class="mat-headline-6">Comments are turned off.</h3>
+            </ng-template>
           </ng-template>
         </mat-tab>
+
+        <!-- Related Projects -->
         <mat-tab label="Related">
           <ng-template matTabContent>
-            Show related projects here
+            <div class="related-projects-container">
+              <ng-container *ngIf="relatedProjects$ | async as relatedProjects">
+                <div class="related-project" *ngFor="let relatedProject of relatedProjects" [routerLink]="[nav_path.work, relatedProject.slug]">
+                  <img *ngIf="relatedProject?.image" [src]="relatedProject.image" [alt]="relatedProject.name" />
+                  <span class="name">{{relatedProject.name}}</span>
+                </div>
+              </ng-container>
+            </div>
           </ng-template>
         </mat-tab>
       </mat-tab-group>

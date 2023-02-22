@@ -24,6 +24,14 @@
     mat-tab-group mat-tab-header.mat-mdc-tab-header {
       border-bottom-color: mat.get-color-from-palette($foreground-palette, 'divider');
     }
+
+    .related-projects-container .related-project {
+      background-color: mat.get-color-from-palette($primary-palette, 100);
+      color: mat.get-color-from-palette($primary-palette, 900);
+    }
+    .related-projects-container .related-project:hover {
+      background-color: mat.get-color-from-palette($primary-palette, 200);
+    }
   }
 
   @include componentColorMixins($theme);

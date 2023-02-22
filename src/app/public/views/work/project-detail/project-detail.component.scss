@@ -6,6 +6,7 @@ aj-project-detail {
     position: sticky;
     bottom: 0;
     left: 100%;
+    z-index: 1000;
   }
 
   .not-available-container img {
@@ -23,10 +24,31 @@ aj-project-detail {
     border-radius: 1rem 1rem 0 0;
   }
 
-  .comments-container {
+  .comments-container, .related-projects-container {
     display: flex;
     overflow-x: auto;
     gap: $app-gap;
     padding-bottom: 0.5rem;
+  }
+
+  .related-projects-container .related-project {
+    min-width: 300px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: $app-shape-corner-radius;
+    cursor: pointer;
+  }
+  .related-projects-container .related-project img {
+    width: 100%;
+    object-fit: cover;
+  }
+  .related-projects-container .related-project .name {
+    padding: $app-page-padding;
+  }
+  .related-projects-container .related-project:hover {
+    $border-radius: calc(#{$app-shape-corner-radius} - 0.25rem);
+    img { border-radius: $border-radius!important; }
+    border-radius: $border-radius;
   }
 }
