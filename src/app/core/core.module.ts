@@ -6,13 +6,15 @@ import { initializeAppCheck, provideAppCheck, ReCaptchaV3Provider } from '@angul
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { getFunctions, provideFunctions } from "@angular/fire/functions";
+import { connectFunctionsEmulator, getFunctions, provideFunctions } from "@angular/fire/functions";
 import { getAnalytics, isSupported, ScreenTrackingService, UserTrackingService } from "@angular/fire/analytics";
 import { ServiceWorkerModule } from "@angular/service-worker";
-import { getAuth, provideAuth } from "@angular/fire/auth";
+import { connectAuthEmulator, getAuth, provideAuth } from "@angular/fire/auth";
 import { LayoutModule } from "../shared/components/layout/layout.module";
-import { getFirestore, provideFirestore } from "@angular/fire/firestore";
-import { getStorage, provideStorage } from "@angular/fire/storage";
+import { connectFirestoreEmulator, getFirestore, provideFirestore } from "@angular/fire/firestore";
+import { connectStorageEmulator, getStorage, provideStorage } from "@angular/fire/storage";
+
+let firestoreEmulatorStarted = false;
 
 const FIREBASE_MODULES = [
   provideFirebaseApp(() => {
@@ -25,14 +27,41 @@ const FIREBASE_MODULES = [
 
     return app;
   }),
-  provideAuth(() => getAuth()),
+  provideAuth(() => {
+    const auth = getAuth();
+    if (!environment.production) {
+      connectAuthEmulator(auth, 'http://localhost:9099', {disableWarnings: true});
+    }
+    return auth;
+  }),
   provideAppCheck(() =>  {
     const provider = new ReCaptchaV3Provider(environment.recaptcha3SiteKey);
     return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
   }),
-  provideFirestore(() => getFirestore()),
-  provideStorage(() => getStorage()),
-  provideFunctions(() => getFunctions())
+  provideFirestore(() => {
+    const firestore = getFirestore();
+    if (!firestoreEmulatorStarted) {
+      if (!environment.production) {
+        connectFirestoreEmulator(firestore, 'localhost', 8080);
+      }
+      firestoreEmulatorStarted = true;
+    }
+    return firestore;
+  }),
+  provideStorage(() => {
+    const storage = getStorage();
+    if (!environment.production) {
+      connectStorageEmulator(storage, 'localhost', 9199);
+    }
+    return storage;
+  }),
+  provideFunctions(() => {
+    const functions = getFunctions();
+    if (!environment.production) {
+      connectFunctionsEmulator(functions, 'localhost', 5001);
+    }
+    return functions;
+  })
 ];
 
 const GLOBAL_ANGULAR_MATERIAL_MODULES = [MatSnackBarModule];
