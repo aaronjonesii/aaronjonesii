@@ -13,10 +13,9 @@ export class UserPhotoComponent implements OnInit {
   @Input() dim = false;
   @Input() size = 50;
   @Input() image?: string | null = null;
-  @Input() ref?: DocumentReference; // todo: get user from db to load image
   public userPhotoError = false;
 
   ngOnInit() {
-    if (!this.image && this.user) this.image = this.user.photoURL;
+    if (!this.image && this.user?.photoURL) this.image = this.user.photoURL;
   }
 }

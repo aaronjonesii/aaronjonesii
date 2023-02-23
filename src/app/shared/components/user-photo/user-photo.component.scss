@@ -1,13 +1,1 @@
-:host {}
-$size: 48px;
-.user-icon {
-  font-size: $size;
-  width: $size;
-  height: $size;
-}
-.user-photo {
-  width: $size;
-  height: $size;
-  object-fit: cover;
-  border-radius: 50%;
-}
+.user-photo { border-radius: 50%; }
