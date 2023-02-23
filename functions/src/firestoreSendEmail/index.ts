@@ -9,8 +9,6 @@ import { QueuePayload } from "./types";
 import { isString, setSmtpCredentials } from "./helpers";
 import * as events from "./events";
 
-logs.init();
-
 let db: FirebaseFirestore.Firestore;
 let transport: any;
 let templates: Templates;
@@ -21,6 +19,7 @@ let initialized = false;
  */
 async function initialize() {
   if (initialized === true) return;
+  logs.init();
   initialized = true;
   admin.initializeApp();
   db = admin.firestore();
