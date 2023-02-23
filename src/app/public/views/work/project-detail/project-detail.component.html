@@ -22,7 +22,7 @@
         <button mat-flat-button color="primary" (click)="updateFollowingStatus(auth.user)">{{auth.user?.following ? 'Unfollow' : 'Follow'}}</button>
         <p class="mat-body-2">{{project.description}}</p>
         <mat-divider></mat-divider>
-        <p [innerHTML]="project.content"></p>
+        <p class="ck-content" [innerHTML]="project.content"></p>
       </article>
 
       <div id="comments"></div>
