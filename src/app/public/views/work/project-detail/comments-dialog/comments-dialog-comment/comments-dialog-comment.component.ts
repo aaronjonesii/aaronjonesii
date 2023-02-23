@@ -32,18 +32,15 @@ export class CommentsDialogCommentComponent {
       this._assertComment(this.comment);
 
       const userRef = this.db.doc<UserWithID>(`users/${this.user.id}`);
-      /** check if user already likes the comment */
-      if (this.comment?.likes?.includes(userRef) && !this.comment?.dislikes?.includes(userRef)) return;
-
+      const commentUpdates = {
+        likes: this.comment?.likes?.some(ref => ref.id === userRef.id) ? arrayRemove(userRef) : arrayUnion(userRef),
+        dislikes: arrayRemove(userRef),
+        updated: this.db.timestamp,
+      };
       await this.db.batch(async (batch) => {
         this._assertComment(this.comment); // fixme: investigate why this is needed here when used above
 
         const commentRef = this.db.doc(`${this.comment.parent.path}/comments/${this.comment.id}`);
-        const commentUpdates = {
-          likes: arrayUnion(userRef),
-          dislikes: arrayRemove(userRef),
-          updated: this.db.timestamp,
-        };
         batch.update(commentRef, commentUpdates);
       }).catch(error => this.cLog.error(`Something went wrong liking comment`, error, this.comment, this.user));
     } catch (error) {
