@@ -2,12 +2,10 @@ import * as nodemailer from "nodemailer";
 
 export interface Config {
   location: string;
-  mailCollection: string;
   smtpConnectionUri?: string;
   smtpPassword?: string;
   defaultFrom: string;
   defaultReplyTo?: string;
-  usersCollection?: string;
   templatesCollection?: string;
   testing?: boolean;
 }

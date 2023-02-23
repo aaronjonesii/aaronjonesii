@@ -129,7 +129,7 @@ async function preparePayload(payload: QueuePayload): Promise<QueuePayload> {
     return payload;
   }
 
-  const usersCollection = config.usersCollection;
+  const usersCollection = 'users';
   isString(usersCollection, "Must specify a users collection to send using uids.");
 
   let uids: string[] = [];
@@ -352,7 +352,7 @@ async function processWrite(change: any) { // Change<FirebaseFirestore.DocumentS
 }
 
 export const processQueue = functions.firestore
-  .document(config.mailCollection)
+  .document('mail')
   .onWrite(async (change) => {
     await initialize();
 
