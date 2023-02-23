@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as logs from "./logs";
 import { AppCheckData } from "firebase-functions/lib/common/providers/https";
+import { Timestamp } from '@google-cloud/firestore';
 
 let is_updateClaims_initialized = false;
 let is_updateUser_initialized = false;
@@ -133,9 +134,7 @@ exports.updateUser = functions.runWith({enforceAppCheck: true})
 
       const userDocument = userSnap.data();
       const creationTime = new Date(userRecord.metadata.creationTime);
-      const joinedSeconds = Math.floor(creationTime.getTime() / 1000);
-      const joinedNanoseconds = (creationTime.getTime() % 1000) * 1000000;
-      const joinedTimestamp = new admin.firestore.Timestamp(joinedSeconds, joinedNanoseconds);
+      const joinedTimestamp = Timestamp.fromDate(creationTime);
       return userRef.update({
         displayName: userDocument?.displayName ?? userRecord.displayName ?? null,
         phoneNumber: userDocument?.phoneNumber ?? userRecord.phoneNumber ?? null,
