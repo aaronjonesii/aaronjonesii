@@ -1,5 +1,5 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { map, Observable, of, switchMap } from "rxjs";
+import { map, Observable, of, startWith, switchMap } from "rxjs";
 import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
@@ -17,6 +17,7 @@ import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.compo
 import { CommentWithID } from "../../../../shared/interfaces/comment";
 import { DOCUMENT } from "@angular/common";
 import { tap } from "rxjs/operators";
+import { makeStateKey, TransferState } from "@angular/platform-browser";
 
 @Component({
   selector: 'aj-project-detail',
@@ -26,8 +27,8 @@ import { tap } from "rxjs/operators";
 })
 export class ProjectDetailComponent {
   public readonly nav_path = nav_path;
-  public projectID$?: Observable<string | null>;
-  public project$?: Observable<ReadProject | null>;
+  public projectID$: Observable<string | null>;
+  public project$: Observable<ReadProject | null>;
   public user$ = this.auth.loadUser.pipe(
     switchMap(user => {
       if (user) return this.getUser$(user);
@@ -35,9 +36,9 @@ export class ProjectDetailComponent {
     }),
   );
   public notAvailable = false;
-  public comments$?: Observable<CommentWithID[] | null>;
+  public comments$: Observable<CommentWithID[] | null>;
   public readonly ProjectStatus = ProjectStatus;
-  public relatedProjects$?: Observable<ReadProject[] | null>;
+  public relatedProjects$: Observable<ReadProject[] | null>;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,6 +49,7 @@ export class ProjectDetailComponent {
     private dialog: MatDialog,
     private seo: SeoService,
     @Inject(DOCUMENT) private document: Document,
+    private state: TransferState,
   ) {
     this.projectID$ = route.paramMap.pipe(
       map((params) => params.get('projectID')),
@@ -58,9 +60,7 @@ export class ProjectDetailComponent {
       tap(() => this._routeToFragment()),
     );
 
-    this.comments$ = this.project$.pipe(
-      switchMap((project) => this.getComments$(project)),
-    );
+    this.comments$ = this.project$.pipe(switchMap((project) => this.getComments$(project)));
 
     this.relatedProjects$ = this.project$.pipe(
       switchMap((project) => this.getRelatedProjects$(project)),
@@ -85,9 +85,11 @@ export class ProjectDetailComponent {
   }
 
   private getProject(id: string | null): Observable<ReadProject | null> {
+    const key = makeStateKey<ReadProject>('PROJECT-DETAIL');
+    const existing = this.state.get(key, null);
     return (this.db.doc$(`projects/${id}`) as Observable<ReadProject>)
       .pipe(
-        switchMap(async (project) => {
+        existing ? startWith(existing) : switchMap(async (project) => {
           if (!project) {
             this.notAvailable = true;
             return null;
@@ -118,45 +120,57 @@ export class ProjectDetailComponent {
 
           return Object.assign({views: views}, project);
         }),
+        tap(project => this.state.set(key, project)),
       );
   }
 
   public getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
-    return project ? this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, {idField: 'id'}) : of(null);
+    if (!project) return of(null);
+
+    const key = makeStateKey<CommentWithID[]>('PROJECT-COMMENTS');
+    const existing = this.state.get(key, null);
+    const projectComments$ = this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, { idField: 'id' });
+    return of(existing).pipe(
+      existing ? startWith(existing) : switchMap(() => projectComments$),
+      tap(comments => this.state.set(key, comments)),
+      );
   }
 
   private getRelatedProjects$(project: ReadProject | null): Observable<ReadProject[] | null> {
     if (!project) return of(null);
 
-    // todo: get projects with the same tags that are in this project
-    /** get all projects */
-    return this.db.colQuery$<ReadProject>(
+    const key = makeStateKey<ReadProject[]>('RELATED-PROJECTS');
+    const existing = this.state.get(key, null);
+    const relatedProjects$ = this.db.colQuery$<ReadProject>(
       `projects`,
       {},
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
       /** filter out drafts */
       where('status', '!=', ProjectStatus.DRAFT),
-    )
-      .pipe(
-        map((projects) => {
-          /** filter projects if they don't match current project's tags */
-          return projects.filter((p) => {
-            if (!p?.tags?.length) return false;
-            if (p.slug === project.slug) return false;
+    ).pipe(
+      /** filter projects if they don't match current project's tags */
+      map((projects) => {
+        return projects.filter((p) => {
+          if (!p?.tags?.length) return false;
+          if (p.slug === project.slug) return false;
 
-            return p?.tags.some((t) => project?.tags?.includes(t));
-          });
-        }),
-        /** sort related projects by decreasing number of matching tags */
-        map((relatedProjects) => {
-          return relatedProjects.sort((a,b) => {
-            const aIntersection = a?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
-            const bIntersection = b?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
-            return bIntersection.length - aIntersection.length;
-          });
-        }),
-      );
+          return p?.tags.some((t) => project?.tags?.includes(t));
+        });
+      }),
+      /** sort related projects by decreasing number of matching tags */
+      map((relatedProjects) => {
+        return relatedProjects.sort((a,b) => {
+          const aIntersection = a?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
+          const bIntersection = b?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
+          return bIntersection.length - aIntersection.length;
+        });
+      }),
+    );
+    return of(existing).pipe(
+      existing ? startWith(existing) : switchMap(() => relatedProjects$),
+      tap(relatedProjects => this.state.set(key, relatedProjects)),
+    );
   }
 
   public isOwner(project: ReadProject, user: UserWithID | null): boolean {
