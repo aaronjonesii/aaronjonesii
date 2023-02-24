@@ -9,15 +9,15 @@ export const noRequestee = (uid?: string): void => {
 };
 
 export const notAdmin = (uid?: string): void => {
-  logger.log(`Requesting user is not a shop admin: '${uid}'`);
+  logger.log(`Requesting user is not a admin: '${uid}'`);
 };
 
 export const updatingClaims = (requestor: string, requestee: string, claims: {[key:string]: string|boolean}): void => {
-  logger.log(`Admin, ${requestor}, updating users', '${requestee}', custom claims to: [${JSON.stringify(claims)}]`);
+  logger.log(`An admin (${requestor}) is requesting an update to a user, '${requestee}', custom claims to: ${JSON.stringify(claims)}`);
 };
 
 export const updatedClaims = (requestor: string, requestee: string) => {
-  logger.log(`Admin, ${requestor}, successfully updated users', ${requestee}, custom claims`);
+  logger.log(`An admin (${requestor}) successfully updated the requested user, ${requestee}, custom claims`);
 };
 
 export const errorUpdatingUserClaims = (uid: string, error: Error) => {

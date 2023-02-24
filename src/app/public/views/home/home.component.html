@@ -4,7 +4,7 @@
     <mat-card-subtitle class="mat-body-1">Crafting Unforgettable Web Experiences: Bridging the Gap Between Functionality and Aesthetics</mat-card-subtitle>
 
     <mat-card-actions>
-      <button mat-flat-button color="primary">Get in touch</button>
+      <button mat-flat-button color="primary" [routerLink]="[nav_path.contact]">Get in touch</button>
     </mat-card-actions>
   </mat-card>
 
@@ -18,7 +18,7 @@
         <mat-card-title class="mat-headline-6">{{project.name}}</mat-card-title>
         <mat-card-subtitle class="mat-body-1 truncate-text">{{project.description}}</mat-card-subtitle>
       </div>
-      <button mat-icon-button>
+      <button mat-icon-button [routerLink]="[nav_path.work, project.slug]">
         <mat-icon fontIcon="arrow_forward"></mat-icon>
       </button>
     </mat-card-header>

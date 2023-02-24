@@ -32,9 +32,7 @@ export class SignInComponent {
     public auth: AuthService,
     private seo: SeoService
   ) {
-    auth.loadUser.forEach(user => {
-      if (user) this.router.navigate([nav_path.home]);
-    });
+    auth.checkIfSignedIn(nav_path.signIn, 0);
 
     seo.generateTags({
       title: this.title,

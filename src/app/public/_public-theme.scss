@@ -5,12 +5,14 @@
 @use 'views/auth/auth-theme' as auth;
 @use 'views/policies/policies-theme' as policies;
 @use 'views/home/home-theme' as home;
+@use 'views/work/work-theme' as work;
 
 @mixin componentColorMixins($theme) {
   @include comingSoon.color($theme);
   @include auth.color($theme);
   @include policies.color($theme);
   @include home.color($theme);
+  @include work.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -18,6 +20,7 @@
   @include auth.typography($theme);
   @include policies.typography($theme);
   @include home.typography($theme);
+  @include work.typography($theme);
 }
 
 @mixin color($theme) {

@@ -11,6 +11,7 @@ import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.
 import { SharedModule } from "../../../../../shared/shared.module";
 import { TopAppBarModule } from "../../../../../shared/components/top-app-bar/top-app-bar.module";
 import { MatDialogModule } from "@angular/material/dialog";
+import { ConfirmDialogModule } from "../../../../../shared/components/confirm-dialog/confirm-dialog.module";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatListModule, MatIconModule, MatButtonModule,
@@ -31,6 +32,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES,
     ...ANGULAR_MATERIAL_MODULES, SharedModule, TopAppBarModule,
+    ConfirmDialogModule,
   ],
   exports: [...COMPONENTS]
 })

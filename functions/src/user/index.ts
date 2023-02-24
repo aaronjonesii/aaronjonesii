@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as logs from "./logs";
+import { FieldValue } from '@google-cloud/firestore';
 
 let is_onCreation_initialized = false;
 
@@ -23,11 +24,11 @@ exports.onCreation = functions.auth.user().onCreate(async (user) => {
       email,
       photoURL,
       phoneNumber,
-      joined: admin.firestore.FieldValue.serverTimestamp(),
-      admin: false
+      joined: FieldValue.serverTimestamp(),
+      admin: false,
     }, {merge: true});
 
-    /** send welcome email */
+    /** todo: send welcome email with template */
     const mailRef = admin.firestore().collection('mail').doc();
     batch.set(mailRef, {
       to: user.email,

@@ -23,13 +23,15 @@
       </picture>
       <div class="details">
         <div>
+          <h3>UID</h3>
           <h3>Joined</h3>
           <h3>Email Address</h3>
           <h3>Phone Number</h3>
         </div>
         <div>
+          <h3>{{user.id ?? 'Unknown UID'}}</h3>
           <h3>{{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</h3>
-          <h3>{{user.email ?? 'Unknown email'}}</h3>
+          <h3>{{user.email ? user.email : 'Unknown email'}}</h3>
           <h3>{{user.phoneNumber ?? 'Unknown number'}}</h3>
         </div>
       </div>

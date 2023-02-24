@@ -22,7 +22,7 @@ export class SeoService {
   }) {
     const title = `${tags.title} - ${appInformation.name}`;
     const description = tags.description ?? appInformation.byline;
-    const image = tags.image ?? '/assets/imgs/logo.webp';
+    const image = tags.image ?? '/assets/svgs/flat_afro.svg';
     const domain = this.document.location.hostname;
     /* set title */
     this.titleService.setTitle(title);

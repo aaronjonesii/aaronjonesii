@@ -42,14 +42,14 @@
       <mat-form-field appearance="outline">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
-          <mat-option *ngFor="let status of projectStatuses" [value]="status">{{status | titlecase}}</mat-option>
+          <mat-option *ngFor="let status of projectStatuses | keyvalue" [value]="status.value">{{status.key | titlecase}}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Visibility</mat-label>
         <mat-select formControlName="visibility">
-          <mat-option *ngFor="let visibility of projectVisibilities" [value]="visibility">{{visibility | titlecase}}</mat-option>
+          <mat-option *ngFor="let visibility of projectVisibilities | keyvalue" [value]="visibility.value">{{visibility.key | titlecase}}</mat-option>
         </mat-select>
       </mat-form-field>
 

@@ -132,3 +132,7 @@ typings/
 
 # Keys
 keys.ts
+
+# Firebase Emulators Data
+seed/
+firebase-export-*/

@@ -8,8 +8,7 @@ import Templates from "./templates";
 import { QueuePayload } from "./types";
 import { isString, setSmtpCredentials } from "./helpers";
 import * as events from "./events";
-
-logs.init();
+import { FieldValue, Timestamp } from '@google-cloud/firestore';
 
 let db: FirebaseFirestore.Firestore;
 let transport: any;
@@ -21,6 +20,7 @@ let initialized = false;
  */
 async function initialize() {
   if (initialized === true) return;
+  logs.init();
   initialized = true;
   admin.initializeApp();
   db = admin.firestore();
@@ -65,7 +65,7 @@ async function processCreate(snap: FirebaseFirestore.DocumentSnapshot) {
   return admin.firestore().runTransaction((transaction) => {
     transaction.update(snap.ref, {
       delivery: {
-        startTime: admin.firestore.FieldValue.serverTimestamp(),
+        startTime: FieldValue.serverTimestamp(),
         state: "PENDING",
         attempts: 0,
         error: null,
@@ -129,7 +129,7 @@ async function preparePayload(payload: QueuePayload): Promise<QueuePayload> {
     return payload;
   }
 
-  const usersCollection = config.usersCollection;
+  const usersCollection = 'users';
   isString(usersCollection, "Must specify a users collection to send using uids.");
 
   let uids: string[] = [];
@@ -233,8 +233,8 @@ async function deliver(
       pending: string[];
     }
   } = {
-    "delivery.attempts": admin.firestore.FieldValue.increment(1),
-    "delivery.endTime": admin.firestore.FieldValue.serverTimestamp(),
+    "delivery.attempts": FieldValue.increment(1),
+    "delivery.endTime": FieldValue.serverTimestamp(),
     "delivery.error": null,
     "delivery.leaseExpireTime": null,
   };
@@ -341,7 +341,7 @@ async function processWrite(change: any) { // Change<FirebaseFirestore.DocumentS
       await admin.firestore().runTransaction((transaction) => {
         transaction.update(change.after.ref, {
           "delivery.state": "PROCESSING",
-          "delivery.leaseExpireTime": admin.firestore.Timestamp.fromMillis(
+          "delivery.leaseExpireTime": Timestamp.fromMillis(
             Date.now() + 60000
           ),
         });
@@ -351,8 +351,8 @@ async function processWrite(change: any) { // Change<FirebaseFirestore.DocumentS
   }
 }
 
-export const processQueue = functions.firestore
-  .document(config.mailCollection)
+exports.processQueue = functions.firestore
+  .document('mail/{mailID}')
   .onWrite(async (change) => {
     await initialize();
 

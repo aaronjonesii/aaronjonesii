@@ -1,0 +1,54 @@
+@import "src/assets/scss/partials/mixins";
+@import "src/assets/scss/partials/extras";
+
+aj-project-detail {
+  button.edit-btn {
+    position: sticky;
+    bottom: 0;
+    left: 100%;
+    z-index: 1000;
+  }
+
+  .not-available-container img {
+    width: 50%;
+  }
+
+  mat-tab-group { gap: $app-gap; }
+  mat-tab-group mat-tab-header.mat-mdc-tab-header {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+  }
+  mat-tab-group mat-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mdc-tab.mat-mdc-tab .mdc-tab__content .mdc-tab-indicator .mdc-tab-indicator__content {
+    border-top-width: 4px;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .comments-container, .related-projects-container {
+    display: flex;
+    overflow-x: auto;
+    gap: $app-gap;
+    padding-bottom: 0.5rem;
+  }
+
+  .related-projects-container .related-project {
+    min-width: 300px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: $app-shape-corner-radius;
+    cursor: pointer;
+  }
+  .related-projects-container .related-project img {
+    width: 100%;
+    object-fit: cover;
+  }
+  .related-projects-container .related-project .name {
+    padding: $app-page-padding;
+  }
+  .related-projects-container .related-project:hover {
+    $border-radius: calc(#{$app-shape-corner-radius} - 0.25rem);
+    img { border-radius: $border-radius!important; }
+    border-radius: $border-radius;
+  }
+}

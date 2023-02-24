@@ -1,7 +1,7 @@
-exports.admin = require('./admin');
+exports.admin = require('./admin/index');
 
-exports.firestoreSendEmail = require('./firestoreSendEmail');
+exports.firestoreSendEmail = require('./firestoreSendEmail/index');
 
-exports.newsletter = require('./newsletter');
+exports.newsletter = require('./newsletter/index');
 
 exports.user = require('./user/index');

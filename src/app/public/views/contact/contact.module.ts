@@ -18,8 +18,6 @@ const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
 const COMPONENTS = [ContactComponent];
 
-export const nav_path = {};
-
 const routes: Routes = [
   { path: '', component: ContactComponent, pathMatch: 'full' }
 ];

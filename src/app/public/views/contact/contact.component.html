@@ -1,11 +1,12 @@
 <ng-container *ngIf="!success; else showSuccessMessage">
   <div class="full-height-container align-items-center justify-content-center text-center">
     <h1 class="mat-headline-2">Let's start your new project.</h1>
-    <mat-icon class="material-icons-outlined scroll-icon bounce-top" fontIcon="keyboard_double_arrow_down" on-mouseover="scrollToForm()"></mat-icon>
+    <mat-icon class="material-icons-outlined scroll-icon bounce-top" fontIcon="keyboard_double_arrow_down"
+              on-mouseover="scrollToForm()"></mat-icon>
   </div>
 
   <div class="full-height-container app-gap" id="contact-container">
-    <div class="info-container">
+    <div class="info-container mat-body-1">
       <p>{{appInformation.altEmail}}</p>
       <p [style.text-transform]="'capitalize'">Currently looking for a full-time position as a software engineer</p>
       <p>Michigan</p>

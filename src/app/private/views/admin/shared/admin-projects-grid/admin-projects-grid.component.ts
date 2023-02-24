@@ -61,11 +61,10 @@ export class AdminProjectsGridComponent {
         const removedProjects: string[] = [];
 
         for (const project of this.selectionModel.selected) {
-          await this.db.delete(`projects/${project.id}`)
-            .then(() => {
-              this.selectionModel.deselect(project);
-              removedProjects.push(project.id);
-            }).catch(error => this.cLog.error(`Something went wong deleting project`, error, project));
+          await this._deleteProject(project.id).then(() => {
+            this.selectionModel.deselect(project);
+            removedProjects.push(project.id);
+          }).catch(error => this.cLog.error(`Something went wong deleting project`, error, project));
         }
 
         this.cLog.log(`removed ${removedProjects.length} ${removedProjects.length === 1 ? 'project' : 'projects'}`, removedProjects);
@@ -126,12 +125,30 @@ export class AdminProjectsGridComponent {
 
       dialogRef.afterClosed().forEach(async _delete => {
         if (_delete) {
-          await this.db.delete(`projects/${id}`)
-            .then(() => { if (notify) this.cLog.log(`Projetct deleted`) })
+          this._deleteProject(id)
+            .then(() => { if (notify) this.cLog.log(`Project deleted`) })
             .catch(error => { if (notify) this.cLog.error(`Something went wrong deleting project`, error, id) });
         }
         this.loading = false;
       });
+  }
+
+  public async _deleteProject(id: string) {
+    return await this.db.batch(async batch => {
+      const projectRef = this.db.doc(`projects/${id}`);
+
+      /** delete comments */
+      const commentsSnap = await this.db.colSnap(`${projectRef.path}/comments`);
+      commentsSnap.forEach(commentSnap => batch.delete(commentSnap.ref));
+
+      /** delete shards */
+
+      const shardsSnap = await this.db.colSnap(`${projectRef.path}/shards`);
+      shardsSnap.forEach(shardSnap => batch.delete(shardSnap.ref));
+
+      /** delete project */
+      batch.delete(projectRef);
+    });
   }
 
   public allDraftsSelected(): boolean {

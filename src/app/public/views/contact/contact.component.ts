@@ -32,22 +32,22 @@ export class ContactComponent {
   }
 
   public async onSubmit(): Promise<void> {
-    /* todo: batch to save to contact collection and send email */
     await this.db.batch(async batch => {
       const contactRef = this.db.doc(`contact/${this.db.newDocumentID}`);
       const contactData = Object.assign({created: this.db.timestamp}, this.contactForm.value);
-      await batch.set(contactRef, contactData);
+      batch.set(contactRef, contactData);
 
       /* todo: use template for this email and add link to admin contact request */
       const mailRef = this.db.doc(`mail/${this.db.newDocumentID}`);
       const mailData = {
         to: appInformation.email,
+        replyTo: this.email.value,
         message: {
           subject: `New Contact Request - ${this.name.value}`,
           text: `${this.name.value} just submitted a contact request on your website. Go check it out.`,
         },
       };
-      await batch.set(mailRef, mailData);
+      batch.set(mailRef, mailData);
     }).then(() => {
       this.cLog.log(`Contact request received, we will follow up with you soon.`);
       this.success = true;

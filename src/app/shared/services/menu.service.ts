@@ -26,7 +26,7 @@ export class MenuService {
     { name: 'File Manager', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],
       description: 'Manage files used throughout the website.' },
     { name: 'Projects', description: 'Create and manage the projects displayed here.',
-      routerLink: ['/admin/projects'], tooltip: 'Products', icon: 'work_history' },
+      routerLink: ['/admin/projects'], tooltip: 'Projects', icon: 'work_history' },
     // { name: 'Comments', icon: 'comment', routerLink: ['/admin/comments'],
     //   description: 'Manage story comments.' },
     { name: 'Users', description: 'Manage this websites users.',

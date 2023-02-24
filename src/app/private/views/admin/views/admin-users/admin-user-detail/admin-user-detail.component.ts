@@ -16,7 +16,7 @@ import { ConfirmDialogComponent } from "../../../../../../shared/components/conf
   styleUrls: ['./admin-user-detail.component.scss']
 })
 export class AdminUserDetailComponent {
-  public readonly title = 'User Detail';
+  public readonly title = 'User detail';
   public readonly nav_path = nav_path;
   public user$: Observable<readUser>;
   public error?: Error;

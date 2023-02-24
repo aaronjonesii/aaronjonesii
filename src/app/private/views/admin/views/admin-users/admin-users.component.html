@@ -1,6 +1,8 @@
 <aj-top-app-bar title="Admin"></aj-top-app-bar>
 
 <main class="page-padding">
+  <h1 class="mat-headline-3">{{title}}</h1>
+
   <section class="users">
     <ng-container *ngIf="users$ | async as users; else loadingOrError">
       <ng-container *ngIf="users.length > 0; else noUsers">
@@ -10,9 +12,8 @@
           <mat-list-item *ngFor="let user of users">
             <aj-user-photo matListItemAvatar [user]="user"></aj-user-photo>
             <span matListItemTitle>{{user.displayName ?? 'Unknown name'}}</span>
+            <span matListItemLine>{{user.email ? user.email : 'Unknown email'}}</span>
             <span matListItemLine>Joined: {{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</span>
-            <span matListItemLine>{{user.email ?? 'Unknown email'}}</span>
-            <span matListItemLine>{{user.id}}</span>
             <span matListItemLine *ngIf="user.admin">
             <mat-icon matTooltip="Admin" color="accent" fontIcon="admin_panel_settings"></mat-icon>
           </span>
@@ -23,6 +24,11 @@
               <button mat-menu-item [routerLink]="[nav_path.adminUsers, user.id]">
                 <mat-icon fontIcon="person"></mat-icon>
                 View User
+              </button>
+
+              <button mat-menu-item (click)="updateUser(user.id)" [disabled]="!user.id">
+                <mat-icon class="material-icons-outlined" [fontIcon]="user.id ? 'update' : 'update_disabled'"></mat-icon>
+                Update User
               </button>
             </mat-menu>
           </mat-list-item>

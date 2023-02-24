@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
-import { initialProjectForm } from "../../../../../../shared/forms/project-form";
-import {
-  ProjectStatuses,
-  ProjectVisibilities,
-  WriteProject
-} from "../../../../../../shared/interfaces/project";
+import { ProjectForm } from "../../../../../../shared/forms/project-form";
+import { ProjectStatus, ProjectVisibility, WriteProject } from "../../../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../../../../core/services/console-logger.service";
 import { TagsService } from "../../../../../../shared/services/tags.service";
@@ -16,6 +12,9 @@ import { Router } from "@angular/router";
 import { nav_path } from "../../../../../../app-routing.module";
 import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
+import { AuthService } from "../../../../../../core/services/auth.service";
+import { User } from "@angular/fire/auth";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'aj-add-project',
@@ -25,9 +24,22 @@ import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 export class AddProjectComponent {
   public readonly title = 'Add Project';
   public loading = false;
-  public readonly addForm = initialProjectForm;
-  public readonly projectStatuses = ProjectStatuses;
-  public readonly projectVisibilities = ProjectVisibilities;
+  public addForm = new FormGroup<ProjectForm>({
+    name: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+    description: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+    slug: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+    content: new FormControl<string | null>(null),
+    image: new FormControl<string | null>(null),
+    tags: new FormArray<FormControl<string>>([]),
+    livePreviewLink: new FormControl<string | null>(null),
+    sourceCodeLink: new FormControl<string | null>(null),
+    status: new FormControl<ProjectStatus>(ProjectStatus.DRAFT, { nonNullable: true, validators: Validators.required }),
+    visibility: new FormControl<ProjectVisibility>(ProjectVisibility.PUBLIC, { nonNullable: true, validators: Validators.required }),
+    featured: new FormControl<boolean>(false, { nonNullable: true, validators: Validators.required }),
+    allowComments: new FormControl<boolean>(true, { nonNullable: true, validators: Validators.required })
+  });
+  public readonly projectStatuses = ProjectStatus;
+  public readonly projectVisibilities = ProjectVisibility
   public allTags$: Observable<Tag[]>;
   private allTags: Tag[] = [];
   public editorConfig = {
@@ -42,13 +54,15 @@ export class AddProjectComponent {
       }
     }
   };
+  public user$ = this.auth.loadUser;
 
   constructor(
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
     private tagsService: TagsService,
     private slugify: SlugifyPipe,
-    private router: Router
+    private router: Router,
+    private auth: AuthService,
   ) {
     this.allTags$ = (db.col$(`tags`) as Observable<Tag[]>)
       .pipe(
@@ -81,11 +95,23 @@ export class AddProjectComponent {
   }
 
   private resetForm() {
-    this.addForm.reset();
-    this.tags.reset([]);
+    this.addForm = new FormGroup<ProjectForm>({
+      name: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      description: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      slug: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      content: new FormControl<string | null>(null),
+      image: new FormControl<string | null>(null),
+      tags: new FormArray<FormControl<string>>([]),
+      livePreviewLink: new FormControl<string | null>(null),
+      sourceCodeLink: new FormControl<string | null>(null),
+      status: new FormControl<ProjectStatus>(ProjectStatus.DRAFT, { nonNullable: true, validators: Validators.required }),
+      visibility: new FormControl<ProjectVisibility>(ProjectVisibility.PUBLIC, { nonNullable: true, validators: Validators.required }),
+      featured: new FormControl<boolean>(false, { nonNullable: true, validators: Validators.required }),
+      allowComments: new FormControl<boolean>(true, { nonNullable: true, validators: Validators.required })
+    });
   }
 
-  public async save() {
+  public async save(user: User) {
     this.loading = true;
 
     this.addForm.disable();
@@ -93,6 +119,7 @@ export class AddProjectComponent {
     if (await this.db.docExists(`projects/${this.slug.value}`)) {
       this.cLog.error(`Project with this name already exists, try changing the name or slug`);
       this.loading = false;
+      this.addForm.enable();
       return;
     }
 
@@ -110,7 +137,9 @@ export class AddProjectComponent {
       featured: this.featured.value,
       allowComments: this.allowComments.value,
       created: this.db.timestamp,
-      updated: null
+      updated: null,
+      roles: {[user.uid]: 'owner'},
+      shards: 5, // Initialize number of shards
     };
 
     await this.db.batch(async batch => {
@@ -131,6 +160,13 @@ export class AddProjectComponent {
             batch.set(this.db.doc(`tags/${projectTag}`), newTag);
           }
         }
+      }
+
+      /** shards for counts */
+      /** Initialize each shard */
+      for (let i = 0; i < project.shards; i++) {
+        const shardRef = this.db.doc(`projects/${project.slug}/shards/${i.toString()}`);
+        batch.set(shardRef, { views: 0 });
       }
 
       const projectRef = this.db.doc(`projects/${project.slug}`);

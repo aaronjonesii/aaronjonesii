@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as logs from "./logs";
+import { FieldValue } from '@google-cloud/firestore';
 
 let is_subscribe_initialized = false;
 
@@ -42,7 +43,7 @@ exports.subscribe = functions.runWith({enforceAppCheck: true})
     }
 
     /* Add email to subscribers collection */
-    await docSnap.ref.create({created: admin.firestore.FieldValue.serverTimestamp()})
+    await docSnap.ref.create({created: FieldValue.serverTimestamp()})
       .then((writeResult) => {
         logs.firestoreDocCreated('subscribers', email);
         return {...writeResult, success: true};

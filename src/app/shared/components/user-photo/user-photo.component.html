@@ -1,13 +1,16 @@
-<ng-container *ngIf="user?.photoURL && !userPhotoError; else noPhoto">
+<ng-container *ngIf="image && !userPhotoError; else noPhoto">
   <img class="user-photo"
        (error)="userPhotoError=true"
-       [src]="user?.photoURL"
-       [alt]="user?.displayName+' profile photo'"
-       [ngStyle]="{'opacity': dim ? '0.5' : '1'}" />
+       [src]="image"
+       alt="User profile photo"
+       [ngStyle]="{'opacity': dim ? '0.5' : '1'}"
+       [width]="size" [height]="size" />
 </ng-container>
 <ng-template #noPhoto>
-  <mat-icon class="material-icons-round user-icon"
-            [ngStyle]="{'opacity': dim ? '0.5' : '1'}">
-    account_circle
-  </mat-icon>
+<!--  <mat-icon class="material-icons-round user-icon"-->
+<!--            [ngStyle]="{'opacity': dim ? '0.5' : '1'}"-->
+<!--            color="accent">-->
+<!--    account_circle-->
+<!--  </mat-icon>-->
+  <img class="no-user-photo" src="assets/svgs/flat_afro.svg" alt="Silhouette of a cartoon style afro" [ngStyle]="{'opacity': dim ? '0.5' : '1'}" [width]="size" [height]="size" />
 </ng-template>

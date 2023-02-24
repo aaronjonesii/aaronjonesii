@@ -1,0 +1,13 @@
+@import "src/assets/scss/partials/mixins";
+@import "src/assets/scss/partials/extras";
+
+:host {
+  min-width: 300px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+  padding: $app-spacing;
+  border-radius: $app-shape-corner-radius;
+}
+div .message { @include truncateText(2); }

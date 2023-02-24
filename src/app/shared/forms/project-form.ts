@@ -1,5 +1,5 @@
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ProjectStatusType, ProjectVisibilityType } from "../interfaces/project";
+import { ProjectStatus, ProjectVisibility } from "../interfaces/project";
 
 export interface ProjectForm {
   name: FormControl<string>,
@@ -10,8 +10,8 @@ export interface ProjectForm {
   tags: FormArray<FormControl<string>>,
   livePreviewLink: FormControl<string | null>,
   sourceCodeLink: FormControl<string | null>,
-  status: FormControl<ProjectStatusType>,
-  visibility: FormControl<ProjectVisibilityType>,
+  status: FormControl<ProjectStatus>,
+  visibility: FormControl<ProjectVisibility>,
   featured: FormControl<boolean>,
   allowComments: FormControl<boolean>
 }
@@ -25,8 +25,8 @@ export const initialProjectForm = new FormGroup<ProjectForm>({
   tags: new FormArray<FormControl<string>>([]),
   livePreviewLink: new FormControl<string | null>(null),
   sourceCodeLink: new FormControl<string | null>(null),
-  status: new FormControl<ProjectStatusType>('draft', { nonNullable: true, validators: Validators.required }),
-  visibility: new FormControl<ProjectVisibilityType>('public', { nonNullable: true, validators: Validators.required }),
+  status: new FormControl<ProjectStatus>(ProjectStatus.DRAFT, { nonNullable: true, validators: Validators.required }),
+  visibility: new FormControl<ProjectVisibility>(ProjectVisibility.PUBLIC, { nonNullable: true, validators: Validators.required }),
   featured: new FormControl<boolean>(false, { nonNullable: true, validators: Validators.required }),
   allowComments: new FormControl<boolean>(true, { nonNullable: true, validators: Validators.required })
 });
