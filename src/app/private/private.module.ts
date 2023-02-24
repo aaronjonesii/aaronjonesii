@@ -6,7 +6,8 @@ import { AuthGuard } from "../core/guards/auth.guard";
 import { LayoutComponent } from "../shared/components/layout/layout.component";
 
 export const private_nav_path = {
-  admin: '/admin', ...admin_nav_path
+  admin: '/admin', ...admin_nav_path,
+  accountDetails: '/account-details',
 };
 
 const routes: Routes = [
