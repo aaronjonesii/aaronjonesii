@@ -11,7 +11,7 @@
       <article class="flex-col app-gap">
         <img *ngIf="project.image" class="project-image" [src]="project.image" [alt]="project.name" />
         <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
-        <small>{{project.views}} {{project.views == 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
+        <small>{{project?.views ?? 0}} {{project.views == 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
         <div class="flex-row align-items-center app-gap">
           <img src="assets/svgs/flat_afro.svg" alt="Silhouette of a cartoon style afro" width="50" height="50" />
           <div class="flex-col justify-content-center">
