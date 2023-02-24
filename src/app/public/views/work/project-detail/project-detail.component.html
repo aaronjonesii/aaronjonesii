@@ -13,9 +13,9 @@
         <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
         <small>{{project?.views ?? 0}} {{project.views === 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
         <div class="flex-row align-items-center app-gap">
-          <img src="assets/svgs/flat_afro.svg" alt="Silhouette of a cartoon style afro" width="50" height="50" />
+          <aj-user-photo [image]="project.author.image"></aj-user-photo>
           <div class="flex-col justify-content-center">
-            <h3 class="mat-headline-6 m-0">Aaron Jones II</h3>
+            <h3 class="mat-headline-6 m-0">{{project.author.name}}</h3>
             <small>15.1K followers</small>
           </div>
         </div>

@@ -75,6 +75,8 @@ exports.update = functions.https.onCall(async(data, context) => {
         const userRef = admin.firestore().doc(userPath);
         const userComments = await admin.firestore().collectionGroup('comments')
           .where('user', '==', userRef).get();
+        const userProjects = await admin.firestore().collection(`projects`)
+          .where(`roles.${uid}`, '==', 'owner').get();
         logs.savingUser(userPath);
         return admin.firestore().runTransaction((transaction: any) => {
           /** Save updates to User Document */
@@ -99,13 +101,33 @@ exports.update = functions.https.onCall(async(data, context) => {
             ));
           }
 
+          /** Update User Projects to reflect updates */
+          if (!userProjects.empty) {
+            logs.updatingUserProjects(userProjects.size);
+            userProjects.forEach((project: any) => transaction.update(
+              project.ref,
+              {
+                author: {
+                  name: user.displayName ?? null,
+                  image: user.photoURL ?? null
+                }
+              }
+            ));
+          }
+
           return Promise.resolve();
         }).then(() => {
           if (!userComments.empty) {
             userComments.forEach((docSnap: any) => logs.firestoreDocUpdated(docSnap.ref.parent.path, docSnap.id));
           }
+          if (!userProjects.empty) {
+            userProjects.forEach((docSnap: any) => logs.firestoreDocUpdated(docSnap.ref.parent.path, docSnap.id));
+          }
           logs.firestoreDocUpdated('users', userRef.id);
-          return { success: true, message: `Successfully updated user profile${!userComments.empty ? (', and updated '+userComments.size+((userComments.size === 1) ? ' comment' : ' comments')) : ''}` };
+          const response = { succes: true, message: `Successfully updated user profile` };
+          if (!userComments.empty) response.message = response.message + ', and updated '+userComments.size+((userComments.size === 1) ? ' comment' : ' comments');
+          if (!userProjects.empty) response.message = response.message + ', and updated '+userProjects.size+((userProjects.size === 1) ? ' project' : ' projects');
+          return response;
         }).catch((error: Error) => {
           logs.errorSavingUser(error);
           throw new Error(error.message);

@@ -31,3 +31,7 @@ export const updatedUser = (uid: string) => {
 export const updatingUserComments = (num: number) => {
   logger.log(`Updating ${num} ${num === 1 ? 'comment' : 'comments'}`);
 };
+
+export const updatingUserProjects = (num: number) => {
+  logger.log(`Updating ${num} ${num === 1 ? 'project' : 'projects'}`);
+};
