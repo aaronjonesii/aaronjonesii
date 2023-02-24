@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { MenuService } from "../../services/menu.service";
 import { AuthService } from "../../../core/services/auth.service";
 import { nav_path } from "../../../app-routing.module";
+import { appInformation } from "../../../information";
+import { BreakpointObserver } from "@angular/cdk/layout";
+import { map } from "rxjs";
 
 @Component({
   selector: 'aj-layout',
@@ -9,12 +12,24 @@ import { nav_path } from "../../../app-routing.module";
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
-  public readonly title = 'Layout';
+  public readonly title = appInformation.name;
   public readonly nav_path = nav_path;
   public segments = this.menuService.navigationBarMenu;
+  /** Breakpoints can be found from src/assets/scss/partials/_media_queries.scss */
+  public isMobile$ = this.breakpointObserver.observe('(max-width: 599px)')
+    .pipe(map(state => state.matches));
+  public isTabletPortrait$ = this.breakpointObserver.observe('(min-width: 600px)')
+    .pipe(map(state => state.matches));
+  private isTabletLandscape$ = this.breakpointObserver.observe('(min-width: 905px)')
+    .pipe(map(state => state.matches));
+  private isDesktop$ = this.breakpointObserver.observe('(min-width: 1440px)')
+    .pipe(map(state => state.matches));
+  private isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
+    .pipe(map(state => state.matches));
   constructor(
     public menuService: MenuService,
-    public auth: AuthService
+    public auth: AuthService,
+    private breakpointObserver: BreakpointObserver,
   ) {
     /** Add button if admin */
     auth.user$.forEach(async (user) => {
