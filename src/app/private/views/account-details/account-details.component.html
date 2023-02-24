@@ -19,7 +19,7 @@
       <mat-error *ngIf="displayName?.errors?.['required']">Display name is <strong>required</strong>.</mat-error>
     </mat-form-field>
 
-    <div class="flex-row justify-content-center gap-1" *ngIf="displayName.enabled">
+    <div class="flex-row justify-content-center app-gap" *ngIf="displayName.enabled">
       <button mat-button color="primary"
               (click)="displayName.setValue(this.profile.displayName ?? '');displayName.disable()"
               [disabled]="loading">

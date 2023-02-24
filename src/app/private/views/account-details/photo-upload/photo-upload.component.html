@@ -7,7 +7,7 @@
 <div class="photo-container">
   <aj-user-photo [image]="photo" [dim]="loading" [size]="200"></aj-user-photo>
 </div>
-<div class="photo-buttons">
+<div class="photo-buttons app-gap">
   <button mat-button color="primary" type="button" [disabled]="loading" (click)="photoInput.click()">
     <mat-icon class="material-icons-outlined" fontIcon="edit"></mat-icon> {{loading ? 'Changing' : 'Change'}}
   </button>
