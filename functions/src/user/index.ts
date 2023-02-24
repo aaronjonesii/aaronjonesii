@@ -3,6 +3,7 @@ import * as logs from "./logs";
 import { FieldValue } from '@google-cloud/firestore';
 
 let is_onCreation_initialized = false;
+let is_update_initialized = false;
 
 exports.onCreation = functions.auth.user().onCreate(async (user) => {
   const admin = await import('firebase-admin');
@@ -47,4 +48,74 @@ exports.onCreation = functions.auth.user().onCreate(async (user) => {
         logs.firestoreDocCreated(`mail`, mailRef.id);
       }).catch((error: Error) => logs.errorSavingUser(error))
   } catch (error) { logs.errorSavingUser(error as Error); }
+});
+
+exports.update = functions.https.onCall(async(data, context) => {
+  /** Initialize Admin SDK */
+  const admin = require('firebase-admin');
+  if (!is_update_initialized) {
+    admin.initializeApp();
+    is_update_initialized = true;
+  }
+  /** Assert Authentication */
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      'failed-precondition',
+      'The function must be called while authenticated.'
+    );
+  }
+  const uid: string = context.auth.uid;
+  try {
+    return await admin.auth().updateUser(uid, data)
+      .then(async(user: any) => {
+        /** Updated user in Firebase Authentication */
+        logs.updatedUser(user.uid);
+
+        const userPath: string = `users/${user.uid}`;
+        const userRef = admin.firestore().doc(userPath);
+        const userComments = await admin.firestore().collectionGroup('comments')
+          .where('user', '==', userRef).get();
+        logs.savingUser(userPath);
+        return admin.firestore().runTransaction((transaction: any) => {
+          /** Save updates to User Document */
+          transaction.set(userRef, {
+            displayName: user.displayName ?? null,
+            email: user.email,
+            phoneNumber: user.phoneNumber ?? null,
+            photoURL: user.photoURL ?? null
+          }, {merge: true});
+
+          /** Update User Comments to reflect updates */
+          if (!userComments.empty) {
+            logs.updatingUserComments(userComments.size);
+            userComments.forEach((comment: any) => transaction.update(
+              comment.ref,
+              {
+                author: {
+                  name: user.displayName ?? null,
+                  image: user.photoURL ?? null
+                }
+              }
+            ));
+          }
+
+          return Promise.resolve();
+        }).then(() => {
+          if (!userComments.empty) {
+            userComments.forEach((docSnap: any) => logs.firestoreDocUpdated(docSnap.ref.parent.path, docSnap.id));
+          }
+          logs.firestoreDocUpdated('users', userRef.id);
+          return { success: true, message: `Successfully updated user profile${!userComments.empty ? (', and updated '+userComments.size+((userComments.size === 1) ? ' comment' : ' comments')) : ''}` };
+        }).catch((error: Error) => {
+          logs.errorSavingUser(error);
+          throw new Error(error.message);
+        });
+      })
+      .catch((error: Error) => {
+        logs.errorUpdatingUser(error);
+        throw new Error(error.message);
+      });
+  } catch (error: any) {
+    throw new functions.https.HttpsError('unknown', error.message, error);
+  }
 });

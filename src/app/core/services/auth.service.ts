@@ -276,27 +276,25 @@ export class AuthService {
   /**
    * Update the users profile.
    *
-   * @param displayName - The user's display name.
-   * @param photoURL - The URL link for the user's profile picture.
+   * @param updateUserData - The user's display name and URL link for the user's profile picture.
    *
    * @public
    */
   public async updateUser(
-    displayName?: string | null,
-    photoURL?: string | null
-  ): Promise<UpdateProfileResponse | FunctionsError> {
-    const updateUserData: { displayName?: string | null, photoURL?: string | null } = {};
-    if (displayName) updateUserData.displayName = displayName;
-    if (photoURL) updateUserData.photoURL = photoURL;
-    return (this.fn.httpsCallable('user-update', updateUserData) as Promise<UpdateProfileResponse>)
-      .then(res => {
+    updateUserData: {
+      displayName?: string | null,
+      photoURL?: string | null,
+    }): Promise<UpdateProfileResponse | FunctionsError> {
+    return this.fn.httpsCallable<UpdateProfileResponse>('user-update', updateUserData)
+      .then((res) => {
+        res = <UpdateProfileResponse>res;
         if (res.ok && res.user) this.user$ = this.loadUser; // reload user auth state
 
         this.cLog.log(res.message);
         return res;
       })
       .catch((error: FunctionsError) => {
-        this.cLog.error(`Something went wrong updating user`, [error, displayName, photoURL]);
+        this.cLog.error(`Something went wrong updating user`, [error, updateUserData]);
         return error;
       });
   }
@@ -333,7 +331,7 @@ export class AuthService {
     });
   }
 
-  public assertUser(user: UserWithID | null): asserts user {
+  public assertUser(user: UserWithID | User | null): asserts user {
     if (!user) {
       this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } });
       throw new Error(`You must be signed in`);
