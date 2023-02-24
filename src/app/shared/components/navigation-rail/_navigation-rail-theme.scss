@@ -11,7 +11,6 @@
   $grey-palette: mat.$gray-palette;
 
   aj-navigation-rail {
-    background-color: mat.get-color-from-palette($background-palette, 'app-bar');
     button.active span mat-icon {
       background: mat.get-color-from-palette($primary-palette, 100);
     }
