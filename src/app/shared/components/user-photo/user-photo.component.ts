@@ -15,6 +15,8 @@ export class UserPhotoComponent implements OnInit {
   public userPhotoError = false;
 
   ngOnInit() {
-    if (!this.image && this.user?.photoURL) this.image = this.user.photoURL;
+    setTimeout(() => {
+      if (!this.image && this.user?.photoURL) this.image = this.user.photoURL;
+    }, 50);
   }
 }
