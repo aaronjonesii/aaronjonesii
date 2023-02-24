@@ -5,7 +5,7 @@ import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { QueryConstraint, where } from "@angular/fire/firestore";
 import { nav_path } from 'src/app/app-routing.module';
-import { DOCUMENT, Location } from "@angular/common";
+import { DOCUMENT } from "@angular/common";
 import { appInformation } from "../../../information";
 
 @Component({

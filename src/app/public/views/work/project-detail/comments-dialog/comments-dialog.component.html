@@ -8,7 +8,7 @@
 
 <ng-container *ngIf="comments$ | async as comments else loading">
   <div class="flex-row justify-space-between">
-    <h3>{{comments?.length ?? 0}} {{(comments?.length ?? 0) == 1 ? 'Comment' : 'Comments'}}</h3>
+    <h3>{{comments?.length ?? 0}} {{(comments?.length ?? 0) === 1 ? 'Comment' : 'Comments'}}</h3>
 
     <!-- todo: add feature for sorting comments -->
     <button mat-button disabled>

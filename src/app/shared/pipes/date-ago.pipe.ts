@@ -3,11 +3,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'dateAgo' })
 export class DateAgoPipe implements PipeTransform {
 
-  transform(date: Date | number): any {
+  transform(date: Date | number): number | Date | string {
     if (date) {
       const seconds = Math.floor((+new Date() - +new Date(date)) / 1000);
       if (seconds < 29) return 'Just now'; // less than 30 seconds ago
-      const intervals: any = {
+      const intervals: {[key: string]: number} = {
         'year': 31536000,
         'month': 2592000,
         'week': 604800,

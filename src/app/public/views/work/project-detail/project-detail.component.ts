@@ -169,26 +169,26 @@ export class ProjectDetailComponent {
     try {
       this.auth.assertUser(user);
 
-      async function update(db: FirestoreService, user: UserWithID, cLog: ConsoleLoggerService): Promise<void> {
-        await db.update(`users/${user.id}`, { following: !user?.following ?? false })
-          .then(() => cLog.log(user?.following ? 'Unfollowed' : 'Followed'));
-      }
-
       if (user?.following) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
           id: 'confirm-unfollow-dialog',
           data: {
-            description: `Unfollow from ${appInformation.name}`,
+            description: `Unfollow from ${appInformation.name}?`,
             buttonText: `Unfollow`,
           }
         });
 
         dialogRef.afterClosed()
-          .forEach(async confirm => confirm ? await update(this.db, user, this.cLog) : undefined);
-      } else await update(this.db, user, this.cLog);
+          .forEach(async confirm => confirm ? await this._updateFollowStatus(user) : undefined);
+      } else await this._updateFollowStatus(user);
     } catch (error) {
       /* swallow errors */
     }
+  }
+
+  private async _updateFollowStatus(user: UserWithID): Promise<void> {
+    return await this.db.update(`users/${user.id}`, { following: !user?.following ?? false })
+      .then(() => this.cLog.log(user?.following ? 'Unfollowed' : 'Followed'));
   }
 
   public openComments(project: ReadProject): void {
