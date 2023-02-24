@@ -1,0 +1,19 @@
+@import "src/assets/scss/partials/extras";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+  padding-top: $app-top-app-bar-height;
+  height: inherit;
+  justify-content: center;
+}
+button.mat-mdc-button.mat-mdc-button-base {
+  height: 56px;
+}
+button.active span mat-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  padding: 0.25rem 1.5rem;
+}

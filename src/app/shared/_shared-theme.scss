@@ -4,17 +4,20 @@
 @use 'components/navigation-bar/navigation-bar-theme' as navigationBar;
 @use 'components/masonry-cards/masonry-cards-theme' as masonryCards;
 @use 'components/top-app-bar/top-app-bar-theme' as topAppBar;
+@use 'src/app/shared/components/navigation-rail/navigation-rail-theme' as navigationRail;
 
 @mixin componentColorMixins($theme) {
   @include navigationBar.color($theme);
   @include masonryCards.color($theme);
   @include topAppBar.color($theme);
+  @include navigationRail.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include navigationBar.typography($theme);
   @include masonryCards.typography($theme);
   @include topAppBar.typography($theme);
+  @include navigationRail.typography($theme);
 }
 
 @mixin color($theme) {

@@ -1,25 +1,30 @@
-<mat-toolbar>
-  <div>
-<!--    <button mat-icon-button>-->
-<!--      <img src="assets/imgs/apple-touch-icon.png" alt="Image of a cartoon style afro silhouette" width="180" height="180" />-->
-<!--    </button>-->
-<!--    <h1>{{title}}</h1>-->
-  </div>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" [opened]="true" *ngIf="isTabletPortrait$ | async">
+    <aj-navigation-rail [segments]="segments"></aj-navigation-rail>
+  </mat-sidenav>
 
-  <ng-container *ngIf="auth.user$ | async; else notSignedIn">
-    <button mat-button (click)="auth.logout()">
-      <mat-icon fontIcon="logout"></mat-icon>
-      Sign out
-    </button>
-  </ng-container>
-  <ng-template #notSignedIn>
-    <button mat-button [routerLink]="[nav_path.signIn]">
-      <mat-icon fontIcon="login"></mat-icon>
-      Sign in
-    </button>
-  </ng-template>
-</mat-toolbar>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <div>
+        <h1 class="mat-headline-6 m-0">{{title}}</h1>
+      </div>
 
-<main class="page-padding"><router-outlet></router-outlet></main>
+      <ng-container *ngIf="auth.user$ | async; else notSignedIn">
+        <button mat-button (click)="auth.logout()">
+          <mat-icon fontIcon="logout"></mat-icon>
+          Sign out
+        </button>
+      </ng-container>
+      <ng-template #notSignedIn>
+        <button mat-button [routerLink]="[nav_path.signIn]">
+          <mat-icon fontIcon="login"></mat-icon>
+          Sign in
+        </button>
+      </ng-template>
+    </mat-toolbar>
 
-<aj-navigation-bar [segments]="segments"></aj-navigation-bar>
+    <main class="page-padding"><router-outlet></router-outlet></main>
+
+    <aj-navigation-bar *ngIf="isMobile$ | async" [segments]="segments"></aj-navigation-bar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

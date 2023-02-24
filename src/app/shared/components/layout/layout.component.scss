@@ -1,21 +1,33 @@
-:host {
-  display: flex;
-  flex-direction: column;
+@import 'src/assets/scss/partials/media_queries';
+@import "src/assets/scss/partials/extras";
 
+:host {
   width: 100vw;
   height: 100vh;
+}
+
+mat-sidenav-container {
+  height: inherit;
+  width: inherit;
+}
+mat-sidenav {
+  border-radius: 0 $app-shape-corner-radius $app-shape-corner-radius 0;
+}
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
 }
 
 mat-toolbar {
   display: flex;
   justify-content: space-between;
 
-  height: 56px;
+  height: $app-top-app-bar-height;
 }
 mat-toolbar div {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: $app-gap;
 }
 
 main {
