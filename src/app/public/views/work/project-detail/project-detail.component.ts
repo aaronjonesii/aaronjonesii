@@ -127,21 +127,13 @@ export class ProjectDetailComponent {
   public getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
     if (!project) return of(null);
 
-    const key = makeStateKey<CommentWithID[]>('PROJECT-COMMENTS');
-    const existing = this.state.get(key, null);
-    const projectComments$ = this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, { idField: 'id' });
-    return of(existing).pipe(
-      existing ? startWith(existing) : switchMap(() => projectComments$),
-      tap(comments => this.state.set(key, comments)),
-      );
+    return this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, { idField: 'id' });
   }
 
   private getRelatedProjects$(project: ReadProject | null): Observable<ReadProject[] | null> {
     if (!project) return of(null);
 
-    const key = makeStateKey<ReadProject[]>('RELATED-PROJECTS');
-    const existing = this.state.get(key, null);
-    const relatedProjects$ = this.db.colQuery$<ReadProject>(
+    return this.db.colQuery$<ReadProject>(
       `projects`,
       {},
       /** filter out private projects */
@@ -166,10 +158,6 @@ export class ProjectDetailComponent {
           return bIntersection.length - aIntersection.length;
         });
       }),
-    );
-    return of(existing).pipe(
-      existing ? startWith(existing) : switchMap(() => relatedProjects$),
-      tap(relatedProjects => this.state.set(key, relatedProjects)),
     );
   }
 
