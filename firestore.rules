@@ -22,7 +22,8 @@ service cloud.firestore {
       function isCommentsEnabled(rsc) { return rsc.data.allowComments == true; }
 
       allow read: if isAdmin() || isOneOfRoles(resource, ['owner', 'writer', 'reader']) || isPublic(resource) && isNotDraft(resource);
-      allow write: if isAdmin() && isOneOfRoles(request.resource, ['owner']);
+      allow create, update: if isAdmin() && isOneOfRoles(request.resource, ['owner']);
+      allow delete: if isAdmin() && isOneOfRoles(resource, ['owner']);
 
       // project shards collection
       match /shards/{shardID} {
@@ -41,6 +42,7 @@ service cloud.firestore {
         allow create: if isValidComment() && isCommentsEnabled(projectRsc()) && isPublic(get(/databases/$(database)/documents/projects/$(projectID)));
         allow update: if isCommentsEnabled(projectRsc()) && isPublic(projectRsc()) && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'dislikes', 'updated']));
         allow read: if isCommentsEnabled(projectRsc()) && isPublic(projectRsc()) || isOneOfRoles(projectRsc(), ["owner", "writer", "reader"]);
+        allow delete: if isValidComment() || isAdmin();
       }
     }
 
