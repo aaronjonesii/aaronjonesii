@@ -1,6 +1,6 @@
 <mat-sidenav-container>
-  <mat-sidenav mode="side" [opened]="true" *ngIf="isTabletPortrait$ | async">
-    <aj-navigation-rail [segments]="segments"></aj-navigation-rail>
+  <mat-sidenav mode="side" [opened]="true">
+    <aj-navigation-rail *ngIf="isTabletPortrait$ | async" [@navigationRailAnimation] [segments]="segments"></aj-navigation-rail>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -25,6 +25,6 @@
 
     <main class="page-padding"><router-outlet></router-outlet></main>
 
-    <aj-navigation-bar *ngIf="isMobile$ | async" [segments]="segments"></aj-navigation-bar>
+    <aj-navigation-bar *ngIf="isMobile$ | async" [@navigationBarAnimation] [segments]="segments"></aj-navigation-bar>
   </mat-sidenav-content>
 </mat-sidenav-container>

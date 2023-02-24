@@ -5,11 +5,17 @@ import { nav_path } from "../../../app-routing.module";
 import { appInformation } from "../../../information";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { map } from "rxjs";
+import { NavigationRailAnimation } from "../navigation-rail/navigation-rail.animations";
+import { NavigationBarAnimation } from "../navigation-bar/navigation-bar.animations";
 
 @Component({
   selector: 'aj-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  animations: [
+    NavigationRailAnimation,
+    NavigationBarAnimation,
+  ],
 })
 export class LayoutComponent {
   public readonly title = appInformation.name;
