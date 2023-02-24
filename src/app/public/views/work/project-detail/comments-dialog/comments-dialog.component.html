@@ -20,7 +20,11 @@
   <!-- Add Comment Container -->
   <ng-container *ngIf="{user: user$ | async} as auth">
     <div class="flex-row app-gap align-items-center add-comment-container">
-      <aj-user-photo [user]="auth.user"></aj-user-photo>
+      <aj-user-photo [user]="auth.user"
+                     (click)="onPhotoClick()"
+                     [style.cursor]="'pointer'"
+                     (mouseenter)="el.dim = true"
+                     (mouseleave)="el.dim = false" #el></aj-user-photo>
       <mat-form-field class="w-100">
         <textarea matInput rows="1" placeholder="Add a comment..." [formControl]="commentFormControl" (focus)="focusCommentInputContainer(auth.user)" #commentInput></textarea>
       </mat-form-field>

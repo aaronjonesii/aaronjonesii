@@ -140,6 +140,7 @@ export class AddProjectComponent {
       updated: null,
       roles: {[user.uid]: 'owner'},
       shards: 5, // Initialize number of shards
+      author: { name: user.displayName ?? '', image: user.photoURL ?? undefined },
     };
 
     await this.db.batch(async batch => {

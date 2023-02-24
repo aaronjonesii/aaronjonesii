@@ -17,5 +17,21 @@ export const firestoreDocDeleted = (collection: string, docID: string): void => 
 };
 
 export const errorSavingUser = (error: Error) => {
-  logger.error(`Error saving user to DB: `, error.message)
+  logger.error(`Error saving user in Firebase Firestore: `, error.message);
+};
+
+export const errorUpdatingUser = (error: Error) => {
+  logger.error(`Error updating user in Firebase Authentication: `, error.message);
+};
+
+export const updatedUser = (uid: string) => {
+  logger.log(`Successfully updated user: ${uid}`);
+};
+
+export const updatingUserComments = (num: number) => {
+  logger.log(`Updating ${num} ${num === 1 ? 'comment' : 'comments'}`);
+};
+
+export const updatingUserProjects = (num: number) => {
+  logger.log(`Updating ${num} ${num === 1 ? 'project' : 'projects'}`);
 };

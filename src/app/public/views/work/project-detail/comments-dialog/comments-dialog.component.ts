@@ -80,6 +80,11 @@ export class CommentsDialogComponent {
     }
   }
 
+  public onPhotoClick() {
+    this.router.navigate([nav_path.accountDetails])
+      .then(() => this.dialogRef.close());
+  }
+
   private _assertUser(user: UserWithID | null): asserts user {
     if (!user) {
       this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url }, fragment: 'comments' })
