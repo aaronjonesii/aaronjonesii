@@ -1,5 +1,6 @@
 @import "src/assets/scss/partials/extras";
 @import "src/assets/scss/partials/media_queries";
+@import "src/assets/scss/partials/mixins";
 
 .card {
   padding: $app-spacing;
@@ -21,6 +22,9 @@ mat-card-title, mat-card-subtitle {
   @media (min-width: $tabletLandscape) {
     display: grid;
     grid-template-columns: 1fr 40%;
+    mat-card.card.info div { max-width: 520px; }
+  }
+  @media (min-width: $desktop) {
     mat-card.card.info div { max-width: 75%; }
   }
 }
@@ -37,4 +41,8 @@ mat-card-title, mat-card-subtitle {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.projects-container .project.card .subtitle {
+  @include truncateText(2);
 }
