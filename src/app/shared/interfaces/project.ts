@@ -20,7 +20,7 @@ export interface Project {
   roles: { [key: string]: "owner" | "writer" | "reader" | "commenter" },
   shards: number,
   views?: number, // sharded distributed counter
-  author: { name: string, image?: string },
+  author: { name: string, image: string | null },
 }
 export enum ProjectStatus {
   DRAFT = 'draft',
