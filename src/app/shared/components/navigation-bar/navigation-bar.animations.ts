@@ -10,7 +10,7 @@ export const NavigationBarAnimation = [
     transition(':leave', [
       style({transform: 'translateY(0%)'}),
       /** Emphasized accelerate */
-      animate('200ms 100ms cubic-bezier(0.3, 0.0, 0.8, 0.15)', style({transform: 'translateY(100%)'})),
+      animate('200ms cubic-bezier(0.3, 0.0, 0.8, 0.15)', style({transform: 'translateY(100%)'})),
     ]),
   ]),
 ];
