@@ -13,7 +13,7 @@ export class MenuService {
 
   public readonly adminNavigationBarMenu = [
     { name: 'Dashboard', icon: 'dashboard', routerLink: [nav_path.adminDashboard] },
-    { name: 'File Manager', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager] },
+    { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager] },
     { name: 'Projects', icon: 'supervised_user_circle', routerLink: ['/admin/projects'] },
     // { name: 'Comments', icon: 'work_history', routerLink: ['/admin/comments'] },
     { name: 'Users', icon: 'contact_mail', routerLink: [nav_path.adminUsers] },
@@ -23,7 +23,7 @@ export class MenuService {
   public readonly adminMenu: GenericItem[] = [
     { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.admin],
       description: 'Manage admin components throughout this website.' },
-    { name: 'File Manager', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],
+    { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],
       description: 'Manage files used throughout the website.' },
     { name: 'Projects', description: 'Create and manage the projects displayed here.',
       routerLink: ['/admin/projects'], tooltip: 'Projects', icon: 'work_history' },
