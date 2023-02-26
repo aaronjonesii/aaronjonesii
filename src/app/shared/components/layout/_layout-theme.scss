@@ -26,11 +26,7 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-layout {
-    mat-sidenav.mat-drawer {
-      background-color: mat.get-color-from-palette($background-palette, 'background');
-    }
-  }
+  aj-layout {}
 
   @include componentColorMixins($theme);
 }
