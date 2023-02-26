@@ -7,6 +7,7 @@ import { BreakpointObserver } from "@angular/cdk/layout";
 import { map } from "rxjs";
 import { NavigationRailAnimation } from "../navigation-rail/navigation-rail.animations";
 import { NavigationBarAnimation } from "../navigation-bar/navigation-bar.animations";
+import { NavigationDrawerAnimation } from "../navigation-drawer/navigation-drawer.animations";
 
 @Component({
   selector: 'aj-layout',
@@ -15,6 +16,7 @@ import { NavigationBarAnimation } from "../navigation-bar/navigation-bar.animati
   animations: [
     NavigationRailAnimation,
     NavigationBarAnimation,
+    NavigationDrawerAnimation,
   ],
 })
 export class LayoutComponent {
@@ -30,7 +32,7 @@ export class LayoutComponent {
     .pipe(map(state => state.matches));
   private isDesktop$ = this.breakpointObserver.observe('(min-width: 1440px)')
     .pipe(map(state => state.matches));
-  private isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
+  public isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
     .pipe(map(state => state.matches));
   constructor(
     public menuService: MenuService,

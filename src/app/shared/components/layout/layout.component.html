@@ -1,5 +1,10 @@
-<!-- Side Navigation Rail -->
-<aj-navigation-rail *ngIf="isTabletPortrait$ | async" [@navigationRailAnimation] [segments]="segments"></aj-navigation-rail>
+<ng-container *ngIf="{isTabletPortrait: isTabletPortrait$ | async, isDesktopExpanded: isDesktopExpanded$ | async} as aside">
+  <!-- Side Navigation Rail -->
+  <aj-navigation-rail *ngIf="aside.isTabletPortrait && !aside.isDesktopExpanded" [@navigationRailAnimation] [segments]="segments"></aj-navigation-rail>
+
+  <!-- Side Navigation Drawer -->
+  <aj-navigation-drawer *ngIf="aside.isDesktopExpanded" [@navigationDrawerAnimation] [segments]="segments"></aj-navigation-drawer>
+</ng-container>
 
 <!-- Main Content -->
 <div class="flex-col overflow-auto flex-grow">

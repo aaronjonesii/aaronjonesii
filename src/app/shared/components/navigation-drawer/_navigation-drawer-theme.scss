@@ -1,25 +1,6 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use '../top-app-bar/top-app-bar-theme' as topAppBar;
-@use '../navigation-bar/navigation-bar-theme' as navigationBar;
-@use '../navigation-rail/navigation-rail-theme' as navigationRail;
-@use '../navigation-drawer/navigation-drawer-theme' as navigationDrawer;
-
-@mixin componentColorMixins($theme) {
-  @include topAppBar.color($theme);
-  @include navigationBar.color($theme);
-  @include navigationRail.color($theme);
-  @include navigationDrawer.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include topAppBar.typography($theme);
-  @include navigationBar.typography($theme);
-  @include navigationRail.typography($theme);
-  @include navigationDrawer.typography($theme);
-}
-
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
   $primary-palette: mat.get-color-from-palette($color-config, 'primary');
@@ -29,15 +10,16 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-layout {}
-
-  @include componentColorMixins($theme);
+  aj-navigation-drawer {
+    button.active {
+      background: mat.get-color-from-palette($primary-palette, 100);
+    }
+  }
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
 
-  @include componentTypographyMixins($theme);
 }
 
 @mixin theme($theme) {
