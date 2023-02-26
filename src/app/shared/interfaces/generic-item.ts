@@ -3,7 +3,7 @@ export interface GenericItem {
   description?: string,
   routerLink?: string | string[],
   tooltip?: string,
-  icon?: string,
+  icon: string,
   disabled?: boolean,
   children?: GenericItem[]
 }

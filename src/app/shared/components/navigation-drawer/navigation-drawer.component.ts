@@ -3,11 +3,11 @@ import { GenericItem } from "../../interfaces/generic-item";
 import { nav_path } from "../../../app-routing.module";
 
 @Component({
-  selector: 'aj-navigation-rail',
-  templateUrl: './navigation-rail.component.html',
-  styleUrls: ['./navigation-rail.component.scss']
+  selector: 'aj-navigation-drawer',
+  templateUrl: './navigation-drawer.component.html',
+  styleUrls: ['./navigation-drawer.component.scss']
 })
-export class NavigationRailComponent {
+export class NavigationDrawerComponent {
   @Input() segments: GenericItem[] = [
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
     { name: 'About', icon: 'person', routerLink: [nav_path.about] },
