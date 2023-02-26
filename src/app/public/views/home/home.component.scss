@@ -1,4 +1,5 @@
 @import "src/assets/scss/partials/extras";
+@import "src/assets/scss/partials/media_queries";
 
 .card {
   padding: $app-spacing;
@@ -11,4 +12,29 @@ button.mini-fab-btn {
 
 mat-card-title, mat-card-subtitle {
   margin: 0 !important;
+}
+
+.greeting-container {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+  @media (min-width: $tabletLandscape) {
+    display: grid;
+    grid-template-columns: 1fr 40%;
+    mat-card.card.info div { max-width: 75%; }
+  }
+}
+.greeting-container .card.info button {
+  padding: 1.5rem 2rem;
+  border-radius: 2rem!important;
+}
+
+.projects-container {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+  @media (min-width: $tabletLandscape) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
