@@ -1,48 +1,44 @@
-<aj-auth-top-app-bar [title]="title" [loading]="loading"></aj-auth-top-app-bar>
+<h2 class="mat-headline-4">Create an account</h2>
 
-<main class="page-padding">
-  <h2 class="mat-headline-4">Create an account</h2>
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Email address</mat-label>
+    <input matInput id="email" type="email" name="email" autocomplete="email" formControlName="email" />
+  </mat-form-field>
 
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline">
-      <mat-label>Email address</mat-label>
-      <input matInput id="email" type="email" name="email" autocomplete="email" formControlName="email" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input matInput id="password" name="password" autocomplete="password" formControlName="password"
-             [type]="hidePassword ? 'password' : 'text'" />
-      <button mat-icon-button matSuffix type="button"
-              (click)="hidePassword = !hidePassword"
-              [attr.aria-label]="hidePassword ? 'Show' : 'Hide'+' Password'"
-              [attr.aria-pressed]="hidePassword">
-        <mat-icon [fontIcon]="hidePassword ? 'visibility_off' : 'visibility'"></mat-icon>
-      </button>
-    </mat-form-field>
-
-    <p>
-      By continuing, I agree to {{appInformation.name}}'s
-      <a mat-button color="accent" [routerLink]="[nav_path.privacyPolicy]" target="_blank">Privacy Policy</a>
-      and
-      <a mat-button color="accent" [routerLink]="[nav_path.termsOfUse]" target="_blank">Terms of Use</a>.
-    </p>
-
-    <button mat-flat-button color="primary" class="fab-btn-padding" type="submit" [disabled]="loading">
-      Create account
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput id="password" name="password" autocomplete="password" formControlName="password"
+           [type]="hidePassword ? 'password' : 'text'" />
+    <button mat-icon-button matSuffix type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="hidePassword ? 'Show' : 'Hide'+' Password'"
+            [attr.aria-pressed]="hidePassword">
+      <mat-icon [fontIcon]="hidePassword ? 'visibility_off' : 'visibility'"></mat-icon>
     </button>
+  </mat-form-field>
 
-    <button mat-stroked-button class="fab-btn-padding" (click)="auth.googleLogin()" type="button" [disabled]="loading">
-      <span class="flex-row align-items-center app-gap">
-        <img class="mat-icon" src="assets/imgs/g-logo.png" alt="Image of Google Icon with a white background"
-             width="80" height="80" />
-        Sign up with Google
-      </span>
-    </button>
+  <p>
+    By continuing, I agree to {{appInformation.name}}'s
+    <a mat-button color="accent" [routerLink]="[nav_path.privacyPolicy]" target="_blank">Privacy Policy</a>
+    and
+    <a mat-button color="accent" [routerLink]="[nav_path.termsOfUse]" target="_blank">Terms of Use</a>.
+  </p>
 
-    <p class="text-center">
-      Already have an account?
-      <a mat-button color="accent" [routerLink]="[nav_path.signIn]">Sign in</a>
-    </p>
-  </form>
-</main>
+  <button mat-flat-button color="primary" class="fab-btn-padding" type="submit" [disabled]="loading">
+    Create account
+  </button>
+
+  <button mat-stroked-button class="fab-btn-padding" (click)="auth.googleLogin()" type="button" [disabled]="loading">
+    <span class="flex-row align-items-center app-gap">
+      <img class="mat-icon" src="assets/imgs/g-logo.png" alt="Image of Google Icon with a white background"
+           width="80" height="80" />
+      Sign up with Google
+    </span>
+  </button>
+
+  <p class="text-center">
+    Already have an account?
+    <a mat-button color="accent" [routerLink]="[nav_path.signIn]">Sign in</a>
+  </p>
+</form>
