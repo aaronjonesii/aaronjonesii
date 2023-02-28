@@ -2,7 +2,7 @@ export const appInformation = {
   acronym: 'AJII',
   name: 'Aaron Jones II',
   title: 'Aaron Jones II',
-  byline: 'Personal website to display my ideas and projects.',
+  description: 'Crafting Unforgettable Web Experiences: Bridging the Gap Between Functionality and Aesthetics',
   email: 'contact@aaronjonesii.dev',
   socials: {
     github: 'https://github.com/aaronjonesii',

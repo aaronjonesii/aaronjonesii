@@ -21,7 +21,7 @@ export class SeoService {
     type?: 'article' | 'profile' | 'website'
   }) {
     const title = `${tags.title} - ${appInformation.name}`;
-    const description = tags.description ?? appInformation.byline;
+    const description = tags.description ?? appInformation.description;
     const image = tags.image ?? '/assets/svgs/flat_afro.svg';
     const domain = this.document.location.hostname;
     /* set title */
