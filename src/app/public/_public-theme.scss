@@ -6,12 +6,14 @@
 @use 'views/policies/policies-theme' as policies;
 @use 'views/home/home-theme' as home;
 @use 'views/work/work-theme' as work;
+@use 'views/about/about-theme' as about;
 
 @mixin componentColorMixins($theme) {
   @include comingSoon.color($theme);
   @include auth.color($theme);
   @include policies.color($theme);
   @include home.color($theme);
+  @include about.color($theme);
   @include work.color($theme);
 }
 
@@ -20,6 +22,7 @@
   @include auth.typography($theme);
   @include policies.typography($theme);
   @include home.typography($theme);
+  @include about.typography($theme);
   @include work.typography($theme);
 }
 
