@@ -4,7 +4,7 @@ import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { appInformation } from "../../../information";
 import { DOCUMENT } from "@angular/common";
-import { TitleService } from "../../../core/services/title.service";
+import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { SeoService } from "../../../core/services/seo.service";
 import { nav_path } from "../../../app-routing.module";
 
@@ -23,11 +23,15 @@ export class ContactComponent {
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
     @Inject(DOCUMENT) private document: Document,
-    private titleService: TitleService,
-    private seo: SeoService,
+    private topAppBarService: TopAppBarService,
+    private seoService: SeoService,
   ) {
-    titleService.setTitle(this.title);
-    seo.generateTags({
+    topAppBarService.setOptions({
+      title: this.title,
+      showBackBtn: false,
+      loading: false,
+    });
+    seoService.generateTags({
       title: this.title,
       route: nav_path.contact,
     });

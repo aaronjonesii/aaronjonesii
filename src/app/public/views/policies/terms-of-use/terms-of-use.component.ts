@@ -4,7 +4,7 @@ import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { appInformation } from "../../../../information";
 import { SeoService } from "../../../../core/services/seo.service";
-import { TitleService } from "../../../../core/services/title.service";
+import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-terms-of-use',
@@ -20,11 +20,15 @@ export class TermsOfUseComponent {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
-    private seo: SeoService,
-    private titleService: TitleService,
+    private seoService: SeoService,
+    private topAppBarService: TopAppBarService,
   ) {
-    titleService.setTitle(this.title);
-    seo.generateTags({
+    topAppBarService.setOptions({
+      title: this.title,
+      showBackBtn: false,
+      loading: false,
+    });
+    seoService.generateTags({
       title: this.title,
       description: `${this.title} policy page for ${appInformation.website}`,
       route: nav_path.termsOfUse,

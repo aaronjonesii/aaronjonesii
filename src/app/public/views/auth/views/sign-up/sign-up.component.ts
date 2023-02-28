@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
-import { TitleService } from "../../../../../core/services/title.service";
+import { TopAppBarService } from "../../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-sign-up',
@@ -31,13 +31,17 @@ export class SignUpComponent {
   constructor(
     public auth: AuthService,
     private cLog: ConsoleLoggerService,
-    private seo: SeoService,
-    private titleService: TitleService,
+    private seoService: SeoService,
+    private topAppBarService: TopAppBarService,
   ) {
-    titleService.setTitle(this.title);
+    topAppBarService.setOptions({
+      title: this.title,
+      showBackBtn: true,
+      loading: false,
+    });
     auth.checkIfSignedIn(nav_path.signUp, 0);
 
-    seo.generateTags({
+    seoService.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,
       route: nav_path.signUp

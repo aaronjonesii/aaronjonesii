@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AuthService } from "../../../core/services/auth.service";
 import { nav_path } from "../../../app-routing.module";
 import { Location } from "@angular/common";
-import { GenericButton } from "../../interfaces/generic-button";
-import { TitleService } from "../../../core/services/title.service";
+import { TopAppBarService } from "./top-app-bar.service";
 
 @Component({
   selector: 'aj-top-app-bar',
@@ -14,18 +13,18 @@ export class TopAppBarComponent {
   @Input() title = 'Title';
   @Input() showBackBtn = false;
   @Input() loading = false;
-  @Input() actionButton?: GenericButton;
-  @Input() disabledButton = false;
-  @Input() buttonAction?: () => void;
-  @Input() buttonRouterLink?: string | string[]
   public readonly nav_path = nav_path;
 
   constructor(
     public location: Location,
     public auth: AuthService,
-    private titleService: TitleService,
+    private topAppBarService: TopAppBarService,
   ) {
-    /** Set title from title service */
-    titleService.title$.forEach(title => this.title = title);
+    /** Set options from service */
+    topAppBarService.options$.forEach(options => {
+      this.title = options.title;
+      this.showBackBtn = options.showBackBtn;
+      this.loading = options.loading;
+    });
   }
 }

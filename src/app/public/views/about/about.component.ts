@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TitleService } from "../../../core/services/title.service";
+import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { appInformation } from "../../../information";
 import { SeoService } from "../../../core/services/seo.service";
 import { nav_path } from "../../../app-routing.module";
@@ -12,11 +12,15 @@ import { nav_path } from "../../../app-routing.module";
 export class AboutComponent {
   private readonly title = appInformation.title;
   constructor(
-    private titleService: TitleService,
-    private seo: SeoService,
+    private topAppBarService: TopAppBarService,
+    private seoService: SeoService,
   ) {
-    titleService.setTitle(this.title);
-    seo.generateTags({
+    topAppBarService.setOptions({
+      title: this.title,
+      showBackBtn: false,
+      loading: false,
+    });
+    seoService.generateTags({
       title: this.title,
       route: nav_path.about,
     });
