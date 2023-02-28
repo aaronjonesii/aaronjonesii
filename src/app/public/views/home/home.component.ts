@@ -5,6 +5,9 @@ import { FirestoreService } from "../../../shared/services/firestore.service";
 import { where } from "@angular/fire/firestore";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { nav_path } from "../../../app-routing.module";
+import { TitleService } from "../../../core/services/title.service";
+import { appInformation } from "../../../information";
+import { SeoService } from "../../../core/services/seo.service";
 
 @Component({
   selector: 'aj-home',
@@ -12,14 +15,22 @@ import { nav_path } from "../../../app-routing.module";
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
-  public readonly title = "Home page";
+  public readonly title = appInformation.title;
   public readonly nav_path = nav_path;
   public featuredProjects$?: Observable<Project[]>;
 
   constructor(
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
+    private titleService: TitleService,
+    private seo: SeoService,
   ) {
+    titleService.setTitle(this.title);
+    seo.generateTags({
+      title: this.title,
+      route: nav_path.home,
+    });
+
     (this.featuredProjects$ = db.colQuery$(
       `projects`,
       {idField: 'id'},

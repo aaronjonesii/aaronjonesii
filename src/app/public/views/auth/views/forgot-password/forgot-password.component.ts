@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
+import { TitleService } from "../../../../../core/services/title.service";
 
 @Component({
   selector: 'aj-forgot-password',
@@ -24,8 +25,10 @@ export class ForgotPasswordComponent {
   constructor(
     public auth: AuthService,
     private cLog: ConsoleLoggerService,
-    private seo: SeoService
+    private seo: SeoService,
+    private titleService: TitleService,
   ) {
+    titleService.setTitle(this.title);
     seo.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,

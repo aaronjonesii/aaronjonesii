@@ -18,6 +18,7 @@ import { CommentWithID } from "../../../../shared/interfaces/comment";
 import { DOCUMENT } from "@angular/common";
 import { tap } from "rxjs/operators";
 import { makeStateKey, TransferState } from "@angular/platform-browser";
+import { TitleService } from "../../../../core/services/title.service";
 
 @Component({
   selector: 'aj-project-detail',
@@ -50,7 +51,11 @@ export class ProjectDetailComponent {
     private seo: SeoService,
     @Inject(DOCUMENT) private document: Document,
     private state: TransferState,
+    private titleService: TitleService,
   ) {
+    /** title service */
+    this.titleService.setTitle(appInformation.title);
+
     this.projectID$ = route.paramMap.pipe(
       map((params) => params.get('projectID')),
     );
@@ -94,7 +99,6 @@ export class ProjectDetailComponent {
             this.notAvailable = true;
             return null;
           }
-
           /** seo service */
           this.seo.generateTags({
             title: project.name,

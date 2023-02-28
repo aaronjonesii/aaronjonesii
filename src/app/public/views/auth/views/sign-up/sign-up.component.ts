@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
+import { TitleService } from "../../../../../core/services/title.service";
 
 @Component({
   selector: 'aj-sign-up',
@@ -30,8 +31,10 @@ export class SignUpComponent {
   constructor(
     public auth: AuthService,
     private cLog: ConsoleLoggerService,
-    private seo: SeoService
+    private seo: SeoService,
+    private titleService: TitleService,
   ) {
+    titleService.setTitle(this.title);
     auth.checkIfSignedIn(nav_path.signUp, 0);
 
     seo.generateTags({

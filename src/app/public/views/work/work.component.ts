@@ -7,6 +7,8 @@ import { QueryConstraint, where } from "@angular/fire/firestore";
 import { nav_path } from 'src/app/app-routing.module';
 import { DOCUMENT } from "@angular/common";
 import { appInformation } from "../../../information";
+import { TitleService } from "../../../core/services/title.service";
+import { SeoService } from "../../../core/services/seo.service";
 
 @Component({
   selector: 'aj-work',
@@ -14,6 +16,7 @@ import { appInformation } from "../../../information";
   styleUrls: ['./work.component.scss']
 })
 export class WorkComponent {
+  private readonly title = 'Work';
   public readonly nav_path = nav_path;
   public filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('all');
   public filter$ = this.filterSubject.asObservable();
@@ -23,7 +26,16 @@ export class WorkComponent {
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
     @Inject(DOCUMENT) private document: Document,
+    private titleService: TitleService,
+    private seo: SeoService,
+
   ) {
+    titleService.setTitle(this.title);
+    seo.generateTags({
+      title: this.title,
+      route: nav_path.work,
+    });
+
     this.projects$ = this.filter$.pipe(
       switchMap(filter => {
         return this.getProjects$(filter);

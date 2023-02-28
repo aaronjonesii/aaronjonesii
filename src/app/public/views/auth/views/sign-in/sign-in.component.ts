@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
 import { Router } from "@angular/router";
+import { TitleService } from "../../../../../core/services/title.service";
 
 @Component({
   selector: 'aj-sign-in',
@@ -30,8 +31,10 @@ export class SignInComponent {
   constructor(
     private router: Router,
     public auth: AuthService,
-    private seo: SeoService
+    private seo: SeoService,
+    private titleService: TitleService,
   ) {
+    titleService.setTitle(this.title);
     auth.checkIfSignedIn(nav_path.signIn, 0);
 
     seo.generateTags({

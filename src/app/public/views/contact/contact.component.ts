@@ -4,6 +4,9 @@ import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { appInformation } from "../../../information";
 import { DOCUMENT } from "@angular/common";
+import { TitleService } from "../../../core/services/title.service";
+import { SeoService } from "../../../core/services/seo.service";
+import { nav_path } from "../../../app-routing.module";
 
 @Component({
   selector: 'aj-contact',
@@ -11,6 +14,7 @@ import { DOCUMENT } from "@angular/common";
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent {
+  private readonly title = 'Contact';
   public contactForm = initialContactForm;
   public success = false;
   public readonly appInformation = appInformation;
@@ -19,7 +23,15 @@ export class ContactComponent {
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
     @Inject(DOCUMENT) private document: Document,
-  ) {}
+    private titleService: TitleService,
+    private seo: SeoService,
+  ) {
+    titleService.setTitle(this.title);
+    seo.generateTags({
+      title: this.title,
+      route: nav_path.contact,
+    });
+  }
 
   private get name() { return this.contactForm.controls.name; }
   private get company() { return this.contactForm.controls.company; }
