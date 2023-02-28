@@ -29,7 +29,7 @@
   </mat-toolbar>
 
   <!-- Content -->
-  <main class="page-padding"><router-outlet></router-outlet></main>
+  <main class="page-padding flex-col"><router-outlet></router-outlet></main>
 
   <!-- Bottom Navigation Bar -->
   <aj-navigation-bar *ngIf="isMobile$ | async" [@navigationBarAnimation] [segments]="segments"></aj-navigation-bar>

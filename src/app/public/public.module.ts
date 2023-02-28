@@ -20,10 +20,10 @@ const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'about', loadChildren: () => import('./views/about/about.module').then(m => m.AboutModule) },
+      { path: 'auth', loadChildren: () => import('./views/auth/auth.module').then(m => m.AuthModule) },
       { path: 'contact', loadChildren: () => import('./views/contact/contact.module').then(m => m.ContactModule) },
       { path: 'work', loadChildren: () => import('./views/work/work.module').then(m => m.WorkModule) },
     ] },
-  { path: 'auth', loadChildren: () => import('./views/auth/auth.module').then(m => m.AuthModule) },
   { path: 'policies', loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule) }
 ];
 
