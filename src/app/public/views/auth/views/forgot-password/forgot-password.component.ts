@@ -36,6 +36,11 @@ export class ForgotPasswordComponent {
   get email() { return this.forgotPasswordForm.controls.email; }
 
   async onSubmit(): Promise<void> {
+    if (this.email.invalid) {
+      this.cLog.error(`Please enter a valid email address`);
+      return;
+    }
+
     this.loading = true;
 
     await this.auth.sendPasswordResetEmail(this.email.value)
