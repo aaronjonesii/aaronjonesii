@@ -3,6 +3,7 @@ import { AuthService } from "../../../core/services/auth.service";
 import { nav_path } from "../../../app-routing.module";
 import { Location } from "@angular/common";
 import { GenericButton } from "../../interfaces/generic-button";
+import { TitleService } from "../../../core/services/title.service";
 
 @Component({
   selector: 'aj-top-app-bar',
@@ -21,6 +22,10 @@ export class TopAppBarComponent {
 
   constructor(
     public location: Location,
-    public auth: AuthService
-  ) {}
+    public auth: AuthService,
+    private titleService: TitleService,
+  ) {
+    /** Set title from title service */
+    titleService.title$.forEach(title => this.title = title);
+  }
 }
