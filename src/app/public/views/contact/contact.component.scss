@@ -1,4 +1,5 @@
 @import "src/assets/scss/partials/extras";
+@import "src/assets/scss/partials/media_queries";
 
 :host {
   display: flex;
@@ -9,6 +10,9 @@
   height: calc(100vh - $app-top-app-bar-height - $app-navigation-bar-height - $app-spacing * 2);
   display: flex;
   flex-direction: column;
+}
+@media (min-width: $tabletLandscape) {
+  .headline { max-width: 1000px; }
 }
 
 mat-icon.scroll-icon {
