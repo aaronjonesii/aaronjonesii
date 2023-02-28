@@ -2,8 +2,6 @@
 @import "src/assets/scss/partials/extras";
 
 :host {
-  min-width: 300px;
-  width: 300px;
   display: flex;
   flex-direction: column;
   gap: $app-gap;
