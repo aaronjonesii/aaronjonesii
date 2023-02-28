@@ -1,13 +1,36 @@
 @import "src/assets/scss/partials/extras";
+@import "src/assets/scss/partials/media_queries";
 
 :host {
   display: flex;
   flex-direction: column;
   gap: $app-gap;
 }
+.projects-container {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+  @media (min-width: $tabletLandscape) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: $desktop) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 .card img { cursor: pointer; }
 .card .info-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
   padding: $app-spacing;
+}
+.card .info-container .actions-container {
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 .project-name {
   text-decoration: none;

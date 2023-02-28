@@ -4,13 +4,13 @@
   <mat-chip-option [selected]="(filter$ | async) === 'inactive'" value="inactive">Inactive</mat-chip-option>
 </mat-chip-listbox>
 
-<div class="flex-col app-gap">
+<div class="flex-col app-gap projects-container">
   <ng-container *ngIf="projects$ | async as projects">
     <ng-container *ngIf="projects.length; else noProjects">
       <mat-card *ngFor="let project of projects" class="card">
         <img mat-card-image [routerLink]="[nav_path.work, project.slug]" *ngIf="project.image" [src]="project.image" [alt]="project.name" />
 
-        <div class="info-container mat-body-1 flex-col app-gap">
+        <div class="info-container mat-body-1">
           <a class="mat-headline-5 m-0 project-name" [routerLink]="[nav_path.work, project.slug]">{{project.name}}</a>
           <p class="mat-body-1 m-0">{{project.description}}</p>
           <mat-chip-set role="list" *ngIf="project.tags?.length">
@@ -19,7 +19,7 @@
 
           <mat-divider></mat-divider>
 
-          <mat-card-actions class="justify-space-between">
+          <mat-card-actions class="actions-container">
             <ng-container *ngIf="project.allowComments else showViewBtn">
               <button mat-button color="primary" [routerLink]="[nav_path.work, project.slug]" fragment="comments">
                 <mat-icon class="material-icons-outlined" fontIcon="comment_bank"></mat-icon> Comments
