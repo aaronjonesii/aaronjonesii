@@ -24,6 +24,13 @@
     </button>
   </div>
 
+  <p>
+    By continuing, I agree to {{appInformation.website}}
+    <a mat-button color="accent" [routerLink]="[nav_path.privacyPolicy]" target="_blank">Privacy Policy</a>
+    and
+    <a mat-button color="accent" [routerLink]="[nav_path.termsOfUse]" target="_blank">Terms of Use</a>.
+  </p>
+
   <button mat-flat-button color="primary" class="fab-btn-padding" type="submit" [disabled]="loading">Sign in</button>
 
   <button mat-stroked-button class="fab-btn-padding" (click)="auth.googleLogin()" type="button" [disabled]="loading">

@@ -15,6 +15,7 @@ import { TopAppBarService } from "../../../../../shared/components/top-app-bar/t
 export class SignInComponent {
   public readonly title = "Sign in"
   public readonly nav_path = nav_path;
+  public readonly appInformation = appInformation;
   public loginForm = new FormGroup({
     email: new FormControl<string>(
       '',
