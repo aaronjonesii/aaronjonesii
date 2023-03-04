@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { LayoutModule } from "../../../shared/components/layout/layout.module";
+import { LayoutComponent } from "../../../shared/components/layout/layout.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule
@@ -17,14 +19,16 @@ export const error_nav_path = {
 };
 
 const routes: Routes = [
-  { path: 'error/404', component: PageNotFoundComponent },
-  { path: 'error/403', component: ForbiddenComponent },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '', component: LayoutComponent, children: [
+      { path: 'error/404', component: PageNotFoundComponent },
+      { path: 'error/403', component: ForbiddenComponent },
+      { path: '**', component: PageNotFoundComponent }
+    ] },
 ];
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [RouterModule.forChild(routes), CommonModule, ...ANGULAR_MATERIAL_MODULES],
+  imports: [RouterModule.forChild(routes), CommonModule, ...ANGULAR_MATERIAL_MODULES, LayoutModule],
   exports: [RouterModule]
 })
 export class ErrorsModule { }
