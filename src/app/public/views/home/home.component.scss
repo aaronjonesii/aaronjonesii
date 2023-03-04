@@ -4,7 +4,9 @@
 
 :host {
   max-width: $desktop;
-  align-self: center;
+  @media (min-width: $desktop) {
+    align-self: center;
+  }
 }
 
 .card {
