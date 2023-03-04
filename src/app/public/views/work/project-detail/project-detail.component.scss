@@ -14,7 +14,6 @@ aj-project-detail {
   .not-available-container img {
     width: 50%;
   }
-
   .article-container article img.project-image {
     aspect-ratio: 16/9;
     object-fit: cover;
@@ -80,7 +79,9 @@ aj-project-detail {
     gap: $app-gap;
     height: calc(100vh - #{$app-top-app-bar-height} - #{$app-page-padding * 2});
 
+
     .article-container { overflow: auto; }
+    .article-container article,
     .article-container .content {
       padding: 0 $app-spacing;
     }
