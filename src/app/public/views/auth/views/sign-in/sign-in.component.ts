@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
 import { Router } from "@angular/router";
+import { TopAppBarService } from "../../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-sign-in',
@@ -30,11 +31,17 @@ export class SignInComponent {
   constructor(
     private router: Router,
     public auth: AuthService,
-    private seo: SeoService
+    private seoService: SeoService,
+    private topAppBarService: TopAppBarService,
   ) {
+    topAppBarService.setOptions({
+      title: this.title,
+      showBackBtn: true,
+      loading: false,
+    });
     auth.checkIfSignedIn(nav_path.signIn, 0);
 
-    seo.generateTags({
+    seoService.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,
       route: nav_path.signIn

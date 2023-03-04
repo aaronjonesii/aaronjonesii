@@ -18,6 +18,7 @@ import { CommentWithID } from "../../../../shared/interfaces/comment";
 import { DOCUMENT } from "@angular/common";
 import { tap } from "rxjs/operators";
 import { makeStateKey, TransferState } from "@angular/platform-browser";
+import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-project-detail',
@@ -47,10 +48,18 @@ export class ProjectDetailComponent {
     private cLog: ConsoleLoggerService,
     private router: Router,
     private dialog: MatDialog,
-    private seo: SeoService,
+    private seoService: SeoService,
     @Inject(DOCUMENT) private document: Document,
     private state: TransferState,
+    private topAppBarService: TopAppBarService,
   ) {
+    /** title service */
+    topAppBarService.setOptions({
+      title: appInformation.title,
+      showBackBtn: true,
+      loading: false,
+    });
+
     this.projectID$ = route.paramMap.pipe(
       map((params) => params.get('projectID')),
     );
@@ -94,9 +103,8 @@ export class ProjectDetailComponent {
             this.notAvailable = true;
             return null;
           }
-
           /** seo service */
-          this.seo.generateTags({
+          this.seoService.generateTags({
             title: project.name,
             route: `${nav_path.work}/${project.slug}`,
             author: appInformation.name,

@@ -3,6 +3,8 @@ import { nav_path } from "../../../../app-routing.module";
 import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { appInformation } from "../../../../information";
+import { SeoService } from "../../../../core/services/seo.service";
+import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-terms-of-use',
@@ -17,8 +19,21 @@ export class TermsOfUseComponent {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private seoService: SeoService,
+    private topAppBarService: TopAppBarService,
   ) {
+    topAppBarService.setOptions({
+      title: this.title,
+      showBackBtn: false,
+      loading: false,
+    });
+    seoService.generateTags({
+      title: this.title,
+      description: `${this.title} policy page for ${appInformation.website}`,
+      route: nav_path.termsOfUse,
+    });
+
     route.fragment.forEach(fragment => this.document.querySelector(`#${fragment}`)?.scrollIntoView());
   }
 }
