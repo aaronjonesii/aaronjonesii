@@ -21,7 +21,6 @@ export class AboutComponent {
       loading: false,
     });
     seoService.generateTags({
-      title: this.title,
       route: nav_path.about,
     });
   }

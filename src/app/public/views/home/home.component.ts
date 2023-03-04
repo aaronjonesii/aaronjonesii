@@ -31,7 +31,6 @@ export class HomeComponent {
       loading: false,
     });
     seoService.generateTags({
-      title: this.title,
       route: nav_path.home,
     });
 

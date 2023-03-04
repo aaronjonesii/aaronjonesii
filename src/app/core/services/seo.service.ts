@@ -13,14 +13,14 @@ export class SeoService {
   ) { }
 
   generateTags(tags: {
-    title: string,
+    title?: string,
     description?: string,
     image?: string,
     route: string,
     author?: string,
     type?: 'article' | 'profile' | 'website'
   }) {
-    const title = `${tags.title} - ${appInformation.name}`;
+    const title = tags.title ? `${tags.title} - ${appInformation.name}` : appInformation.title;
     const description = tags.description ?? appInformation.description;
     const image = tags.image ?? '/assets/svgs/flat_afro.svg';
     const domain = this.document.location.hostname;
