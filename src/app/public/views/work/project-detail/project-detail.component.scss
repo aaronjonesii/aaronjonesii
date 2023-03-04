@@ -3,6 +3,11 @@
 @import "src/assets/scss/partials/media_queries";
 
 aj-project-detail {
+  width: 100%;
+  max-width: $desktop;
+  @media (min-width: calc(#{$desktop} + #{$app-navigation-drawer-width})) {
+    align-self: center;
+  }
 
   button.edit-btn {
     position: absolute;
@@ -77,7 +82,7 @@ aj-project-detail {
     display: flex;
     flex-direction: column;
     gap: $app-gap;
-    height: calc(100vh - #{$app-top-app-bar-height} - #{$app-page-padding * 2});
+    //height: calc(100vh - #{$app-top-app-bar-height} - #{$app-page-padding * 2});
 
 
     .article-container { overflow: auto; }

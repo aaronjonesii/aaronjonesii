@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
   gap: 8rem;
+
+  max-width: $desktop;
+  align-self: center;
 }
 .full-height-container {
   height: calc(100vh - $app-top-app-bar-height - $app-navigation-bar-height - $app-spacing * 2);
