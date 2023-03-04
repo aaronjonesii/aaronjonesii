@@ -2,7 +2,7 @@
   <div class="full-height-container align-items-center justify-content-center text-center">
     <h1 class="mat-headline-2 headline">Let's start your new project.</h1>
     <mat-icon class="material-icons-outlined scroll-icon bounce-top" fontIcon="keyboard_double_arrow_down"
-              on-mouseover="scrollToForm()"></mat-icon>
+              on-mouseover="scrollToForm()" color="primary"></mat-icon>
   </div>
 
   <div class="full-height-container app-gap" id="contact-container">
@@ -33,7 +33,7 @@
         <textarea matInput type="text" name="message" id="message" formControlName="message" autocomplete="off"></textarea>
       </mat-form-field>
 
-      <button mat-stroked-button type="submit" [disabled]="contactForm.invalid">
+      <button mat-stroked-button type="submit" color="primary" [disabled]="contactForm.invalid">
         <mat-icon class="material-icons-outlined" fontIcon="send"></mat-icon> Submit
       </button>
     </form>
