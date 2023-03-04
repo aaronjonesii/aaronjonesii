@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { DOCUMENT } from "@angular/common";
 import { ConsoleLoggerService } from "./console-logger.service";
-import { companyInformation } from "../../companyinformation";
+import { appInformation } from "../../information";
 
 @Injectable({ providedIn: 'root' })
 export class SwUpdateService {
@@ -29,7 +29,7 @@ export class SwUpdateService {
 
   async notifyUpdateAvailable() {
     await this.cLog.openSnackBar(
-      `A new version of ${companyInformation.name} is available`,
+      `A new version of ${appInformation.website} is available`,
       'Refresh',
       { duration: 0 }
     ).onAction().forEach(() => this.reloadPage());
