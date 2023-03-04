@@ -13,7 +13,7 @@ $FIREBASE_PROJECT = $GCP_PROJECT;
 $DEPLOYMENT_MESSAGE = Read-Host -Prompt 'Input Firebase deployment message: ';
 
 # Build Application
-try { npm run build-prerender:production }
+try { npm run build:ssr }
 catch {
   Write-Error "Failed to build production application"
   exit

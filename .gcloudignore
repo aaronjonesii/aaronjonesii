@@ -1,0 +1,12 @@
+.gcloudignore
+.git
+#!include:.gitignore
+
+# include build files
+!dist
+
+# Firebase functions
+functions
+
+# Emulatated data
+seed
