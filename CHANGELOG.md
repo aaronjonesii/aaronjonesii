@@ -5,8 +5,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- feat: bottom app bar
+- feat: responsive admin section
 
+## [2.0.0] - 2023-03-03
+### Added
+- feat: server-side rendering
+- feat: progressive web application
+- feat: authentication
+- feat: navigation bar
+- feat: admin
+- feat: admin projects
+- feat: admin add project
+- feat: admin edit project
+- feat: admin users
+- feat: home page
+- feat: about page
+- feat: work page
+- feat: contact page
+- feat: project detail
+- feat: account details
+- feat: navigation rail
+- feat: navigation drawer
+- feat: responsive home page
+- feat: responsive about page
+- feat: responsive work page
+- feat: responsive contact page
+- feat: responsive project detail page
+- feat: responsive sign in page
+- feat: responsive sign up page
+- feat: responsive forgot password
+- feat: title service
 
 ## [1.0.3] - 2023-02-19
 ### Added
