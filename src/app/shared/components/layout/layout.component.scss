@@ -12,3 +12,7 @@ main {
   overflow: auto;
   height: 0;
 }
+div.main-content {
+  max-width: $desktop;
+  margin: 0 auto;
+}
