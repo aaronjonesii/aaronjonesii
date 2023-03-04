@@ -9,7 +9,7 @@ export interface ContactForm {
 
 export const initialContactForm = new FormGroup<ContactForm>({
   name: new FormControl<string>('', {nonNullable: true, validators: Validators.required}),
-  company: new FormControl<string>('', {nonNullable: true, validators: Validators.required}),
+  company: new FormControl<string>('', {nonNullable: true}),
   email: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.email]}),
   message: new FormControl<string>('', {nonNullable: true, validators: Validators.required})
 });
