@@ -4,7 +4,6 @@ import { ConsoleLoggerService } from "../../../../core/services/console-logger.s
 import { StorageService } from "../../../../shared/services/storage.service";
 import { AuthService } from "../../../../core/services/auth.service";
 import { AppComponent } from "../../../../app.component";
-import { FunctionsError } from "@angular/fire/functions";
 
 
 @Component({
@@ -27,28 +26,28 @@ export class PhotoUploadComponent implements OnInit {
 
   ngOnInit() { this.photo = <string>this.user?.photoURL; }
 
-  public async onFilesSelect(event: any) {
+  public async onFilesSelect(event: Event) {
     try {
       this.loading = true;
 
-      this.file = event.target.files[0];
+      this.file = ((event.target as HTMLInputElement).files as FileList)[0];
       if (!this.file) return;
 
       /** split file name by '.' and return last item in array */
       const fileExtension = this.file.name.split('.')[this.file.name.split('.').length - 1];
 
       await this.storage.uploadBytes(`users/${this.user?.uid}/avatar.${fileExtension}`, this.file)
-        .catch((error: Error) => { throw new Error('Something went wrong uploading photo'); })
+        .catch(() => { throw new Error('Something went wrong uploading photo'); })
         .then(async (uploadResult) => await this.storage.getURL(uploadResult.ref))
 
-        .catch((error: Error) => { throw new Error(`Something went wrong loading photo url`); })
+        .catch(() => { throw new Error(`Something went wrong loading photo url`); })
         .then(url => {
           this.photo = url;
           return url;
         })
         .then(async (url) => await this.auth.updateUser({photoURL: url}))
 
-        .catch((error: FunctionsError) => { throw new Error(`Something went wrong updating profile`); })
+        .catch(() => { throw new Error(`Something went wrong updating profile`); })
         .then((res) => this.notifyReload(res.message));
     } catch (error) {
       this.cLog.error((<Error>error).message ?? `Something went wrong uploading photo`, error, this.file, this.user);

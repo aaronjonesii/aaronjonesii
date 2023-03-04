@@ -4,7 +4,7 @@ import {
   ValidationErrors, Validators
 } from '@angular/forms';
 import { lastValueFrom, take } from 'rxjs';
-import { AuthError, User } from "@angular/fire/auth";
+import { User } from "@angular/fire/auth";
 import { UpdateProfileResponse } from "../../../shared/interfaces/functions";
 import { FunctionsError } from "@angular/fire/functions";
 import { AuthService } from "../../../core/services/auth.service";
