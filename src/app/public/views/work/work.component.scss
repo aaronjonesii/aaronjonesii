@@ -18,6 +18,9 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
+  @media (min-width: 2300px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 .card img { cursor: pointer; }
 .card .info-container {
