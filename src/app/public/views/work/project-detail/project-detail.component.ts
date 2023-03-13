@@ -64,8 +64,11 @@ export class ProjectDetailComponent {
       map((params) => params.get('projectID')),
     );
 
+    const key = makeStateKey<ReadProject>('PROJECT-DETAIL');
+    const existing = this.state.get(key, null);
     this.project$ = this.projectID$.pipe(
-      switchMap((projectID) => this.getProject(projectID)),
+      switchMap((projectID) => existing ? of(existing) : this.getProject$(projectID)
+        .pipe(tap(project => this.state.set(key, project)))),
       tap(() => this._routeToFragment()),
     );
 
@@ -93,12 +96,10 @@ export class ProjectDetailComponent {
       .pipe(map(userDoc => (Object.assign({id: user.uid}, userDoc) as UserWithID)));
   }
 
-  private getProject(id: string | null): Observable<ReadProject | null> {
-    const key = makeStateKey<ReadProject>('PROJECT-DETAIL');
-    const existing = this.state.get(key, null);
+  private getProject$(id: string | null): Observable<ReadProject | null> {
     return (this.db.doc$(`projects/${id}`) as Observable<ReadProject>)
       .pipe(
-        existing ? startWith(existing) : switchMap(async (project) => {
+        switchMap(async (project) => {
           if (!project) {
             this.notAvailable = true;
             return null;
@@ -128,7 +129,6 @@ export class ProjectDetailComponent {
 
           return Object.assign({views: views}, project);
         }),
-        tap(project => this.state.set(key, project)),
       );
   }
 
