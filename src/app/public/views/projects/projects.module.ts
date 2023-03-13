@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from "@angular/router";
-import { WorkComponent } from "./work.component";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
@@ -13,6 +12,7 @@ import { ConfirmDialogModule } from "../../../shared/components/confirm-dialog/c
 import { MatTabsModule } from "@angular/material/tabs";
 import { CommentsDialogModule } from "./project-detail/comments-dialog/comments-dialog.module";
 import { ProjectDetailCommentComponent } from './project-detail/project-detail-comment/project-detail-comment.component';
+import { ProjectsComponent } from "./projects.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatChipsModule, MatCardModule, MatIconModule,
@@ -22,12 +22,12 @@ const ANGULAR_MATERIAL_MODULES = [
 const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = [
-  WorkComponent,
+  ProjectsComponent,
   ProjectDetailComponent, ProjectDetailCommentComponent,
 ];
 
 const routes: Routes = [
-  { path: '', component: WorkComponent, pathMatch: 'full' },
+  { path: '', component: ProjectsComponent, pathMatch: 'full' },
   { path: ':projectID', component: ProjectDetailComponent },
 ];
 
@@ -40,4 +40,4 @@ const routes: Routes = [
   ],
   exports: [...COMPONENTS]
 })
-export class WorkModule { }
+export class ProjectsModule { }

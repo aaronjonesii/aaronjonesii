@@ -11,12 +11,12 @@ import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app
 import { SeoService } from "../../../core/services/seo.service";
 
 @Component({
-  selector: 'aj-work',
-  templateUrl: './work.component.html',
-  styleUrls: ['./work.component.scss']
+  selector: 'aj-projects',
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss']
 })
-export class WorkComponent {
-  private readonly title = 'Work';
+export class ProjectsComponent {
+  private readonly title = 'Projects';
   public readonly nav_path = nav_path;
   public filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('all');
   public filter$ = this.filterSubject.asObservable();
@@ -37,7 +37,7 @@ export class WorkComponent {
     });
     seoService.generateTags({
       title: this.title,
-      route: nav_path.work,
+      route: nav_path.projects,
     });
 
     this.projects$ = this.filter$.pipe(
@@ -87,7 +87,7 @@ export class WorkComponent {
 
   public async onShare(project: ReadProject) {
     const host = `https://${appInformation.website}`;
-    const path = `${nav_path.work}/${project.slug}`;
+    const path = `${nav_path.projects}/${project.slug}`;
     const url = host + path;
     const title = project.name;
     const text = project.description;

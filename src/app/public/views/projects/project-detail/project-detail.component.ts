@@ -1,5 +1,5 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { map, Observable, of, startWith, switchMap } from "rxjs";
+import { map, Observable, of, switchMap } from "rxjs";
 import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
@@ -107,7 +107,7 @@ export class ProjectDetailComponent {
           /** seo service */
           this.seoService.generateTags({
             title: project.name,
-            route: `${nav_path.work}/${project.slug}`,
+            route: `${nav_path.projects}/${project.slug}`,
             author: appInformation.name,
             description: project.description,
             type: 'article',
