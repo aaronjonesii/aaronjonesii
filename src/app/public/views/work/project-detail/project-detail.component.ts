@@ -1,5 +1,5 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { map, Observable, of, startWith, switchMap } from "rxjs";
+import { map, Observable, of, switchMap } from "rxjs";
 import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
