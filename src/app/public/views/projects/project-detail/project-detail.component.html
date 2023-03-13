@@ -61,7 +61,7 @@
               <div class="related-projects-container">
                 <ng-container *ngIf="relatedProjects$ | async as relatedProjects">
                   <ng-container *ngIf="relatedProjects.length else noRelatedProjects">
-                    <div class="related-project" *ngFor="let relatedProject of relatedProjects" [routerLink]="[nav_path.work, relatedProject.slug]">
+                    <div class="related-project" *ngFor="let relatedProject of relatedProjects" [routerLink]="[nav_path.projects, relatedProject.slug]">
                       <img *ngIf="relatedProject?.image" [src]="relatedProject.image" [alt]="relatedProject.name" />
                       <span class="name">{{relatedProject.name}}</span>
                     </div>

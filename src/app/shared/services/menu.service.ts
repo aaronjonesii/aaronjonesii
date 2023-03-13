@@ -7,7 +7,7 @@ export class MenuService {
   public readonly pages: GenericItem[] = [
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
     { name: 'About', icon: 'person', routerLink: [nav_path.about] },
-    { name: 'Work', icon: 'work_history', routerLink: [nav_path.work] },
+    { name: 'Projects', icon: 'work_history', routerLink: [nav_path.projects] },
     { name: 'Contact', icon: 'contact_support', routerLink: [nav_path.contact] },
   ];
   public readonly adminPages: GenericItem[] = [
@@ -21,12 +21,6 @@ export class MenuService {
     //   description: 'Manage story comments.' },
     { name: 'Users', description: 'Manage this websites users.',
       routerLink: [nav_path.adminUsers], tooltip: 'Users', icon: 'manage_accounts' },
-  ];
-  public readonly navigationBarMenu = [
-    { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
-    { name: 'About', icon: 'person', routerLink: [nav_path.about] },
-    { name: 'Work', icon: 'work_history', routerLink: [nav_path.work] },
-    { name: 'Contact', icon: 'contact_support', routerLink: [nav_path.contact] }
   ];
 
   public readonly adminNavigationBarMenu = [

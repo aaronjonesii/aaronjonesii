@@ -13,7 +13,7 @@ export const public_nav_path = {
   auth: '/auth', ...auth_nav_path,
   contact: '/contact',
   policies: '/policies', ...policies_nav_path,
-  work: '/work'
+  projects: '/projects'
 };
 
 const routes: Routes = [
@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: 'about', loadChildren: () => import('./views/about/about.module').then(m => m.AboutModule) },
       { path: 'auth', loadChildren: () => import('./views/auth/auth.module').then(m => m.AuthModule) },
       { path: 'contact', loadChildren: () => import('./views/contact/contact.module').then(m => m.ContactModule) },
-      { path: 'work', loadChildren: () => import('./views/work/work.module').then(m => m.WorkModule) },
+      { path: 'projects', loadChildren: () => import('./views/projects/projects.module').then(m => m.ProjectsModule) },
     ] },
   { path: 'policies', loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule) }
 ];

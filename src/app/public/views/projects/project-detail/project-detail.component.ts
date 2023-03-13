@@ -107,7 +107,7 @@ export class ProjectDetailComponent {
           /** seo service */
           this.seoService.generateTags({
             title: project.name,
-            route: `${nav_path.work}/${project.slug}`,
+            route: `${nav_path.projects}/${project.slug}`,
             author: appInformation.name,
             description: project.description,
             type: 'article',

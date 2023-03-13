@@ -22,7 +22,7 @@ import { NavigationDrawerAnimation } from "../navigation-drawer/navigation-drawe
 export class LayoutComponent {
   public readonly title = appInformation.name;
   public readonly nav_path = nav_path;
-  public segments = this.menuService.navigationBarMenu;
+  public segments = this.menuService.pages;
   /** Breakpoints can be found from src/assets/scss/partials/_media_queries.scss */
   public isMobile$ = this.breakpointObserver.observe('(max-width: 599px)')
     .pipe(map(state => state.matches));
@@ -43,7 +43,7 @@ export class LayoutComponent {
     auth.user$.forEach(async (user) => {
       if (await auth.isAdmin(user)) {
         const adminNavigationBarMenu = [
-          ...this.menuService.navigationBarMenu,
+          ...this.menuService.pages,
           { name: 'Admin', icon: 'admin_panel_settings', routerLink: [nav_path.adminDashboard] }
         ];
 
