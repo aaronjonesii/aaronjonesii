@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - feat: responsive admin section
 
+## [2.0.1] - 2023-03-23
+### Added
+- chore: image to not found page
+
+### Changed
+- refactor: renamed work to projects
+
+### Fixed
+- fix: project views
+
 ## [2.0.0] - 2023-03-03
 ### Added
 - feat: server-side rendering
