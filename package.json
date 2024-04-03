@@ -13,7 +13,8 @@
     "prerender": "ng run aaronjonesii:prerender",
     "emulators": "firebase emulators:start --import seed --export-on-exit seed",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "ci": "npm run lint"
   },
   "private": true,
   "dependencies": {
