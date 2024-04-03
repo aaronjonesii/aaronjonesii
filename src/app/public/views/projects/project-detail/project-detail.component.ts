@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, makeStateKey, TransferState } from '@angular/core';
 import { map, Observable, of, switchMap } from "rxjs";
 import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -17,7 +17,7 @@ import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.compo
 import { CommentWithID } from "../../../../shared/interfaces/comment";
 import { DOCUMENT } from "@angular/common";
 import { tap } from "rxjs/operators";
-import { makeStateKey, TransferState } from "@angular/platform-browser";
+
 import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
@@ -118,7 +118,7 @@ export class ProjectDetailComponent {
 
           /** increment view count */
           const shard_id = Math.floor(Math.random() * project.shards).toString();
-          const shardRef = this.db.doc(`projects/${project.slug}/shards/${shard_id}`);
+          const shardRef = this.db.doc<object>(`projects/${project.slug}/shards/${shard_id}`);
           await this.db.update(shardRef, { views: increment(1) });
 
           /** get view count from shards */

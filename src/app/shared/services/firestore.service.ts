@@ -14,15 +14,14 @@ import { Observable } from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { SetOptions } from '@firebase/firestore';
 import { Injectable } from '@angular/core';
+import { DocumentData, SnapshotOptions } from "@angular/fire/compat/firestore";
 
 type CollectionPredicate<T> = string | CollectionReference<T>;
 type CollectionGroupPredicate<T> = string | Query<T>;
 type DocumentPredicate<T> = string | DocumentReference<T>;
 
-
 @Injectable({ providedIn: 'root' })
 export class FirestoreService {
-
   constructor(private db: Firestore) {}
 
   /** Get References */
@@ -62,16 +61,23 @@ export class FirestoreService {
   docSnap<T>(ref: DocumentPredicate<T>): Promise<DocumentSnapshot<T>> {
     return getDoc(this.doc(ref));
   }
-  col$<T>(ref: CollectionPredicate<T>, options?: { idField?: string; }): Observable<T[]> {
+  col$<T, U extends string = never>(
+    ref: CollectionPredicate<T>,
+    options?: {
+      idField?: ((U | keyof T) & keyof NonNullable<T>);
+    } & SnapshotOptions,
+  ): Observable<T[]> {
     return collectionData(this.col(ref), options) as Observable<T[]>;
   }
   colSnap<T>(ref: CollectionPredicate<T>, ...queryConstraints: QueryConstraint[]): Promise<QuerySnapshot<T>> {
     const q = query(this.col(ref), ...queryConstraints)
     return getDocs(q);
   }
-  colQuery$<T>(
+  colQuery$<T, U extends string = never>(
     ref: CollectionPredicate<T>,
-    options?: { idField?: string; },
+    options?: {
+      idField?: ((U | keyof T) & keyof NonNullable<T>);
+    } & SnapshotOptions,
     ...queryConstraints: QueryConstraint[]
   ): Observable<T[]> {
     const q = query(this.col(ref), ...queryConstraints);
@@ -79,7 +85,7 @@ export class FirestoreService {
   }
   colGroupQuery$<T>(
     ref: CollectionGroupPredicate<T>,
-    options?: { idField?: string; },
+    options?: {idField?: undefined} & SnapshotOptions,
     ...queryConstraints: QueryConstraint[]
   ): Observable<T[]> {
     const q = query(this.colGroup(ref), ...queryConstraints);
@@ -136,7 +142,7 @@ export class FirestoreService {
     data = Object.assign({created: timestamp, updated: timestamp}, data);
     return setDoc(this.doc(ref), data, options);
   }
-  update<T>(ref: DocumentPredicate<T>, data: UpdateData<T>): Promise<void> {
+  update<T extends DocumentData>(ref: DocumentPredicate<T>, data: UpdateData<T>): Promise<void> {
     const timestamp = this.timestamp;
     data = Object.assign({updated: timestamp}, data);
     return updateDoc(this.doc(ref), data);
