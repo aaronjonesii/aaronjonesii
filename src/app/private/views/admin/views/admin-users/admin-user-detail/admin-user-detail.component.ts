@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Observable, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
@@ -9,11 +9,28 @@ import { FirestoreService } from "../../../../../../shared/services/firestore.se
 import { ConsoleLoggerService } from "../../../../../../core/services/console-logger.service";
 import { FunctionsService } from "../../../../../../shared/services/functions.service";
 import { ConfirmDialogComponent } from "../../../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { TopAppBarComponent } from "../../../../../../shared/components/top-app-bar/top-app-bar.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { AsyncPipe, DatePipe } from "@angular/common";
+import {
+  LoadingOrErrorComponent
+} from "../../../../../../shared/components/loading-or-error/loading-or-error.component";
 
 @Component({
   selector: 'aj-admin-user-detail',
   templateUrl: './admin-user-detail.component.html',
-  styleUrls: ['./admin-user-detail.component.scss']
+  styleUrl: './admin-user-detail.component.scss',
+  standalone: true,
+  imports: [
+    TopAppBarComponent,
+    AsyncPipe,
+    MatButtonModule,
+    RouterLink,
+    MatIconModule,
+    DatePipe,
+    LoadingOrErrorComponent,
+  ],
 })
 export class AdminUserDetailComponent {
   public readonly title = 'User detail';

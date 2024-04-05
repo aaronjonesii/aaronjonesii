@@ -1,26 +1,28 @@
-<aj-top-app-bar [title]="title" [showBackBtn]="true"></aj-top-app-bar>
+<aj-top-app-bar [title]="title" [showBackBtn]="true" />
 
 <main class="page-padding">
-  <ng-container *ngIf="user$ | async as user; else loadingOrError">
+  @if (user$ | async; as user) {
     <div class="crumbs">
-      <button mat-button [routerLink]="[nav_path.adminUsers]">Users</button>
-      <mat-icon fontIcon="chevron_right"></mat-icon>
-      <button mat-button disabled>{{user.id}}</button>
+      <button mat-button type="button" [routerLink]="[nav_path.adminUsers]">Users</button>
+      <mat-icon fontIcon="chevron_right" />
+      <button mat-button type="button" disabled>{{user?.displayName ?? user.id}}</button>
     </div>
 
     <div class="header">
       <h1>{{user?.displayName ?? 'Unknown name'}}</h1>
 
-      <button mat-stroked-button color="accent" (click)="updateAdminRole(user)">
-        <mat-icon fontIcon="admin_panel_settings"></mat-icon>
+      <button mat-stroked-button type="button" color="accent" (click)="updateAdminRole(user)">
+        <mat-icon fontIcon="admin_panel_settings" />
         {{user?.admin === true ? 'Revoke' : 'Grant'}} Admin
       </button>
     </div>
 
     <section class="info">
-      <picture *ngIf="user.photoURL">
-        <img [src]="user.photoURL" [alt]="user.displayName ?? user.email + ' photo'" height="200" width="100%" />
-      </picture>
+      @if (user.photoURL) {
+        <picture>
+          <img height="200" width="100%" [src]="user.photoURL" [alt]="user.displayName ?? user.email + ' photo'" />
+        </picture>
+      }
       <div class="details">
         <div>
           <h3>UID</h3>
@@ -38,9 +40,7 @@
     </section>
 
     <!-- todo: add user comments -->
-  </ng-container>
-
-  <ng-template #loadingOrError>
+  } @else {
     <aj-loading-or-error [error]="error" />
-  </ng-template>
+  }
 </main>
