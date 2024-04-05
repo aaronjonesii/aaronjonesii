@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationDrawerComponent } from "./navigation-drawer.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterModule } from "@angular/router";
@@ -11,7 +10,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, RouterModule];
 
-const COMPONENTS = [NavigationDrawerComponent];
+const COMPONENTS = []!;
 
 @NgModule({
   declarations: [...COMPONENTS],

@@ -1,11 +1,21 @@
 import { Component, Input } from '@angular/core';
 import { GenericItem } from "../../interfaces/generic-item";
 import { nav_path } from "../../../app-routing.module";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'aj-navigation-drawer',
   templateUrl: './navigation-drawer.component.html',
-  styleUrls: ['./navigation-drawer.component.scss']
+  styleUrl: './navigation-drawer.component.scss',
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    RouterLink,
+    RouterLinkActive,
+    MatIconModule
+  ],
 })
 export class NavigationDrawerComponent {
   @Input() segments: GenericItem[] = [
