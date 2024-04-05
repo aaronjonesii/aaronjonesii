@@ -1,19 +1,27 @@
-<ng-container *ngIf="{isTabletPortrait: isTabletPortrait$ | async, isDesktopExpanded: isDesktopExpanded$ | async} as aside">
+@if ({isTabletPortrait: isTabletPortrait$ | async, isDesktopExpanded: isDesktopExpanded$ | async}; as aside) {
   <!-- Side Navigation Rail -->
-  <aj-navigation-rail *ngIf="aside.isTabletPortrait && !aside.isDesktopExpanded" [@navigationRailAnimation] [segments]="segments"></aj-navigation-rail>
+  @if (aside.isTabletPortrait && !aside.isDesktopExpanded) {
+    <aj-navigation-rail [@navigationRailAnimation] [segments]="segments" />
+  }
 
   <!-- Side Navigation Drawer -->
-  <aj-navigation-drawer *ngIf="aside.isDesktopExpanded" [@navigationDrawerAnimation] [segments]="segments"></aj-navigation-drawer>
-</ng-container>
+  @if (aside.isDesktopExpanded) {
+    <aj-navigation-drawer [@navigationDrawerAnimation] [segments]="segments" />
+  }
+}
 
 <!-- Main Content -->
 <div class="flex-col overflow-auto flex-grow">
   <!-- Header -->
-  <aj-top-app-bar [title]="title"></aj-top-app-bar>
+  <aj-top-app-bar [title]="title" />
 
   <!-- Content -->
-  <main class="page-padding flex-col"><router-outlet></router-outlet></main>
+  <main class="page-padding flex-col">
+    <router-outlet />
+  </main>
 
   <!-- Bottom Navigation Bar -->
-  <aj-navigation-bar *ngIf="isMobile$ | async" [@navigationBarAnimation] [segments]="segments"></aj-navigation-bar>
+  @if (isMobile$ | async) {
+    <aj-navigation-bar [@navigationBarAnimation] [segments]="segments" />
+  }
 </div>

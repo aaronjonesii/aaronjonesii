@@ -8,15 +8,30 @@ import { map } from "rxjs";
 import { NavigationRailAnimation } from "../navigation-rail/navigation-rail.animations";
 import { NavigationBarAnimation } from "../navigation-bar/navigation-bar.animations";
 import { NavigationDrawerAnimation } from "../navigation-drawer/navigation-drawer.animations";
+import { NavigationRailComponent } from "../navigation-rail/navigation-rail.component";
+import { NavigationDrawerComponent } from "../navigation-drawer/navigation-drawer.component";
+import { TopAppBarComponent } from "../top-app-bar/top-app-bar.component";
+import { NavigationBarComponent } from "../navigation-bar/navigation-bar.component";
+import { RouterOutlet } from "@angular/router";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: 'aj-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  styleUrl: './layout.component.scss',
   animations: [
     NavigationRailAnimation,
     NavigationBarAnimation,
     NavigationDrawerAnimation,
+  ],
+  standalone: true,
+  imports: [
+    NavigationRailComponent,
+    NavigationDrawerComponent,
+    TopAppBarComponent,
+    NavigationBarComponent,
+    RouterOutlet,
+    AsyncPipe,
   ],
 })
 export class LayoutComponent {
