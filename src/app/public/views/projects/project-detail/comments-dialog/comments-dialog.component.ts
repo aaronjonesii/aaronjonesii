@@ -1,20 +1,41 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { CommentWithID, WriteComment } from "../../../../../shared/interfaces/comment";
 import { UserWithID } from "../../../../../shared/interfaces/user";
 import { Router } from "@angular/router";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { nav_path } from "../../../../../app-routing.module";
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 import { DocumentReference } from "@angular/fire/firestore";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { tap } from "rxjs/operators";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { AsyncPipe } from "@angular/common";
+import { UserPhotoComponent } from "../../../../../shared/components/user-photo/user-photo.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { CommentsDialogCommentComponent } from "./comments-dialog-comment/comments-dialog-comment.component";
+import { LoadingComponent } from "../../../../../shared/components/loading/loading.component";
 
 @Component({
   selector: 'aj-comments-dialog',
   templateUrl: './comments-dialog.component.html',
-  styleUrls: ['./comments-dialog.component.scss']
+  styleUrl: './comments-dialog.component.scss',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    AsyncPipe,
+    UserPhotoComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    CommentsDialogCommentComponent,
+    LoadingComponent,
+  ],
 })
 export class CommentsDialogComponent {
   public comments$ = this.data.comments$

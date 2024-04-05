@@ -1,46 +1,52 @@
 <div class="header">
   <span class="mat-headline-6 m-0">Comments</span>
 
-  <button mat-icon-button mat-dialog-close>
-    <mat-icon class="material-icons-outlined" fontIcon="close"></mat-icon>
+  <button mat-icon-button type="button" mat-dialog-close>
+    <mat-icon class="material-icons-outlined" fontIcon="close" />
   </button>
 </div>
 
-<ng-container *ngIf="comments$ | async as comments else loading">
+@if (comments$ | async; as comments) {
   <div class="flex-row justify-space-between">
     <h3>{{comments?.length ?? 0}} {{(comments?.length ?? 0) === 1 ? 'Comment' : 'Comments'}}</h3>
 
     <!-- todo: add feature for sorting comments -->
-    <button mat-button disabled>
-      <mat-icon class="material-icons-outlined" fontIcon="sort"></mat-icon>
+    <button mat-button type="button" disabled>
+      <mat-icon class="material-icons-outlined" fontIcon="sort" />
       Sort by
     </button>
   </div>
 
   <!-- Add Comment Container -->
-  <ng-container *ngIf="{user: user$ | async} as auth">
+  @if ({user: user$ | async}; as auth) {
     <div class="flex-row app-gap align-items-center add-comment-container">
-      <aj-user-photo [user]="auth.user"
+      <aj-user-photo #userPhotoEl class="cursor-pointer"
+                     [user]="auth.user"
                      (click)="onPhotoClick()"
-                     [style.cursor]="'pointer'"
-                     (mouseenter)="el.dim = true"
-                     (mouseleave)="el.dim = false" #el></aj-user-photo>
+                     (mouseenter)="userPhotoEl.dim = true"
+                     (mouseleave)="userPhotoEl.dim = false" />
       <mat-form-field class="w-100">
-        <textarea matInput rows="1" placeholder="Add a comment..." [formControl]="commentFormControl" (focus)="focusCommentInputContainer(auth.user)" #commentInput></textarea>
+        <textarea #commentInput matInput rows="1" placeholder="Add a comment..."
+                  [formControl]="commentFormControl"
+                  (focus)="focusCommentInputContainer(auth.user)"></textarea>
       </mat-form-field>
     </div>
-    <div *ngIf="commentInputContainerInFocus" class="align-self-flex-end">
-      <button mat-button (click)="onCancelComment()">Cancel</button>
-      <button mat-flat-button color="primary" [disabled]="commentFormControl.invalid" (click)="addComment(auth.user)">Comment</button>
-    </div>
+    @if (commentInputContainerInFocus) {
+      <div class="align-self-flex-end">
+        <button mat-button type="button" (click)="onCancelComment()">Cancel</button>
+        <button mat-flat-button type="button" color="primary"
+                [disabled]="commentFormControl.invalid"
+                (click)="addComment(auth.user)">Comment</button>
+      </div>
+    }
 
 
     <div class="comments-container">
-      <aj-comment *ngFor="let comment of comments" [comment]="comment" [user]="auth.user" [dialogRef]="dialogRef"></aj-comment>
+      @for (comment of comments; track comment.id) {
+        <aj-comment [comment]="comment" [user]="auth.user" [dialogRef]="dialogRef" />
+      }
     </div>
-  </ng-container>
-</ng-container>
-
-<ng-template #loading>
+  }
+} @else {
   <aj-loading />
-</ng-template>
+}
