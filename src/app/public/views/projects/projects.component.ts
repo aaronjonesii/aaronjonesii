@@ -5,15 +5,31 @@ import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { QueryConstraint, where } from "@angular/fire/firestore";
 import { nav_path } from 'src/app/app-routing.module';
-import { DOCUMENT } from "@angular/common";
+import { AsyncPipe, DOCUMENT } from "@angular/common";
 import { appInformation } from "../../../information";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { SeoService } from "../../../core/services/seo.service";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatCardModule } from "@angular/material/card";
+import { RouterLink } from "@angular/router";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: 'aj-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
+  styleUrl: './projects.component.scss',
+  standalone: true,
+  imports: [
+    MatChipsModule,
+    AsyncPipe,
+    MatCardModule,
+    RouterLink,
+    MatDividerModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class ProjectsComponent {
   private readonly title = 'Projects';

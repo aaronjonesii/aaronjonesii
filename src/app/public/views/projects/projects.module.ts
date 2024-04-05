@@ -24,9 +24,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule];
 
-const COMPONENTS = [
-  ProjectsComponent,
-];
+const COMPONENTS = []!;
 
 const routes: Routes = [
   { path: '', component: ProjectsComponent, pathMatch: 'full' },
