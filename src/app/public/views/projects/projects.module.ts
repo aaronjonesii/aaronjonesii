@@ -16,6 +16,7 @@ import { ProjectsComponent } from "./projects.component";
 import { TopAppBarComponent } from "../../../shared/components/top-app-bar/top-app-bar.component";
 import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
 import { LoadingComponent } from "../../../shared/components/loading/loading.component";
+import { DateAgoPipe } from "../../../shared/pipes/date-ago.pipe";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatChipsModule, MatCardModule, MatIconModule,
@@ -39,7 +40,8 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
-     CommentsDialogModule, ConfirmDialogModule, LoadingComponent, SharedModule, TopAppBarComponent, UserPhotoComponent,
+    CommentsDialogModule, ConfirmDialogModule, DateAgoPipe, LoadingComponent, SharedModule, TopAppBarComponent,
+    UserPhotoComponent,
   ],
   exports: [...COMPONENTS]
 })

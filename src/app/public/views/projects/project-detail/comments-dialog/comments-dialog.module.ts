@@ -20,11 +20,11 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
-const COMPONENTS = [CommentsDialogComponent, CommentsDialogCommentComponent];
+const COMPONENTS = [CommentsDialogComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES, LoadingComponent, SharedModule, UserPhotoComponent],
+  imports: [...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES, CommentsDialogCommentComponent, LoadingComponent, SharedModule, UserPhotoComponent],
   exports: [...COMPONENTS]
 })
 export class CommentsDialogModule { }

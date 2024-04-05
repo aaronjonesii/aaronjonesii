@@ -9,11 +9,26 @@ import { ConsoleLoggerService } from "../../../../../../core/services/console-lo
 import { FirestoreService } from "../../../../../../shared/services/firestore.service";
 import { MatDialogRef } from "@angular/material/dialog";
 import { CommentsDialogComponent } from "../comments-dialog.component";
+import { UserPhotoComponent } from "../../../../../../shared/components/user-photo/user-photo.component";
+import { DateAgoPipe } from "../../../../../../shared/pipes/date-ago.pipe";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule } from "@angular/material/menu";
+import { NgClass } from "@angular/common";
 
 @Component({
   selector: 'aj-comment',
   templateUrl: './comments-dialog-comment.component.html',
-  styleUrls: ['./comments-dialog-comment.component.scss']
+  styleUrl: './comments-dialog-comment.component.scss',
+  standalone: true,
+  imports: [
+    UserPhotoComponent,
+    DateAgoPipe,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    NgClass,
+  ],
 })
 export class CommentsDialogCommentComponent {
   @Input() comment?: CommentWithID;
@@ -26,7 +41,7 @@ export class CommentsDialogCommentComponent {
     private cLog: ConsoleLoggerService,
   ) {}
 
-  public async onLikeComment() {
+  async onLikeComment() {
     try {
       this._assertUser(this.user);
       this._assertComment(this.comment);
@@ -48,7 +63,7 @@ export class CommentsDialogCommentComponent {
     }
   }
 
-  public async onDislikeComment() {
+  async onDislikeComment() {
     try {
       this._assertUser(this.user);
       this._assertComment(this.comment);
@@ -73,16 +88,16 @@ export class CommentsDialogCommentComponent {
     }
   }
 
-  public get likesComment(): boolean {
+  get likesComment(): boolean {
     return this.comment?.likes?.some(userRef => userRef.id === this.user?.id) ?? false;
   }
 
-  public get dislikesComment(): boolean {
+  get dislikesComment(): boolean {
     if (!this.user || !this.comment) return false;
     return this.comment?.dislikes?.some(userRef => userRef.id === this.user?.id) ?? false;
   }
 
-  public async onReport(): Promise<void> {
+  async onReport(): Promise<void> {
     try {
       this._assertUser(this.user);
       this._assertComment(this.comment);
@@ -113,7 +128,7 @@ export class CommentsDialogCommentComponent {
     }
   }
 
-  public get reported(): boolean {
+  get reported(): boolean {
     if (!this.user || !this.comment) return false;
     return this.user?.reported?.some(report => report.id == this.comment?.id) ?? false;
   }

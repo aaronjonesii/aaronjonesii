@@ -1,39 +1,51 @@
-<ng-container *ngIf="comment">
+@if (comment) {
   <div class="flex-row app-gap">
-    <aj-user-photo [image]="comment.author.image"></aj-user-photo>
+    <aj-user-photo [image]="comment.author.image" />
 
     <div class="flex-grow">
       <div class="flex-row align-items-center justify-space-between">
         <div class="flex-col">
-          <span class="truncate-text">{{comment.author.name ?? this.comment.user.id}}</span>
+          <span class="truncate-text">{{comment.author.name ?? comment.user.id}}</span>
           <small>{{comment.created ? (comment.created.seconds * 1000 | dateAgo) : ''}}</small>
         </div>
 
-        <button mat-icon-button [matMenuTriggerFor]="commentOptionsMenu">
-          <mat-icon class="material-icons-outlined" fontIcon="more_vert"></mat-icon>
+        <button mat-icon-button type="button" [matMenuTriggerFor]="commentOptionsMenu">
+          <mat-icon class="material-icons-outlined" fontIcon="more_vert" />
         </button>
         <mat-menu #commentOptionsMenu="matMenu">
-          <button mat-menu-item (click)="onReport()" [disabled]="reported">
-            <mat-icon class="material-icons-outlined" fontIcon="flag"></mat-icon> {{reported ? 'Reported' : 'Report'}}
+          <button mat-menu-item type="button"
+                  [disabled]="reported" (click)="onReport()">
+            <mat-icon class="material-icons-outlined" fontIcon="flag" />{{reported ? 'Reported' : 'Report'}}
           </button>
         </mat-menu>
       </div>
       <p>{{comment.content}}</p>
       <div class="flex-row align-items-center">
-        <button mat-icon-button (click)="onLikeComment()" [color]="likesComment ? 'primary' : undefined">
+        <button mat-icon-button type="button"
+                [color]="likesComment ? 'primary' : undefined"
+                (click)="onLikeComment()">
           <!-- fixme: find better way to fill material icons -->
-          <mat-icon [ngClass]="{'material-icons-outlined': !likesComment}" fontIcon="thumb_up"></mat-icon>
+          <mat-icon fontIcon="thumb_up"
+                    [ngClass]="{'material-icons-outlined': !likesComment}" />
         </button>
-        <small *ngIf="comment?.likes?.length">{{comment.likes?.length}}</small>
-        <button mat-icon-button (click)="onDislikeComment()" [color]="dislikesComment ? 'primary' : undefined">
-          <mat-icon [ngClass]="{'material-icons-outlined': !dislikesComment}" fontIcon="thumb_down"></mat-icon>
+        @if (comment.likes?.length) {
+          <small>{{comment.likes?.length}}</small>
+        }
+        <button mat-icon-button type="button"
+                [color]="dislikesComment ? 'primary' : undefined"
+                (click)="onDislikeComment()">
+          <mat-icon fontIcon="thumb_down"
+                    [ngClass]="{'material-icons-outlined': !dislikesComment}" />
         </button>
+        <!-- todo: add reply to comment feature-->
         <!--            <button mat-icon-button>-->
         <!--              <mat-icon class="material-icons-outlined" fontIcon="favorite_outline"></mat-icon>-->
         <!--            </button>-->
         <!--            <button mat-button>Reply</button>-->
-        <!-- todo: add reply to comment feature-->
       </div>
     </div>
   </div>
-</ng-container>
+} @else {
+  No comment!
+}
+
