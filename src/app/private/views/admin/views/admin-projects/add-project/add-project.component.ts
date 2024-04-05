@@ -14,12 +14,40 @@ import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { AuthService } from "../../../../../../core/services/auth.service";
 import { User } from "@angular/fire/auth";
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { TopAppBarComponent } from "../../../../../../shared/components/top-app-bar/top-app-bar.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { ProjectImageComponent } from "../project-image/project-image.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { ProjectTagsComponent } from "../project-tags/project-tags.component";
+import { MatSelectModule } from "@angular/material/select";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { AdminEditorComponent } from "../../../shared/admin-editor/admin-editor.component";
+import { AsyncPipe, KeyValuePipe, TitleCasePipe } from "@angular/common";
 
 @Component({
   selector: 'aj-add-project',
   templateUrl: './add-project.component.html',
-  styleUrls: ['./add-project.component.scss']
+  styleUrl: './add-project.component.scss',
+  standalone: true,
+  imports: [
+    TopAppBarComponent,
+    AsyncPipe,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    ProjectImageComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    ProjectTagsComponent,
+    KeyValuePipe,
+    TitleCasePipe,
+    MatSelectModule,
+    MatCheckboxModule,
+    AdminEditorComponent,
+  ],
 })
 export class AddProjectComponent {
   public readonly title = 'Add Project';
@@ -73,24 +101,24 @@ export class AddProjectComponent {
         })
       );
   }
-  public get image() { return this.addForm.controls.image; }
-  public get name() { return this.addForm.controls.name; }
-  public get description() { return this.addForm.controls.description; }
-  public get slug() { return this.addForm.controls.slug; }
-  public get tags() { return this.addForm.controls.tags; }
-  public get livePreviewLink() { return this.addForm.controls.livePreviewLink; }
-  public get sourceCodeLink() { return this.addForm.controls.sourceCodeLink; }
-  public get content() { return this.addForm.controls.content; }
-  public get featured() { return this.addForm.controls.featured; }
-  public get allowComments() { return this.addForm.controls.allowComments; }
-  public get status() { return this.addForm.controls.status; }
-  public get visibility() { return this.addForm.controls.visibility; }
+  get image() { return this.addForm.controls.image; }
+  get name() { return this.addForm.controls.name; }
+  get description() { return this.addForm.controls.description; }
+  get slug() { return this.addForm.controls.slug; }
+  get tags() { return this.addForm.controls.tags; }
+  get livePreviewLink() { return this.addForm.controls.livePreviewLink; }
+  get sourceCodeLink() { return this.addForm.controls.sourceCodeLink; }
+  get content() { return this.addForm.controls.content; }
+  get featured() { return this.addForm.controls.featured; }
+  get allowComments() { return this.addForm.controls.allowComments; }
+  get status() { return this.addForm.controls.status; }
+  get visibility() { return this.addForm.controls.visibility; }
 
-  public onProjectContentChange({editor}: ChangeEvent) {
+  onProjectContentChange({editor}: ChangeEvent) {
     if (editor) this.content?.setValue(editor.getData());
   }
 
-  public setSlug(event: Event): void {
+  setSlug(event: Event): void {
     this.slug?.setValue(this.slugify.transform((event.target as HTMLInputElement).value));
   }
 
@@ -111,7 +139,7 @@ export class AddProjectComponent {
     });
   }
 
-  public async save(user: User) {
+  async save(user: User) {
     this.loading = true;
 
     this.addForm.disable();
