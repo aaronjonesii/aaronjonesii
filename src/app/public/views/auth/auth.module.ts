@@ -11,9 +11,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatIconModule } from "@angular/material/icon";
 
-const COMPONENTS = [
-  SignUpComponent,
-];
+const COMPONENTS = []!;
 
 export const auth_nav_path = {
   signIn: '/auth/sign-in',

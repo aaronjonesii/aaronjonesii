@@ -1,22 +1,38 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { nav_path } from 'src/app/app-routing.module';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
 import { TopAppBarService } from "../../../../../shared/components/top-app-bar/top-app-bar.service";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
+import { MatIconModule } from "@angular/material/icon";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  styleUrl: './sign-up.component.scss',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink,
+    NgOptimizedImage,
+  ],
 })
 export class SignUpComponent {
-  public readonly title = 'Sign up';
-  public readonly nav_path = nav_path;
-  public readonly appInformation = appInformation;
-  public signupForm = new FormGroup({
+  readonly title = 'Sign up';
+  readonly nav_path = nav_path;
+  readonly appInformation = appInformation;
+  signupForm = new FormGroup({
     email: new FormControl<string>(
       '',
       {nonNullable: true, validators: [Validators.required, Validators.email]}
@@ -25,8 +41,8 @@ export class SignUpComponent {
       '',
       {nonNullable: true, validators: [Validators.required, Validators.minLength(8)]})
   });
-  public hidePassword = true;
-  public loading = false;
+  hidePassword = true;
+  loading = false;
 
   constructor(
     public auth: AuthService,
@@ -34,24 +50,24 @@ export class SignUpComponent {
     private seoService: SeoService,
     private topAppBarService: TopAppBarService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: true,
       loading: false,
     });
-    auth.checkIfSignedIn(nav_path.signUp, 0);
+    this.auth.checkIfSignedIn(nav_path.signUp, 0);
 
-    seoService.generateTags({
+    this.seoService.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,
       route: nav_path.signUp
     });
   }
 
-  public get email() { return this.signupForm.controls.email; }
-  public get password() { return this.signupForm.controls.password; }
+  get email() { return this.signupForm.controls.email; }
+  get password() { return this.signupForm.controls.password; }
 
-  public async onSubmit() {
+  async onSubmit() {
     this.loading = true;
 
     await this.auth.signUp(this.email.value, this.password.value)
