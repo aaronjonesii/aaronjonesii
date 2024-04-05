@@ -9,11 +9,35 @@ import { FunctionsService } from "../../../../../shared/services/functions.servi
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
+import { AsyncPipe, DatePipe } from "@angular/common";
+import { MatListModule } from "@angular/material/list";
+import { UserPhotoComponent } from "../../../../../shared/components/user-photo/user-photo.component";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
+import { LoadingOrErrorComponent } from "../../../../../shared/components/loading-or-error/loading-or-error.component";
 
 @Component({
   selector: 'aj-admin-users',
   templateUrl: './admin-users.component.html',
-  styleUrls: ['./admin-users.component.scss']
+  styleUrl: './admin-users.component.scss',
+  standalone: true,
+  imports: [
+    TopAppBarComponent,
+    AsyncPipe,
+    MatListModule,
+    UserPhotoComponent,
+    DatePipe,
+    MatIconModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatButtonModule,
+    RouterLink,
+    LoadingOrErrorComponent,
+  ],
 })
 export class AdminUsersComponent {
   public readonly title = 'Users';

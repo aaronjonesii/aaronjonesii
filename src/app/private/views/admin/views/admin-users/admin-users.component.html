@@ -4,46 +4,51 @@
   <h1 class="mat-headline-3">{{title}}</h1>
 
   <section class="users">
-    <ng-container *ngIf="users$ | async as users; else loadingOrError">
-      <ng-container *ngIf="users.length > 0; else noUsers">
+    @if (users$ | async; as users) {
+      @if (users.length) {
         <em>{{users.length}} {{users.length === 1 ? 'user' : 'users'}}</em>
 
         <mat-list>
-          <mat-list-item *ngFor="let user of users">
-            <aj-user-photo matListItemAvatar [user]="user"></aj-user-photo>
-            <span matListItemTitle>{{user.displayName ?? 'Unknown name'}}</span>
-            <span matListItemLine>{{user.email ? user.email : 'Unknown email'}}</span>
-            <span matListItemLine>Joined: {{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</span>
-            <span matListItemLine *ngIf="user.admin">
-            <mat-icon matTooltip="Admin" color="accent" fontIcon="admin_panel_settings"></mat-icon>
-          </span>
-            <button mat-icon-button matListItemMeta [matMenuTriggerFor]="userActionMenu">
-              <mat-icon fontIcon="more_vert"></mat-icon>
-            </button>
-            <mat-menu #userActionMenu='matMenu'>
-              <button mat-menu-item [routerLink]="[nav_path.adminUsers, user.id]">
-                <mat-icon fontIcon="person"></mat-icon>
-                View User
+          @for (user of users; track user.id) {
+            <mat-list-item>
+              <aj-user-photo matListItemAvatar [user]="user" />
+              <span matListItemTitle>{{user.displayName ?? 'Unknown name'}}</span>
+              <span matListItemLine>{{user.email ? user.email : 'Unknown email'}}</span>
+              <span matListItemLine>Joined: {{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</span>
+              @if (user.admin) {
+                <span matListItemLine>
+                  <mat-icon matTooltip="Admin" color="accent" fontIcon="admin_panel_settings" />
+                </span>
+              }
+              <button mat-icon-button type="button" matListItemMeta
+                      [matMenuTriggerFor]="userActionMenu">
+                <mat-icon fontIcon="more_vert" />
               </button>
+              <mat-menu #userActionMenu='matMenu'>
+                <button mat-menu-item type="button"
+                        [routerLink]="[nav_path.adminUsers, user.id]">
+                  <mat-icon fontIcon="person" />
+                  View User
+                </button>
 
-              <button mat-menu-item (click)="updateUser(user.id)" [disabled]="!user.id">
-                <mat-icon class="material-icons-outlined" [fontIcon]="user.id ? 'update' : 'update_disabled'"></mat-icon>
-                Update User
-              </button>
-            </mat-menu>
-          </mat-list-item>
+                <button mat-menu-item type="button"
+                        [disabled]="!user.id" (click)="updateUser(user.id)">
+                  <mat-icon class="material-icons-outlined"
+                            [fontIcon]="user.id ? 'update' : 'update_disabled'" />
+                  Update User
+                </button>
+              </mat-menu>
+            </mat-list-item>
+          }
         </mat-list>
-      </ng-container>
-      <ng-template #noUsers>
+      } @else {
         <div class="">
           <h2 class="">No users yet!</h2>
           <p class="">Spread the word and invite others to join the platform.</p>
         </div>
-      </ng-template>
-    </ng-container>
-
-    <ng-template #loadingOrError>
+      }
+    } @else {
       <aj-loading-or-error [error]="error" />
-    </ng-template>
+    }
   </section>
 </main>

@@ -22,7 +22,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule];
 
-const COMPONENTS = [AdminUsersComponent];
+const COMPONENTS = []!;
 
 const routes: Routes = [
   { path: '', component: AdminUsersComponent, pathMatch: 'full' },
