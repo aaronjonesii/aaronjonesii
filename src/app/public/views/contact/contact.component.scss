@@ -10,7 +10,7 @@
   align-self: center;
 }
 .full-height-container {
-  height: calc(100vh - $app-top-app-bar-height - $app-navigation-bar-height - $app-spacing * 2);
+  height: calc(100vh - $app-header-height - $app-navigation-bar-height - $app-margin * 2);
   display: flex;
   flex-direction: column;
 }

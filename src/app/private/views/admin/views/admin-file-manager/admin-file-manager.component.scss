@@ -7,6 +7,6 @@
 
 main {
   display: block;
-  height: calc(100vh - #{$app-top-app-bar-height} - #{$app-navigation-bar-height});
+  height: calc(100vh - #{$app-header-height} - #{$app-navigation-bar-height});
   overflow: auto;
 }

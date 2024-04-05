@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: $app-gap;
-  padding: $app-top-app-bar-height $app-page-padding 0;
+  padding: $app-header-height $app-padding 0;
   height: inherit;
   justify-content: center;
 
@@ -13,8 +13,8 @@
 }
 
 button.mdc-button.mat-mdc-button {
-  padding: $app-page-padding;
+  padding: $app-padding;
   height: 56px;
   justify-content: flex-start;
-  border-radius: calc(#{$app-shape-corner-radius} * 2)!important;
+  border-radius: calc(#{$app-border-radius} * 2)!important;
 }

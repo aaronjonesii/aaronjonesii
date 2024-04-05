@@ -1,15 +1,15 @@
-$scrollbar-width: 0.3125rem;
-$scrollbar-height: $scrollbar-width;
-$scrollbar-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-$scrollbar-background-color: #192038;
-$scrollbar-outline: #101426;
-$scrollbar-border-radius: 1rem;
+$scrollbar-track-width: 0.3125rem;
+$scrollbar-track-height: $scrollbar-track-width;
+$scrollbar-track-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+$scrollbar-thumb-background-color: #192038;
+$scrollbar-thumb-outline: #101426;
+$scrollbar-thumb-border-radius: 1rem;
 
-$app-spacing: 1rem;
-$app-gap: $app-spacing;
-$app-shape-corner-radius: $app-spacing;
-$app-page-padding: $app-spacing;
-$app-top-app-bar-height: 56px;
+$app-margin: 1rem;
+$app-gap: $app-margin;
+$app-border-radius: $app-margin;
+$app-padding: $app-margin;
+$app-header-height: 56px;
 $app-navigation-bar-height: 56px;
 $app-navigation-rail-width: 72px;
 $app-navigation-drawer-width: 360px;

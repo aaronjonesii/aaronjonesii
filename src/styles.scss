@@ -14,14 +14,14 @@ html, body {
   text-rendering: optimizeLegibility;
   * { box-sizing: border-box; }
   ::-webkit-scrollbar {
-    width: $scrollbar-width;
-    height: $scrollbar-height;
+    width: $scrollbar-track-width;
+    height: $scrollbar-track-height;
   }
-  ::-webkit-scrollbar-track { box-shadow: $scrollbar-box-shadow; }
+  ::-webkit-scrollbar-track { box-shadow: $scrollbar-track-box-shadow; }
   ::-webkit-scrollbar-thumb {
-    background-color: $scrollbar-background-color;
-    outline: $scrollbar-outline;
-    border-radius: $scrollbar-border-radius;
+    background-color: $scrollbar-thumb-background-color;
+    outline: $scrollbar-thumb-outline;
+    border-radius: $scrollbar-thumb-border-radius;
   }
 }
 
@@ -50,16 +50,34 @@ img,
 /* Update dialog shape */
 mat-dialog-container, .mat-mdc-dialog-container,
 .mdc-dialog, .cdk-dialog-container, [role="dialog"] {
-  border-radius: $app-shape-corner-radius !important;
+  border-radius: $app-border-radius !important;
   overflow: hidden;
 }
 
 button.fab-btn-padding {
   padding: 1.75rem 1rem;
-  border-radius: calc(#{$app-shape-corner-radius} * 2) !important;
+  border-radius: calc(#{$app-border-radius} * 2) !important;
 }
 
 /* Added classes to help with autocompletion */
 .material-icons-outlined {}
 .material-icons-rounded {}
 .material-icons-round {}
+
+/** This section styles the picture element used for responsive images with fallbacks. */
+picture {
+  // Use "relative" for ngSrc.
+  position: relative;
+  // Uses a grid layout for image placement.
+  display: grid;
+  // Centers image content within the grid.
+  place-content: center;
+  border-radius: $app-border-radius;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    // Consider alternative options like "contain" or "fill".
+    object-fit: cover;
+  }
+}

@@ -62,7 +62,7 @@ aj-project-detail {
     width: 300px;
     display: flex;
     flex-direction: column;
-    border-radius: $app-shape-corner-radius;
+    border-radius: $app-border-radius;
     cursor: pointer;
   }
   .related-projects-container .related-project img {
@@ -70,10 +70,10 @@ aj-project-detail {
     object-fit: cover;
   }
   .related-projects-container .related-project .name {
-    padding: $app-page-padding;
+    padding: $app-padding;
   }
   .related-projects-container .related-project:hover {
-    $border-radius: calc(#{$app-shape-corner-radius} - 0.25rem);
+    $border-radius: calc(#{$app-border-radius} - 0.25rem);
     img { border-radius: $border-radius!important; }
     border-radius: $border-radius;
   }
@@ -82,13 +82,13 @@ aj-project-detail {
     display: flex;
     flex-direction: column;
     gap: $app-gap;
-    //height: calc(100vh - #{$app-top-app-bar-height} - #{$app-page-padding * 2});
+    //height: calc(100vh - #{$app-header-height} - #{$app-padding * 2});
 
 
     .article-container { overflow: auto; }
     .article-container article,
     .article-container .content {
-      padding: 0 $app-spacing;
+      padding: 0 $app-margin;
     }
     .author-follow-container {
       flex-direction: row;

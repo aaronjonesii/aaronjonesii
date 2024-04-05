@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   gap: $app-gap;
-  padding: $app-spacing;
+  padding: $app-margin;
 }
 .card .info-container .actions-container {
   flex-grow: 1;
