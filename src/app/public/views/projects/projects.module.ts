@@ -13,6 +13,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { CommentsDialogModule } from "./project-detail/comments-dialog/comments-dialog.module";
 import { ProjectDetailCommentComponent } from './project-detail/project-detail-comment/project-detail-comment.component';
 import { ProjectsComponent } from "./projects.component";
+import { TopAppBarComponent } from "../../../shared/components/top-app-bar/top-app-bar.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatChipsModule, MatCardModule, MatIconModule,
@@ -36,7 +37,7 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
-    SharedModule, ConfirmDialogModule, CommentsDialogModule,
+     CommentsDialogModule, ConfirmDialogModule, SharedModule, TopAppBarComponent,
   ],
   exports: [...COMPONENTS]
 })

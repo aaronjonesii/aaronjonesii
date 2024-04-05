@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from "@angular/router";
 import { AdminProjectsComponent } from "./admin-projects.component";
 import { EditProjectComponent } from "./edit-project/edit-project.component";
-import { TopAppBarModule } from "../../../../../shared/components/top-app-bar/top-app-bar.module";
 import { AdminProjectsGridModule } from "../../shared/admin-projects-grid/admin-projects-grid.module";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
@@ -20,6 +19,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { ConfirmDialogModule } from "../../../../../shared/components/confirm-dialog/confirm-dialog.module";
 import { AdminEditorComponent } from "../../shared/admin-editor/admin-editor.component";
+import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule, MatIconModule, MatFormFieldModule,
@@ -46,7 +46,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
     AdminEditorComponent, AdminProjectsGridModule, ConfirmDialogModule, SharedModule,
-    TopAppBarModule,
+    TopAppBarComponent,
   ],
   exports: [...COMPONENTS]
 })

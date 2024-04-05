@@ -1,27 +1,34 @@
 <mat-toolbar>
   <div class="flex-row app-gap align-items-center">
     <button mat-icon-button color="primary" class="back-btn" type="button"
-            [style.visibility]="showBackBtn ? 'visible' : 'hidden'" (click)="location.back()" [disabled]="loading">
-      <mat-icon class="material-icons-outlined" fontIcon="arrow_back"></mat-icon>
+            [className]="showBackBtn ? 'visible' : 'hidden'"
+            [disabled]="loading"
+            (click)="location.back()">
+      <mat-icon class="material-icons-outlined" fontIcon="arrow_back" />
     </button>
 
     <h1>{{title}}</h1>
   </div>
 
-  <div #content><ng-content></ng-content></div>
+  <div #content>
+    <ng-content />
+  </div>
 
-  <ng-container *ngIf="!content.children.length">
-    <ng-container *ngIf="auth.user$ | async; else notSignedIn">
-      <button mat-button (click)="auth.logout()" [disabled]="loading">
-        <mat-icon fontIcon="logout"></mat-icon>
+  @if (!content.children.length) {
+    @if (auth.user$ | async) {
+      <button mat-button type="button"
+              [disabled]="loading"
+              (click)="auth.logout()">
+        <mat-icon fontIcon="logout" />
         Sign out
       </button>
-    </ng-container>
-    <ng-template #notSignedIn>
-      <button mat-button [routerLink]="[nav_path.signIn]" [disabled]="loading">
-        <mat-icon fontIcon="login"></mat-icon>
+    } @else {
+      <button mat-button type="button"
+              [routerLink]="[nav_path.signIn]"
+              [disabled]="loading">
+        <mat-icon fontIcon="login" />
         Sign in
       </button>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </mat-toolbar>

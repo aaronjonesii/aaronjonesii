@@ -47,3 +47,9 @@
 .opacity-full, .opacity-1 {
   opacity: 1;
 }
+.hidden, .visibility-hidden {
+  visibility: hidden;
+}
+.visible .visibility-visible {
+  visibility: visible;
+}

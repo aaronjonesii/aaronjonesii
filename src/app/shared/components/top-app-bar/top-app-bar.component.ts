@@ -1,13 +1,26 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from "../../../core/services/auth.service";
 import { nav_path } from "../../../app-routing.module";
-import { Location } from "@angular/common";
+import { AsyncPipe, Location } from "@angular/common";
 import { TopAppBarService } from "./top-app-bar.service";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: 'aj-top-app-bar',
   templateUrl: './top-app-bar.component.html',
-  styleUrls: ['./top-app-bar.component.scss']
+  styleUrl: './top-app-bar.component.scss',
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+    RouterLinkActive,
+    AsyncPipe,
+  ],
 })
 export class TopAppBarComponent {
   @Input() title = 'Title';
@@ -21,7 +34,7 @@ export class TopAppBarComponent {
     private topAppBarService: TopAppBarService,
   ) {
     /** Set options from service */
-    topAppBarService.options$.forEach(options => {
+    this.topAppBarService.options$.forEach(options => {
       this.title = options.title;
       this.showBackBtn = options.showBackBtn;
       this.loading = options.loading;

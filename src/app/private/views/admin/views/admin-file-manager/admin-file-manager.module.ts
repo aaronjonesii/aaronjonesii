@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from "@angular/router";
 import { AdminFileManagerComponent } from "./admin-file-manager.component";
-import { TopAppBarModule } from "../../../../../shared/components/top-app-bar/top-app-bar.module";
 import { FileManagerModule } from "../../shared/file-manager/file-manager.module";
+import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
 
 const CORE_MODULES = [CommonModule];
 
@@ -17,7 +17,7 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES,
-    FileManagerModule, TopAppBarModule,
+    FileManagerModule, TopAppBarComponent,
   ],
   exports: [...COMPONENTS]
 })
