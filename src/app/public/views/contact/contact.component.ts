@@ -7,17 +7,30 @@ import { DOCUMENT } from "@angular/common";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { SeoService } from "../../../core/services/seo.service";
 import { nav_path } from "../../../app-routing.module";
+import { MatIconModule } from "@angular/material/icon";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: 'aj-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  styleUrl: './contact.component.scss',
+  standalone: true,
+  imports: [
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
 })
 export class ContactComponent {
   private readonly title = 'Contact';
-  public contactForm = initialContactForm;
-  public success = false;
-  public readonly appInformation = appInformation;
+  contactForm = initialContactForm;
+  success = false;
+  readonly appInformation = appInformation;
 
   constructor(
     private db: FirestoreService,
@@ -26,12 +39,12 @@ export class ContactComponent {
     private topAppBarService: TopAppBarService,
     private seoService: SeoService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
       loading: false,
     });
-    seoService.generateTags({
+    this.seoService.generateTags({
       title: this.title,
       route: nav_path.contact,
     });
@@ -42,12 +55,12 @@ export class ContactComponent {
   private get email() { return this.contactForm.controls.email; }
   private get message() { return this.contactForm.controls.message; }
 
-  public scrollToForm() {
+  scrollToForm() {
     this.document.getElementById(`contact-container`)
       ?.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
   }
 
-  public async onSubmit(): Promise<void> {
+  async onSubmit(): Promise<void> {
     await this.db.batch(async batch => {
       const contactRef = this.db.doc(`contact/${this.db.newDocumentID}`);
       const contactData = Object.assign({created: this.db.timestamp}, this.contactForm.value);
