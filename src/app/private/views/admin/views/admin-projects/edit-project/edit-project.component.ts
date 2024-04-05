@@ -52,6 +52,9 @@ import { AdminEditorComponent } from "../../../shared/admin-editor/admin-editor.
     MatCheckboxModule,
     AdminEditorComponent,
   ],
+  providers: [
+    SlugifyPipe,
+  ],
 })
 export class EditProjectComponent implements OnInit {
   readonly title = 'Edit project';

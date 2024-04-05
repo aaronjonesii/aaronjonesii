@@ -48,6 +48,9 @@ import { AsyncPipe, KeyValuePipe, TitleCasePipe } from "@angular/common";
     MatCheckboxModule,
     AdminEditorComponent,
   ],
+  providers: [
+    SlugifyPipe,
+  ],
 })
 export class AddProjectComponent {
   public readonly title = 'Add Project';
