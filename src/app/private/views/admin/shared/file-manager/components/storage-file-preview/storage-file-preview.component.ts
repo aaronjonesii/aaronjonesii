@@ -3,33 +3,51 @@ import { StorageFile } from '../../interfaces/storage-file';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
+import { StorageItemIconComponent } from "../storage-item-icon/storage-item-icon.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { FormatBytesPipe } from "../../pipes/format-bytes.pipe";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'aj-storage-file-preview',
   templateUrl: './storage-file-preview.component.html',
-  styleUrls: ['./storage-file-preview.component.scss']
+  styleUrl: './storage-file-preview.component.scss',
+  standalone: true,
+  imports: [
+    StorageItemIconComponent,
+    MatTooltipModule,
+    MatButtonModule,
+    MatIconModule,
+    FormatBytesPipe,
+    DatePipe,
+  ],
 })
 export class StorageFilePreviewComponent implements OnChanges {
   @Input()
-  public item!: StorageFile;
+  item?: StorageFile;
 
   @Output()
-  public _close: EventEmitter<undefined> = new EventEmitter<undefined>();
+  readonly _close: EventEmitter<undefined> = new EventEmitter<undefined>();
 
-  public downloadURL: string | undefined;
+  downloadURL: string | undefined;
 
-  public previewError = false;
+  previewError = false;
 
   constructor(
     private firebaseStorage: FirebaseStorageService,
     private cLog: ConsoleLoggerService
   ) {}
 
-  async ngOnChanges() {
-    this.downloadURL = await this.firebaseStorage.getDownloadURL(this.firebaseStorage.getRef(this.item.fullPath))
-      .catch((error: FirebaseError) => {
-        this.cLog.error(`error getting download URL for '${this.item.name}'`, error, this.item);
-        return undefined;
-      });
+  ngOnChanges() {
+    if (!this.item) return;
+
+    this.firebaseStorage.getDownloadURL(this.firebaseStorage.getRef(this.item.fullPath))
+      .then((downloadURL) => {
+        this.downloadURL = downloadURL;
+      }).catch((error: FirebaseError) => {
+      this.cLog.error(`error getting download URL for '${this.item?.name}'`, error, this.item);
+    });
   }
 }
