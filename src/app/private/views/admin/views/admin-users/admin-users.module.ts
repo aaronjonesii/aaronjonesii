@@ -13,6 +13,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { ConfirmDialogModule } from "../../../../../shared/components/confirm-dialog/confirm-dialog.module";
 import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
 import { UserPhotoComponent } from "../../../../../shared/components/user-photo/user-photo.component";
+import { LoadingOrErrorComponent } from "../../../../../shared/components/loading-or-error/loading-or-error.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatListModule, MatIconModule, MatButtonModule,
@@ -33,8 +34,8 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES,
     ...ANGULAR_MATERIAL_MODULES,
-    ConfirmDialogModule, SharedModule,
-    TopAppBarComponent, UserPhotoComponent,
+    ConfirmDialogModule, LoadingOrErrorComponent,
+    SharedModule, TopAppBarComponent, UserPhotoComponent,
   ],
   exports: [...COMPONENTS]
 })
