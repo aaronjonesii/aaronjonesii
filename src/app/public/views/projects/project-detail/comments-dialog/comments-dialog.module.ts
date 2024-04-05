@@ -26,8 +26,8 @@ const COMPONENTS = []!;
   declarations: [...COMPONENTS],
   imports: [
     ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
-    CommentsDialogCommentComponent, LoadingComponent,
-    SharedModule, UserPhotoComponent, CommentsDialogComponent,
+    CommentsDialogCommentComponent, CommentsDialogComponent,
+    LoadingComponent, SharedModule, UserPhotoComponent,
   ],
   exports: [...COMPONENTS]
 })
