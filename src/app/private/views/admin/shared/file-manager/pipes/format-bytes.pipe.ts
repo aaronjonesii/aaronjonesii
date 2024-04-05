@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'formatBytes'})
+@Pipe({
+  name: 'formatBytes',
+  standalone: true,
+})
 export class FormatBytesPipe implements PipeTransform {
   // This has been copied and slightly modified from firebase-tools-ui
   // https://github.com/firebase/firebase-tools-ui/blob/8ad31d748f687bbb04b838430c460121f9a8e338/src/components/common/formatBytes.ts
