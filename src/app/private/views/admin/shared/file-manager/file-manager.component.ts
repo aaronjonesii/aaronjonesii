@@ -10,20 +10,44 @@ import { StorageFile } from './interfaces/storage-file';
 import { DeleteFilesDialogComponent } from './components/delete-files-dialog/delete-files-dialog.component';
 import { appInformation } from "../../../../../information";
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
+import { AsyncPipe, DatePipe } from "@angular/common";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTableModule } from "@angular/material/table";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { StorageItemIconComponent } from "./components/storage-item-icon/storage-item-icon.component";
+import { FormatBytesPipe } from "./pipes/format-bytes.pipe";
+import { StorageFilePreviewComponent } from "./components/storage-file-preview/storage-file-preview.component";
+import { FileDropzoneDirective } from "./directives/file-dropzone.directive";
+import { LoadingOrErrorComponent } from "../../../../../shared/components/loading-or-error/loading-or-error.component";
 
 @Component({
   selector: 'aj-file-manager',
   templateUrl: './file-manager.component.html',
-  styleUrls: ['./file-manager.component.scss']
+  styleUrl: './file-manager.component.scss',
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatCheckboxModule,
+    StorageItemIconComponent,
+    FormatBytesPipe,
+    DatePipe,
+    StorageFilePreviewComponent,
+    FileDropzoneDirective,
+    LoadingOrErrorComponent,
+  ],
 })
 export class FileManagerComponent implements OnInit {
   tableColumns: string[] = ['checkbox', 'name', 'size', 'type', 'lastModified'];
-  public items$?: Promise<StorageItem[]> | undefined;
-  public currentPath = '';
+  items$?: Promise<StorageItem[]> | undefined;
+  currentPath = '';
   error?: FirebaseError;
   company = appInformation;
-  @Input() public selection = new SelectionModel<StorageItem>(true, []);
-  public selectedFile: StorageFile | undefined;
+  @Input() selection = new SelectionModel<StorageItem>(true, []);
+  selectedFile: StorageFile | undefined;
 
   constructor(
     public storageService: FirebaseStorageService,
@@ -35,28 +59,28 @@ export class FileManagerComponent implements OnInit {
     this.items$ = this.getAllStorageItems(this.currentPath);
   }
 
-  public toggleAllItems(checked: boolean, items: StorageItem[]) {
+  toggleAllItems(checked: boolean, items: StorageItem[]) {
     if (!checked) {
       this.selection.clear();
       return;
     }
     this.selection.select(...items);
   }
-  public allItemsSelected(items: StorageItem[]): boolean {
+  allItemsSelected(items: StorageItem[]): boolean {
     return this.selection.selected.length === items.length && this.selection.selected.length > 0;
   }
-  public allItemsIndeterminate(items: StorageItem[]): boolean {
+  allItemsIndeterminate(items: StorageItem[]): boolean {
     return this.selection.selected.length > 0 && this.selection.selected.length < items.length;
   }
-  public storageItemSelected(item: StorageItem) {
+  storageItemSelected(item: StorageItem) {
     if (item.type === 'folder') this.setStoragePath(item.fullPath)
     else if (item.type === 'file') this.selectedFile = item;
   }
-  public selectionIncludesFolder(): boolean {
+  selectionIncludesFolder(): boolean {
     return this.selection.selected.some(item => item.type === 'folder');
   }
 
-  public deleteItems(items: StorageItem[]) {
+  deleteItems(items: StorageItem[]) {
     const dialogRef = this.dialog.open(DeleteFilesDialogComponent, {
       minWidth: '250px'
     });
@@ -72,12 +96,12 @@ export class FileManagerComponent implements OnInit {
       });
   }
 
-  public getCrumbPath(pathArray: string[], index: number): string {
+  getCrumbPath(pathArray: string[], index: number): string {
     pathArray.length = index + 1;
     return pathArray.join('/');
   }
 
-  public setStoragePath(path: string) {
+  setStoragePath(path: string) {
     this.items$ = this.getAllStorageItems(path);
     this.currentPath = path;
     if (this.selection.hasValue()) this.selection.clear();
@@ -99,7 +123,7 @@ export class FileManagerComponent implements OnInit {
       })
   }
 
-  public reload(path: string | null = null) {
+  reload(path: string | null = null) {
     let pathRef: StorageReference;
     if (path) pathRef = this.storageService.getRef(path);
     else pathRef = this.storageService.getRef(this.currentPath);
@@ -111,7 +135,7 @@ export class FileManagerComponent implements OnInit {
       ]);
   }
 
-  public createNewFolder() {
+  createNewFolder() {
     const dialogRef = this.dialog.open(NewFolderDialogComponent, {
       width: '250px',
       data: { folder: {path: this.currentPath} }
@@ -124,7 +148,7 @@ export class FileManagerComponent implements OnInit {
     });
   }
 
-  public async uploadItems(files?: FileList): Promise<void> {
+  async uploadItems(files?: FileList): Promise<void> {
     if (!files) return;
 
     // prevent file names to have ","(comma)
@@ -145,7 +169,7 @@ export class FileManagerComponent implements OnInit {
     this.cLog.info(`uploaded ${uploadedFiles.length} ${uploadedFiles.length === 1 ? 'file' : 'files'}`, uploadedFiles);
   }
 
-  public async onFilesSelect($event: Event): Promise<void> {
+  async onFilesSelect($event: Event): Promise<void> {
     const files: FileList = (<HTMLInputElement>$event.target).files as FileList;
     await this.uploadItems(files);
   }

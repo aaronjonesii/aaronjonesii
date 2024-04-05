@@ -1,114 +1,133 @@
-<ng-container *ngIf="items$ | async as items; else loadingOrError">
+@if (items$ | async; as items) {
   <div class="card mat-elevation-z2">
-    <input class="inputUpload" multiple type="file" autocomplete="off" tabindex="-1"
-           #inputUpload (change)="onFilesSelect($event)" />
-    <ng-container *ngIf="selection.isEmpty(); else itemsSelectedHeader">
+    <input #inputUpload multiple class="inputUpload"
+           type="file" autocomplete="off" tabindex="-1"
+           (change)="onFilesSelect($event)" />
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    @if (selection.isEmpty()) {
       <header class="header">
         <!-- Crumbs -->
         <span class="crumbs">
-          <button mat-icon-button [disabled]="currentPath===''" (click)="setStoragePath('')">
-            <mat-icon>home</mat-icon>
+          <button mat-icon-button type="button"
+                  [disabled]="currentPath===''"
+                  (click)="setStoragePath('')">
+            <mat-icon fontIcon="home" />
           </button>
-          <ng-container *ngFor="let crumb of currentPath.split('/') as pathArray;
-          let i=index; let last=last">
-            <mat-icon *ngIf="currentPath!==''" [style.overflow]="'visible'">chevron_right</mat-icon>
-            <button mat-button [disabled]="last"
-                    (click)="setStoragePath(getCrumbPath(pathArray, i))">{{crumb}}</button>
-          </ng-container>
+          <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+          @for (crumb of currentPath.split('/'); track crumb;let i=$index; let last=$last) {
+            @if (currentPath!=='') {
+              <mat-icon class="overflow-visible" fontIcon="chevron_right" />
+            }
+            <button mat-button type="button" [disabled]="last"
+                    (click)="setStoragePath(getCrumbPath(currentPath.split('/'), i))">
+              {{crumb}}
+            </button>
+          }
         </span>
 
-        <button mat-icon-button (click)="reload()"><mat-icon>refresh</mat-icon></button>
-        <button mat-icon-button (click)="createNewFolder()"><mat-icon>create_new_folder</mat-icon></button>
+        <button mat-icon-button type="button" (click)="reload()">
+          <mat-icon fontIcon="refresh" />
+        </button>
+        <button mat-icon-button type="button" (click)="createNewFolder()">
+          <mat-icon fontIcon="create_new_folder" />
+        </button>
         <div>
-          <button mat-flat-button color="primary" (click)="inputUpload.click()">Upload</button>
+          <button mat-flat-button type="button" color="primary"
+                  (click)="inputUpload.click()">Upload</button>
         </div>
       </header>
-    </ng-container>
-
-    <ng-template #itemsSelectedHeader>
+    } @else {
       <header class="header items-selected">
-        <button mat-icon-button (click)="selection.clear()"><mat-icon>close</mat-icon></button>
+        <button mat-icon-button type="button" (click)="selection.clear()">
+          <mat-icon fontIcon="close" />
+        </button>
         <span>{{selection.selected.length}} {{selection.selected.length === 1 ? 'item' : 'items'}}</span>
-        <button mat-raised-button color="accent"
-                [disabled]="selectionIncludesFolder()"
+        <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+        <button mat-raised-button type="button" color="accent" [disabled]="selectionIncludesFolder()"
                 (click)="storageService.openAllFiles(selection.selected)">Open all files</button>
-        <button mat-stroked-button
+        <button mat-stroked-button type="button"
                 (click)="deleteItems(selection.selected)">Delete</button>
       </header>
-    </ng-template>
+    }
 
     <div class="content">
       <div class="table-sidebar">
-        <div class="table-wrapper" [style.grid-column-end]="selectedFile ? 'span 8' : 'span 12'">
+        <div class="table-wrapper" [className]="selectedFile ? 'grid-column-end-span-8' : 'grid-column-end-span-12'">
           <table mat-table [dataSource]="items">
             <!-- Checkbox Column -->
             <ng-container matColumnDef="checkbox">
-              <th mat-header-cell *matHeaderCellDef class="checkbox-column">
-                <mat-checkbox [disabled]="items.length === 0"
-                              [checked]="allItemsSelected(items)"
-                              [indeterminate]="allItemsIndeterminate(items)"
-                              (change)="toggleAllItems($event.checked, items)"></mat-checkbox>
+              <th *matHeaderCellDef mat-header-cell class="checkbox-column">
+                <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+                <mat-checkbox [checked]="allItemsSelected(items)" [indeterminate]="allItemsIndeterminate(items)"
+                              [disabled]="items.length === 0"
+                              (change)="toggleAllItems($event.checked, items)" />
               </th>
-              <td mat-cell *matCellDef="let item" class="checkbox-column">
-                <mat-checkbox (click)="$event.stopPropagation()"
-                              (change)="selection.toggle(item)"
-                              [checked]="selection.isSelected(item)"></mat-checkbox>
+              <td *matCellDef="let item" mat-cell class="checkbox-column">
+                <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+                <mat-checkbox [checked]="selection.isSelected(item)"
+                              (click)="$event.stopPropagation()"
+                              (change)="selection.toggle(item)" />
               </td>
             </ng-container>
 
             <!-- Name Column -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell class="name-column" *matCellDef="let item">
-                <aj-storage-item-icon [type]="item.type" [contentType]="item.contentType"></aj-storage-item-icon>
+              <th *matHeaderCellDef mat-header-cell> Name </th>
+              <td *matCellDef="let item" mat-cell class="name-column">
+                <aj-storage-item-icon [type]="item.type" [contentType]="item.contentType" />
                 <span>{{item.name}}</span>
               </td>
             </ng-container>
 
             <!-- Size Column -->
             <ng-container matColumnDef="size">
-              <th mat-header-cell *matHeaderCellDef> Size </th>
-              <td mat-cell *matCellDef="let item">
+              <th *matHeaderCellDef mat-header-cell> Size </th>
+              <td *matCellDef="let item" mat-cell>
                 {{item.type === 'folder' ? '&mdash;' : item.size | formatBytes}}
               </td>
             </ng-container>
 
             <!-- Type Column -->
             <ng-container matColumnDef="type">
-              <th mat-header-cell *matHeaderCellDef> Type </th>
-              <td mat-cell *matCellDef="let item">
+              <th *matHeaderCellDef mat-header-cell> Type </th>
+              <td *matCellDef="let item" mat-cell>
                 {{item.type === 'folder' ? 'Folder' : item.contentType}}
               </td>
             </ng-container>
 
             <!-- Last Modified Column -->
             <ng-container matColumnDef="lastModified">
-              <th mat-header-cell *matHeaderCellDef> Last Modified </th>
-              <td mat-cell *matCellDef="let item">
+              <th *matHeaderCellDef mat-header-cell> Last Modified </th>
+              <td *matCellDef="let item" mat-cell>
                 {{item.type === 'folder' ? '&mdash;' : item.updated | date}}
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
-            <tr mat-row (click)="storageItemSelected(item)" [class.selected]="selectedFile === item" *matRowDef="let item; columns: tableColumns;"></tr>
+            <tr *matHeaderRowDef="tableColumns" mat-header-row></tr>
+            <tr *matRowDef="let item; columns: tableColumns;" mat-row
+                [class.selected]="selectedFile === item"
+                (click)="storageItemSelected(item)"></tr>
           </table>
         </div>
 
-        <aside class="sidebar" *ngIf="selectedFile" [style.grid-column-end]="'span 4'">
-          <aj-storage-file-preview [item]="selectedFile" (_close)="selectedFile = undefined"></aj-storage-file-preview>
-        </aside>
+        @if (selectedFile) {
+          <aside class="sidebar grid-column-end-span-4">
+            <aj-storage-file-preview [item]="selectedFile" (_close)="selectedFile = undefined" />
+          </aside>
+        }
       </div>
 
-      <div *ngIf="!items.length" ajFileDropzone class="empty-folder"
-           (click)="inputUpload.click()"
-           (dropped)="uploadItems($event)" hoverClass="hovering">
-        <div>No files found</div>
-        <div>Drag and drop files to upload</div>
-      </div>
+      @if (!items.length) {
+        <div ajFileDropzone class="empty-folder"
+             hoverClass="hovering"
+             (click)="inputUpload.click()"
+             (dropped)="uploadItems($event)">
+          <div>No files found</div>
+          <div>Drag and drop files to upload</div>
+        </div>
+      }
     </div>
   </div>
-</ng-container>
-
-<ng-template #loadingOrError>
-  <aj-loading-or-error [error]="error"></aj-loading-or-error>
-</ng-template>
+} @else {
+  <aj-loading-or-error [error]="error" />
+}
