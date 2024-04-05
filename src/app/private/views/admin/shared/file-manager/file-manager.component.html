@@ -119,8 +119,9 @@
 
       @if (!items.length) {
         <div ajFileDropzone class="empty-folder"
-             hoverClass="hovering"
+             hoverClass="hovering" tabindex="0"
              (click)="inputUpload.click()"
+             (keyup)="inputUpload.click()"
              (dropped)="uploadItems($event)">
           <div>No files found</div>
           <div>Drag and drop files to upload</div>
