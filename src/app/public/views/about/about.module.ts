@@ -5,7 +5,7 @@ import { AboutComponent } from "./about.component";
 
 const CORE_MODULES = [CommonModule];
 
-const COMPONENTS = [AboutComponent];
+const COMPONENTS = []!;
 
 const routes: Routes = [
   { path: '', component: AboutComponent, pathMatch: 'full' }

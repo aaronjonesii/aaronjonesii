@@ -7,7 +7,9 @@ import { nav_path } from "../../../app-routing.module";
 @Component({
   selector: 'aj-about',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+  styleUrl: './about.component.scss',
+  standalone: true,
+  imports: [],
 })
 export class AboutComponent {
   private readonly title = appInformation.title;
@@ -15,12 +17,12 @@ export class AboutComponent {
     private topAppBarService: TopAppBarService,
     private seoService: SeoService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
       loading: false,
     });
-    seoService.generateTags({
+    this.seoService.generateTags({
       route: nav_path.about,
     });
   }
