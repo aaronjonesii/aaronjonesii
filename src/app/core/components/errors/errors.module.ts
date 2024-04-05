@@ -11,7 +11,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule
 ];
 
-const COMPONENTS = [PageNotFoundComponent, ForbiddenComponent];
+const COMPONENTS = [PageNotFoundComponent];
 
 export const error_nav_path = {
   pageNotFound: '/error/404',
