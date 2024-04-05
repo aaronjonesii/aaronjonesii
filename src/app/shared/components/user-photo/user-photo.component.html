@@ -1,16 +1,16 @@
-<ng-container *ngIf="image && !userPhotoError; else noPhoto">
+@if (image && !userPhotoError) {
   <img class="user-photo"
-       (error)="userPhotoError=true"
-       [src]="image"
        alt="User profile photo"
-       [ngStyle]="{'opacity': dim ? '0.5' : '1'}"
-       [width]="size" [height]="size" />
-</ng-container>
-<ng-template #noPhoto>
+       [src]="image"
+       [className]="dim ? 'opacity-half' : 'opacity-full'"
+       [width]="size" [height]="size" (error)="userPhotoError=true" />
+} @else {
 <!--  <mat-icon class="material-icons-round user-icon"-->
-<!--            [ngStyle]="{'opacity': dim ? '0.5' : '1'}"-->
-<!--            color="accent">-->
-<!--    account_circle-->
-<!--  </mat-icon>-->
-  <img class="no-user-photo" src="assets/svgs/flat_afro.svg" alt="Silhouette of a cartoon style afro" [ngStyle]="{'opacity': dim ? '0.5' : '1'}" [width]="size" [height]="size" />
-</ng-template>
+<!--            color="accent" fontIcon="account_circle"-->
+<!--            [ngStyle]="{'opacity': dim ? '0.5' : '1'}" />-->
+  <img class="no-user-photo"
+       src="assets/svgs/flat_afro.svg"
+       alt="Silhouette of a cartoon style afro"
+       [className]="dim ? 'opacity-half' : 'opacity-full'"
+       [width]="size" [height]="size" />
+}
