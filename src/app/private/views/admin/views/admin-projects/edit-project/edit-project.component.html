@@ -65,7 +65,7 @@
       </mat-form-field>
       <aj-admin-editor [config]="editorConfig"
                        [content]="this.content.value ?? ''"
-                       (editorChange)="onProjectContentChange($event)" [disabled]="loading"></aj-admin-editor>
+                       [disabled]="loading" (editorChange)="onProjectContentChange($event)" />
     </form>
   </ng-template>
 </main>

@@ -15,11 +15,11 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { AdminEditorModule } from "../../shared/admin-editor/admin-editor.module";
 import { SharedModule } from "../../../../../shared/shared.module";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { ConfirmDialogModule } from "../../../../../shared/components/confirm-dialog/confirm-dialog.module";
+import { AdminEditorComponent } from "../../shared/admin-editor/admin-editor.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule, MatIconModule, MatFormFieldModule,
@@ -45,8 +45,8 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
-    TopAppBarModule, AdminProjectsGridModule, AdminEditorModule, SharedModule,
-    ConfirmDialogModule,
+    AdminEditorComponent, AdminProjectsGridModule, ConfirmDialogModule, SharedModule,
+    TopAppBarModule,
   ],
   exports: [...COMPONENTS]
 })
