@@ -1,9 +1,14 @@
 import { Component, Input } from '@angular/core';
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'aj-storage-item-icon',
   templateUrl: './storage-item-icon.component.html',
-  styleUrls: ['./storage-item-icon.component.scss']
+  styleUrl: './storage-item-icon.component.scss',
+  standalone: true,
+  imports: [
+    MatIconModule,
+  ],
 })
 export class StorageItemIconComponent {
   @Input()
