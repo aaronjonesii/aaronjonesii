@@ -11,7 +11,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule
 ];
 
-const COMPONENTS = [PageNotFoundComponent];
+const COMPONENTS = []!;
 
 export const error_nav_path = {
   pageNotFound: '/error/404',
@@ -31,4 +31,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes), CommonModule, ...ANGULAR_MATERIAL_MODULES, LayoutModule],
   exports: [RouterModule]
 })
-export class ErrorsModule { }
+export class ErrorsModule {}
