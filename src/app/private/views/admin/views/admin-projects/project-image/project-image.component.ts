@@ -2,11 +2,22 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { StorageService } from "../../../../../../shared/services/storage.service";
 import { ConsoleLoggerService } from "../../../../../../core/services/console-logger.service";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { SafePipe } from "../../../../../../shared/pipes/safe.pipe";
 
 @Component({
   selector: 'aj-project-image',
   templateUrl: './project-image.component.html',
-  styleUrls: ['./project-image.component.scss']
+  styleUrl: './project-image.component.scss',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
+    SafePipe,
+  ],
 })
 export class ProjectImageComponent {
   @Input() imageFormControl = new FormControl<string | null>(null);
