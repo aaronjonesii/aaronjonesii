@@ -1,18 +1,29 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: 'aj-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss']
+  styleUrl: './confirm-dialog.component.scss',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+  ],
 })
 export class ConfirmDialogComponent {
-  public title?: string;
-  public description = 'This action is irreversible, be careful.';
-  public buttonText = 'Confirm'
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { title?: string, description: string, buttonText?: string }) {
-    this.title = data.title;
-    this.description = data.description;
-    if (data.buttonText) this.buttonText = data.buttonText;
+  title?: string;
+  description = 'This action is irreversible, be careful.';
+  buttonText = 'Confirm';
+
+  constructor(@Inject(MAT_DIALOG_DATA) private data: {
+    title?: string,
+    description: string,
+    buttonText?: string,
+  }) {
+    this.title = this.data.title;
+    this.description = this.data.description;
+    if (this.data.buttonText) this.buttonText = this.data.buttonText;
   }
 }
