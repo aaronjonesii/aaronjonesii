@@ -8,5 +8,5 @@ import { CommentWithID } from "../../../../../shared/interfaces/comment";
 })
 export class ProjectDetailCommentComponent {
   @Input() comment?: CommentWithID;
-  @Output() openComments = new EventEmitter<undefined>();
+  @Output() readonly openComments = new EventEmitter<undefined>();
 }
