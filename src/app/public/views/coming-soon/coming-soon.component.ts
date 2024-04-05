@@ -1,28 +1,43 @@
 import { Component } from '@angular/core';
 import { nav_path } from "../../../app-routing.module";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { FunctionsService } from "../../../shared/services/functions.service";
 import { appInformation } from "../../../information";
 import { SeoService } from "../../../core/services/seo.service";
+import { RouterLink } from "@angular/router";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: 'aj-coming-soon',
   templateUrl: './coming-soon.component.html',
-  styleUrls: ['./coming-soon.component.scss']
+  styleUrl: './coming-soon.component.scss',
+  standalone: true,
+  imports: [
+    RouterLink,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+
+  ],
 })
 export class ComingSoonComponent {
-  public readonly nav_path = nav_path;
-  public readonly currentYear = new Date().getFullYear();
-  public readonly appInformation = appInformation;
-  public subscribeForm = new FormGroup({
+  readonly nav_path = nav_path;
+  readonly currentYear = new Date().getFullYear();
+  readonly appInformation = appInformation;
+  subscribeForm = new FormGroup({
     email: new FormControl<string>(
       '',
       { nonNullable:true, validators: [Validators.required, Validators.email] }
     )
   });
-  public loading = false;
-  public success = false;
+  loading = false;
+  success = false;
 
   constructor(
     private cLog: ConsoleLoggerService,
@@ -36,7 +51,7 @@ export class ComingSoonComponent {
   }
   get email() { return this.subscribeForm.controls.email; }
 
-  public async onSubscribe(): Promise<void> {
+  async onSubscribe(): Promise<void> {
     try {
       this.loading = true;
 

@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: 'contact', loadChildren: () => import('./views/contact/contact.module').then(m => m.ContactModule) },
       { path: 'projects', loadChildren: () => import('./views/projects/projects.module').then(m => m.ProjectsModule) },
     ] },
-  { path: 'policies', loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule) }
+  { path: 'policies', loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule) },
 ];
 
 @NgModule({

@@ -15,7 +15,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
-const COMPONENTS = [ComingSoonComponent];
+const COMPONENTS = []!;
 
 const routes: Routes = [
   { path: '', component: ComingSoonComponent, pathMatch: 'full' }
