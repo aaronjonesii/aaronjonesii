@@ -31,6 +31,7 @@ import { LoadingComponent } from "../../../../shared/components/loading/loading.
   selector: 'aj-project-detail',
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
+  /* eslint-disable-next-line @angular-eslint/use-component-view-encapsulation */
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
