@@ -1,19 +1,29 @@
 import { Component, Inject } from '@angular/core';
 import { nav_path } from "../../../app-routing.module";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { SeoService } from "../../../core/services/seo.service";
+import { MatListModule } from "@angular/material/list";
+import { MatIconModule } from "@angular/material/icon";
+import { appInformation } from "../../../information";
 
 @Component({
   selector: 'aj-policies',
   templateUrl: './policies.component.html',
-  styleUrls: ['./policies.component.scss']
+  styleUrl: './policies.component.scss',
+  standalone: true,
+  imports: [
+    MatListModule,
+    RouterLink,
+    MatIconModule,
+  ],
 })
 export class PoliciesComponent {
   private readonly title = 'Policies';
-  public readonly nav_path = nav_path;
-  public policies = [
+  readonly nav_path = nav_path;
+  protected readonly website = appInformation.website;
+  policies = [
     { name: 'Terms of Use', icon: 'policy', routerLink: [nav_path.termsOfUse] },
     { name: 'Privacy Policy', icon: 'security', routerLink: [nav_path.privacyPolicy] },
   ];
@@ -24,15 +34,15 @@ export class PoliciesComponent {
     private topAppBarService: TopAppBarService,
     private seoService: SeoService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
       loading: false,
     });
-    seoService.generateTags({
+    this.seoService.generateTags({
       title: this.title,
       route: nav_path.home,
     });
-    route.fragment.forEach(fragment => this.document.querySelector(`#${fragment}`)?.scrollIntoView());
+    this.route.fragment.forEach(fragment => this.document.querySelector(`#${fragment}`)?.scrollIntoView());
   }
 }
