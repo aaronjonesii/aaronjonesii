@@ -4,12 +4,21 @@ import { ConsoleLoggerService } from "../../../../core/services/console-logger.s
 import { StorageService } from "../../../../shared/services/storage.service";
 import { AuthService } from "../../../../core/services/auth.service";
 import { AppComponent } from "../../../../app.component";
+import { UserPhotoComponent } from "../../../../shared/components/user-photo/user-photo.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 
 @Component({
   selector: 'aj-photo-upload',
   templateUrl: './photo-upload.component.html',
-  styleUrls: ['./photo-upload.component.scss']
+  styleUrl: './photo-upload.component.scss',
+  standalone: true,
+  imports: [
+    UserPhotoComponent,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class PhotoUploadComponent implements OnInit {
   @Input() public user: User | null = null;
