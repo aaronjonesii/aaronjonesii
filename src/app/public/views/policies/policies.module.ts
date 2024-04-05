@@ -12,9 +12,7 @@ const ANGULAR_MATERIALS = [MatIconModule, MatListModule, MatDividerModule];
 
 const CORE_MODULES  = [CommonModule];
 
-const COMPONENTS = [
-  TermsOfUseComponent,
-];
+const COMPONENTS = []!;
 
 export const policies_nav_path = {
   termsOfUse: '/policies/terms-of-use',
