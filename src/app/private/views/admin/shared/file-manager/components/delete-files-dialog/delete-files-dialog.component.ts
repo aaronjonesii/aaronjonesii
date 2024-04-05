@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: 'aj-delete-files-dialog',
   templateUrl: './delete-files-dialog.component.html',
-  styleUrls: ['./delete-files-dialog.component.scss']
+  styleUrl: './delete-files-dialog.component.scss',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+  ],
 })
 export class DeleteFilesDialogComponent {
-  constructor(public dialogRef: MatDialogRef<DeleteFilesDialogComponent>,) { }
+  constructor(private dialogRef: MatDialogRef<DeleteFilesDialogComponent>) {}
 }

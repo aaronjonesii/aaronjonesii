@@ -15,7 +15,6 @@ import { FormatBytesPipe } from './pipes/format-bytes.pipe';
 import { StorageItemIconComponent } from './components/storage-item-icon/storage-item-icon.component';
 import { StorageFilePreviewComponent } from './components/storage-file-preview/storage-file-preview.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DeleteFilesDialogComponent } from './components/delete-files-dialog/delete-files-dialog.component';
 import { FileDropzoneDirective } from './directives/file-dropzone.directive';
 import { SharedModule } from "../../../../../shared/shared.module";
 
@@ -35,13 +34,12 @@ const DIRECTIVES = [FileDropzoneDirective];
 const COMPONENTS = [
   FileManagerComponent, NewFolderDialogComponent,
   StorageItemIconComponent, StorageFilePreviewComponent,
-  DeleteFilesDialogComponent
 ];
 
 @NgModule({
   declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES, FileDropzoneDirective],
   imports: [
-    ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES, SharedModule
+    ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES, SharedModule,
   ],
   exports: [...COMPONENTS, ...DIRECTIVES]
 })
