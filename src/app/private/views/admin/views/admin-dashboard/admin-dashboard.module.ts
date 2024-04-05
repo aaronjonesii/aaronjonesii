@@ -7,7 +7,7 @@ import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar
 
 const CORE_MODULES = [CommonModule];
 
-const COMPONENTS = [AdminDashboardComponent];
+const COMPONENTS = []!;
 
 const routes: Routes = [
   { path: '', component: AdminDashboardComponent, pathMatch: 'full' }
