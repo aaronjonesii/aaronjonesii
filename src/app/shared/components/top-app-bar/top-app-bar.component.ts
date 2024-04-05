@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from "../../../core/services/auth.service";
 import { nav_path } from "../../../app-routing.module";
-import { AsyncPipe, Location } from "@angular/common";
+import { AsyncPipe, Location, NgClass } from "@angular/common";
 import { TopAppBarService } from "./top-app-bar.service";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
@@ -20,6 +20,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
     RouterLink,
     RouterLinkActive,
     AsyncPipe,
+    NgClass,
   ],
 })
 export class TopAppBarComponent {

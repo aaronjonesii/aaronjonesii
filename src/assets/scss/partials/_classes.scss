@@ -50,6 +50,6 @@
 .hidden, .visibility-hidden {
   visibility: hidden;
 }
-.visible .visibility-visible {
+.visible, .visibility-visible {
   visibility: visible;
 }
