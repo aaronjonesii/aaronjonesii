@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NewFolderDialogComponent } from './components/new-folder-dialog/new-folder-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -32,7 +31,7 @@ const CORE_MODULES = [CommonModule, FormsModule];
 const DIRECTIVES = [FileDropzoneDirective];
 
 const COMPONENTS = [
-  FileManagerComponent, NewFolderDialogComponent,
+  FileManagerComponent,
   StorageItemIconComponent, StorageFilePreviewComponent,
 ];
 

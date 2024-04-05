@@ -4,16 +4,16 @@
   <form class="new-folder">
     <mat-form-field appearance="outline">
       <mat-label>New folder name</mat-label>
-      <input matInput [(ngModel)]="data.folder.name" name="folderName">
+      <input matInput name="folderName" [(ngModel)]="data.folder.name">
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button type="button" mat-dialog-close>Cancel</button>
   <button mat-raised-button
           color="primary"
           type="submit"
           [disabled]="!data.folder.name"
-          (click)="dialogRef.close(data.folder.name)">Create</button>
+          [mat-dialog-close]="data.folder.name">Create</button>
 </mat-dialog-actions>
