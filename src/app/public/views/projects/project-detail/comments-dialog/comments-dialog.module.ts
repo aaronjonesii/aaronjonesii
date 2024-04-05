@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatMenuModule } from "@angular/material/menu";
 import { CommentsDialogCommentComponent } from './comments-dialog-comment/comments-dialog-comment.component';
 import { UserPhotoComponent } from "../../../../../shared/components/user-photo/user-photo.component";
+import { LoadingComponent } from "../../../../../shared/components/loading/loading.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatDialogModule, MatButtonModule, MatIconModule,
@@ -23,7 +24,7 @@ const COMPONENTS = [CommentsDialogComponent, CommentsDialogCommentComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES, SharedModule, UserPhotoComponent],
+  imports: [...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES, LoadingComponent, SharedModule, UserPhotoComponent],
   exports: [...COMPONENTS]
 })
 export class CommentsDialogModule { }

@@ -14,6 +14,8 @@ import { CommentsDialogModule } from "./project-detail/comments-dialog/comments-
 import { ProjectDetailCommentComponent } from './project-detail/project-detail-comment/project-detail-comment.component';
 import { ProjectsComponent } from "./projects.component";
 import { TopAppBarComponent } from "../../../shared/components/top-app-bar/top-app-bar.component";
+import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
+import { LoadingComponent } from "../../../shared/components/loading/loading.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatChipsModule, MatCardModule, MatIconModule,
@@ -37,7 +39,7 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
-     CommentsDialogModule, ConfirmDialogModule, SharedModule, TopAppBarComponent,
+     CommentsDialogModule, ConfirmDialogModule, LoadingComponent, SharedModule, TopAppBarComponent, UserPhotoComponent,
   ],
   exports: [...COMPONENTS]
 })

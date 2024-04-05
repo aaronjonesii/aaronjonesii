@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from "../../../../../shared/components/confirm-di
 import { AdminEditorComponent } from "../../shared/admin-editor/admin-editor.component";
 import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
 import { AdminProjectsGridComponent } from "../../shared/admin-projects-grid/admin-projects-grid.component";
+import { LoadingComponent } from "../../../../../shared/components/loading/loading.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule, MatIconModule, MatFormFieldModule,
@@ -45,8 +46,8 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
-    AdminEditorComponent, AdminProjectsGridComponent, ConfirmDialogModule, SharedModule,
-    TopAppBarComponent,
+    AdminEditorComponent, AdminProjectsGridComponent, ConfirmDialogModule, LoadingComponent,
+    SharedModule, TopAppBarComponent,
   ],
   exports: [...COMPONENTS]
 })
