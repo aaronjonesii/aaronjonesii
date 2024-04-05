@@ -35,28 +35,29 @@ import { AsyncPipe } from "@angular/common";
   ],
 })
 export class LayoutComponent {
-  public readonly title = appInformation.name;
-  public readonly nav_path = nav_path;
-  public segments = this.menuService.pages;
+  readonly title = appInformation.name;
+  readonly nav_path = nav_path;
+  segments = this.menuService.pages;
   /** Breakpoints can be found from src/assets/scss/partials/_media_queries.scss */
-  public isMobile$ = this.breakpointObserver.observe('(max-width: 599px)')
+  isMobile$ = this.breakpointObserver.observe('(max-width: 599px)')
     .pipe(map(state => state.matches));
-  public isTabletPortrait$ = this.breakpointObserver.observe('(min-width: 600px)')
+  isTabletPortrait$ = this.breakpointObserver.observe('(min-width: 600px)')
     .pipe(map(state => state.matches));
   private isTabletLandscape$ = this.breakpointObserver.observe('(min-width: 905px)')
     .pipe(map(state => state.matches));
   private isDesktop$ = this.breakpointObserver.observe('(min-width: 1440px)')
     .pipe(map(state => state.matches));
-  public isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
+  isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
     .pipe(map(state => state.matches));
+
   constructor(
-    public menuService: MenuService,
-    public auth: AuthService,
+    private menuService: MenuService,
+    private auth: AuthService,
     private breakpointObserver: BreakpointObserver,
   ) {
     /** Add button if admin */
-    auth.user$.forEach(async (user) => {
-      if (await auth.isAdmin(user)) {
+    this.auth.user$.forEach(async (user) => {
+      if (await this.auth.isAdmin(user)) {
         const adminNavigationBarMenu = [
           ...this.menuService.pages,
           { name: 'Admin', icon: 'admin_panel_settings', routerLink: [nav_path.adminDashboard] }
