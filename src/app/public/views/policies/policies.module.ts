@@ -13,7 +13,7 @@ const ANGULAR_MATERIALS = [MatIconModule, MatListModule, MatDividerModule];
 const CORE_MODULES  = [CommonModule];
 
 const COMPONENTS = [
-  TermsOfUseComponent, PrivacyPolicyComponent
+  TermsOfUseComponent,
 ];
 
 export const policies_nav_path = {
