@@ -6,7 +6,6 @@ import { EditProjectComponent } from "./edit-project/edit-project.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { AddProjectComponent } from "./add-project/add-project.component";
-import { ProjectImageComponent } from "./project-image/project-image.component";
 import { ProjectTagsComponent } from "./project-tags/project-tags.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -21,6 +20,7 @@ import { AdminEditorComponent } from "../../shared/admin-editor/admin-editor.com
 import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
 import { AdminProjectsGridComponent } from "../../shared/admin-projects-grid/admin-projects-grid.component";
 import { LoadingComponent } from "../../../../../shared/components/loading/loading.component";
+import { ProjectImageComponent } from "./project-image/project-image.component";
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule, MatIconModule, MatFormFieldModule,
@@ -31,9 +31,7 @@ const ANGULAR_MATERIAL_MODULES = [
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
 const COMPONENTS = [
-  AdminProjectsComponent, AddProjectComponent,
-  EditProjectComponent, ProjectImageComponent,
-  ProjectTagsComponent,
+  EditProjectComponent,
 ];
 
 const routes: Routes = [
@@ -47,7 +45,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES, ...ANGULAR_MATERIAL_MODULES,
     AdminEditorComponent, AdminProjectsGridComponent, ConfirmDialogModule, LoadingComponent,
-    SharedModule, TopAppBarComponent,
+    ProjectImageComponent, ProjectTagsComponent, SharedModule, TopAppBarComponent,
   ],
   exports: [...COMPONENTS]
 })

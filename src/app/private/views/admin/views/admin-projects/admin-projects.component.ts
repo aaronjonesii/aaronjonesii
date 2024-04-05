@@ -4,22 +4,37 @@ import { ProjectWithID } from "../../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 import { nav_path } from "../../../../../app-routing.module";
+import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
+import { AdminProjectsGridComponent } from "../../shared/admin-projects-grid/admin-projects-grid.component";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
+import { MatIconModule } from "@angular/material/icon";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: 'aj-admin-projects',
   templateUrl: './admin-projects.component.html',
-  styleUrls: ['./admin-projects.component.scss']
+  styleUrl: './admin-projects.component.scss',
+  standalone: true,
+  imports: [
+    TopAppBarComponent,
+    AsyncPipe,
+    AdminProjectsGridComponent,
+    MatButtonModule,
+    RouterLink,
+    MatIconModule,
+  ],
 })
 export class AdminProjectsComponent {
-  public readonly title = 'Projects';
-  public readonly nav_path = nav_path;
-  public projects$: Observable<ProjectWithID[]>;
+  readonly title = 'Projects';
+  readonly nav_path = nav_path;
+  projects$: Observable<ProjectWithID[]>;
 
   constructor(
     private db: FirestoreService,
     private cLog: ConsoleLoggerService,
   ) {
-    this.projects$ = (db.col$(`projects`, {idField: 'id'}) as Observable<ProjectWithID[]>)
+    this.projects$ = (this.db.col$(`projects`, {idField: 'id'}) as Observable<ProjectWithID[]>)
       .pipe(catchError(error => {
         this.cLog.error(`Something went wrong loading projects`, error);
         return throwError(error);
