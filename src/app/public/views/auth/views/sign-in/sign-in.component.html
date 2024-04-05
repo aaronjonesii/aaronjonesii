@@ -3,39 +3,47 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="outline">
     <mat-label>Email address</mat-label>
-    <input matInput id="email" type="email" name="email" autocomplete="email" formControlName="email" />
+    <input matInput id="email" type="email" name="email"
+           autocomplete="email" formControlName="email" />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Password</mat-label>
-    <input matInput id="password" name="password" autocomplete="password" formControlName="password"
+    <input matInput id="password" name="password"
+           autocomplete="password" formControlName="password"
            [type]="hidePassword ? 'password' : 'text'" />
     <button mat-icon-button matSuffix type="button"
-            (click)="hidePassword = !hidePassword"
             [attr.aria-label]="hidePassword ? 'Show' : 'Hide'+' Password'"
-            [attr.aria-pressed]="hidePassword">
-      <mat-icon [fontIcon]="hidePassword ? 'visibility_off' : 'visibility'"></mat-icon>
+            [attr.aria-pressed]="hidePassword"
+            (click)="hidePassword = !hidePassword">
+      <mat-icon [fontIcon]="hidePassword ? 'visibility_off' : 'visibility'" />
     </button>
   </mat-form-field>
 
   <div class="flex-row justify-content-end">
-    <button mat-button color="accent" [routerLink]="[nav_path.forgotPassword]" type="button" [disabled]="loading">
+    <button mat-button color="accent" type="button"
+            [disabled]="loading" [routerLink]="[nav_path.forgotPassword]">
       Forgot password?
     </button>
   </div>
 
   <p>
     By continuing, I agree to {{appInformation.website}}
-    <a mat-button color="accent" [routerLink]="[nav_path.privacyPolicy]" target="_blank">Privacy Policy</a>
+    <a mat-button color="accent" target="_blank"
+       [routerLink]="[nav_path.privacyPolicy]">Privacy Policy</a>
     and
-    <a mat-button color="accent" [routerLink]="[nav_path.termsOfUse]" target="_blank">Terms of Use</a>.
+    <a mat-button color="accent" target="_blank"
+       [routerLink]="[nav_path.termsOfUse]">Terms of Use</a>.
   </p>
 
-  <button mat-flat-button color="primary" class="fab-btn-padding" type="submit" [disabled]="loading">Sign in</button>
+  <button mat-flat-button color="primary" class="fab-btn-padding"
+          type="submit" [disabled]="loading">Sign in</button>
 
-  <button mat-stroked-button class="fab-btn-padding" (click)="auth.googleLogin()" type="button" [disabled]="loading">
+  <button mat-stroked-button class="fab-btn-padding" type="button"
+          [disabled]="loading" (click)="auth.googleLogin()">
     <span class="flex-row align-items-center app-gap">
-      <img class="mat-icon" src="assets/imgs/g-logo.png" alt="Image of Google Icon with a white background"
+      <img class="mat-icon" ngSrc="assets/imgs/g-logo.png"
+           alt="Image of Google Icon with a white background"
            width="80" height="80" />
       Sign in with Google
     </span>
@@ -43,6 +51,7 @@
 
   <p class="text-center">
     Don't have an account?
-    <a mat-button color="accent" [routerLink]="[nav_path.signUp]" [disabled]="loading">Sign up</a>
+    <a mat-button color="accent"
+       [disabled]="loading" [routerLink]="[nav_path.signUp]">Sign up</a>
   </p>
 </form>

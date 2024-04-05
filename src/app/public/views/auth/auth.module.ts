@@ -12,7 +12,6 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatIconModule } from "@angular/material/icon";
 
 const COMPONENTS = [
-  SignInComponent,
   SignUpComponent,
 ];
 

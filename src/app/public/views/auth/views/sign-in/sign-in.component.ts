@@ -1,22 +1,37 @@
 import { Component } from '@angular/core';
 import { nav_path } from 'src/app/app-routing.module';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { TopAppBarService } from "../../../../../shared/components/top-app-bar/top-app-bar.service";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss']
+  styleUrl: './sign-in.component.scss',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+    NgOptimizedImage,
+  ],
 })
 export class SignInComponent {
-  public readonly title = "Sign in"
-  public readonly nav_path = nav_path;
-  public readonly appInformation = appInformation;
-  public loginForm = new FormGroup({
+  readonly title = "Sign in"
+  readonly nav_path = nav_path;
+  readonly appInformation = appInformation;
+  loginForm = new FormGroup({
     email: new FormControl<string>(
       '',
       {nonNullable: true, validators: [Validators.required, Validators.email]}
@@ -26,8 +41,8 @@ export class SignInComponent {
       {nonNullable: true, validators: [Validators.required, Validators.minLength(8)]}
       )
   });
-  public hidePassword = true;
-  public loading = false;
+  hidePassword = true;
+  loading = false;
 
   constructor(
     private router: Router,
@@ -48,10 +63,12 @@ export class SignInComponent {
       route: nav_path.signIn
     });
   }
-  public get email() { return this.loginForm.controls.email; }
-  public get password() { return this.loginForm.controls.password; }
+  get email() { return this.loginForm.controls.email; }
+  get password() { return this.loginForm.controls.password; }
 
-  public async onSubmit() {
+  async onSubmit() {
+    if (this.loginForm.invalid) return;
+
     this.loading = true;
 
     await this.auth.signIn(this.email.value, this.password.value)
