@@ -1,6 +1,6 @@
-<ng-container *ngIf="comment">
+@if (comment) {
   <div class="flex-row app-gap">
-    <aj-user-photo [image]="comment.author.image" [size]="40"></aj-user-photo>
+    <aj-user-photo [image]="comment.author.image" [size]="40" />
     <div class="flex-col truncate-text">
       <span class="truncate-text">{{comment.author.name ?? comment.user.id}}</span>
       <small>{{comment.created ? (comment.created.seconds * 1000 | dateAgo) : ''}}</small>
@@ -9,8 +9,10 @@
 
   <div class="flex-row align-items-center">
     <p class="message">{{comment.content}}</p>
-    <button mat-icon-button color="accent" (click)="openComments.emit()">
-      <mat-icon class="material-icons-outlined" fontIcon="comment"></mat-icon>
+    <button mat-icon-button type="button" color="accent" (click)="openComments.emit()">
+      <mat-icon class="material-icons-outlined" fontIcon="comment" />
     </button>
   </div>
-</ng-container>
+} @else {
+  No comment!
+}

@@ -1,7 +1,7 @@
 import { Component, Inject, ViewEncapsulation, makeStateKey, TransferState } from '@angular/core';
 import { map, Observable, of, switchMap } from "rxjs";
 import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
 import { nav_path } from "../../../../app-routing.module";
 import { AuthService } from "../../../../core/services/auth.service";
@@ -15,31 +15,51 @@ import { increment, where } from "@angular/fire/firestore";
 import { SeoService } from "../../../../core/services/seo.service";
 import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
 import { CommentWithID } from "../../../../shared/interfaces/comment";
-import { DOCUMENT } from "@angular/common";
+import { AsyncPipe, DatePipe, DOCUMENT } from "@angular/common";
 import { tap } from "rxjs/operators";
 
 import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
+import { MatButtonModule } from "@angular/material/button";
+import { UserPhotoComponent } from "../../../../shared/components/user-photo/user-photo.component";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatTabsModule } from "@angular/material/tabs";
+import { ProjectDetailCommentComponent } from "./project-detail-comment/project-detail-comment.component";
+import { MatIconModule } from "@angular/material/icon";
+import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
 
 @Component({
   selector: 'aj-project-detail',
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss'],
+  styleUrl: './project-detail.component.scss',
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    RouterLink,
+    AsyncPipe,
+    DatePipe,
+    UserPhotoComponent,
+    MatDividerModule,
+    MatTabsModule,
+    ProjectDetailCommentComponent,
+    MatIconModule,
+    LoadingComponent,
+  ],
 })
 export class ProjectDetailComponent {
-  public readonly nav_path = nav_path;
-  public projectID$: Observable<string | null>;
-  public project$: Observable<ReadProject | null>;
-  public user$ = this.auth.loadUser.pipe(
+  readonly nav_path = nav_path;
+  projectID$: Observable<string | null>;
+  project$: Observable<ReadProject | null>;
+  user$ = this.auth.loadUser.pipe(
     switchMap(user => {
       if (user) return this.getUser$(user);
       else return of(user);
     }),
   );
-  public notAvailable = false;
-  public comments$: Observable<CommentWithID[] | null>;
-  public readonly ProjectStatus = ProjectStatus;
-  public relatedProjects$: Observable<ReadProject[] | null>;
+  notAvailable = false;
+  comments$: Observable<CommentWithID[] | null>;
+  readonly ProjectStatus = ProjectStatus;
+  relatedProjects$: Observable<ReadProject[] | null>;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,13 +74,13 @@ export class ProjectDetailComponent {
     private topAppBarService: TopAppBarService,
   ) {
     /** title service */
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: appInformation.title,
       showBackBtn: true,
       loading: false,
     });
 
-    this.projectID$ = route.paramMap.pipe(
+    this.projectID$ = this.route.paramMap.pipe(
       map((params) => params.get('projectID')),
     );
 
@@ -91,7 +111,7 @@ export class ProjectDetailComponent {
       });
   }
 
-  public getUser$(user: User) {
+  getUser$(user: User) {
     return (this.db.doc$(`users/${user.uid}`) as Observable<readUser>)
       .pipe(map(userDoc => (Object.assign({id: user.uid}, userDoc) as UserWithID)));
   }
@@ -132,7 +152,7 @@ export class ProjectDetailComponent {
       );
   }
 
-  public getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
+  getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
     if (!project) return of(null);
 
     return this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, { idField: 'id' });
@@ -169,11 +189,11 @@ export class ProjectDetailComponent {
     );
   }
 
-  public isOwner(project: ReadProject, user: UserWithID | null): boolean {
+  isOwner(project: ReadProject, user: UserWithID | null): boolean {
     return user ? project.roles[user.id] === 'owner' : false;
   }
 
-  public async updateFollowingStatus(user: UserWithID | null) {
+  async updateFollowingStatus(user: UserWithID | null) {
     try {
       this.auth.assertUser(user);
 
@@ -199,7 +219,7 @@ export class ProjectDetailComponent {
       .then(() => this.cLog.log(user?.following ? 'Unfollowed' : 'Followed'));
   }
 
-  public openComments(project: ReadProject): void {
+  openComments(project: ReadProject): void {
     this.dialog.open(CommentsDialogComponent, {
       id: 'comments-dialog',
       data: {

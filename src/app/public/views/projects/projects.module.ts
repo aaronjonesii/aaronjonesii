@@ -11,7 +11,6 @@ import { SharedModule } from "../../../shared/shared.module";
 import { ConfirmDialogModule } from "../../../shared/components/confirm-dialog/confirm-dialog.module";
 import { MatTabsModule } from "@angular/material/tabs";
 import { CommentsDialogModule } from "./project-detail/comments-dialog/comments-dialog.module";
-import { ProjectDetailCommentComponent } from './project-detail/project-detail-comment/project-detail-comment.component';
 import { ProjectsComponent } from "./projects.component";
 import { TopAppBarComponent } from "../../../shared/components/top-app-bar/top-app-bar.component";
 import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
@@ -27,7 +26,6 @@ const CORE_MODULES = [CommonModule];
 
 const COMPONENTS = [
   ProjectsComponent,
-  ProjectDetailComponent, ProjectDetailCommentComponent,
 ];
 
 const routes: Routes = [
