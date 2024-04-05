@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from "@angular/router";
 import { AdminComponent } from "./admin.component";
-import { NavigationBarModule } from "../../../shared/components/navigation-bar/navigation-bar.module";
 import { ReactiveFormsModule } from "@angular/forms";
 
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
-const COMPONENTS = [ AdminComponent ];
+const COMPONENTS = []!;
 
 export const admin_nav_path = {
   adminDashboard: '/admin/dashboard',
@@ -33,7 +32,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [...COMPONENTS],
-  imports: [ RouterModule.forChild(routes), ...CORE_MODULES, NavigationBarModule ],
+  imports: [ RouterModule.forChild(routes), ...CORE_MODULES ],
   exports: [...COMPONENTS]
 })
 export class AdminModule { }
