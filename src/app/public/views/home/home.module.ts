@@ -10,7 +10,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule, MatIconModule, MatCardModule,
 ];
 
-const COMPONENTS = [HomeComponent];
+const COMPONENTS = []!;
 
 export const home_nav_path = {};
 

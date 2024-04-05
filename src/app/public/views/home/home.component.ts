@@ -8,11 +8,24 @@ import { nav_path } from "../../../app-routing.module";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { appInformation } from "../../../information";
 import { SeoService } from "../../../core/services/seo.service";
+import { MatCardModule } from "@angular/material/card";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
+import { AsyncPipe } from "@angular/common";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'aj-home',
-  templateUrl: 'home.component.html',
-  styleUrls: ['home.component.scss']
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
+  standalone: true,
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    RouterLink,
+    AsyncPipe,
+    MatIconModule,
+  ],
 })
 export class HomeComponent {
   public readonly title = appInformation.title;
@@ -25,16 +38,16 @@ export class HomeComponent {
     private topAppBarService: TopAppBarService,
     private seoService: SeoService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
       loading: false,
     });
-    seoService.generateTags({
+    this.seoService.generateTags({
       route: nav_path.home,
     });
 
-    (this.featuredProjects$ = db.colQuery$(
+    (this.featuredProjects$ = this.db.colQuery$(
       `projects`,
       {idField: 'id'},
       /** only get featured projects */
@@ -45,7 +58,7 @@ export class HomeComponent {
       where('visibility', '==', ProjectVisibility.PUBLIC),
     ) as Observable<Project[]>).pipe(
       catchError(error => {
-        cLog.error(`Something went wring loading featured projects`, error);
+        this.cLog.error(`Something went wring loading featured projects`, error);
         return throwError(error);
       }),
     );
