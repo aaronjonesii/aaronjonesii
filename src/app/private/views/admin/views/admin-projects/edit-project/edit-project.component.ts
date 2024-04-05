@@ -10,7 +10,7 @@ import {
 import { ConsoleLoggerService } from "../../../../../../core/services/console-logger.service";
 import { nav_path } from "../../../../../../app-routing.module";
 import { initialProjectForm, ProjectForm } from "../../../../../../shared/forms/project-form";
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ChangeEvent } from "@ckeditor/ckeditor5-angular";
 import { SlugifyPipe } from "../../../../../../shared/pipes/slugify.pipe";
 import { TagsService } from "../../../../../../shared/services/tags.service";
@@ -18,24 +18,53 @@ import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
 import { catchError, Observable, of, throwError } from "rxjs";
 import { Tag } from "../../../../../../shared/interfaces/tag";
 import { tap } from "rxjs/operators";
+import { TopAppBarComponent } from "../../../../../../shared/components/top-app-bar/top-app-bar.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { LoadingComponent } from "../../../../../../shared/components/loading/loading.component";
+import { ProjectImageComponent } from "../project-image/project-image.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { ProjectTagsComponent } from "../project-tags/project-tags.component";
+import { MatSelectModule } from "@angular/material/select";
+import { KeyValuePipe, TitleCasePipe } from "@angular/common";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { AdminEditorComponent } from "../../../shared/admin-editor/admin-editor.component";
 
 @Component({
   selector: 'aj-edit-project',
   templateUrl: './edit-project.component.html',
-  styleUrls: ['./edit-project.component.scss']
+  styleUrl: './edit-project.component.scss',
+  standalone: true,
+  imports: [
+    TopAppBarComponent,
+    MatButtonModule,
+    MatIconModule,
+    LoadingComponent,
+    ReactiveFormsModule,
+    ProjectImageComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    ProjectTagsComponent,
+    MatSelectModule,
+    KeyValuePipe,
+    TitleCasePipe,
+    MatCheckboxModule,
+    AdminEditorComponent,
+  ],
 })
 export class EditProjectComponent implements OnInit {
-  public readonly title = 'Edit project';
+  readonly title = 'Edit project';
   private readonly projectID: string | null = null;
   private project?: ReadProject;
   private projectSnapshot?: ReadProject;
-  public editForm = initialProjectForm;
-  public readonly projectStatuses = ProjectStatus;
-  public readonly projectVisibilities = ProjectVisibility;
-  public loading = true;
-  public allTags$: Observable<Tag[]> = of([]);
+  editForm = initialProjectForm;
+  readonly projectStatuses = ProjectStatus;
+  readonly projectVisibilities = ProjectVisibility;
+  loading = true;
+  allTags$: Observable<Tag[]> = of([]);
   private allTags: Tag[] = [];
-  public editorConfig = {
+  editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {
       onUpdate: (stats:{characters: number, words: number}) => {
@@ -58,38 +87,43 @@ export class EditProjectComponent implements OnInit {
   ) {
     this.projectID = this.route.snapshot.paramMap.get('projectID');
   }
-  async ngOnInit() {
-    const projectSnap = await this.db.docSnap(`projects/${this.projectID}`);
-    if (!projectSnap.exists()) {
-      this.router.navigate([nav_path.adminProjects]);
-      this.cLog.error(`Something went wrong loading project`, this.projectID);
-    } else {
-      this.allTags$ = (this.db.col$(`tags`) as Observable<Tag[]>)
-        .pipe(
-          tap(tags => this.allTags = tags),
-          catchError(error => {
-            this.cLog.error(`Something went wrong loading tags`, error);
-            return throwError(error);
-          })
-        );
-      this.projectSnapshot = projectSnap.data() as ReadProject;
-      this.project = projectSnap.data() as ReadProject;
-      this.setForm(this.project);
-      this.loading = false;
-    }
+  ngOnInit() {
+    this.db.docSnap(`projects/${this.projectID}`)
+      .then((docSnapshot) => {
+        if (!docSnapshot.exists()) {
+          this.router.navigate([nav_path.adminProjects]);
+          this.cLog.error(`Something went wrong loading project`, this.projectID);
+        } else {
+          this.allTags$ = (this.db.col$(`tags`) as Observable<Tag[]>)
+            .pipe(
+              tap(tags => this.allTags = tags),
+              catchError(error => {
+                this.cLog.error(`Something went wrong loading tags`, error);
+                return throwError(error);
+              })
+            );
+          const project = docSnapshot.data() as ReadProject;
+          this.projectSnapshot = project;
+          this.project = project;
+          this.setForm(this.project);
+          this.loading = false;
+        }
+      }).catch((error: unknown) => {
+        this.cLog.error('Something went wrong loading project to edit.', error);
+      });
   }
-  public get image() { return this.editForm.controls.image; }
-  public get name() { return this.editForm.controls.name; }
-  public get description() { return this.editForm.controls.description; }
-  public get slug() { return this.editForm.controls.slug; }
-  public get tags() { return this.editForm.controls.tags; }
-  public get livePreviewLink() { return this.editForm.controls.livePreviewLink; }
-  public get sourceCodeLink() { return this.editForm.controls.sourceCodeLink; }
-  public get content() { return this.editForm.controls.content; }
-  public get featured() { return this.editForm.controls.featured; }
-  public get allowComments() { return this.editForm.controls.allowComments; }
-  public get status() { return this.editForm.controls.status; }
-  public get visibility() { return this.editForm.controls.visibility; }
+  get image() { return this.editForm.controls.image; }
+  get name() { return this.editForm.controls.name; }
+  get description() { return this.editForm.controls.description; }
+  get slug() { return this.editForm.controls.slug; }
+  get tags() { return this.editForm.controls.tags; }
+  get livePreviewLink() { return this.editForm.controls.livePreviewLink; }
+  get sourceCodeLink() { return this.editForm.controls.sourceCodeLink; }
+  get content() { return this.editForm.controls.content; }
+  get featured() { return this.editForm.controls.featured; }
+  get allowComments() { return this.editForm.controls.allowComments; }
+  get status() { return this.editForm.controls.status; }
+  get visibility() { return this.editForm.controls.visibility; }
 
   private setForm(project: ReadProject) {
     this.editForm = new FormGroup<ProjectForm>({
@@ -108,15 +142,15 @@ export class EditProjectComponent implements OnInit {
     });
   }
 
-  public onProjectContentChange({editor}: ChangeEvent) {
+  onProjectContentChange({editor}: ChangeEvent) {
     if (editor) this.content?.setValue(editor.getData());
   }
 
-  public setSlug(event: Event): void {
+  setSlug(event: Event): void {
     this.slug?.setValue(this.slugify.transform((event.target as HTMLInputElement).value));
   }
 
-  public async save() {
+  async save() {
     this.loading = true;
 
     this.editForm.disable();

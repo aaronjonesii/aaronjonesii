@@ -1,55 +1,72 @@
 <aj-top-app-bar [title]="title" [showBackBtn]="true" [loading]="loading">
-  <button mat-flat-button color="primary" (click)="save()" [disabled]="editForm.invalid || loading">
-    <mat-icon class="material-icons-outlined" fontIcon="save"></mat-icon> Save
+  <button mat-flat-button color="primary" type="button"
+          [disabled]="editForm.invalid || loading" (click)="save()">
+    <mat-icon class="material-icons-outlined" fontIcon="save" /> Save
   </button>
 </aj-top-app-bar>
 
 <main class="page-padding">
-  <ng-container *ngIf="loading; else showForm">
+  @if (loading) {
     <aj-loading />
-  </ng-container>
-  <ng-template #showForm>
+  } @else {
     <form [formGroup]="editForm">
-      <aj-project-image [imageFormControl]="image"></aj-project-image>
+      <aj-project-image [imageFormControl]="image" />
 
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
-        <input matInput type="text" id="name" name="name" autocomplete="name" formControlName="name" (change)="setSlug($event)" aria-label="Project Name" />
+        <input matInput type="text" id="name" name="name"
+               autocomplete="name" formControlName="name"
+               aria-label="Project Name" (change)="setSlug($event)" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Slug</mat-label>
-        <input matInput type="text" id="slug" name="slug" autocomplete="on" formControlName="slug" aria-label="Project Slug" />
+        <input matInput type="text" id="slug" name="slug"
+               autocomplete="on" formControlName="slug"
+               aria-label="Project Slug" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Description</mat-label>
-        <input matInput type="text" id="description" name="description" autocomplete="on" formControlName="description" aria-label="Project Description" />
+        <input matInput type="text" id="description"
+               name="description" autocomplete="on"
+               formControlName="description"
+               aria-label="Project Description" />
       </mat-form-field>
 
-      <aj-project-tags [selectedTagsFormArray]="tags" [allTags$]="allTags$"></aj-project-tags>
+      <aj-project-tags [selectedTagsFormArray]="tags" [allTags$]="allTags$" />
 
       <mat-form-field appearance="outline">
         <mat-label>Live Preview Link</mat-label>
-        <input matInput type="text" id="livePreviewLink" name="livePreviewLink" autocomplete="on" formControlName="livePreviewLink" aria-label="Project Live Preview Link" />
+        <input matInput type="text" id="livePreviewLink"
+               name="livePreviewLink" autocomplete="on"
+               formControlName="livePreviewLink"
+               aria-label="Project Live Preview Link" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Source Code Link</mat-label>
-        <input matInput type="text" id="sourceCodeLink" name="sourceCodeLink" autocomplete="on" formControlName="sourceCodeLink" aria-label="Project Source Code link" />
+        <input matInput type="text" id="sourceCodeLink"
+               name="sourceCodeLink" autocomplete="on"
+               formControlName="sourceCodeLink"
+               aria-label="Project Source Code link" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
-          <mat-option *ngFor="let status of projectStatuses | keyvalue" [value]="status.value">{{status.key | titlecase}}</mat-option>
+          @for (status of projectStatuses | keyvalue; track status.key) {
+            <mat-option [value]="status.value">{{status.key | titlecase}}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Visibility</mat-label>
         <mat-select formControlName="visibility">
-          <mat-option *ngFor="let visibility of projectVisibilities | keyvalue" [value]="visibility.value">{{visibility.key | titlecase}}</mat-option>
+          @for (visibility of projectVisibilities | keyvalue; track visibility.key) {
+            <mat-option [value]="visibility.value">{{visibility.key | titlecase}}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
 
@@ -61,12 +78,15 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Content</mat-label>
-        <input matInput type="text" id="content" name="content" autocomplete="on" formControlName="content" aria-label="Project Content" />
+        <input matInput type="text" id="content" name="content"
+               autocomplete="on" formControlName="content"
+               aria-label="Project Content" />
       </mat-form-field>
       <aj-admin-editor [config]="editorConfig"
                        [content]="this.content.value ?? ''"
-                       [disabled]="loading" (editorChange)="onProjectContentChange($event)" />
+                       [disabled]="loading"
+                       (editorChange)="onProjectContentChange($event)" />
     </form>
-  </ng-template>
+  }
 </main>
 

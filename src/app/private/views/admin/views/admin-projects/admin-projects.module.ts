@@ -30,9 +30,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, ReactiveFormsModule];
 
-const COMPONENTS = [
-  EditProjectComponent,
-];
+const COMPONENTS = []!;
 
 const routes: Routes = [
   { path: '', component: AdminProjectsComponent, pathMatch: 'full' },
