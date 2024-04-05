@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'components/storage-file-preview/storage-file-preview-theme' as storageFilePreview;
+@use './components/storage-file-preview/storage-file-preview-theme' as storageFilePreview;
 
 /* File Manager Component Color Mixins Below */
 @mixin componentColorMixins($theme) {
