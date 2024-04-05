@@ -17,7 +17,7 @@ const routes: Routes = [
   declarations: [...COMPONENTS],
   imports: [
     RouterModule.forChild(routes), ...CORE_MODULES,
-    TopAppBarModule, FileManagerModule,
+    FileManagerModule, TopAppBarModule,
   ],
   exports: [...COMPONENTS]
 })

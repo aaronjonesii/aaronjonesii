@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  AbstractControl, FormControl, FormGroup,
+  AbstractControl, FormControl, FormGroup, ReactiveFormsModule,
   ValidationErrors, Validators
 } from '@angular/forms';
-import { lastValueFrom, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { User } from "@angular/fire/auth";
 import { UpdateProfileResponse } from "../../../shared/interfaces/functions";
 import { FunctionsError } from "@angular/fire/functions";
@@ -13,16 +13,30 @@ import { Profile } from "../../../shared/interfaces/profile";
 import { ProfileForm } from "../../../shared/forms/profile-form";
 import { nav_path } from "../../../app-routing.module";
 import { Router } from "@angular/router";
+import { PhotoUploadComponent } from "./photo-upload/photo-upload.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'aj-account-details',
   templateUrl: './account-details.component.html',
-  styleUrls: ['./account-details.component.scss']
+  styleUrl: './account-details.component.scss',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    PhotoUploadComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
-export class AccountDetailsComponent implements OnInit {
-  public user: User | null = null;
-  public profile: Profile = { displayName: '', photoURL: '', email: '' };
-  public editAccountForm = new FormGroup<ProfileForm>({
+export class AccountDetailsComponent implements OnInit, OnDestroy {
+  user: User | null = null;
+  profile: Profile = { displayName: '', photoURL: '', email: '' };
+  editAccountForm = new FormGroup<ProfileForm>({
     displayName: new FormControl<string>(
       {value: '', disabled: true},
       {nonNullable: true, validators: Validators.required}
@@ -33,27 +47,29 @@ export class AccountDetailsComponent implements OnInit {
     ),
     photoURL: new FormControl<string>({value: '', disabled: true}, this._urlValidator),
   });
-  public loading = true;
+  loading = true;
+  private subscriptions = new Subscription();
 
   constructor(
     public auth: AuthService,
     private cLog: ConsoleLoggerService,
     private router: Router,
   ) {}
-  async ngOnInit() {
-    try {
-      this.user = await lastValueFrom(this.auth.loadUser.pipe(take(1)));
-      this.auth.assertUser(this.user);
+  ngOnInit() {
+    const user$ = this.auth.loadUser;
+    this.subscriptions.add(
+      user$.subscribe((user) => {
+        this.user = user;
+        this.auth.assertUser(user);
 
-      this.profile = {
-        displayName: this.user?.displayName,
-        photoURL: this.user?.photoURL,
-        email: <string>this.user.email,
-      };
-      this.setForm();
-    } catch (error) {
-      this.cLog.error(`Something went wrong loading account`, error, this.auth.loadUser)
-    }
+        this.profile = {
+          displayName: user?.displayName,
+          photoURL: user?.photoURL,
+          email: <string>user.email,
+        };
+        this.setForm();
+      }),
+    );
   }
 
   private _urlValidator({value}: AbstractControl): null | ValidationErrors {
@@ -76,11 +92,11 @@ export class AccountDetailsComponent implements OnInit {
     this.loading = false;
   }
 
-  public get displayName() { return this.editAccountForm.controls.displayName; }
+  get displayName() { return this.editAccountForm.controls.displayName; }
   private get photoURL() { return this.editAccountForm.controls.photoURL; }
-  public get email() { return this.editAccountForm.controls.email; }
+  get email() { return this.editAccountForm.controls.email; }
 
-  public async saveDisplayName() {
+  async saveDisplayName() {
     try {
       this.loading = true;
 
@@ -111,7 +127,7 @@ export class AccountDetailsComponent implements OnInit {
     }
   }
 
-  public editEmail() {
+  editEmail() {
     try {
       this.loading = true;
 
@@ -126,5 +142,9 @@ export class AccountDetailsComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
