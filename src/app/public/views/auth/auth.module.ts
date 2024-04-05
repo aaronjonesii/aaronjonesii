@@ -13,7 +13,7 @@ import { MatIconModule } from "@angular/material/icon";
 
 const COMPONENTS = [
   SignInComponent,
-  SignUpComponent, ForgotPasswordComponent
+  SignUpComponent,
 ];
 
 export const auth_nav_path = {

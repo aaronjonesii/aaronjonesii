@@ -1,16 +1,30 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { nav_path } from 'src/app/app-routing.module';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { SeoService } from '../../../../../core/services/seo.service';
 import { appInformation } from "../../../../../information";
 import { TopAppBarService } from "../../../../../shared/components/top-app-bar/top-app-bar.service";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  styleUrl: './forgot-password.component.scss',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterLink,
+    NgOptimizedImage
+  ],
 })
 export class ForgotPasswordComponent {
   public readonly title = "Forgot password";
@@ -28,12 +42,12 @@ export class ForgotPasswordComponent {
     private seoService: SeoService,
     private topAppBarService: TopAppBarService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: true,
       loading: false,
     });
-    seoService.generateTags({
+    this.seoService.generateTags({
       title: this.title,
       description: `Authentication ${this.title} page for ${appInformation.website}`,
       route: nav_path.forgotPassword
