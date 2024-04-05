@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationBarComponent } from "./navigation-bar.component";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink, RouterModule } from "@angular/router";
@@ -11,7 +10,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, RouterModule];
 
-const COMPONENTS = [NavigationBarComponent];
+const COMPONENTS = []!;
 
 @NgModule({
   declarations: [...COMPONENTS],
