@@ -6,17 +6,34 @@ import { ConsoleLoggerService } from "../../../../../core/services/console-logge
 import { ProjectWithID } from "../../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { ConfirmDialogComponent } from "../../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { NgClass } from "@angular/common";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatMenuModule } from "@angular/material/menu";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'aj-admin-projects-grid',
   templateUrl: './admin-projects-grid.component.html',
-  styleUrls: ['./admin-projects-grid.component.scss']
+  styleUrl: './admin-projects-grid.component.scss',
+  standalone: true,
+  imports: [
+    NgClass,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatMenuModule,
+    RouterLink,
+  ],
 })
 export class AdminProjectsGridComponent {
   @Input() projects: ProjectWithID[] = [];
-  public readonly nav_path = nav_path;
-  public selectionModel = new SelectionModel<ProjectWithID>(true, []);
-  public loading = false;
+  readonly nav_path = nav_path;
+  selectionModel = new SelectionModel<ProjectWithID>(true, []);
+  loading = false;
 
   constructor(
     private db: FirestoreService,
@@ -24,19 +41,19 @@ export class AdminProjectsGridComponent {
     private dialog: MatDialog
   ) {}
 
-  public get allSelected(): boolean {
+  get allSelected(): boolean {
     return this.selectionModel.selected.length === this.projects.length;
   }
-  public async selectAll(selectAll: boolean) {
+  async selectAll(selectAll: boolean) {
     if (selectAll) {
       this.selectionModel.setSelection(...this.projects);
     } else this.selectionModel.clear();
   }
-  public get someSelected(): boolean {
+  get someSelected(): boolean {
     return !this.selectionModel.isEmpty() && !this.allSelected;
   }
 
-  public async updateFeaturedProject(id: string, featured: boolean) {
+  async updateFeaturedProject(id: string, featured: boolean) {
     this.loading = true;
 
     await this.db.update(`projects/${id}`, { featured })
@@ -45,7 +62,7 @@ export class AdminProjectsGridComponent {
       .finally(() => this.loading = false)
   }
 
-  public async deleteSelectedProjects() {
+  async deleteSelectedProjects() {
     this.loading = true;
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: undefined,
@@ -73,7 +90,7 @@ export class AdminProjectsGridComponent {
     });
   }
 
-  public async publishSelectedProjects() {
+  async publishSelectedProjects() {
     try {
       this.loading = true;
       const publishedProjects: string[] = [];
@@ -96,7 +113,7 @@ export class AdminProjectsGridComponent {
       this.cLog.error(`Something went wrong publishing projects`, error);
     } finally { this.loading = false; }
   }
-  public async publishProject(id: string, notify = true) {
+  async publishProject(id: string, notify = true) {
     this.loading = true;
 
     return await this.db.update(
@@ -110,7 +127,7 @@ export class AdminProjectsGridComponent {
       .finally(() => this.loading = false);
   }
 
-  public async deleteProject(id: string, notify = true) {
+  async deleteProject(id: string, notify = true) {
 
       this.loading = true;
 
@@ -133,7 +150,7 @@ export class AdminProjectsGridComponent {
       });
   }
 
-  public async _deleteProject(id: string) {
+  async _deleteProject(id: string) {
     return await this.db.batch(async batch => {
       const projectRef = this.db.doc(`projects/${id}`);
 
@@ -151,7 +168,7 @@ export class AdminProjectsGridComponent {
     });
   }
 
-  public allDraftsSelected(): boolean {
+  allDraftsSelected(): boolean {
     return this.selectionModel.selected.every(project => project.status != 'published');
   }
 }

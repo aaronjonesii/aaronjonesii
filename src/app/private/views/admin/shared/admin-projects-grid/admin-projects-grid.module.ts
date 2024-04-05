@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminProjectsGridComponent } from "./admin-projects-grid.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
@@ -16,7 +15,7 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const CORE_MODULES = [CommonModule, RouterModule];
 
-const COMPONENTS = [AdminProjectsGridComponent];
+const COMPONENTS = []!;
 
 @NgModule({
   declarations: [...COMPONENTS],
