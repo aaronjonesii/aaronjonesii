@@ -1,24 +1,38 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl } from "@angular/forms";
+import { FormArray, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { COMMA, ENTER, SPACE } from "@angular/cdk/keycodes";
 import { Observable, of, startWith } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatChipInputEvent, MatChipsModule } from "@angular/material/chips";
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { Tag } from "../../../../../../shared/interfaces/tag";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: 'aj-project-tags',
   templateUrl: './project-tags.component.html',
-  styleUrls: ['./project-tags.component.scss']
+  styleUrl: './project-tags.component.scss',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatChipsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+  ],
 })
 export class ProjectTagsComponent implements OnInit {
   @Input() selectedTagsFormArray = new FormArray<FormControl<string>>([]);
   @Input() allTags$: Observable<Tag[]> = of([]);
-  public tags$: Observable<string[]> = of([]);
-  public readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
-  public tagCtrl = new FormControl('');
-  public filteredTags$: Observable<string[]>;
+  tags$: Observable<string[]> = of([]);
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
+  tagCtrl = new FormControl('');
+  filteredTags$: Observable<string[]>;
   @ViewChild('tagInput') tagInput?: ElementRef<HTMLInputElement>;
 
   constructor() {
@@ -36,7 +50,7 @@ export class ProjectTagsComponent implements OnInit {
 
   private filterSelectedTags = (tags: string[]) => tags.filter(tag => !this.selectedTagsFormArray.value?.includes(tag));
 
-  public add(event: MatChipInputEvent): void {
+  add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (!value) return;
 
@@ -52,13 +66,13 @@ export class ProjectTagsComponent implements OnInit {
     this.tagCtrl.setValue(null);
   }
 
-  public remove(tag: string): void {
+  remove(tag: string): void {
     const index = this.selectedTagsFormArray.value.indexOf(tag);
 
     if (index >= 0) this.selectedTagsFormArray.removeAt(index);
   }
 
-  public selected(event: MatAutocompleteSelectedEvent): void {
+  selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedTagsFormArray.push(new FormControl<string>(event.option.viewValue, {nonNullable: true}));
     (<ElementRef<HTMLInputElement>>this.tagInput).nativeElement.value = '';
     this.tagCtrl.setValue(null);
