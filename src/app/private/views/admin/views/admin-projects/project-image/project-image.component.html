@@ -6,8 +6,8 @@
   }
 
   @if (imageFormControl.value) {
-    <img alt="Project image"
-         [src]="imageFormControl.value | safe:'resourceUrl'"
+    <img fill priority alt="Project image"
+         [ngSrc]="imageFormControl.value | safe:'resourceUrl'"
          (error)="imageError=$event" />
   }
 </picture>

@@ -9,7 +9,8 @@
   max-width: $desktop;
   align-self: center;
 }
-img { width: 100%; }
+picture { width: 100%; }
+picture img { position: relative !important; }
 
 @media (min-width: $tabletLandscape) {
   .content {

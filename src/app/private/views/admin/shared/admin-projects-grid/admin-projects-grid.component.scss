@@ -57,8 +57,11 @@ section.products figure.project:hover {
   .details h3 { text-decoration: underline; }
 }
 section.products figure.project .details { cursor: pointer; }
-section.products figure.project .details picture img {
+section.products figure.project .details picture {
   width: 100%;
+}
+section.products figure.project .details picture img {
+  position: relative !important;
   border-radius: 1rem;
 }
 .text-ellipsis {

@@ -8,7 +8,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormatBytesPipe } from "../../pipes/format-bytes.pipe";
-import { DatePipe } from "@angular/common";
+import { DatePipe, NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-storage-file-preview',
@@ -22,6 +22,7 @@ import { DatePipe } from "@angular/common";
     MatIconModule,
     FormatBytesPipe,
     DatePipe,
+    NgOptimizedImage,
   ],
 })
 export class StorageFilePreviewComponent implements OnChanges {

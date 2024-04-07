@@ -31,6 +31,9 @@
   padding: 0.5rem 1.5rem;
   box-sizing: border-box;
 }
+.file-preview img {
+  position: relative !important;
+}
 .metadata {
   padding: 0 1.5rem 0.5rem 1.5rem;
 }

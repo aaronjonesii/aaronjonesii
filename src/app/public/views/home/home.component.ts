@@ -11,7 +11,7 @@ import { SeoService } from "../../../core/services/seo.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe, NgOptimizedImage } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 
 @Component({
@@ -25,6 +25,7 @@ import { MatIconModule } from "@angular/material/icon";
     RouterLink,
     AsyncPipe,
     MatIconModule,
+    NgOptimizedImage,
   ],
 })
 export class HomeComponent {

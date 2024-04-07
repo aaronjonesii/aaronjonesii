@@ -15,7 +15,7 @@ import { increment, where } from "@angular/fire/firestore";
 import { SeoService } from "../../../../core/services/seo.service";
 import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
 import { CommentWithID } from "../../../../shared/interfaces/comment";
-import { AsyncPipe, DatePipe, DOCUMENT } from "@angular/common";
+import { AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { tap } from "rxjs/operators";
 
 import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
@@ -45,6 +45,7 @@ import { LoadingComponent } from "../../../../shared/components/loading/loading.
     ProjectDetailCommentComponent,
     MatIconModule,
     LoadingComponent,
+    NgOptimizedImage,
   ],
 })
 export class ProjectDetailComponent {

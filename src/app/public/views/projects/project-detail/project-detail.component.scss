@@ -16,10 +16,20 @@ aj-project-detail {
     z-index: 1000;
   }
 
-  .not-available-container img {
+  .not-available-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .not-available-container picture {
     width: 50%;
   }
+  .not-available-container picture img {
+    position: relative !important;
+  }
+  .article-container article picture {}
   .article-container article img.project-image {
+    position: relative !important;
     aspect-ratio: 16/9;
     object-fit: cover;
   }
@@ -65,8 +75,11 @@ aj-project-detail {
     border-radius: $app-border-radius;
     cursor: pointer;
   }
-  .related-projects-container .related-project img {
+  .related-projects-container .related-project picture {
     width: 100%;
+  }
+  .related-projects-container .related-project picture img {
+    position: relative !important;
     object-fit: cover;
   }
   .related-projects-container .related-project .name {

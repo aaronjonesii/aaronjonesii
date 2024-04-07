@@ -3,13 +3,16 @@ import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app
 import { appInformation } from "../../../information";
 import { SeoService } from "../../../core/services/seo.service";
 import { nav_path } from "../../../app-routing.module";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-about',
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   standalone: true,
-  imports: [],
+  imports: [
+    NgOptimizedImage
+  ],
 })
 export class AboutComponent {
   private readonly title = appInformation.title;

@@ -14,6 +14,14 @@
   gap: $app-margin;
 }
 
+.card.image img, .card.project img {
+  position: relative !important;
+}
+.card.image img {
+  max-width: 500px;
+  align-self: center;
+}
+
 button.mini-fab-btn {
   padding: 0;
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { nav_path } from 'src/app/app-routing.module';
-import { Location } from '@angular/common';
+import { Location, NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 
@@ -9,7 +9,7 @@ import { RouterLink } from "@angular/router";
   templateUrl: './page-not-found.component.html',
   styleUrl: './page-not-found.component.scss',
   standalone: true,
-  imports: [MatButtonModule, RouterLink],
+  imports: [MatButtonModule, RouterLink, NgOptimizedImage],
 })
 export class PageNotFoundComponent {
   nav_path = nav_path;

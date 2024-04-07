@@ -13,8 +13,10 @@
   @if (downloadURL) {
     <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
     @if (item.contentType?.startsWith('image/')) {
-      <img class="file-preview" [src]="downloadURL" [alt]="item.fullPath"
-           (error)="downloadURL=undefined;previewError=true" />
+      <picture class="file-preview">
+        <img fill [ngSrc]="downloadURL" [alt]="item.fullPath"
+             (error)="downloadURL=undefined;previewError=true" />
+      </picture>
       <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
     } @else if (item.contentType?.startsWith('video/')) {
       <video class="file-preview" controls autoplay loop>

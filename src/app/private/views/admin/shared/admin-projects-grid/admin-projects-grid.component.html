@@ -46,7 +46,9 @@
     <figure class="project" [ngClass]="{'selected': selectionModel.isSelected(project)}">
       <div class="details" [routerLink]="[nav_path.adminProjects, project.id, 'edit']">
         <picture>
-          <img [src]="project?.image ?? 'https://via.placeholder.com/1200'" [alt]="project.name" />
+          <img fill priority
+               [alt]="project.name"
+               [ngSrc]="project?.image ?? 'https://via.placeholder.com/1200'" />
         </picture>
         <h3 class="text-ellipsis">{{project.name}}</h3>
         <p class="text-ellipsis">{{project.description}}</p>

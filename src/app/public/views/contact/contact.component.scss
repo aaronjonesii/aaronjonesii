@@ -35,8 +35,11 @@ form mat-form-field {
   width: 100%;
 }
 
-.success-container img {
+.success-container picture {
   width: 100%;
+}
+.success-container picture img {
+  position: relative !important;
   object-fit: contain;
 }
 

@@ -12,10 +12,11 @@ import { ConfirmDialogComponent } from "../../../../../../shared/components/conf
 import { TopAppBarComponent } from "../../../../../../shared/components/top-app-bar/top-app-bar.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { AsyncPipe, DatePipe } from "@angular/common";
+import { AsyncPipe, DatePipe, NgOptimizedImage } from "@angular/common";
 import {
   LoadingOrErrorComponent
 } from "../../../../../../shared/components/loading-or-error/loading-or-error.component";
+import { UserPhotoComponent } from "../../../../../../shared/components/user-photo/user-photo.component";
 
 @Component({
   selector: 'aj-admin-user-detail',
@@ -30,6 +31,8 @@ import {
     MatIconModule,
     DatePipe,
     LoadingOrErrorComponent,
+    UserPhotoComponent,
+    NgOptimizedImage,
   ],
 })
 export class AdminUserDetailComponent {

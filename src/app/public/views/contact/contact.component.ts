@@ -3,7 +3,7 @@ import { initialContactForm } from "../../../shared/forms/contact-form";
 import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { appInformation } from "../../../information";
-import { DOCUMENT } from "@angular/common";
+import { DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { SeoService } from "../../../core/services/seo.service";
 import { nav_path } from "../../../app-routing.module";
@@ -23,7 +23,8 @@ import { MatButtonModule } from "@angular/material/button";
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    NgOptimizedImage
   ],
 })
 export class ContactComponent {

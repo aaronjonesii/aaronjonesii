@@ -6,6 +6,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { SafePipe } from "../../../../../../shared/pipes/safe.pipe";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-project-image',
@@ -17,6 +18,7 @@ import { SafePipe } from "../../../../../../shared/pipes/safe.pipe";
     MatButtonModule,
     MatIconModule,
     SafePipe,
+    NgOptimizedImage,
   ],
 })
 export class ProjectImageComponent {

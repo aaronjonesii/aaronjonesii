@@ -10,10 +10,12 @@
     @for (project of projects; track project.id) {
       <mat-card class="card">
         @if (project.image) {
-          <img mat-card-image
-               [routerLink]="[nav_path.projects, project.slug]"
-               [src]="project.image"
-               [alt]="project.name" />
+          <picture>
+            <img mat-card-image fill priority
+                 [routerLink]="[nav_path.projects, project.slug]"
+                 [ngSrc]="project.image"
+                 [alt]="project.name" />
+          </picture>
         }
 
         <div class="info-container mat-body-1">

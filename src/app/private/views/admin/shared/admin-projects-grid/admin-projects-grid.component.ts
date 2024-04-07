@@ -6,7 +6,7 @@ import { ConsoleLoggerService } from "../../../../../core/services/console-logge
 import { ProjectWithID } from "../../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
 import { ConfirmDialogComponent } from "../../../../../shared/components/confirm-dialog/confirm-dialog.component";
-import { NgClass } from "@angular/common";
+import { NgClass, NgOptimizedImage } from "@angular/common";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
@@ -27,6 +27,7 @@ import { RouterLink } from "@angular/router";
     MatTooltipModule,
     MatMenuModule,
     RouterLink,
+    NgOptimizedImage,
   ],
 })
 export class AdminProjectsGridComponent {

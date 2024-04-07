@@ -5,7 +5,7 @@ import { FirestoreService } from "../../../shared/services/firestore.service";
 import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { QueryConstraint, where } from "@angular/fire/firestore";
 import { nav_path } from 'src/app/app-routing.module';
-import { AsyncPipe, DOCUMENT } from "@angular/common";
+import { AsyncPipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { appInformation } from "../../../information";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { SeoService } from "../../../core/services/seo.service";
@@ -29,6 +29,7 @@ import { MatButtonModule } from "@angular/material/button";
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
+    NgOptimizedImage,
   ],
 })
 export class ProjectsComponent {

@@ -20,7 +20,15 @@
     <section class="info">
       @if (user.photoURL) {
         <picture>
-          <img height="200" width="100%" [src]="user.photoURL" [alt]="user.displayName ?? user.email + ' photo'" />
+          <img fill priority
+               [ngSrc]="user.photoURL"
+               [alt]="user.displayName ?? user.email + ' photo'" />
+        </picture>
+      } @else {
+        <picture>
+          <img fill priority
+               ngSrc="assets/svgs/flat_afro.svg"
+               [alt]="user.displayName ?? user.email + ' photo'" />
         </picture>
       }
       <div class="details">
