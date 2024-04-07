@@ -11,12 +11,24 @@ export const private_nav_path = {
 };
 
 const routes: Routes = [
-  { path: 'admin', loadChildren: () => import('./views/admin/admin.module').then(m => m.AdminModule),
-    canActivate: [AdminGuard] },
-  { path: '', component: LayoutComponent, children: [
-      { path: 'account-details', loadChildren: () => import('./views/account-details/account-details.module')
-          .then(m => m.AccountDetailsModule), canActivate: [AuthGuard] },
-    ] },
+  {
+    path: 'admin',
+    canActivate: [AdminGuard],
+    loadChildren: () => import('./views/admin/admin.module')
+      .then(m => m.AdminModule),
+  },
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'account-details',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./views/account-details/account-details.component')
+          .then(m => m.AccountDetailsComponent),
+      },
+    ],
+  },
 ];
 
 @NgModule({

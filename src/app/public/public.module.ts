@@ -19,12 +19,63 @@ export const public_nav_path = {
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'about', loadChildren: () => import('./views/about/about.module').then(m => m.AboutModule) },
-      { path: 'auth', loadChildren: () => import('./views/auth/auth.module').then(m => m.AuthModule) },
-      { path: 'contact', loadChildren: () => import('./views/contact/contact.module').then(m => m.ContactModule) },
-      { path: 'projects', loadChildren: () => import('./views/projects/projects.module').then(m => m.ProjectsModule) },
+      {
+        path: 'about',
+        loadComponent: () => import('./views/about/about.component')
+          .then((m) => m.AboutComponent),
+      },
+      /** Auth Routes */
+      {
+        path: 'auth',
+        redirectTo: 'auth/sign-in',
+        pathMatch: 'full',
+      },
+      {
+        path: 'auth/forgot-password',
+        loadComponent: () => import('./views/auth/views/forgot-password/forgot-password.component')
+          .then((m) => m.ForgotPasswordComponent),
+      },
+      {
+        path: 'auth/sign-in',
+        loadComponent: () => import('./views/auth/views/sign-in/sign-in.component')
+          .then((m) => m.SignInComponent),
+      },
+      {
+        path: 'auth/sign-up',
+        loadComponent: () => import('./views/auth/views/sign-up/sign-up.component')
+          .then((m) => m.SignUpComponent),
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./views/contact/contact.component')
+          .then((m) => m.ContactComponent),
+      },
+      {
+        path: 'projects',
+        loadComponent: () => import('./views/projects/projects.component')
+          .then((m) => m.ProjectsComponent),
+      },
+      {
+        path: 'projects/:projectID',
+        loadComponent: () => import('./views/projects/project-detail/project-detail.component')
+          .then((m) => m.ProjectDetailComponent),
+      },
     ] },
-  { path: 'policies', loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule) },
+  {
+    path: 'policies',
+    loadComponent: () => import('./views/policies/policies.component')
+      .then((m) => m.PoliciesComponent),
+  },
+  {
+    path: 'policies/terms-of-use',
+    loadComponent: () => import('./views/policies/terms-of-use/terms-of-use.component')
+      .then((m) => m.TermsOfUseComponent),
+  },
+  {
+    path: 'policies/privacy-policy',
+    loadComponent: () => import('./views/policies/privacy-policy/privacy-policy.component')
+      .then((m) => m.PrivacyPolicyComponent),
+  },
 ];
 
 @NgModule({

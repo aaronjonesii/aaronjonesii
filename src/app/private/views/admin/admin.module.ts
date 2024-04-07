@@ -19,14 +19,26 @@ export const admin_nav_path = {
 const routes: Routes = [
   { path: '', component: AdminComponent, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', loadChildren: () => import('./views/admin-dashboard/admin-dashboard.module')
-          .then(m => m.AdminDashboardModule) },
-      { path: 'file-manager', loadChildren: () => import('./views/admin-file-manager/admin-file-manager.module')
-          .then(m => m.AdminFileManagerModule) },
-      { path: 'projects', loadChildren: () => import('./views/admin-projects/admin-projects.module')
-          .then(m => m.AdminProjectsModule) },
-      { path: 'users', loadChildren: () => import('./views/admin-users/admin-users.module')
-          .then(m => m.AdminUsersModule) },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./views/admin-dashboard/admin-dashboard.component')
+          .then(m => m.AdminDashboardComponent),
+      },
+      {
+        path: 'file-manager',
+        loadComponent: () => import('./views/admin-file-manager/admin-file-manager.component')
+          .then(m => m.AdminFileManagerComponent),
+      },
+      {
+        path: 'projects',
+        loadComponent: () => import('./views/admin-projects/admin-projects.component')
+          .then(m => m.AdminProjectsComponent),
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./views/admin-users/admin-users.component')
+          .then(m => m.AdminUsersComponent),
+      },
     ] }
 ];
 
