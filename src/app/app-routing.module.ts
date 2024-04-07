@@ -1,14 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { public_nav_path } from './public/public.module';
 import { private_nav_path } from './private/private.module';
 import { error_nav_path } from './core/components/errors/errors.module';
 import { LayoutComponent } from "./shared/components/layout/layout.component";
 import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
+import { auth_nav_path } from "./features/auth/auth.module";
 
 export const nav_path = {
-  ...public_nav_path,
+  home: '/',
+  comingSoon: '/coming-soon',
+  about: '/about',
+  auth: '/auth', ...auth_nav_path,
+  contact: '/contact',
+  policies: '/policies',
+  termsOfUse: '/policies/terms-of-use',
+  privacyPolicy: '/policies/privacy-policy',
+  projects: '/projects',
   ...private_nav_path,
   ...error_nav_path
 };
