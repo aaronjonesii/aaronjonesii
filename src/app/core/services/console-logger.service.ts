@@ -9,28 +9,34 @@ export class ConsoleLoggerService {
   constructor(private snackBar: MatSnackBar) {
     this.isInProduction = environment.production;
   }
-  public info(value: string, ...restOfError: unknown[]): void {
+
+  debug(value: string, ...restOfError: unknown[]): void {
+    if (!this.isInProduction) {console.debug(`${value}: `, restOfError)}
+    this.openSnackBar(value, 'OK', {duration: 5000, panelClass: ['mat-toolbar', 'mat-primary']});
+  }
+
+  info(value: string, ...restOfError: unknown[]): void {
     if (!this.isInProduction) {console.info(`${value}: `, restOfError)}
     this.openSnackBar(value, 'OK', {duration: 5000, panelClass: ['mat-toolbar', 'mat-primary']});
   }
 
-  public log(value: string, ...restOfError: unknown[]): void {
+  log(value: string, ...restOfError: unknown[]): void {
     if (!this.isInProduction) {console.log(`${value}: `, restOfError)}
     this.openSnackBar(value, 'OK', {duration: 5000, panelClass: 'log'});
   }
 
-  public warn(value: string, ...restOfError: unknown[]): void {
+  warn(value: string, ...restOfError: unknown[]): void {
     if (!this.isInProduction) {console.warn(`${value}: `, restOfError)}
     this.openSnackBar(value, 'OK', {duration: 10000, panelClass: 'warn'});
   }
 
-  public error(value: string, ...restOfError: unknown[]): void {
+  error(value: string, ...restOfError: unknown[]): void {
     if (!this.isInProduction) {console.error(`${value}: `, restOfError)}
     this.openSnackBar(value, 'OK', {duration: 0, panelClass: 'error'});
   }
 
 
-  public openSnackBar(message: string, action: string | undefined, config: MatSnackBarConfig | undefined): MatSnackBarRef<unknown> {
+  openSnackBar(message: string, action: string | undefined, config: MatSnackBarConfig | undefined): MatSnackBarRef<unknown> {
     return this.snackBar.open(message, action, config);
   }
 }
