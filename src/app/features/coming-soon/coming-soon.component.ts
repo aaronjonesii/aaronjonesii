@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { nav_path } from "../../../app-routing.module";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
-import { FunctionsService } from "../../../shared/services/functions.service";
-import { appInformation } from "../../../information";
-import { SeoService } from "../../../core/services/seo.service";
 import { RouterLink } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { nav_path } from 'src/app/app-routing.module';
+import { appInformation } from 'src/app/information';
+import { ConsoleLoggerService } from "../../core/services/console-logger.service";
+import { FunctionsService } from "../../shared/services/functions.service";
+import { SeoService } from "../../core/services/seo.service";
 
 @Component({
   selector: 'aj-coming-soon',
@@ -42,7 +42,7 @@ export class ComingSoonComponent {
   constructor(
     private cLog: ConsoleLoggerService,
     private fun: FunctionsService,
-    private seo: SeoService
+    private seo: SeoService,
   ) {
     this.seo.generateTags({
       title: 'Coming Soon page',

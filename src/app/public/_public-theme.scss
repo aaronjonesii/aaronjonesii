@@ -1,20 +1,17 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'views/coming-soon/coming-soon-theme' as comingSoon;
 @use 'views/policies/policies-theme' as policies;
 @use 'views/home/home-theme' as home;
 @use 'src/app/public/views/projects/projects-theme' as projects;
 
 @mixin componentColorMixins($theme) {
-  @include comingSoon.color($theme);
   @include policies.color($theme);
   @include home.color($theme);
   @include projects.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
-  @include comingSoon.typography($theme);
   @include policies.typography($theme);
   @include home.typography($theme);
   @include projects.typography($theme);

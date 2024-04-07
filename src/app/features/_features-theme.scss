@@ -3,15 +3,18 @@
 
 @use './about/about-theme' as about;
 @use './auth/auth-theme' as auth;
+@use './coming-soon/coming-soon-theme' as comingSoon;
 
 @mixin componentColorMixins($theme) {
   @include about.color($theme);
   @include auth.color($theme);
+  @include comingSoon.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include about.typography($theme);
   @include auth.typography($theme);
+  @include comingSoon.typography($theme);
 }
 
 @mixin color($theme) {
