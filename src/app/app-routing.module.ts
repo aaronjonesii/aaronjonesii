@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { private_nav_path } from './private/private.module';
-import { error_nav_path } from './core/components/errors/errors.module';
 import { LayoutComponent } from "./shared/components/layout/layout.component";
 import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
 import { auth_nav_path } from "./features/auth/auth.module";
+import { admin_nav_path } from "./features/admin/admin.module";
 
 export const nav_path = {
   home: '/',
@@ -17,8 +16,10 @@ export const nav_path = {
   termsOfUse: '/policies/terms-of-use',
   privacyPolicy: '/policies/privacy-policy',
   projects: '/projects',
-  ...private_nav_path,
-  ...error_nav_path
+  accountDetails: '/account-details',
+  admin: '/admin', ...admin_nav_path,
+  pageNotFound: '/error/404',
+  forbidden: '/error/403'
 };
 
 const routes: Routes = [
@@ -89,7 +90,7 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [AdminGuard],
-    loadChildren: () => import('./private/views/admin/admin.module')
+    loadChildren: () => import('./features/admin/admin.module')
       .then(m => m.AdminModule),
   },
   {
@@ -99,13 +100,28 @@ const routes: Routes = [
       {
         path: 'account-details',
         canActivate: [AuthGuard],
-        loadComponent: () => import('./private/views/account-details/account-details.component')
+        loadComponent: () => import('./features/account-details/account-details.component')
           .then(m => m.AccountDetailsComponent),
       },
     ],
   },
-  // { path: '', loadChildren: () => import('./private/private.module').then(m => m.PrivateModule) },
-  { path: '', loadChildren: () => import('./core/components/errors/errors.module').then(m => m.ErrorsModule) },
+  { path: '', component: LayoutComponent, children: [
+      {
+        path: 'error/404',
+        loadComponent: () => import('./core/components/errors/page-not-found/page-not-found.component')
+          .then((m) => m.PageNotFoundComponent),
+      },
+      {
+        path: 'error/403',
+        loadComponent: () => import('./core/components/errors/forbidden/forbidden.component')
+          .then((m) => m.ForbiddenComponent),
+      },
+      {
+        path: '**',
+        loadComponent: () => import('./core/components/errors/page-not-found/page-not-found.component')
+          .then((m) => m.PageNotFoundComponent),
+      },
+    ] },
 ];
 
 @NgModule({
