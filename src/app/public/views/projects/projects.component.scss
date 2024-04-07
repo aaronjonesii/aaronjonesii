@@ -22,7 +22,11 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
-.card img { cursor: pointer; }
+.card img {
+  position: relative !important;
+  max-height: 300px;
+  cursor: pointer;
+}
 .card .info-container {
   flex-grow: 1;
   display: flex;
