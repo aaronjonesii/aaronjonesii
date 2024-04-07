@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
-import { appInformation } from "../../../information";
-import { SeoService } from "../../../core/services/seo.service";
-import { nav_path } from "../../../app-routing.module";
 import { NgOptimizedImage } from "@angular/common";
+import { appInformation } from "../../information";
+import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
+import { SeoService } from "../../core/services/seo.service";
+import { nav_path } from "../../app-routing.module";
 
 @Component({
   selector: 'aj-about',

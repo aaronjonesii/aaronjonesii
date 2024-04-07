@@ -19,7 +19,7 @@ const routes: Routes = [
       { path: '', component: HomeComponent, pathMatch: 'full' },
       {
         path: 'about',
-        loadComponent: () => import('./public/views/about/about.component')
+        loadComponent: () => import('./features/about/about.component')
           .then((m) => m.AboutComponent),
       },
       /** Auth Routes */

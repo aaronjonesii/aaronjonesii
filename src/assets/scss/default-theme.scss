@@ -4,6 +4,7 @@
 @use 'src/app/public/public-theme' as public;
 @use 'src/app/private/private-theme' as private;
 @use 'src/app/shared/shared-theme' as shared;
+@use 'src/app/features/features-theme' as features;
 
 /* IMPORT BELOW ONLY ONCE */
 @include mat.core();
@@ -66,6 +67,7 @@ $dark-theme: mat.define-dark-theme((
 @include public.theme($light-theme);
 @include private.theme($light-theme);
 @include shared.theme($light-theme);
+@include features.theme($light-theme);
 
 /* Dark theme core & components below */
 .dark-theme {
@@ -95,6 +97,7 @@ $dark-theme: mat.define-dark-theme((
   @include public.color($dark-theme);
   @include private.color($dark-theme);
   @include shared.color($dark-theme);
+  @include features.color($dark-theme);
 }
 
 /* Use typography CSS classes */

@@ -19,11 +19,6 @@ export const public_nav_path = {
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      {
-        path: 'about',
-        loadComponent: () => import('./views/about/about.component')
-          .then((m) => m.AboutComponent),
-      },
       /** Auth Routes */
       {
         path: 'auth',
