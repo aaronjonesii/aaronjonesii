@@ -3,14 +3,14 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { nav_path } from 'src/app/app-routing.module';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
-import { SeoService } from '../../../../../core/services/seo.service';
-import { appInformation } from "../../../../../information";
-import { TopAppBarService } from "../../../../../shared/components/top-app-bar/top-app-bar.service";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 import { NgOptimizedImage } from "@angular/common";
+import { SeoService } from "../../../../core/services/seo.service";
+import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
+import { appInformation } from "../../../../information";
 
 @Component({
   selector: 'aj-forgot-password',

@@ -30,17 +30,17 @@ const routes: Routes = [
       },
       {
         path: 'auth/forgot-password',
-        loadComponent: () => import('./public/views/auth/views/forgot-password/forgot-password.component')
+        loadComponent: () => import('./features/auth/views/forgot-password/forgot-password.component')
           .then((m) => m.ForgotPasswordComponent),
       },
       {
         path: 'auth/sign-in',
-        loadComponent: () => import('./public/views/auth/views/sign-in/sign-in.component')
+        loadComponent: () => import('./features/auth/views/sign-in/sign-in.component')
           .then((m) => m.SignInComponent),
       },
       {
         path: 'auth/sign-up',
-        loadComponent: () => import('./public/views/auth/views/sign-up/sign-up.component')
+        loadComponent: () => import('./features/auth/views/sign-up/sign-up.component')
           .then((m) => m.SignUpComponent),
       },
       {

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { home_nav_path } from './views/home/home.module';
-import { auth_nav_path } from "./views/auth/auth.module";
 import { policies_nav_path } from "./views/policies/policies.module";
 import { LayoutComponent } from "../shared/components/layout/layout.component";
 import { HomeComponent } from "./views/home/home.component";
+import { auth_nav_path } from "../features/auth/auth.module";
 
 export const public_nav_path = {
   home: '/', ...home_nav_path,
@@ -20,26 +20,6 @@ const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent, pathMatch: 'full' },
       /** Auth Routes */
-      {
-        path: 'auth',
-        redirectTo: 'auth/sign-in',
-        pathMatch: 'full',
-      },
-      {
-        path: 'auth/forgot-password',
-        loadComponent: () => import('./views/auth/views/forgot-password/forgot-password.component')
-          .then((m) => m.ForgotPasswordComponent),
-      },
-      {
-        path: 'auth/sign-in',
-        loadComponent: () => import('./views/auth/views/sign-in/sign-in.component')
-          .then((m) => m.SignInComponent),
-      },
-      {
-        path: 'auth/sign-up',
-        loadComponent: () => import('./views/auth/views/sign-up/sign-up.component')
-          .then((m) => m.SignUpComponent),
-      },
       {
         path: 'contact',
         loadComponent: () => import('./views/contact/contact.component')

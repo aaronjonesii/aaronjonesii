@@ -2,13 +2,16 @@
 @use '@angular/material' as mat;
 
 @use './about/about-theme' as about;
+@use './auth/auth-theme' as auth;
 
 @mixin componentColorMixins($theme) {
   @include about.color($theme);
+  @include auth.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include about.typography($theme);
+  @include auth.typography($theme);
 }
 
 @mixin color($theme) {

@@ -1,11 +1,9 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@mixin componentColorMixins($theme) {
-}
+@mixin componentColorMixins($theme) {}
 
-@mixin componentTypographyMixins($theme) {
-}
+@mixin componentTypographyMixins($theme) {}
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
