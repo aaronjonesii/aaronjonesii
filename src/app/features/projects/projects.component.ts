@@ -1,20 +1,20 @@
 import { Component, Inject } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, switchMap, throwError } from "rxjs";
-import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../shared/interfaces/project";
-import { FirestoreService } from "../../../shared/services/firestore.service";
-import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { QueryConstraint, where } from "@angular/fire/firestore";
 import { nav_path } from 'src/app/app-routing.module';
 import { AsyncPipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
-import { appInformation } from "../../../information";
-import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
-import { SeoService } from "../../../core/services/seo.service";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatCardModule } from "@angular/material/card";
 import { RouterLink } from "@angular/router";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
+import { ProjectStatus, ProjectVisibility, ReadProject } from "../../shared/interfaces/project";
+import { FirestoreService } from "../../shared/services/firestore.service";
+import { ConsoleLoggerService } from "../../core/services/console-logger.service";
+import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
+import { SeoService } from "../../core/services/seo.service";
+import { appInformation } from "../../information";
 
 @Component({
   selector: 'aj-projects',
@@ -47,12 +47,12 @@ export class ProjectsComponent {
     private seoService: SeoService,
 
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
       loading: false,
     });
-    seoService.generateTags({
+    this.seoService.generateTags({
       title: this.title,
       route: nav_path.projects,
     });

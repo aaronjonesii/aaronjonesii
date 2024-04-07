@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { catchError, Observable, throwError } from "rxjs";
-import { Project, ProjectStatus, ProjectVisibility } from "../../../shared/interfaces/project";
-import { FirestoreService } from "../../../shared/services/firestore.service";
 import { where } from "@angular/fire/firestore";
-import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
-import { nav_path } from "../../../app-routing.module";
-import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
-import { appInformation } from "../../../information";
-import { SeoService } from "../../../core/services/seo.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 import { AsyncPipe, NgOptimizedImage } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
+import { appInformation } from "../../information";
+import { nav_path } from 'src/app/app-routing.module';
+import { Project, ProjectStatus, ProjectVisibility } from "../../shared/interfaces/project";
+import { FirestoreService } from "../../shared/services/firestore.service";
+import { ConsoleLoggerService } from "../../core/services/console-logger.service";
+import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
+import { SeoService } from "../../core/services/seo.service";
 
 @Component({
   selector: 'aj-home',

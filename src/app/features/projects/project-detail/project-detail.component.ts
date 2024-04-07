@@ -1,31 +1,30 @@
 import { Component, Inject, ViewEncapsulation, makeStateKey, TransferState } from '@angular/core';
 import { map, Observable, of, switchMap } from "rxjs";
-import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../../shared/interfaces/project";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { FirestoreService } from "../../../../shared/services/firestore.service";
-import { nav_path } from "../../../../app-routing.module";
-import { AuthService } from "../../../../core/services/auth.service";
-import { ConsoleLoggerService } from "../../../../core/services/console-logger.service";
-import { readUser, UserWithID } from "../../../../shared/interfaces/user";
 import { User } from '@angular/fire/auth';
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDialogComponent } from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
-import { appInformation } from "../../../../information";
 import { increment, where } from "@angular/fire/firestore";
-import { SeoService } from "../../../../core/services/seo.service";
 import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
-import { CommentWithID } from "../../../../shared/interfaces/comment";
 import { AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { tap } from "rxjs/operators";
-
-import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 import { MatButtonModule } from "@angular/material/button";
-import { UserPhotoComponent } from "../../../../shared/components/user-photo/user-photo.component";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ProjectDetailCommentComponent } from "./project-detail-comment/project-detail-comment.component";
 import { MatIconModule } from "@angular/material/icon";
-import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
+import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
+import { LoadingComponent } from "../../../shared/components/loading/loading.component";
+import { nav_path } from 'src/app/app-routing.module';
+import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../shared/interfaces/project";
+import { CommentWithID } from "../../../shared/interfaces/comment";
+import { FirestoreService } from "../../../shared/services/firestore.service";
+import { AuthService } from "../../../core/services/auth.service";
+import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
+import { SeoService } from "../../../core/services/seo.service";
+import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
+import { appInformation } from "../../../information";
+import { readUser, UserWithID } from "../../../shared/interfaces/user";
+import { ConfirmDialogComponent } from "../../../shared/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'aj-project-detail',
@@ -53,7 +52,7 @@ export class ProjectDetailComponent {
   projectID$: Observable<string | null>;
   project$: Observable<ReadProject | null>;
   user$ = this.auth.loadUser.pipe(
-    switchMap(user => {
+    switchMap((user) => {
       if (user) return this.getUser$(user);
       else return of(user);
     }),

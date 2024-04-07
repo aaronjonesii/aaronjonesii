@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { home_nav_path } from './views/home/home.module';
 import { policies_nav_path } from "./views/policies/policies.module";
-import { LayoutComponent } from "../shared/components/layout/layout.component";
-import { HomeComponent } from "./views/home/home.component";
 import { auth_nav_path } from "../features/auth/auth.module";
 
 export const public_nav_path = {
-  home: '/', ...home_nav_path,
+  home: '/',
   comingSoon: '/coming-soon',
   about: '/about',
   auth: '/auth', ...auth_nav_path,
@@ -17,20 +14,6 @@ export const public_nav_path = {
 };
 
 const routes: Routes = [
-  { path: '', component: LayoutComponent, children: [
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      /** Auth Routes */
-      {
-        path: 'projects',
-        loadComponent: () => import('./views/projects/projects.component')
-          .then((m) => m.ProjectsComponent),
-      },
-      {
-        path: 'projects/:projectID',
-        loadComponent: () => import('./views/projects/project-detail/project-detail.component')
-          .then((m) => m.ProjectDetailComponent),
-      },
-    ] },
   {
     path: 'policies',
     loadComponent: () => import('./views/policies/policies.component')

@@ -4,7 +4,6 @@ import { public_nav_path } from './public/public.module';
 import { private_nav_path } from './private/private.module';
 import { error_nav_path } from './core/components/errors/errors.module';
 import { LayoutComponent } from "./shared/components/layout/layout.component";
-import { HomeComponent } from "./public/views/home/home.component";
 import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
 
@@ -16,7 +15,12 @@ export const nav_path = {
 
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: [
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./features/home/home.component')
+          .then((m) => m.HomeComponent),
+      },
       {
         path: 'about',
         loadComponent: () => import('./features/about/about.component')
@@ -50,12 +54,12 @@ const routes: Routes = [
       },
       {
         path: 'projects',
-        loadComponent: () => import('./public/views/projects/projects.component')
+        loadComponent: () => import('./features/projects/projects.component')
           .then((m) => m.ProjectsComponent),
       },
       {
         path: 'projects/:projectID',
-        loadComponent: () => import('./public/views/projects/project-detail/project-detail.component')
+        loadComponent: () => import('./features/projects/project-detail/project-detail.component')
           .then((m) => m.ProjectDetailComponent),
       },
     ] },

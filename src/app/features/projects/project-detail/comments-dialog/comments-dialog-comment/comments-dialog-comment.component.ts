@@ -1,20 +1,20 @@
 import { Component, Input } from '@angular/core';
-import { CommentWithID } from "../../../../../../shared/interfaces/comment";
-import { UserWithID } from "../../../../../../shared/interfaces/user";
 import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
-import { ReportReason, WriteReport } from "../../../../../../shared/interfaces/report";
-import { nav_path } from "../../../../../../app-routing.module";
 import { Router } from "@angular/router";
-import { ConsoleLoggerService } from "../../../../../../core/services/console-logger.service";
-import { FirestoreService } from "../../../../../../shared/services/firestore.service";
 import { MatDialogRef } from "@angular/material/dialog";
 import { CommentsDialogComponent } from "../comments-dialog.component";
-import { UserPhotoComponent } from "../../../../../../shared/components/user-photo/user-photo.component";
-import { DateAgoPipe } from "../../../../../../shared/pipes/date-ago.pipe";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { NgClass } from "@angular/common";
+import { UserPhotoComponent } from "../../../../../shared/components/user-photo/user-photo.component";
+import { DateAgoPipe } from "../../../../../shared/pipes/date-ago.pipe";
+import { CommentWithID } from "../../../../../shared/interfaces/comment";
+import { UserWithID } from "../../../../../shared/interfaces/user";
+import { FirestoreService } from "../../../../../shared/services/firestore.service";
+import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
+import { ReportReason, WriteReport } from "../../../../../shared/interfaces/report";
+import { nav_path } from "../../../../../app-routing.module";
 
 @Component({
   selector: 'aj-comment',

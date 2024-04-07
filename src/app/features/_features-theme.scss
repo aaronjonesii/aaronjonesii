@@ -4,17 +4,23 @@
 @use './about/about-theme' as about;
 @use './auth/auth-theme' as auth;
 @use './coming-soon/coming-soon-theme' as comingSoon;
+@use './home/home-theme' as home;
+@use './projects/projects-theme' as projects;
 
 @mixin componentColorMixins($theme) {
   @include about.color($theme);
   @include auth.color($theme);
   @include comingSoon.color($theme);
+  @include home.color($theme);
+  @include projects.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include about.typography($theme);
   @include auth.typography($theme);
   @include comingSoon.typography($theme);
+  @include home.typography($theme);
+  @include projects.typography($theme);
 }
 
 @mixin color($theme) {
