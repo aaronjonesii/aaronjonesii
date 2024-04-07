@@ -2,10 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { nav_path } from 'src/app/app-routing.module';
 import { DatePipe, DOCUMENT } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
-import { appInformation } from "../../../../information";
-import { SeoService } from "../../../../core/services/seo.service";
-import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 import { MatDividerModule } from "@angular/material/divider";
+import { appInformation } from 'src/app/information';
+import { SeoService } from "../../../core/services/seo.service";
+import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-privacy-policy',

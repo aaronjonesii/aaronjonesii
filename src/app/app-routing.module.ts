@@ -65,20 +65,19 @@ const routes: Routes = [
     ] },
   {
     path: 'policies',
-    loadComponent: () => import('./public/views/policies/policies.component')
+    loadComponent: () => import('./features/policies/policies.component')
       .then((m) => m.PoliciesComponent),
   },
   {
     path: 'policies/terms-of-use',
-    loadComponent: () => import('./public/views/policies/terms-of-use/terms-of-use.component')
+    loadComponent: () => import('./features/policies/terms-of-use/terms-of-use.component')
       .then((m) => m.TermsOfUseComponent),
   },
   {
     path: 'policies/privacy-policy',
-    loadComponent: () => import('./public/views/policies/privacy-policy/privacy-policy.component')
+    loadComponent: () => import('./features/policies/privacy-policy/privacy-policy.component')
       .then((m) => m.PrivacyPolicyComponent),
   },
-  // { path: '', loadChildren: () => import('./public/public.module').then(m => m.PublicModule) },
   {
     path: 'admin',
     canActivate: [AdminGuard],

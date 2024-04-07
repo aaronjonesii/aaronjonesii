@@ -1,12 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { nav_path } from "../../../app-routing.module";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
-import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
-import { SeoService } from "../../../core/services/seo.service";
 import { MatListModule } from "@angular/material/list";
 import { MatIconModule } from "@angular/material/icon";
-import { appInformation } from "../../../information";
+import { appInformation } from "../../information";
+import { nav_path } from "../../app-routing.module";
+import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
+import { SeoService } from "../../core/services/seo.service";
 
 @Component({
   selector: 'aj-policies',

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { policies_nav_path } from "./views/policies/policies.module";
 import { auth_nav_path } from "../features/auth/auth.module";
 
 export const public_nav_path = {
@@ -9,27 +8,13 @@ export const public_nav_path = {
   about: '/about',
   auth: '/auth', ...auth_nav_path,
   contact: '/contact',
-  policies: '/policies', ...policies_nav_path,
+  policies: '/policies',
+  termsOfUse: '/policies/terms-of-use',
+  privacyPolicy: '/policies/privacy-policy',
   projects: '/projects'
 };
 
-const routes: Routes = [
-  {
-    path: 'policies',
-    loadComponent: () => import('./views/policies/policies.component')
-      .then((m) => m.PoliciesComponent),
-  },
-  {
-    path: 'policies/terms-of-use',
-    loadComponent: () => import('./views/policies/terms-of-use/terms-of-use.component')
-      .then((m) => m.TermsOfUseComponent),
-  },
-  {
-    path: 'policies/privacy-policy',
-    loadComponent: () => import('./views/policies/privacy-policy/privacy-policy.component')
-      .then((m) => m.PrivacyPolicyComponent),
-  },
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
