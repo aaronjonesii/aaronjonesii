@@ -10,7 +10,6 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions } from "@angul
 import { getAnalytics, isSupported, ScreenTrackingService, UserTrackingService } from "@angular/fire/analytics";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { connectAuthEmulator, getAuth, provideAuth } from "@angular/fire/auth";
-import { LayoutModule } from "../shared/components/layout/layout.module";
 import { connectFirestoreEmulator, getFirestore, provideFirestore } from "@angular/fire/firestore";
 import { connectStorageEmulator, getStorage, provideStorage } from "@angular/fire/storage";
 
@@ -66,7 +65,7 @@ const FIREBASE_MODULES = [
 
 const GLOBAL_ANGULAR_MATERIAL_MODULES = [MatSnackBarModule];
 
-const GLOBAL_MODULES = [CommonModule, LayoutModule];
+const GLOBAL_MODULES = [CommonModule];
 
 @NgModule({
   providers: [ScreenTrackingService, UserTrackingService],

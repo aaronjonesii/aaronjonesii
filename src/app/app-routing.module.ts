@@ -3,14 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from "./shared/components/layout/layout.component";
 import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
-import { auth_nav_path } from "./features/auth/auth.module";
 import { admin_nav_path } from "./features/admin/admin.module";
 
 export const nav_path = {
   home: '/',
   comingSoon: '/coming-soon',
   about: '/about',
-  auth: '/auth', ...auth_nav_path,
+  auth: '/auth',
+  signIn: '/auth/sign-in',
+  signUp: '/auth/sign-up',
+  forgotPassword: '/auth/forgot-password',
   contact: '/contact',
   policies: '/policies',
   termsOfUse: '/policies/terms-of-use',
