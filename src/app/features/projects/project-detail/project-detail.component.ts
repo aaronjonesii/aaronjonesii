@@ -1,12 +1,11 @@
-import { Component, Inject, ViewEncapsulation, makeStateKey, TransferState } from '@angular/core';
-import { map, Observable, of, switchMap } from "rxjs";
+import { Component, Inject, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { map, Observable, of, Subscription, switchMap } from "rxjs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { User } from '@angular/fire/auth';
 import { MatDialog } from "@angular/material/dialog";
 import { increment, where } from "@angular/fire/firestore";
 import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
 import { AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
-import { tap } from "rxjs/operators";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatTabsModule } from "@angular/material/tabs";
@@ -47,7 +46,7 @@ import { ConfirmDialogComponent } from "../../../shared/components/confirm-dialo
     NgOptimizedImage,
   ],
 })
-export class ProjectDetailComponent {
+export class ProjectDetailComponent implements OnDestroy {
   readonly nav_path = nav_path;
   projectID$: Observable<string | null>;
   project$: Observable<ReadProject | null>;
@@ -58,9 +57,11 @@ export class ProjectDetailComponent {
     }),
   );
   notAvailable = false;
-  comments$: Observable<CommentWithID[] | null>;
+  comments$?: Observable<CommentWithID[] | null>;
   readonly ProjectStatus = ProjectStatus;
-  relatedProjects$: Observable<ReadProject[] | null>;
+  relatedProjects$?: Observable<ReadProject[] | null>;
+  private subscriptions = new Subscription();
+  project?: ReadProject;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,7 +72,6 @@ export class ProjectDetailComponent {
     private dialog: MatDialog,
     private seoService: SeoService,
     @Inject(DOCUMENT) private document: Document,
-    private state: TransferState,
     private topAppBarService: TopAppBarService,
   ) {
     /** title service */
@@ -85,18 +85,21 @@ export class ProjectDetailComponent {
       map((params) => params.get('projectID')),
     );
 
-    const key = makeStateKey<ReadProject>('PROJECT-DETAIL');
-    const existing = this.state.get(key, null);
     this.project$ = this.projectID$.pipe(
-      switchMap((projectID) => existing ? of(existing) : this.getProject$(projectID)
-        .pipe(tap(project => this.state.set(key, project)))),
-      tap(() => this._routeToFragment()),
+      switchMap((projectID) => this.getProject$(projectID)),
     );
 
-    this.comments$ = this.project$.pipe(switchMap((project) => this.getComments$(project)));
+    this.subscriptions.add(
+      this.project$.subscribe((project) => {
+        if (!project) {
+          this.notAvailable = true;
+          return;
+        }
 
-    this.relatedProjects$ = this.project$.pipe(
-      switchMap((project) => this.getRelatedProjects$(project)),
+        this.project = project;
+        this.comments$ = this.getComments$(project);
+        this.relatedProjects$ = this.getRelatedProjects$(project);
+      }),
     );
   }
 
@@ -231,5 +234,9 @@ export class ProjectDetailComponent {
       },
       disableClose: true,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

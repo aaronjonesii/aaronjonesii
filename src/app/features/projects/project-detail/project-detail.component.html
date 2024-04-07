@@ -9,7 +9,7 @@
             class="fab-btn-padding" [routerLink]="[nav_path.home]">Go to home</button>
   </div>
 } @else {
-  @if (project$ | async; as project) {
+  @if (project) {
     @if ({user: user$ | async}; as auth) {
       <div class="article-container">
         <article class="flex-col app-gap">
@@ -21,7 +21,7 @@
           }
           <div class="flex-col app-gap content">
             <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
-            <small>{{project?.views ?? 0}} {{project.views === 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
+            <small>{{project.views ?? 0}} {{project.views === 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
             <div class="author-follow-container">
               <div class="flex-row align-items-center app-gap">
                 <aj-user-photo [image]="project.author.image" />
