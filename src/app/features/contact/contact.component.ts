@@ -1,17 +1,17 @@
 import { Component, Inject } from '@angular/core';
-import { initialContactForm } from "../../../shared/forms/contact-form";
-import { FirestoreService } from "../../../shared/services/firestore.service";
-import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
-import { appInformation } from "../../../information";
 import { DOCUMENT, NgOptimizedImage } from "@angular/common";
-import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
-import { SeoService } from "../../../core/services/seo.service";
-import { nav_path } from "../../../app-routing.module";
 import { MatIconModule } from "@angular/material/icon";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
+import { initialContactForm } from "../../shared/forms/contact-form";
+import { FirestoreService } from "../../shared/services/firestore.service";
+import { appInformation } from "../../information";
+import { ConsoleLoggerService } from "../../core/services/console-logger.service";
+import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
+import { SeoService } from "../../core/services/seo.service";
+import { nav_path } from "../../app-routing.module";
 
 @Component({
   selector: 'aj-contact',

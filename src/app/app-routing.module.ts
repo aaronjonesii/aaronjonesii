@@ -45,7 +45,7 @@ const routes: Routes = [
       },
       {
         path: 'contact',
-        loadComponent: () => import('./public/views/contact/contact.component')
+        loadComponent: () => import('./features/contact/contact.component')
           .then((m) => m.ContactComponent),
       },
       {

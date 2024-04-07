@@ -21,11 +21,6 @@ const routes: Routes = [
       { path: '', component: HomeComponent, pathMatch: 'full' },
       /** Auth Routes */
       {
-        path: 'contact',
-        loadComponent: () => import('./views/contact/contact.component')
-          .then((m) => m.ContactComponent),
-      },
-      {
         path: 'projects',
         loadComponent: () => import('./views/projects/projects.component')
           .then((m) => m.ProjectsComponent),
