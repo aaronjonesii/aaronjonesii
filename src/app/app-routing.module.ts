@@ -5,6 +5,7 @@ import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
 import { admin_nav_path } from "./features/admin/admin.module";
 import { auth_nav_path } from "./features/auth/routes";
+import { projects_nav_path } from "./features/projects/routes";
 
 export const nav_path = {
   home: '/',
@@ -15,7 +16,7 @@ export const nav_path = {
   policies: '/policies',
   termsOfUse: '/policies/terms-of-use',
   privacyPolicy: '/policies/privacy-policy',
-  projects: '/projects',
+  ...projects_nav_path,
   accountDetails: '/account-details',
   admin: '/admin', ...admin_nav_path,
   pageNotFound: '/error/404',
@@ -46,13 +47,7 @@ const routes: Routes = [
       },
       {
         path: 'projects',
-        loadComponent: () => import('./features/projects/projects.component')
-          .then((m) => m.ProjectsComponent),
-      },
-      {
-        path: 'projects/:projectID',
-        loadComponent: () => import('./features/projects/project-detail/project-detail.component')
-          .then((m) => m.ProjectDetailComponent),
+        loadChildren: () => import('./features/projects/routes'),
       },
     ] },
   {
