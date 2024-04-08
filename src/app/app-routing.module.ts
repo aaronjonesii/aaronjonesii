@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from "./shared/components/layout/layout.component";
 import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
-import { admin_nav_path } from "./features/admin/admin.module";
+import { admin_nav_path } from "./features/admin/routes";
 import { auth_nav_path } from "./features/auth/routes";
 import { projects_nav_path } from "./features/projects/routes";
 import { policies_nav_path } from "./features/policies/routes";
@@ -18,7 +18,7 @@ export const nav_path = {
   ...policies_nav_path,
   ...projects_nav_path,
   accountDetails: '/account-details',
-  admin: '/admin', ...admin_nav_path,
+  ...admin_nav_path,
   ...errors_nav_path,
 };
 
@@ -26,8 +26,7 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [AdminGuard],
-    loadChildren: () => import('./features/admin/admin.module')
-      .then(m => m.AdminModule),
+    loadChildren: () => import('./features/admin/routes'),
   },
   {
     path: 'policies',
@@ -61,12 +60,12 @@ const routes: Routes = [
           .then((m) => m.ContactComponent),
       },
       {
-        path: 'projects',
-        loadChildren: () => import('./features/projects/routes'),
-      },
-      {
         path: 'error',
         loadChildren: () => import('./features/errors/routes'),
+      },
+      {
+        path: 'projects',
+        loadChildren: () => import('./features/projects/routes'),
       },
       {
         path: '**',
