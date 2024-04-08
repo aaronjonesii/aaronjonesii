@@ -4,15 +4,13 @@ import { LayoutComponent } from "./shared/components/layout/layout.component";
 import { AdminGuard } from "./core/guards/admin.guard";
 import { AuthGuard } from "./core/guards/auth.guard";
 import { admin_nav_path } from "./features/admin/admin.module";
+import { auth_nav_path } from "./features/auth/routes";
 
 export const nav_path = {
   home: '/',
   comingSoon: '/coming-soon',
   about: '/about',
-  auth: '/auth',
-  signIn: '/auth/sign-in',
-  signUp: '/auth/sign-up',
-  forgotPassword: '/auth/forgot-password',
+  ...auth_nav_path,
   contact: '/contact',
   policies: '/policies',
   termsOfUse: '/policies/terms-of-use',
@@ -37,26 +35,9 @@ const routes: Routes = [
         loadComponent: () => import('./features/about/about.component')
           .then((m) => m.AboutComponent),
       },
-      /** Auth Routes */
       {
         path: 'auth',
-        redirectTo: 'auth/sign-in',
-        pathMatch: 'full',
-      },
-      {
-        path: 'auth/forgot-password',
-        loadComponent: () => import('./features/auth/views/forgot-password/forgot-password.component')
-          .then((m) => m.ForgotPasswordComponent),
-      },
-      {
-        path: 'auth/sign-in',
-        loadComponent: () => import('./features/auth/views/sign-in/sign-in.component')
-          .then((m) => m.SignInComponent),
-      },
-      {
-        path: 'auth/sign-up',
-        loadComponent: () => import('./features/auth/views/sign-up/sign-up.component')
-          .then((m) => m.SignUpComponent),
+        loadChildren: () => import('./features/auth/routes'),
       },
       {
         path: 'contact',
