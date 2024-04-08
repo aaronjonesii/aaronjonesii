@@ -2,14 +2,14 @@ import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent, GITHUB_ICON_SVG } from './app.component';
 import { MatIcon, MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { RouterTestingModule } from "@angular/router/testing";
 import { MatIconTestingModule } from "@angular/material/icon/testing";
+import { RouterModule } from "@angular/router";
 
 describe('AppComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatIconTestingModule],
+      imports: [RouterModule, MatIconTestingModule],
       declarations: [AppComponent, MatIcon]
     }).compileComponents();
   }));
