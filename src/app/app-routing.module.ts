@@ -6,6 +6,7 @@ import { AuthGuard } from "./core/guards/auth.guard";
 import { admin_nav_path } from "./features/admin/admin.module";
 import { auth_nav_path } from "./features/auth/routes";
 import { projects_nav_path } from "./features/projects/routes";
+import { policies_nav_path } from "./features/policies/routes";
 
 export const nav_path = {
   home: '/',
@@ -13,9 +14,7 @@ export const nav_path = {
   about: '/about',
   ...auth_nav_path,
   contact: '/contact',
-  policies: '/policies',
-  termsOfUse: '/policies/terms-of-use',
-  privacyPolicy: '/policies/privacy-policy',
+  ...policies_nav_path,
   ...projects_nav_path,
   accountDetails: '/account-details',
   admin: '/admin', ...admin_nav_path,
@@ -24,6 +23,16 @@ export const nav_path = {
 };
 
 const routes: Routes = [
+  {
+    path: 'admin',
+    canActivate: [AdminGuard],
+    loadChildren: () => import('./features/admin/admin.module')
+      .then(m => m.AdminModule),
+  },
+  {
+    path: 'policies',
+    loadChildren: () => import('./features/policies/routes'),
+  },
   { path: '', component: LayoutComponent, children: [
       {
         path: '',
@@ -35,6 +44,12 @@ const routes: Routes = [
         path: 'about',
         loadComponent: () => import('./features/about/about.component')
           .then((m) => m.AboutComponent),
+      },
+      {
+        path: 'account-details',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./features/account-details/account-details.component')
+          .then(m => m.AccountDetailsComponent),
       },
       {
         path: 'auth',
@@ -50,39 +65,6 @@ const routes: Routes = [
         loadChildren: () => import('./features/projects/routes'),
       },
     ] },
-  {
-    path: 'policies',
-    loadComponent: () => import('./features/policies/policies.component')
-      .then((m) => m.PoliciesComponent),
-  },
-  {
-    path: 'policies/terms-of-use',
-    loadComponent: () => import('./features/policies/terms-of-use/terms-of-use.component')
-      .then((m) => m.TermsOfUseComponent),
-  },
-  {
-    path: 'policies/privacy-policy',
-    loadComponent: () => import('./features/policies/privacy-policy/privacy-policy.component')
-      .then((m) => m.PrivacyPolicyComponent),
-  },
-  {
-    path: 'admin',
-    canActivate: [AdminGuard],
-    loadChildren: () => import('./features/admin/admin.module')
-      .then(m => m.AdminModule),
-  },
-  {
-    path: '',
-    component: LayoutComponent,
-    children: [
-      {
-        path: 'account-details',
-        canActivate: [AuthGuard],
-        loadComponent: () => import('./features/account-details/account-details.component')
-          .then(m => m.AccountDetailsComponent),
-      },
-    ],
-  },
   { path: '', component: LayoutComponent, children: [
       {
         path: 'error/404',
