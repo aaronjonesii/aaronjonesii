@@ -13,7 +13,7 @@ export const GITHUB_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox=
   template: `<router-outlet></router-outlet>`
 })
 export class AppComponent {
-  public readonly title = appInformation.title;
+  readonly title = appInformation.title;
   static isBrowser = false;
 
   constructor(
@@ -23,7 +23,7 @@ export class AppComponent {
     private topAppBarService: TopAppBarService,
     private swUpdate: SwUpdateService,
   ) {
-    topAppBarService.setOptions({
+    this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
       loading: false,
@@ -31,8 +31,8 @@ export class AppComponent {
 
     AppComponent.isBrowser = isPlatformBrowser(platformID);
 
-    swUpdate.checkForSwUpdate();
+    this.swUpdate.checkForSwUpdate();
 
-    iconRegistry.addSvgIconLiteral('github', sanitizer.bypassSecurityTrustHtml(GITHUB_ICON_SVG));
+    this.iconRegistry.addSvgIconLiteral('github', this.sanitizer.bypassSecurityTrustHtml(GITHUB_ICON_SVG));
   }
 }
