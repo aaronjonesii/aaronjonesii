@@ -1,8 +1,8 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'forbidden/forbidden-theme' as forbidden;
-@use 'page-not-found/page-not-found-theme' as pageNotFound;
+@use './forbidden/forbidden-theme' as forbidden;
+@use './page-not-found/page-not-found-theme' as pageNotFound;
 
 @mixin componentColorMixins($theme) {
   @include forbidden.color($theme);

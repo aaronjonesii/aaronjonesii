@@ -8,6 +8,7 @@
 @use './projects/projects-theme' as projects;
 @use './policies/policies-theme' as policies;
 @use './admin/admin-theme' as admin;
+@use './errors/errors-theme' as errors;
 
 @mixin componentColorMixins($theme) {
   @include about.color($theme);
@@ -17,6 +18,7 @@
   @include projects.color($theme);
   @include policies.color($theme);
   @include admin.color($theme);
+  @include errors.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -27,6 +29,7 @@
   @include projects.typography($theme);
   @include policies.typography($theme);
   @include admin.typography($theme);
+  @include errors.typography($theme);
 }
 
 @mixin color($theme) {

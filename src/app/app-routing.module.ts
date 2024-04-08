@@ -7,6 +7,7 @@ import { admin_nav_path } from "./features/admin/admin.module";
 import { auth_nav_path } from "./features/auth/routes";
 import { projects_nav_path } from "./features/projects/routes";
 import { policies_nav_path } from "./features/policies/routes";
+import { errors_nav_path } from "./features/errors/routes";
 
 export const nav_path = {
   home: '/',
@@ -18,8 +19,7 @@ export const nav_path = {
   ...projects_nav_path,
   accountDetails: '/account-details',
   admin: '/admin', ...admin_nav_path,
-  pageNotFound: '/error/404',
-  forbidden: '/error/403'
+  ...errors_nav_path,
 };
 
 const routes: Routes = [
@@ -64,21 +64,13 @@ const routes: Routes = [
         path: 'projects',
         loadChildren: () => import('./features/projects/routes'),
       },
-    ] },
-  { path: '', component: LayoutComponent, children: [
       {
-        path: 'error/404',
-        loadComponent: () => import('./core/components/errors/page-not-found/page-not-found.component')
-          .then((m) => m.PageNotFoundComponent),
-      },
-      {
-        path: 'error/403',
-        loadComponent: () => import('./core/components/errors/forbidden/forbidden.component')
-          .then((m) => m.ForbiddenComponent),
+        path: 'error',
+        loadChildren: () => import('./features/errors/routes'),
       },
       {
         path: '**',
-        loadComponent: () => import('./core/components/errors/page-not-found/page-not-found.component')
+        loadComponent: () => import('./features/errors/page-not-found/page-not-found.component')
           .then((m) => m.PageNotFoundComponent),
       },
     ] },

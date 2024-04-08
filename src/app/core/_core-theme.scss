@@ -1,15 +1,9 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'components/errors/errors-theme' as errors;
+@mixin componentColorMixins($theme) {}
 
-@mixin componentColorMixins($theme) {
-  @include errors.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include errors.typography($theme);
-}
+@mixin componentTypographyMixins($theme) {}
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);

@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
 
-@use 'src/app/core/core-theme' as core;
 @use 'src/app/shared/shared-theme' as shared;
 @use 'src/app/features/features-theme' as features;
 
@@ -61,7 +60,6 @@ $dark-theme: mat.define-dark-theme((
 
 
 /* Light theme feature components below */
-@include core.theme($light-theme);
 @include shared.theme($light-theme);
 @include features.theme($light-theme);
 
@@ -89,7 +87,6 @@ $dark-theme: mat.define-dark-theme((
   @include mat.tabs-color($dark-theme);
 
   /* Dark theme feature components below */
-  @include core.color($dark-theme);
   @include shared.color($dark-theme);
   @include features.color($dark-theme);
 }
