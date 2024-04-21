@@ -1,14 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectsComponent } from './projects.component';
+import { FirestoreService } from "../../shared/services/firestore.service";
 
-describe('WorkComponent', () => {
+describe('ProjectsComponent', () => {
   let component: ProjectsComponent;
   let fixture: ComponentFixture<ProjectsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectsComponent ]
+      imports: [ProjectsComponent],
+      providers: [
+        {
+          provide: FirestoreService,
+          useValue: {},
+        },
+      ],
     })
     .compileComponents();
 
@@ -17,7 +24,7 @@ describe('WorkComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 });

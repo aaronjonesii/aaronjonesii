@@ -19,7 +19,7 @@ import { StorageFilePreviewComponent } from "./components/storage-file-preview/s
 import { FileDropzoneDirective } from "./directives/file-dropzone.directive";
 import { LoadingOrErrorComponent } from "../../../../shared/components/loading-or-error/loading-or-error.component";
 import { appInformation } from "../../../../information";
-import { ConsoleLoggerService } from "../../../../core/services/console-logger.service";
+import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-file-manager',
@@ -52,7 +52,7 @@ export class FileManagerComponent implements OnInit {
   constructor(
     public storageService: FirebaseStorageService,
     private dialog: MatDialog,
-    private cLog: ConsoleLoggerService,
+    private logger: ConsoleLoggerService,
   ) {}
 
   ngOnInit() {
@@ -153,7 +153,7 @@ export class FileManagerComponent implements OnInit {
 
     // prevent file names to have ","(comma)
     if (Array.from(files).some(file => file.name.includes(","))) {
-      this.cLog.warn(`File names cannot include a ","(comma)`);
+      this.logger.warn(`File names cannot include a ","(comma)`);
       return;
     }
 
@@ -163,10 +163,10 @@ export class FileManagerComponent implements OnInit {
       const fileRef = await this.storageService.getRef(`${this.currentPath}/${file.name}`);
       await this.storageService.uploadFile(fileRef, file)
         .then((snapshot) => uploadedFiles.push(snapshot))
-        .catch(error => this.cLog.error(`error uploading file: '${file}'`, error));
+        .catch(error => this.logger.error(`error uploading file: '${file}'`, error));
     }
     this.reload(this.currentPath);
-    this.cLog.info(`uploaded ${uploadedFiles.length} ${uploadedFiles.length === 1 ? 'file' : 'files'}`, uploadedFiles);
+    this.logger.info(`uploaded ${uploadedFiles.length} ${uploadedFiles.length === 1 ? 'file' : 'files'}`, uploadedFiles);
   }
 
   async onFilesSelect($event: Event): Promise<void> {

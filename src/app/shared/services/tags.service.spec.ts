@@ -4,12 +4,12 @@ import { TagsService } from "./tags.service";
 describe('TagsService', () => {
   let service: TagsService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(TagsService);
   });
 
-  it('should be created', () => {
+  it('should create the service', () => {
     expect(service).toBeTruthy();
   });
 

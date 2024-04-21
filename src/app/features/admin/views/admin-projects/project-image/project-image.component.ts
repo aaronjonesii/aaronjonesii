@@ -6,7 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { NgOptimizedImage } from "@angular/common";
 import { SafePipe } from "../../../../../shared/pipes/safe.pipe";
 import { StorageService } from "../../../../../shared/services/storage.service";
-import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
+import { ConsoleLoggerService } from "../../../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-project-image',
@@ -29,10 +29,10 @@ export class ProjectImageComponent {
 
   constructor(
     private storage: StorageService,
-    private cLog: ConsoleLoggerService
+    private logger: ConsoleLoggerService,
   ) {}
 
-  onFileUpload(event: Event) {
+  async onFileUpload(event: Event) {
     this.loading = true;
 
     const inputEl = event.target as HTMLInputElement;
@@ -42,12 +42,12 @@ export class ProjectImageComponent {
       const imageExtension = filenameArray.at(-1);
       const imageFileName = filenameArray.slice(0, -1).join('.');
       const path = `projects/${imageFileName}_${Date.now()}.${imageExtension}`;
-      this.storage.uploadBytes(path, inputEl.files[0])
+      await this.storage.uploadBytes(path, inputEl.files[0])
         .then(async uploadResult => {
           await this.storage.getURL(uploadResult.ref)
             .then(url => this.imageFormControl.setValue(url))
-            .catch(error => this.cLog.error('Something went wrong loading uploaded image download url', [error, uploadResult]))
-        }).catch(error => this.cLog.error(`Something went wrong uploading image`, [error, image]));
+            .catch(error => this.logger.error('Something went wrong loading uploaded image download url', [error, uploadResult]))
+        }).catch(error => this.logger.error(`Something went wrong uploading image`, [error, image]));
     }
 
     this.loading = false;

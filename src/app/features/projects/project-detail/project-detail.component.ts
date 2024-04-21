@@ -1,10 +1,10 @@
-import { Component, Inject, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { map, Observable, of, Subscription, switchMap } from "rxjs";
+import { afterNextRender, AfterRenderPhase, Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { catchError, first, map, Observable, of, Subscription, switchMap } from "rxjs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { User } from '@angular/fire/auth';
 import { MatDialog } from "@angular/material/dialog";
 import { increment, where } from "@angular/fire/firestore";
-import { CommentsDialogComponent } from "./comments-dialog/comments-dialog.component";
+import { CommentsDialogComponent, CommentsDialogContract } from "./comments-dialog/comments-dialog.component";
 import { AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
@@ -13,17 +13,21 @@ import { ProjectDetailCommentComponent } from "./project-detail-comment/project-
 import { MatIconModule } from "@angular/material/icon";
 import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
 import { LoadingComponent } from "../../../shared/components/loading/loading.component";
-import { nav_path } from 'src/app/app-routing.module';
 import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../shared/interfaces/project";
 import { CommentWithID } from "../../../shared/interfaces/comment";
 import { FirestoreService } from "../../../shared/services/firestore.service";
-import { AuthService } from "../../../core/services/auth.service";
-import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
-import { SeoService } from "../../../core/services/seo.service";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
 import { appInformation } from "../../../information";
 import { readUser, UserWithID } from "../../../shared/interfaces/user";
-import { ConfirmDialogComponent } from "../../../shared/components/confirm-dialog/confirm-dialog.component";
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogContract
+} from "../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { nav_path } from '../../../app.routes';
+import { AuthService } from "../../../shared/services/auth.service";
+import { ConsoleLoggerService } from "../../../shared/services/console-logger.service";
+import { SeoService } from "../../../shared/services/seo.service";
+import { FirebaseError } from "@angular/fire/app/firebase";
 
 @Component({
   selector: 'aj-project-detail',
@@ -64,15 +68,15 @@ export class ProjectDetailComponent implements OnDestroy {
   project?: ReadProject;
 
   constructor(
-    private route: ActivatedRoute,
-    private db: FirestoreService,
-    private auth: AuthService,
-    private cLog: ConsoleLoggerService,
     private router: Router,
+    private auth: AuthService,
     private dialog: MatDialog,
+    private db: FirestoreService,
+    private route: ActivatedRoute,
     private seoService: SeoService,
-    @Inject(DOCUMENT) private document: Document,
+    private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
+    @Inject(DOCUMENT) private document: Document,
   ) {
     /** title service */
     this.topAppBarService.setOptions({
@@ -87,6 +91,10 @@ export class ProjectDetailComponent implements OnDestroy {
 
     this.project$ = this.projectID$.pipe(
       switchMap((projectID) => this.getProject$(projectID)),
+      catchError((error: FirebaseError) => {
+        if (error.code !== 'permission-denied') this.logger.error('Error loading project', error);
+        return of(null);
+      }),
     );
 
     this.subscriptions.add(
@@ -103,16 +111,23 @@ export class ProjectDetailComponent implements OnDestroy {
     );
   }
 
-  private _routeToFragment() {
-    this.router.routerState.root.fragment
-      .forEach(fragment => {
+  private watchForFragment () {
+    this.subscriptions.add(
+      this.router.routerState.root.fragment.subscribe((fragment) => {
         if (!fragment) return;
 
-        const el = this.document.querySelector(`#${fragment}`);
-        if (!el) return;
+        this._routeToFragment(fragment);
+      }),
+    );
+  }
 
-        el?.scrollIntoView();
-      });
+  private _routeToFragment(fragment: string) {
+    afterNextRender(() => {
+      const el = this.document.querySelector(`#${fragment}`);
+      if (!el) return;
+
+      el?.scrollIntoView();
+    }, {phase: AfterRenderPhase.Read});
   }
 
   getUser$(user: User) {
@@ -202,15 +217,16 @@ export class ProjectDetailComponent implements OnDestroy {
       this.auth.assertUser(user);
 
       if (user?.following) {
+        const confirmDialogContract: ConfirmDialogContract = {
+          description: `Unfollow from ${appInformation.name}?`,
+          buttonText: `Unfollow`,
+        };
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
           id: 'confirm-unfollow-dialog',
-          data: {
-            description: `Unfollow from ${appInformation.name}?`,
-            buttonText: `Unfollow`,
-          }
+          data: confirmDialogContract,
         });
 
-        dialogRef.afterClosed()
+        dialogRef.afterClosed().pipe(first())
           .forEach(async confirm => confirm ? await this._updateFollowStatus(user) : undefined);
       } else await this._updateFollowStatus(user);
     } catch (error) {
@@ -219,19 +235,20 @@ export class ProjectDetailComponent implements OnDestroy {
   }
 
   private async _updateFollowStatus(user: UserWithID): Promise<void> {
-    return await this.db.update(`users/${user.id}`, { following: !user?.following ?? false })
-      .then(() => this.cLog.log(user?.following ? 'Unfollowed' : 'Followed'));
+    return await this.db.update(`users/${user.id}`, { following: user?.following ?!user.following : false })
+      .then(() => this.logger.log(user?.following ? 'Unfollowed' : 'Followed'));
   }
 
   openComments(project: ReadProject): void {
+    const commentsDialogContract: CommentsDialogContract = {
+      comments$: this.comments$,
+      selectedComment: undefined,
+      user$: this.user$,
+      parent: this.db.doc(`projects/${project.slug}`),
+    };
     this.dialog.open(CommentsDialogComponent, {
       id: 'comments-dialog',
-      data: {
-        comments$: this.comments$,
-        selectedComment: undefined,
-        user$: this.user$,
-        parent: this.db.doc(`projects/${project.slug}`),
-      },
+      data: commentsDialogContract,
       disableClose: true,
     });
   }

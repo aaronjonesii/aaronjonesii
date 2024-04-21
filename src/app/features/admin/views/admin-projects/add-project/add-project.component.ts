@@ -22,10 +22,9 @@ import { ProjectForm } from "../../../../../shared/forms/project-form";
 import { ProjectStatus, ProjectVisibility, WriteProject } from "../../../../../shared/interfaces/project";
 import { Tag } from "../../../../../shared/interfaces/tag";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
-import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
-import { TagsService } from "../../../../../shared/services/tags.service";
-import { AuthService } from "../../../../../core/services/auth.service";
-import { nav_path } from "../../../../../app-routing.module";
+import { nav_path } from "../../../../../app.routes";
+import { ConsoleLoggerService } from "../../../../../shared/services/console-logger.service";
+import { AuthService } from "../../../../../shared/services/auth.service";
 
 @Component({
   selector: 'aj-add-project',
@@ -78,29 +77,27 @@ export class AddProjectComponent {
         const storyCharacterCount = stats.characters;
         const storyWordCount = stats.words;
         /** todo: use these values */
-        console.log(`content character count`, storyCharacterCount);
-        console.log(`content word count`, storyWordCount);
+        this.logger.log(`content character count`, storyCharacterCount);
+        this.logger.log(`content word count`, storyWordCount);
       }
     }
   };
   user$ = this.auth.loadUser;
 
   constructor(
-    private db: FirestoreService,
-    private cLog: ConsoleLoggerService,
-    private tagsService: TagsService,
-    private slugify: SlugifyPipe,
     private router: Router,
     private auth: AuthService,
+    private db: FirestoreService,
+    private slugify: SlugifyPipe,
+    private logger: ConsoleLoggerService,
   ) {
-    this.allTags$ = (db.col$(`tags`) as Observable<Tag[]>)
-      .pipe(
-        tap(tags => this.allTags = tags),
-        catchError(error => {
-          this.cLog.error(`Something went wrong loading tags`, error);
-          return throwError(error);
-        })
-      );
+    this.allTags$ = db.col$<Tag>(`tags`).pipe(
+      tap(tags => this.allTags = tags),
+      catchError(error => {
+        this.logger.error(`Something went wrong loading tags`, error);
+        return throwError(error);
+      }),
+    );
   }
   get image() { return this.addForm.controls.image; }
   get name() { return this.addForm.controls.name; }
@@ -146,7 +143,7 @@ export class AddProjectComponent {
     this.addForm.disable();
 
     if (await this.db.docExists(`projects/${this.slug.value}`)) {
-      this.cLog.error(`Project with this name already exists, try changing the name or slug`);
+      this.logger.error(`Project with this name already exists, try changing the name or slug`);
       this.loading = false;
       this.addForm.enable();
       return;
@@ -203,10 +200,10 @@ export class AddProjectComponent {
       await batch.set(projectRef, project);
     })
       .then(() => this.resetForm())
-      .then(() => this.cLog.log(`Project created`))
+      .then(() => this.logger.log(`Project created`))
       .then(() => this.router.navigate([nav_path.adminProjects]))
       .catch(error => {
-        this.cLog.error(`Something went wrong creating project`, [error, project]);
+        this.logger.error(`Something went wrong creating project`, [error, project]);
         this.addForm.enable();
       })
       .finally(() => {

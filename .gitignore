@@ -2,6 +2,7 @@
 
 # Angular Cache
 .angular
+.nx
 
 # firebase
 **/.firebase
@@ -129,10 +130,8 @@ typings/
 .firebase
 *-debug.log
 .runtimeconfig.json
+seed/
+firebase-export-*/
 
 # Keys
 keys.ts
-
-# Firebase Emulators Data
-seed/
-firebase-export-*/

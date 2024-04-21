@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { nav_path } from "../../../app-routing.module";
+import { nav_path } from "../../../app.routes";
 import { GenericItem } from "../../interfaces/generic-item";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink, RouterLinkActive } from "@angular/router";

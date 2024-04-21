@@ -1,15 +1,5 @@
 import { Route } from "@angular/router";
 import { AdminComponent } from "./admin.component";
-import { admin_projects_nav_path } from "./views/admin-projects/routes";
-import { admin_users_nav_path } from "./views/admin-users/routes";
-
-export const admin_nav_path = {
-  admin: '/admin',
-  adminDashboard: '/admin/dashboard',
-  ...admin_projects_nav_path,
-  adminFileManager: '/admin/file-manager',
-  ...admin_users_nav_path,
-};
 
 export default [
   { path: '', component: AdminComponent, children: [

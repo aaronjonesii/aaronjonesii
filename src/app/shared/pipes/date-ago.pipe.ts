@@ -30,5 +30,4 @@ export class DateAgoPipe implements PipeTransform {
     }
     return date;
   }
-
 }

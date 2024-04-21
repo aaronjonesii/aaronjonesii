@@ -22,9 +22,9 @@ import { ProjectStatus, ProjectVisibility, ReadProject, WriteProject } from "../
 import { initialProjectForm, ProjectForm } from "../../../../../shared/forms/project-form";
 import { Tag } from "../../../../../shared/interfaces/tag";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
-import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 import { TagsService } from "../../../../../shared/services/tags.service";
-import { nav_path } from "../../../../../app-routing.module";
+import { nav_path } from "../../../../../app.routes";
+import { ConsoleLoggerService } from "../../../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-edit-project',
@@ -67,19 +67,19 @@ export class EditProjectComponent implements OnInit {
         const storyCharacterCount = stats.characters;
         const storyWordCount = stats.words;
         /** todo: use these values */
-        console.log(`content character count`, storyCharacterCount);
-        console.log(`content word count`, storyWordCount);
+        this.logger.log(`content character count`, storyCharacterCount);
+        this.logger.log(`content word count`, storyWordCount);
       }
     }
   };
 
   constructor(
-    private route: ActivatedRoute,
-    private db: FirestoreService,
-    private cLog: ConsoleLoggerService,
     private router: Router,
     private slugify: SlugifyPipe,
-    private tagsService: TagsService
+    private db: FirestoreService,
+    private route: ActivatedRoute,
+    private tagsService: TagsService,
+  private logger: ConsoleLoggerService,
   ) {
     this.projectID = this.route.snapshot.paramMap.get('projectID');
   }
@@ -88,13 +88,13 @@ export class EditProjectComponent implements OnInit {
       .then((docSnapshot) => {
         if (!docSnapshot.exists()) {
           this.router.navigate([nav_path.adminProjects]);
-          this.cLog.error(`Something went wrong loading project`, this.projectID);
+          this.logger.error(`Something went wrong loading project`, this.projectID);
         } else {
           this.allTags$ = (this.db.col$(`tags`) as Observable<Tag[]>)
             .pipe(
               tap(tags => this.allTags = tags),
               catchError(error => {
-                this.cLog.error(`Something went wrong loading tags`, error);
+                this.logger.error(`Something went wrong loading tags`, error);
                 return throwError(error);
               })
             );
@@ -105,7 +105,7 @@ export class EditProjectComponent implements OnInit {
           this.loading = false;
         }
       }).catch((error: unknown) => {
-        this.cLog.error('Something went wrong loading project to edit.', error);
+        this.logger.error('Something went wrong loading project to edit.', error);
       });
   }
   get image() { return this.editForm.controls.image; }
@@ -156,7 +156,7 @@ export class EditProjectComponent implements OnInit {
     if (slugChanged) {
       /** check if project already exists */
       if (await this.db.docExists(`projects/${this.slug.value}`)) {
-        this.cLog.error(`Project with this name already exists, try changing the name or slug`);
+        this.logger.error(`Project with this name already exists, try changing the name or slug`);
         this.loading = false;
         return;
       }
@@ -232,9 +232,9 @@ export class EditProjectComponent implements OnInit {
         /** remove old project */
         batch.delete(projectRef);
       }
-    }).then(() => this.cLog.log(`Updated project`))
+    }).then(() => this.logger.log(`Updated project`))
       .then(() => this.router.navigate([nav_path.adminProjects]))
-      .catch(error => this.cLog.error(`Something went wrong updating project`, [error, project]))
+      .catch(error => this.logger.error(`Something went wrong updating project`, [error, project]))
       .finally(() => {
         this.editForm.enable();
         this.loading = false;

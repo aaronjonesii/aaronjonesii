@@ -1,7 +1,7 @@
-@import "src/assets/scss/default-theme";
-@import "src/assets/scss/partials/extras";
-@import "src/assets/scss/partials/_classes.scss";
-@import "src/assets/scss/partials/editor"; // Custom CKEditor Styles
+@import "./assets/scss/default-theme";
+@import "./assets/scss/partials/extras";
+@import "./assets/scss/partials/_classes.scss";
+@import "./assets/scss/partials/editor"; // Custom CKEditor Styles
 
 /* Angular Material Default Styles */
 html, body {

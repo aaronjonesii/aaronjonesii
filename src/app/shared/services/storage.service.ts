@@ -20,7 +20,7 @@ export class StorageService {
    *
    * @public
    */
-  public itemRef(reference: ItemPredicate): StorageReference {
+  itemRef(reference: ItemPredicate): StorageReference {
     return typeof reference === 'string' ? ref(this.storage, reference) : reference;
   }
 
@@ -31,7 +31,7 @@ export class StorageService {
    *
    * @public
    */
-  public async getURL(ref: ItemPredicate): Promise<string> {
+  async getURL(ref: ItemPredicate): Promise<string> {
     return await getDownloadURL(this.itemRef(ref));
   }
 
@@ -48,7 +48,7 @@ export class StorageService {
    *
    * @public
    */
-  public async uploadBytes(
+  async uploadBytes(
     ref: ItemPredicate,
     data: File | Blob | ArrayBuffer | Uint8Array,
     metadata?: UploadMetadata
@@ -75,7 +75,7 @@ export class StorageService {
    *
    * @public
    */
-  public async listAll(ref: ItemPredicate): Promise<ListResult> {
+  async listAll(ref: ItemPredicate): Promise<ListResult> {
     return await listAll(this.itemRef(ref));
   }
 
@@ -88,7 +88,7 @@ export class StorageService {
    *
    * @public
    */
-  public async getMetadata(ref: ItemPredicate): Promise<FullMetadata> {
+  async getMetadata(ref: ItemPredicate): Promise<FullMetadata> {
     return await getMetadata(this.itemRef(ref));
   }
 
@@ -100,7 +100,7 @@ export class StorageService {
    *
    * @public
    */
-  public async deleteFile(ref: ItemPredicate): Promise<void> {
+  async deleteFile(ref: ItemPredicate): Promise<void> {
     return await deleteObject(this.itemRef(ref));
   }
 
@@ -112,7 +112,7 @@ export class StorageService {
    *
    * @public
    */
-  public async deleteFolder(folderPath: string): Promise<void> {
+  async deleteFolder(folderPath: string): Promise<void> {
     const { items, prefixes } = await this.listAll(this.itemRef(folderPath));
 
     try {

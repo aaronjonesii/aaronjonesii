@@ -9,15 +9,12 @@ import { MenuService } from "../../shared/services/menu.service";
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    NavigationBarComponent,
-  ],
+  imports: [RouterOutlet, NavigationBarComponent],
 })
 export class AdminComponent {
-  public readonly title = 'Admin';
+  readonly title = 'Admin';
 
-  public readonly segments: GenericItem[] = this.menuService.adminNavigationBarMenu;
+  readonly segments: GenericItem[] = this.menuService.adminNavigationBarMenu;
 
   constructor(private menuService: MenuService) {}
 }

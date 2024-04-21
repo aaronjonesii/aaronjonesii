@@ -8,9 +8,7 @@ import { NgOptimizedImage } from "@angular/common";
   templateUrl: './user-photo.component.html',
   styleUrl: './user-photo.component.scss',
   standalone: true,
-  imports: [
-    NgOptimizedImage
-  ],
+  imports: [NgOptimizedImage],
 })
 export class UserPhotoComponent implements OnInit {
   @Input() user?: User | dbUser | null;
@@ -20,6 +18,7 @@ export class UserPhotoComponent implements OnInit {
   public userPhotoError = false;
 
   ngOnInit() {
+    /** todo: do not use setTimeout */
     setTimeout(() => {
       if (!this.image && this.user?.photoURL) this.image = this.user.photoURL;
     }, 50);

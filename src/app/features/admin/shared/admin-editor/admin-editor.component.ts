@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppComponent } from "src/app/app.component";
 import { ChangeEvent, CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { FormsModule } from "@angular/forms";
 import { Editor, EditorConfig } from "@ckeditor/ckeditor5-core";
@@ -7,7 +6,6 @@ import { Editor, EditorConfig } from "@ckeditor/ckeditor5-core";
 @Component({
   selector: 'aj-admin-editor',
   templateUrl: './admin-editor.component.html',
-  styleUrl: './admin-editor.component.scss',
   standalone: true,
   imports: [CKEditorModule, FormsModule],
 })
@@ -33,13 +31,11 @@ export class AdminEditorComponent {
   loaded = false;
 
   constructor() {
-    if (AppComponent.isBrowser) {
-      import('./CustomInlineEditor/ckeditor.js' as string)
-        .then(e => {
-          this.editor = e.Editor;
-          this.loaded = true;
-        });
-    }
+    import('./CustomInlineEditor/ckeditor.js' as string)
+      .then((e) => {
+        this.editor = e.default.Editor;
+        if (this.editor) this.loaded = true;
+      });
   }
 
   onReady(ready_event: unknown) { this.readyChange.emit(ready_event); }

@@ -3,12 +3,14 @@
 <main class="page-padding">
   <h1 class="mat-headline-3">{{title}}</h1>
 
-  @if (projects$ | async; as projects) {
+  @if (projects) {
     @if (projects.length) {
       <aj-admin-projects-grid [projects]="projects" />
     } @else {
       <h2>No projects yet</h2>
     }
+  } @else {
+    <aj-loading-or-error [error]="error" />
   }
 </main>
 

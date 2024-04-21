@@ -22,6 +22,7 @@ type DocumentPredicate<T> = string | DocumentReference<T>;
 
 @Injectable({ providedIn: 'root' })
 export class FirestoreService {
+
   constructor(private db: Firestore) {}
 
   /** Get References */

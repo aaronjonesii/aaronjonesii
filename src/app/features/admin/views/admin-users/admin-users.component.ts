@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { first, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FirebaseError } from '@angular/fire/app/firebase';
-import { nav_path } from 'src/app/app-routing.module';
 import { MatDialog } from "@angular/material/dialog";
 import { AsyncPipe, DatePipe } from "@angular/common";
 import { MatListModule } from "@angular/material/list";
@@ -17,8 +16,12 @@ import { LoadingOrErrorComponent } from "../../../../shared/components/loading-o
 import { readUser } from "../../../../shared/interfaces/user";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
 import { FunctionsService } from "../../../../shared/services/functions.service";
-import { ConsoleLoggerService } from "../../../../core/services/console-logger.service";
-import { ConfirmDialogComponent } from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogContract
+} from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { nav_path } from '../../../../app.routes';
+import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-admin-users',
@@ -40,41 +43,42 @@ import { ConfirmDialogComponent } from "../../../../shared/components/confirm-di
   ],
 })
 export class AdminUsersComponent {
-  public readonly title = 'Users';
-  public readonly nav_path = nav_path;
-  public users$?: Observable<readUser[]>;
-  public error?: FirebaseError;
+  readonly title = 'Users';
+  readonly nav_path = nav_path;
+  users$?: Observable<readUser[]>;
+  error?: FirebaseError;
 
   constructor(
+    private dialog: MatDialog,
     private db: FirestoreService,
     private fn: FunctionsService,
-    private cLog: ConsoleLoggerService,
-    private dialog: MatDialog,
+    private logger: ConsoleLoggerService,
   ) {
-    this.users$ = (this.db.col$(`users`, { idField: 'id' }) as Observable<readUser[]>)
+    this.users$ = this.db.col$<readUser>(`users`, { idField: 'id' })
       .pipe(catchError((error: FirebaseError) => {
-        console.error(`Something went wrong loading users`, error.message)
+        this.logger.error(`Something went wrong loading users`, error.message);
         this.error = error;
-        return throwError(error);
+        return of([]);
       }))
   }
 
-  public async updateUser(user?: string) {
+  async updateUser(userId?: string) {
+    const confirmDialogContract: ConfirmDialogContract = {
+      title: `Update user?`,
+      description: `Are you sure you want to update ${userId}?`,
+    };
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       id: 'confirm-update-user-dialog',
-      data: {
-        title: `Update user?`,
-        description: `Are you sure you want to update ${user}?`,
-      }
+      data: confirmDialogContract,
     });
 
-    await dialogRef.afterClosed().forEach(async confirm => {
+    await dialogRef.afterClosed().pipe(first()).forEach(async confirm => {
       if (!confirm) return;
 
       await this.fn.httpsCallable<{success: boolean, message: string}>
-      (`admin-updateUser`, {user: user})
-        .then(result => this.cLog.log(result.message))
-        .catch(error => this.cLog.error(error.message, error));
+      (`admin-updateUser`, {user: userId})
+        .then(result => this.logger.log(result.message))
+        .catch(error => this.logger.error(error.message, error));
     });
   }
 }

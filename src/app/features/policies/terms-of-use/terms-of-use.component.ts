@@ -1,21 +1,17 @@
-import { Component, Inject } from '@angular/core';
-import { DatePipe, DOCUMENT } from "@angular/common";
-import { ActivatedRoute } from "@angular/router";
+import { Component } from '@angular/core';
+import { DatePipe } from "@angular/common";
 import { MatDividerModule } from "@angular/material/divider";
-import { nav_path } from "../../../app-routing.module";
+import { nav_path } from "../../../app.routes";
 import { appInformation } from "../../../information";
-import { SeoService } from "../../../core/services/seo.service";
 import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
+import { SeoService } from "../../../shared/services/seo.service";
+import { RoutingService } from "../../../shared/services/routing.service";
 
 @Component({
   selector: 'aj-terms-of-use',
   templateUrl: './terms-of-use.component.html',
-  styleUrl: './terms-of-use.component.scss',
   standalone: true,
-  imports: [
-    MatDividerModule,
-    DatePipe,
-  ],
+  imports: [MatDividerModule, DatePipe],
 })
 export class TermsOfUseComponent {
   readonly nav_path = nav_path;
@@ -24,9 +20,8 @@ export class TermsOfUseComponent {
   readonly appInformation = appInformation;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private route: ActivatedRoute,
     private seoService: SeoService,
+    private routing: RoutingService,
     private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
@@ -40,6 +35,6 @@ export class TermsOfUseComponent {
       route: nav_path.termsOfUse,
     });
 
-    this.route.fragment.forEach(fragment => this.document.querySelector(`#${fragment}`)?.scrollIntoView());
+    this.routing.watchAndRouteToFragment();
   }
 }

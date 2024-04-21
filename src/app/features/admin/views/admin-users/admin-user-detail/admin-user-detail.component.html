@@ -1,19 +1,19 @@
 <aj-top-app-bar [title]="title" [showBackBtn]="true" />
 
 <main class="page-padding">
-  @if (user$ | async; as user) {
+  @if (user) {
     <div class="crumbs">
       <button mat-button type="button" [routerLink]="[nav_path.adminUsers]">Users</button>
       <mat-icon fontIcon="chevron_right" />
-      <button mat-button type="button" disabled>{{user?.displayName ?? user.id}}</button>
+      <button mat-button type="button" disabled>{{user.displayName ?? user.id}}</button>
     </div>
 
     <div class="header">
-      <h1>{{user?.displayName ?? 'Unknown name'}}</h1>
+      <h1>{{user.displayName ?? 'Unknown name'}}</h1>
 
       <button mat-stroked-button type="button" color="accent" (click)="updateAdminRole(user)">
         <mat-icon fontIcon="admin_panel_settings" />
-        {{user?.admin === true ? 'Revoke' : 'Grant'}} Admin
+        {{user.admin === true ? 'Revoke' : 'Grant'}} Admin
       </button>
     </div>
 

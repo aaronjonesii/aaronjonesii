@@ -1,8 +1,8 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use 'components/layout/layout-theme' as layout;
-@use 'components/masonry-cards/masonry-cards-theme' as masonryCards;
+@use './components/layout/layout-theme' as layout;
+@use './components/masonry-cards/masonry-cards-theme' as masonryCards;
 
 
 @mixin componentColorMixins($theme) {

@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { afterNextRender, Component, Input, OnInit } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
-import { ConsoleLoggerService } from "../../../core/services/console-logger.service";
 import { StorageService } from "../../../shared/services/storage.service";
-import { AuthService } from "../../../core/services/auth.service";
-import { AppComponent } from "../../../app.component";
+import { first } from "rxjs";
+import { ConsoleLoggerService } from "../../../shared/services/console-logger.service";
+import { AuthService } from "../../../shared/services/auth.service";
 
 
 @Component({
@@ -21,21 +21,21 @@ import { AppComponent } from "../../../app.component";
   ],
 })
 export class PhotoUploadComponent implements OnInit {
-  @Input() public user: User | null = null;
-  public photo?: string;
-  public validExtensions = [];
-  public file?: File;
-  public loading = false;
+  @Input() user: User | null = null;
+  photo?: string;
+  validExtensions = [];
+  file?: File;
+  loading = false;
 
   constructor(
-    private cLog: ConsoleLoggerService,
-    private storage: StorageService,
     private auth: AuthService,
+    private storage: StorageService,
+    private logger: ConsoleLoggerService,
   ) {}
 
   ngOnInit() { this.photo = <string>this.user?.photoURL; }
 
-  public async onFilesSelect(event: Event) {
+  async onFilesSelect(event: Event) {
     try {
       this.loading = true;
 
@@ -59,7 +59,7 @@ export class PhotoUploadComponent implements OnInit {
         .catch(() => { throw new Error(`Something went wrong updating profile`); })
         .then((res) => this.notifyReload(res.message));
     } catch (error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong uploading photo`, error, this.file, this.user);
+      this.logger.error((<Error>error).message ?? `Something went wrong uploading photo`, error, this.file, this.user);
     } finally { this.loading = false; }
   }
 
@@ -67,16 +67,20 @@ export class PhotoUploadComponent implements OnInit {
     this.loading = true;
     await this.auth.updateUser({photoURL: null})
       .then((res) => this.notifyReload(res.message))
-      .catch((error: Error) => this.cLog.error(`Something went wrong updating profile`, error));
+      .catch((error: Error) => this.logger.error(`Something went wrong updating profile`, error));
     this.photo = undefined;
     this.loading = false;
   }
 
   notifyReload(msg: string) {
-    this.cLog.openSnackBar(
+    this.logger.openSnackBar(
       msg + '; Reload page for changes to take affect.',
       'Reload',
       {duration: 0}
-    ).onAction().forEach(() => {if (AppComponent.isBrowser) window.location.reload()});
+    ).onAction().pipe(first()).forEach(() => {
+      afterNextRender(() => {
+        window.location.reload()
+      });
+    });
   }
 }

@@ -1,17 +1,16 @@
-import { Component, Inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { DOCUMENT } from "@angular/common";
+import { Component } from '@angular/core';
+import { RouterLink } from "@angular/router";
 import { MatListModule } from "@angular/material/list";
 import { MatIconModule } from "@angular/material/icon";
 import { appInformation } from "../../information";
-import { nav_path } from "../../app-routing.module";
+import { nav_path } from "../../app.routes";
 import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
-import { SeoService } from "../../core/services/seo.service";
+import { SeoService } from "../../shared/services/seo.service";
+import { RoutingService } from "../../shared/services/routing.service";
 
 @Component({
   selector: 'aj-policies',
   templateUrl: './policies.component.html',
-  styleUrl: './policies.component.scss',
   standalone: true,
   imports: [
     MatListModule,
@@ -29,10 +28,9 @@ export class PoliciesComponent {
   ];
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private route: ActivatedRoute,
-    private topAppBarService: TopAppBarService,
     private seoService: SeoService,
+    private routing: RoutingService,
+    private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
       title: this.title,
@@ -43,6 +41,7 @@ export class PoliciesComponent {
       title: this.title,
       route: nav_path.home,
     });
-    this.route.fragment.forEach(fragment => this.document.querySelector(`#${fragment}`)?.scrollIntoView());
+
+    this.routing.watchAndRouteToFragment();
   }
 }

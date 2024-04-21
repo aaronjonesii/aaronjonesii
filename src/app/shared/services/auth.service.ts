@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import {
   Auth, User, GoogleAuthProvider, IdTokenResult,
   UserCredential, AuthError, ActionCodeSettings,
@@ -9,25 +9,30 @@ import {
   sendPasswordResetEmail, updateEmail, getIdTokenResult,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { nav_path } from 'src/app/app-routing.module';
 import { ConsoleLoggerService } from './console-logger.service';
-import { UpdateProfileResponse } from '../../shared/interfaces/functions';
-import { FunctionsService } from '../../shared/services/functions.service';
+import { UpdateProfileResponse } from '../interfaces/functions';
+import { FunctionsService } from './functions.service';
 import { FunctionsError } from "@angular/fire/functions";
-import { UserWithID } from "../../shared/interfaces/user";
+import { UserWithID } from "../interfaces/user";
+import { nav_path } from "../../app.routes";
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
-  public user$: Observable<User|null> = this.loadUser;
+export class AuthService implements OnDestroy {
+  user$: Observable<User|null> = this.loadUser;
   private idTokenResultPromise: Promise<IdTokenResult> | null = null;
+  private subscriptions = new Subscription();
 
   constructor(
     private auth: Auth,
     private router: Router,
-    private cLog: ConsoleLoggerService,
     private fn: FunctionsService,
+    private logger: ConsoleLoggerService,
   ) {
-    this.user$.forEach(user => this.idTokenResultPromise = user == null ? null : this.loadUserToken(user));
+    this.subscriptions.add(
+      this.user$.subscribe((user) => {
+        return this.idTokenResultPromise = user == null ? null : this.loadUserToken(user);
+      }),
+    );
   }
 
   /**
@@ -36,7 +41,7 @@ export class AuthService {
    *
    * @public
    */
-  public get loadUser(): Observable<User | null> {
+  get loadUser(): Observable<User | null> {
     return authState(this.auth);
   }
 
@@ -52,7 +57,7 @@ export class AuthService {
    *
    * @public
    */
-  public loadUserToken(user: User, forceRefresh?: boolean): Promise<IdTokenResult> {
+  loadUserToken(user: User, forceRefresh?: boolean): Promise<IdTokenResult> {
     return getIdTokenResult(user, forceRefresh);
   }
 
@@ -61,7 +66,7 @@ export class AuthService {
    *
    * @public
    */
-  public async isAdmin(user: User | null): Promise<boolean> {
+  async isAdmin(user: User | null): Promise<boolean> {
     return user == null ? false : (await user.getIdTokenResult()).claims['admin'] == true;
   }
 
@@ -74,13 +79,13 @@ export class AuthService {
    *
    * @public
    */
-  public async loginAnonymously(): Promise<UserCredential | AuthError> {
+  async loginAnonymously(): Promise<UserCredential | AuthError> {
     return await signInAnonymously(this.auth)
       .then(userCredential => {
         this.routeRedirect();
         return userCredential;
       }).catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong signing in anonymously`, [error, this.auth]);
+        this.logger.error(`Something went wrong signing in anonymously`, [error, this.auth]);
         return error;
       });
   }
@@ -94,15 +99,16 @@ export class AuthService {
    *
    * @public
    */
-  public async googleLogin(): Promise<UserCredential | AuthError> {
+  async googleLogin(): Promise<UserCredential | AuthError> {
     const provider = new GoogleAuthProvider();
     return await signInWithPopup(this.auth, provider)
       .then(newCredential => {
+        this.logger.log(`Welcome back ${this._displayNameOrEmail(newCredential)}`);
         this.routeRedirect();
         return newCredential;
       })
       .catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong signing in with Google`, [error, this.auth, provider]);
+        this.logger.error(`Something went wrong signing in with Google`, [error, this.auth, provider]);
         return error;
       });
   }
@@ -112,14 +118,14 @@ export class AuthService {
    *
    * @public
    */
-  public async logout(): Promise<void | AuthError> {
+  async logout(): Promise<void | AuthError> {
     await signOut(this.auth)
       .then(() => {
-        this.cLog.info(`Signed out`);
+        this.logger.info(`Signed out`);
         this.router.navigate([nav_path.home]);
       })
       .catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong signing out`, [error, this.auth]);
+        this.logger.error(`Something went wrong signing out`, [error, this.auth]);
         return error;
       });
   }
@@ -136,13 +142,13 @@ export class AuthService {
    *
    * @public
    */
-  public async delete(user: User): Promise<void | AuthError> {
+  async delete(user: User): Promise<void | AuthError> {
     return deleteUser(user)
       .then(() => {
-        this.cLog.info(`Account deleted`);
+        this.logger.info(`Account deleted`);
         this.router.navigate([nav_path.home]);
       }).catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong deleting account, please reauthenticate and try again`, [error, user]);
+        this.logger.error(`Something went wrong deleting account, please reauthenticate and try again`, [error, user]);
         return error;
       });
   }
@@ -163,7 +169,7 @@ export class AuthService {
    *
    * @public
    */
-  public async signUp(email: string, password: string): Promise<UserCredential | AuthError> {
+  async signUp(email: string, password: string): Promise<UserCredential | AuthError> {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then(userCredential => {
         this.sendVerificationEmail(userCredential.user);
@@ -171,11 +177,11 @@ export class AuthService {
         return userCredential;
       }).catch((error: AuthError) => {
         if (error.code == 'auth/email-already-exists') {
-          this.cLog.error(`The provided email is already in use by an existing user. Change the email address and try again.`, [error, email, password])
+          this.logger.error(`The provided email is already in use by an existing user. Change the email address and try again.`, [error, email, password])
           return error;
         }
 
-        this.cLog.error(`Something went wrong creating account`, [error, email, password]);
+        this.logger.error(`Something went wrong creating account`, [error, email, password]);
         return error;
       });
   }
@@ -195,14 +201,14 @@ export class AuthService {
    *
    * @public
    */
-  public async signIn(email: string, password: string): Promise<UserCredential | AuthError> {
+  async signIn(email: string, password: string): Promise<UserCredential | AuthError> {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
-        this.cLog.log(`Welcome back ${userCredential.user.displayName ?? userCredential.user.email}`);
+        this.logger.log(`Welcome back ${this._displayNameOrEmail(userCredential)}`);
         this.routeRedirect();
         return userCredential;
       }).catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong signing in`, [error, email, password]);
+        this.logger.error(`Something went wrong signing in`, [error, email, password]);
         return error;
       });
   }
@@ -218,11 +224,11 @@ export class AuthService {
    *
    * @public
    */
-  public async sendVerificationEmail(user: User, actionCodeSettings?: ActionCodeSettings | null): Promise<void | AuthError> {
+  async sendVerificationEmail(user: User, actionCodeSettings?: ActionCodeSettings | null): Promise<void | AuthError> {
     return sendEmailVerification(user, actionCodeSettings)
-      .then(() => this.cLog.log(`Verification email has been sent`))
+      .then(() => this.logger.log(`Verification email has been sent`))
       .catch(error => {
-        this.cLog.error(`Something went wrong sending verification email`, [error, user, actionCodeSettings])
+        this.logger.error(`Something went wrong sending verification email`, [error, user, actionCodeSettings])
         return error;
       });
   }
@@ -243,11 +249,11 @@ export class AuthService {
    *
    * @public
    */
-  public async changeEmail(user: User, newEmail: string): Promise<void | AuthError> {
+  async changeEmail(user: User, newEmail: string): Promise<void | AuthError> {
     return updateEmail(user, newEmail)
-      .then(() => this.cLog.log(`Changed email address`))
+      .then(() => this.logger.log(`Changed email address`))
       .catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong changing email`, [error, user, newEmail]);
+        this.logger.error(`Something went wrong changing email`, [error, user, newEmail]);
         return error;
     });
   }
@@ -264,11 +270,11 @@ export class AuthService {
    *
    * @public
    */
-  public async sendPasswordResetEmail(email: string, actionCodeSettings?: ActionCodeSettings): Promise<void | AuthError> {
+  async sendPasswordResetEmail(email: string, actionCodeSettings?: ActionCodeSettings): Promise<void | AuthError> {
     return sendPasswordResetEmail(this.auth, email, actionCodeSettings)
-      .then(() => this.cLog.log(`Password reset email sent`))
+      .then(() => this.logger.log(`Password reset email sent`))
       .catch((error: AuthError) => {
-        this.cLog.error(`Something went wrong sending password reset email`, [error, email, actionCodeSettings]);
+        this.logger.error(`Something went wrong sending password reset email`, [error, email, actionCodeSettings]);
         return error;
       });
   }
@@ -280,7 +286,7 @@ export class AuthService {
    *
    * @public
    */
-  public async updateUser(
+  async updateUser(
     updateUserData: {
       displayName?: string | null,
       photoURL?: string | null,
@@ -290,11 +296,11 @@ export class AuthService {
         res = <UpdateProfileResponse>res;
         if (res.ok && res.user) this.user$ = this.loadUser; // reload user auth state
 
-        this.cLog.log(res.message);
+        this.logger.log(res.message);
         return res;
       })
       .catch((error: FunctionsError) => {
-        this.cLog.error(`Something went wrong updating user`, [error, updateUserData]);
+        this.logger.error(`Something went wrong updating user`, [error, updateUserData]);
         return error;
       });
   }
@@ -314,7 +320,7 @@ export class AuthService {
     this.router.navigate([route], { fragment });
   }
 
-  public checkIfSignedIn(urlToCheck: string, timeout = 5000) {
+  checkIfSignedIn(urlToCheck: string, timeout = 5000) {
     /** check if user is already signed in */
     this.loadUser.forEach(user => {
       if (user) {
@@ -331,10 +337,18 @@ export class AuthService {
     });
   }
 
-  public assertUser(user: UserWithID | User | null): asserts user {
+  assertUser(user: UserWithID | User | null): asserts user {
     if (!user) {
       this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url } });
       throw new Error(`You must be signed in`);
     }
+  }
+
+  private _displayNameOrEmail(userCredential: UserCredential) {
+    return userCredential.user.displayName ?? userCredential.user.email;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

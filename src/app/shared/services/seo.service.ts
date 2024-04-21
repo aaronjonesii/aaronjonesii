@@ -9,8 +9,8 @@ export class SeoService {
   constructor(
     private meta: Meta,
     private titleService: Title,
-    @Inject(DOCUMENT) private document: Document
-  ) { }
+    @Inject(DOCUMENT) private document: Document,
+  ) {}
 
   generateTags(tags: {
     title?: string,

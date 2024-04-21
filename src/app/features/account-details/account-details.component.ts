@@ -14,10 +14,10 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { Profile } from "../../shared/interfaces/profile";
 import { ProfileForm } from "../../shared/forms/profile-form";
-import { AuthService } from "../../core/services/auth.service";
-import { ConsoleLoggerService } from "../../core/services/console-logger.service";
 import { UpdateProfileResponse } from "../../shared/interfaces/functions";
-import { nav_path } from "../../app-routing.module";
+import { nav_path } from "../../app.routes";
+import { AuthService } from "../../shared/services/auth.service";
+import { ConsoleLoggerService } from "../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-account-details',
@@ -51,10 +51,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(
-    public auth: AuthService,
-    private cLog: ConsoleLoggerService,
     private router: Router,
+    private auth: AuthService,
+    private logger: ConsoleLoggerService,
   ) {}
+
   ngOnInit() {
     const user$ = this.auth.loadUser;
     this.subscriptions.add(
@@ -113,7 +114,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             /** update user variables in component here */
           }
 
-          this.cLog.log(res.message);
+          this.logger.log(res.message);
           this.profile.displayName = this.displayName.value;
         })
         .catch((error: FunctionsError) => {throw new Error(error.message)});
@@ -121,7 +122,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       // disable form field
       this.displayName.disable();
     } catch (error) {
-      this.cLog.error(`Something went wrong updating account display name`, error, this.profile.displayName, this.displayName.value);
+      this.logger.error(`Something went wrong updating account display name`, error, this.profile.displayName, this.displayName.value);
     } finally {
       this.loading = false;
     }
@@ -131,14 +132,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     try {
       this.loading = true;
 
-      this.cLog.openSnackBar(
+      this.logger.openSnackBar(
         `Please reach out to update your email address!`,
         'Contact',
         { duration: 0 }
       ).onAction().forEach(() => this.router.navigate([nav_path.contact]));
 
     } catch (error) {
-      this.cLog.error(`Something went wrong updating email address. Reauthenticate and try again`, error);
+      this.logger.error(`Something went wrong updating email address. Reauthenticate and try again`, error);
     } finally {
       this.loading = false;
     }

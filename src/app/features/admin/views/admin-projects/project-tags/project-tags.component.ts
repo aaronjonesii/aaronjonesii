@@ -36,7 +36,6 @@ export class ProjectTagsComponent implements OnInit {
   @ViewChild('tagInput') tagInput?: ElementRef<HTMLInputElement>;
 
   constructor() {
-
     this.filteredTags$ = this.tagCtrl.valueChanges.pipe(
       startWith(null),
       switchMap((inputValue: string | null) => (
@@ -46,9 +45,16 @@ export class ProjectTagsComponent implements OnInit {
       ))
     );
   }
-  ngOnInit() { this.tags$ = this.allTags$.pipe(map(tags => tags.map(tag => tag.slug))); }
 
-  private filterSelectedTags = (tags: string[]) => tags.filter(tag => !this.selectedTagsFormArray.value?.includes(tag));
+  ngOnInit() {
+    this.tags$ = this.allTags$.pipe(
+      map(tags => tags.map(tag => tag.slug)),
+    );
+  }
+
+  private filterSelectedTags = (tags: string[]) => tags.filter(tag => {
+    return !this.selectedTagsFormArray.value?.includes(tag);
+  });
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -81,6 +87,8 @@ export class ProjectTagsComponent implements OnInit {
   private _filter(inputValue: string): Observable<string[]> {
     const filterValue = inputValue.toLowerCase();
 
-    return this.tags$.pipe(map(tags => tags.filter(tag => tag.toLowerCase().includes(filterValue))));
+    return this.tags$.pipe(
+      map(tags => tags.filter(tag => tag.toLowerCase().includes(filterValue))),
+    );
   }
 }

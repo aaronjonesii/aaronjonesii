@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { nav_path } from "../../app-routing.module";
+import { nav_path } from "../../app.routes";
 import { GenericItem } from "../interfaces/generic-item";
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-  public readonly pages: GenericItem[] = [
+  readonly pages: GenericItem[] = [
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
     { name: 'About', icon: 'person', routerLink: [nav_path.about] },
     { name: 'Projects', icon: 'work_history', routerLink: [nav_path.projects] },
     { name: 'Contact', icon: 'contact_support', routerLink: [nav_path.contact] },
   ];
-  public readonly adminPages: GenericItem[] = [
+  readonly adminPages: GenericItem[] = [
     { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.adminDashboard],
       description: 'Manage admin components throughout this website.' },
     { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],
@@ -23,7 +23,7 @@ export class MenuService {
       routerLink: [nav_path.adminUsers], tooltip: 'Users', icon: 'manage_accounts' },
   ];
 
-  public readonly adminNavigationBarMenu = [
+  readonly adminNavigationBarMenu = [
     { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.adminDashboard] },
     { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager] },
     { name: 'Projects', icon: 'supervised_user_circle', routerLink: ['/admin/projects'] },
@@ -32,7 +32,7 @@ export class MenuService {
     { name: 'Home', icon: 'home', routerLink: [nav_path.home] }
   ];
 
-  public readonly adminMenu: GenericItem[] = [
+  readonly adminMenu: GenericItem[] = [
     { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.admin],
       description: 'Manage admin components throughout this website.' },
     { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],

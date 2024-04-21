@@ -15,9 +15,9 @@ export class TopAppBarService {
     showBackBtn: false,
     loading: false,
   });
-  public options$ = this.optionsSubject.asObservable();
+  options$ = this.optionsSubject.asObservable();
 
-  public setOptions(options: TopAppBarOptions): void {
+  setOptions(options: TopAppBarOptions): void {
     this.optionsSubject.next(options);
   }
 }

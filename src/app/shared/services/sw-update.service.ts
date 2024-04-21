@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { afterNextRender, Inject, Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { DOCUMENT } from "@angular/common";
 import { ConsoleLoggerService } from "./console-logger.service";
@@ -10,8 +10,8 @@ export class SwUpdateService {
 
   constructor(
     private swUpdate: SwUpdate,
-    private cLog: ConsoleLoggerService,
-    @Inject(DOCUMENT) private document: Document
+    private logger: ConsoleLoggerService,
+    @Inject(DOCUMENT) private document: Document,
   ) {}
 
   async checkForSwUpdate() {
@@ -23,12 +23,12 @@ export class SwUpdateService {
             this.notifyUpdateAvailable();
           }
         })
-        .catch(error => this.cLog.error(`error checking for service worker update`, error));
+        .catch(error => this.logger.error(`error checking for service worker update`, error));
     }
   }
 
   async notifyUpdateAvailable() {
-    await this.cLog.openSnackBar(
+    await this.logger.openSnackBar(
       `A new version of ${appInformation.website} is available`,
       'Refresh',
       { duration: 0 }
@@ -37,6 +37,8 @@ export class SwUpdateService {
 
   reloadPage() {
     // Reload the page to update to the latest version.
-    this.document.location.reload();
+    afterNextRender(() => {
+      this.document.location.reload();
+    });
   }
 }

@@ -1,15 +1,11 @@
 import { Route } from "@angular/router";
 
-export const errors_nav_path = {
-  pageNotFound: '/error/404',
-  forbidden: '/error/403'
-};
-
 export default [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '404',
+    loadComponent: () => import('./error/error.component')
+      .then((m) => m.ErrorComponent),
   },
   {
     path: '404',

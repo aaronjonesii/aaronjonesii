@@ -10,10 +10,7 @@ import { RouterLink } from "@angular/router";
   templateUrl: './masonry-cards.component.html',
   styleUrl: './masonry-cards.component.scss',
   standalone: true,
-  imports: [
-    MatCardModule,
-    RouterLink,
-  ],
+  imports: [MatCardModule, RouterLink],
 })
 export class MasonryCardsComponent {
   @Input() items: GenericItem[] = [];

@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MenuService } from "../../services/menu.service";
-import { AuthService } from "../../../core/services/auth.service";
-import { nav_path } from "../../../app-routing.module";
+import { nav_path } from "../../../app.routes";
 import { appInformation } from "../../../information";
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { map } from "rxjs";
+import { map, Subscription } from "rxjs";
 import { NavigationRailAnimation } from "../navigation-rail/navigation-rail.animations";
 import { NavigationBarAnimation } from "../navigation-bar/navigation-bar.animations";
 import { NavigationDrawerAnimation } from "../navigation-drawer/navigation-drawer.animations";
@@ -14,6 +13,7 @@ import { TopAppBarComponent } from "../top-app-bar/top-app-bar.component";
 import { NavigationBarComponent } from "../navigation-bar/navigation-bar.component";
 import { RouterOutlet } from "@angular/router";
 import { AsyncPipe } from "@angular/common";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: 'aj-layout',
@@ -34,7 +34,7 @@ import { AsyncPipe } from "@angular/common";
     AsyncPipe,
   ],
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnDestroy {
   readonly title = appInformation.name;
   readonly nav_path = nav_path;
   segments = this.menuService.pages;
@@ -49,22 +49,29 @@ export class LayoutComponent {
     .pipe(map(state => state.matches));
   isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
     .pipe(map(state => state.matches));
+  private subscriptions = new Subscription();
 
   constructor(
-    private menuService: MenuService,
     private auth: AuthService,
+    private menuService: MenuService,
     private breakpointObserver: BreakpointObserver,
   ) {
     /** Add button if admin */
-    this.auth.user$.forEach(async (user) => {
-      if (await this.auth.isAdmin(user)) {
-        const adminNavigationBarMenu = [
-          ...this.menuService.pages,
-          { name: 'Admin', icon: 'admin_panel_settings', routerLink: [nav_path.adminDashboard] }
-        ];
+    this.subscriptions.add(
+      this.auth.user$.subscribe(async (user) => {
+        if (await this.auth.isAdmin(user)) {
+          const adminNavigationBarMenu = [
+            ...this.menuService.pages,
+            { name: 'Admin', icon: 'admin_panel_settings', routerLink: [nav_path.adminDashboard] }
+          ];
 
-        if (this.segments.toString() != adminNavigationBarMenu.toString()) this.segments = adminNavigationBarMenu;
-      }
-    });
+          if (this.segments.toString() != adminNavigationBarMenu.toString()) this.segments = adminNavigationBarMenu;
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

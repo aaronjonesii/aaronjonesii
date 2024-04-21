@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { afterNextRender, Component, Inject } from '@angular/core';
 import { DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -8,10 +8,10 @@ import { MatButtonModule } from "@angular/material/button";
 import { initialContactForm } from "../../shared/forms/contact-form";
 import { FirestoreService } from "../../shared/services/firestore.service";
 import { appInformation } from "../../information";
-import { ConsoleLoggerService } from "../../core/services/console-logger.service";
 import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
-import { SeoService } from "../../core/services/seo.service";
-import { nav_path } from "../../app-routing.module";
+import { nav_path } from "../../app.routes";
+import { ConsoleLoggerService } from "../../shared/services/console-logger.service";
+import { SeoService } from "../../shared/services/seo.service";
 
 @Component({
   selector: 'aj-contact',
@@ -35,10 +35,10 @@ export class ContactComponent {
 
   constructor(
     private db: FirestoreService,
-    private cLog: ConsoleLoggerService,
-    @Inject(DOCUMENT) private document: Document,
-    private topAppBarService: TopAppBarService,
     private seoService: SeoService,
+    private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
+    @Inject(DOCUMENT) private document: Document,
   ) {
     this.topAppBarService.setOptions({
       title: this.title,
@@ -57,8 +57,10 @@ export class ContactComponent {
   private get message() { return this.contactForm.controls.message; }
 
   scrollToForm() {
-    this.document.getElementById(`contact-container`)
-      ?.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    afterNextRender(() => {
+      this.document.getElementById(`contact-container`)
+        ?.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    });
   }
 
   async onSubmit(): Promise<void> {
@@ -79,8 +81,8 @@ export class ContactComponent {
       };
       batch.set(mailRef, mailData);
     }).then(() => {
-      this.cLog.log(`Contact request received, we will follow up with you soon.`);
+      this.logger.log(`Contact request received, we will follow up with you soon.`);
       this.success = true;
-    }).catch(error => this.cLog.error(`Something went wrong sending your contact request.`, error));
+    }).catch(error => this.logger.error(`Something went wrong sending your contact request.`, error));
   }
 }

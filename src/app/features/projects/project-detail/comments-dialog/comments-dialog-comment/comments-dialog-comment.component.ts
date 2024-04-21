@@ -12,14 +12,13 @@ import { DateAgoPipe } from "../../../../../shared/pipes/date-ago.pipe";
 import { CommentWithID } from "../../../../../shared/interfaces/comment";
 import { UserWithID } from "../../../../../shared/interfaces/user";
 import { FirestoreService } from "../../../../../shared/services/firestore.service";
-import { ConsoleLoggerService } from "../../../../../core/services/console-logger.service";
 import { ReportReason, WriteReport } from "../../../../../shared/interfaces/report";
-import { nav_path } from "../../../../../app-routing.module";
+import { nav_path } from "../../../../../app.routes";
+import { ConsoleLoggerService } from "../../../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-comment',
   templateUrl: './comments-dialog-comment.component.html',
-  styleUrl: './comments-dialog-comment.component.scss',
   standalone: true,
   imports: [
     UserPhotoComponent,
@@ -38,7 +37,7 @@ export class CommentsDialogCommentComponent {
   constructor(
     private router: Router,
     private db: FirestoreService,
-    private cLog: ConsoleLoggerService,
+    private logger: ConsoleLoggerService,
   ) {}
 
   async onLikeComment() {
@@ -57,9 +56,9 @@ export class CommentsDialogCommentComponent {
 
         const commentRef = this.db.doc(`${this.comment.parent.path}/comments/${this.comment.id}`);
         batch.update(commentRef, commentUpdates);
-      }).catch(error => this.cLog.error(`Something went wrong liking comment`, error, this.comment, this.user));
+      }).catch(error => this.logger.error(`Something went wrong liking comment`, error, this.comment, this.user));
     } catch (error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
+      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -82,9 +81,9 @@ export class CommentsDialogCommentComponent {
           updated: this.db.timestamp,
         };
         batch.update(commentRef, commentUpdates);
-      }).catch(error => this.cLog.error(`Something went wrong disliking comment`, error, this.comment, this.user));
+      }).catch(error => this.logger.error(`Something went wrong disliking comment`, error, this.comment, this.user));
     } catch(error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
+      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
@@ -111,8 +110,6 @@ export class CommentsDialogCommentComponent {
         document: commentRef,
       };
       return await this.db.batch(async batch => {
-        this._assertComment(this.comment); // fixme: investigate why this is needed here when used above
-
         const reportRef = this.db.doc(`reports/${this.db.newDocumentID}`);
         batch.set(reportRef, report);
 
@@ -121,10 +118,10 @@ export class CommentsDialogCommentComponent {
           updated: this.db.timestamp,
         };
         batch.update(userRef, userUpdates);
-      }).then(() => this.cLog.log(`Submitted report, thank you for helping our community.`))
-        .catch(error => this.cLog.error(`Something went wrong reporting comment`, error, report));
+      }).then(() => this.logger.log(`Submitted report, thank you for helping our community.`))
+        .catch(error => this.logger.error(`Something went wrong reporting comment`, error, report));
     } catch (error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
+      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 

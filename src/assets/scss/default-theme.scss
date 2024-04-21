@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
-@use 'src/app/shared/shared-theme' as shared;
-@use 'src/app/features/features-theme' as features;
+@use '../../app/shared/shared-theme' as shared;
+@use '../../app/features/features-theme' as features;
 
 /* IMPORT BELOW ONLY ONCE */
 @include mat.core();
@@ -10,7 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 $aj-typography: mat.define-typography-config($font-family: 'Roboto Mono');
 
-@import 'src/assets/scss/partials/colors';
+@import '../../assets/scss/partials/colors';
 /* Light Theme */
 $light-primary: mat.define-palette(mat.$brown-palette);
 $light-accent: mat.define-palette(mat.$blue-grey-palette);
@@ -18,11 +18,11 @@ $light-accent: mat.define-palette(mat.$blue-grey-palette);
 $light-theme: mat.define-light-theme((
   color: (
     primary: $light-primary,
-    accent: $light-accent
+    accent: $light-accent,
   ),
   // Only include `typography` and `density` in the default theme.
   typography: $aj-typography,
-  density: 0
+  density: 0,
 ));
 
 /* Dark Theme */

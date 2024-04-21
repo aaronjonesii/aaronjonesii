@@ -6,9 +6,7 @@ import { LoadingComponent } from "../loading/loading.component";
   templateUrl: './loading-or-error.component.html',
   styleUrl: './loading-or-error.component.scss',
   standalone: true,
-  imports: [
-    LoadingComponent,
-  ],
+  imports: [LoadingComponent],
 })
 export class LoadingOrErrorComponent {
   @Input() error?: Error;

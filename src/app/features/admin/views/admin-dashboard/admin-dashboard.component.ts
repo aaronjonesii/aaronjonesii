@@ -7,12 +7,8 @@ import { MenuService } from "../../../../shared/services/menu.service";
 @Component({
   selector: 'aj-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.scss',
   standalone: true,
-  imports: [
-    TopAppBarComponent,
-    MasonryCardsComponent,
-  ],
+  imports: [TopAppBarComponent, MasonryCardsComponent],
 })
 export class AdminDashboardComponent {
   protected readonly title = 'Dashboard';

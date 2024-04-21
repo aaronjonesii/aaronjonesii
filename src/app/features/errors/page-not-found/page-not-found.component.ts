@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { nav_path } from 'src/app/app-routing.module';
-import { Location, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
+import { nav_path } from '../../../app.routes';
+import { RoutingService } from "../../../shared/services/routing.service";
 
 @Component({
   selector: 'aj-page-not-found',
@@ -13,5 +14,10 @@ import { RouterLink } from "@angular/router";
 })
 export class PageNotFoundComponent {
   nav_path = nav_path;
-  constructor(public location: Location) {}
+
+  constructor(private routing: RoutingService) {}
+
+  goBack() {
+    this.routing.goBack();
+  }
 }

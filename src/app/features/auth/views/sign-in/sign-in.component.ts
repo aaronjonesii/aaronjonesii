@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { nav_path } from 'src/app/app-routing.module';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { NgOptimizedImage } from "@angular/common";
-import { appInformation } from 'src/app/information';
-import { SeoService } from "../../../../core/services/seo.service";
 import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
+import { nav_path } from '../../../../app.routes';
+import { appInformation } from '../../../../information';
+import { AuthService } from "../../../../shared/services/auth.service";
+import { SeoService } from "../../../../shared/services/seo.service";
 
 @Component({
   selector: 'aj-sign-in',
@@ -45,8 +45,7 @@ export class SignInComponent {
   loading = false;
 
   constructor(
-    private router: Router,
-    public auth: AuthService,
+    private auth: AuthService,
     private seoService: SeoService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -73,5 +72,9 @@ export class SignInComponent {
 
     await this.auth.signIn(this.email.value, this.password.value)
       .finally(() => this.loading = false);
+  }
+
+  async googleLogin() {
+    await this.auth.googleLogin();
   }
 }

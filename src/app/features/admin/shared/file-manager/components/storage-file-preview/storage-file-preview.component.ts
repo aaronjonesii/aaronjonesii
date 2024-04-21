@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 import { StorageFile } from '../../interfaces/storage-file';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
 import { FirebaseError } from '@angular/fire/app/firebase';
-import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { StorageItemIconComponent } from "../storage-item-icon/storage-item-icon.component";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormatBytesPipe } from "../../pipes/format-bytes.pipe";
 import { DatePipe, NgOptimizedImage } from "@angular/common";
+import { ConsoleLoggerService } from "../../../../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-storage-file-preview',
@@ -38,7 +38,7 @@ export class StorageFilePreviewComponent implements OnChanges {
 
   constructor(
     private firebaseStorage: FirebaseStorageService,
-    private cLog: ConsoleLoggerService
+    private logger: ConsoleLoggerService,
   ) {}
 
   ngOnChanges() {
@@ -48,7 +48,7 @@ export class StorageFilePreviewComponent implements OnChanges {
       .then((downloadURL) => {
         this.downloadURL = downloadURL;
       }).catch((error: FirebaseError) => {
-      this.cLog.error(`error getting download URL for '${this.item?.name}'`, error, this.item);
+      this.logger.error(`error getting download URL for '${this.item?.name}'`, error, this.item);
     });
   }
 }

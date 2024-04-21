@@ -5,9 +5,9 @@ let eventChannel: any;
 /** setup events */
 export const setupEventChannel = () => {
   eventChannel =
-    process.env.EVENTARC_CHANNEL &&
-    getEventarc().channel(process.env.EVENTARC_CHANNEL, {
-      allowedEventTypes: process.env.EXT_SELECTED_EVENTS,
+    process.env['EVENTARC_CHANNEL'] &&
+    getEventarc().channel(process.env['EVENTARC_CHANNEL'], {
+      allowedEventTypes: process.env['EXT_SELECTED_EVENTS'],
     });
 };
 

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { nav_path } from 'src/app/app-routing.module';
 import { SelectionModel } from "@angular/cdk/collections";
 import { MatDialog } from "@angular/material/dialog";
 import { NgClass, NgOptimizedImage } from "@angular/common";
@@ -11,8 +10,13 @@ import { MatMenuModule } from "@angular/material/menu";
 import { RouterLink } from "@angular/router";
 import { ProjectWithID } from "../../../../shared/interfaces/project";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
-import { ConsoleLoggerService } from "../../../../core/services/console-logger.service";
-import { ConfirmDialogComponent } from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogContract
+} from "../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { nav_path } from '../../../../app.routes';
+import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
+import { first } from "rxjs";
 
 @Component({
   selector: 'aj-admin-projects-grid',
@@ -37,9 +41,9 @@ export class AdminProjectsGridComponent {
   loading = false;
 
   constructor(
-    private db: FirestoreService,
-    private cLog: ConsoleLoggerService,
     private dialog: MatDialog,
+    private db: FirestoreService,
+    private logger: ConsoleLoggerService,
   ) {}
 
   get allSelected(): boolean {
@@ -58,23 +62,25 @@ export class AdminProjectsGridComponent {
     this.loading = true;
 
     await this.db.update(`projects/${id}`, { featured })
-      .then(() => this.cLog.log(`project is ${featured ? 'now featured' : 'no longer featured'}`))
-      .catch(error => this.cLog.error(`Something went wrong updating project`, [error, id, featured]))
+      .then(() => this.logger.log(`project is ${featured ? 'now featured' : 'no longer featured'}`))
+      .catch(error => this.logger.error(`Something went wrong updating project`, [error, id, featured]))
       .finally(() => this.loading = false)
   }
 
   async deleteSelectedProjects() {
     this.loading = true;
+    const confirmDialogContract : ConfirmDialogContract = {
+      title: 'Delete all selected projects?',
+      description: 'All selected projects will be permanently deleted and cannot be undone'
+    };
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      id: 'confirm-delete-project-dialog',
       width: undefined,
       height: undefined,
-      data: {
-        title: 'Delete all selected projects?',
-        description: 'All selected projects will be permanently deleted and cannot be undone'
-      }
+      data: confirmDialogContract,
     });
 
-    dialogRef.afterClosed().forEach(async _delete => {
+    dialogRef.afterClosed().pipe(first()).forEach(async _delete => {
       if (_delete) {
         const removedProjects: string[] = [];
 
@@ -82,10 +88,10 @@ export class AdminProjectsGridComponent {
           await this._deleteProject(project.id).then(() => {
             this.selectionModel.deselect(project);
             removedProjects.push(project.id);
-          }).catch(error => this.cLog.error(`Something went wong deleting project`, error, project));
+          }).catch(error => this.logger.error(`Something went wong deleting project`, error, project));
         }
 
-        this.cLog.log(`removed ${removedProjects.length} ${removedProjects.length === 1 ? 'project' : 'projects'}`, removedProjects);
+        this.logger.log(`removed ${removedProjects.length} ${removedProjects.length === 1 ? 'project' : 'projects'}`, removedProjects);
       }
       this.loading = false;
     });
@@ -109,9 +115,9 @@ export class AdminProjectsGridComponent {
           }).catch(error => { throw new error; });
       }
 
-      if (publishedProjects.length) this.cLog.log(`published ${publishedProjects.length == 1 ? 'project' : 'projects'}`);
+      if (publishedProjects.length) this.logger.log(`published ${publishedProjects.length == 1 ? 'project' : 'projects'}`);
     } catch (error) {
-      this.cLog.error(`Something went wrong publishing projects`, error);
+      this.logger.error(`Something went wrong publishing projects`, error);
     } finally { this.loading = false; }
   }
   async publishProject(id: string, notify = true) {
@@ -123,8 +129,8 @@ export class AdminProjectsGridComponent {
         status: 'published',
         updated: this.db.timestamp
       }
-    ).then(() => { if (notify) this.cLog.log(`published project`) })
-      .catch(error => { if (notify) this.cLog.error(`Something went wong publishing project`, error, id) })
+    ).then(() => { if (notify) this.logger.log(`published project`) })
+      .catch(error => { if (notify) this.logger.error(`Something went wong publishing project`, error, id) })
       .finally(() => this.loading = false);
   }
 
@@ -132,20 +138,22 @@ export class AdminProjectsGridComponent {
 
       this.loading = true;
 
+      const confirmDialogContract: ConfirmDialogContract = {
+        title: 'Delete this project?',
+        description: 'This project will be permanently deleted and cannot be recovered.'
+      };
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        id: 'confirm-delete-project-dialog',
         width: undefined,
         height: undefined,
-        data: {
-          title: 'Delete this project?',
-          description: 'This project will be permanently deleted and cannot be recovered.'
-        }
+        data: confirmDialogContract,
       });
 
       dialogRef.afterClosed().forEach(async _delete => {
         if (_delete) {
           this._deleteProject(id)
-            .then(() => { if (notify) this.cLog.log(`Project deleted`) })
-            .catch(error => { if (notify) this.cLog.error(`Something went wrong deleting project`, error, id) });
+            .then(() => { if (notify) this.logger.log(`Project deleted`) })
+            .catch(error => { if (notify) this.logger.error(`Something went wrong deleting project`, error, id) });
         }
         this.loading = false;
       });

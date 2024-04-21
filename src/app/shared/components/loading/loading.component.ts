@@ -9,7 +9,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     </div>`,
   styles: `.loading { display: flex; align-items: center; justify-content: center; }`,
   standalone: true,
-  imports: [],
 })
 export class LoadingComponent implements OnInit {
   @Input()

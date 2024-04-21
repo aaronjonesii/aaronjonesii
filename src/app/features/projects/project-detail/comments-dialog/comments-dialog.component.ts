@@ -15,9 +15,16 @@ import { UserPhotoComponent } from "../../../../shared/components/user-photo/use
 import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
 import { CommentWithID, WriteComment } from "../../../../shared/interfaces/comment";
 import { UserWithID } from "../../../../shared/interfaces/user";
-import { ConsoleLoggerService } from "../../../../core/services/console-logger.service";
 import { FirestoreService } from "../../../../shared/services/firestore.service";
-import { nav_path } from "../../../../app-routing.module";
+import { nav_path } from "../../../../app.routes";
+import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
+
+export interface CommentsDialogContract {
+  comments$?: Observable<CommentWithID[] | null>,
+  selectedComment?: string,
+  user$: Observable<UserWithID | null>,
+  parent: DocumentReference,
+}
 
 @Component({
   selector: 'aj-comments-dialog',
@@ -38,47 +45,43 @@ import { nav_path } from "../../../../app-routing.module";
   ],
 })
 export class CommentsDialogComponent {
-  public comments$ = this.data.comments$
-    ?.pipe(tap(comments => this.commentCount = comments?.length ?? 0));
-  public commentInputContainerInFocus = false;
-  public user$ = this.data.user$;
+  comments$ = this.data.comments$?.pipe(
+    tap(comments => this.commentCount = comments?.length ?? 0),
+  );
+  commentInputContainerInFocus = false;
+  user$ = this.data.user$;
   @ViewChild('commentInput') commentInput?: ElementRef;
-  public commentFormControl = new FormControl<string>(
+  commentFormControl = new FormControl<string>(
     '',
     {nonNullable: true, validators: Validators.required}
   );
-  public commentCount = 0;
+  commentCount = 0;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {
-      comments$?: Observable<CommentWithID[]>,
-      selectedComment?: string,
-      user$?: Observable<UserWithID>,
-      parent: DocumentReference,
-    },
-    public dialogRef: MatDialogRef<CommentsDialogComponent>,
     private router: Router,
-    private cLog: ConsoleLoggerService,
     private db: FirestoreService,
+    private logger: ConsoleLoggerService,
+    public dialogRef: MatDialogRef<CommentsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: CommentsDialogContract,
   ) {}
 
-  public focusCommentInputContainer(user: UserWithID | null): void {
+  focusCommentInputContainer(user: UserWithID | null): void {
     try {
       this._assertUser(user);
 
       this.commentInputContainerInFocus = true;
     } catch (error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
+      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
-  public onCancelComment(): void {
+  onCancelComment(): void {
     this.commentInputContainerInFocus = false;
     this.commentInput?.nativeElement?.blur();
     this.commentFormControl.reset('');
   }
 
-  public async addComment(user: UserWithID | null): Promise<void> {
+  async addComment(user: UserWithID | null): Promise<void> {
     try {
       this._assertUser(user);
 
@@ -95,13 +98,13 @@ export class CommentsDialogComponent {
 
       await this.db.add(`${comment.parent?.path}/comments`, comment)
         .then(() => this.onCancelComment())
-        .catch(error => this.cLog.error(`Something went wrong adding comment`, error, comment));
+        .catch(error => this.logger.error(`Something went wrong adding comment`, error, comment));
     } catch(error) {
-      this.cLog.error((<Error>error).message ?? `Something went wrong`, error);
+      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
     }
   }
 
-  public onPhotoClick() {
+  onPhotoClick() {
     this.router.navigate([nav_path.accountDetails])
       .then(() => this.dialogRef.close());
   }

@@ -8,7 +8,7 @@ describe('AboutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AboutComponent ]
+      imports: [AboutComponent],
     })
     .compileComponents();
 
@@ -17,7 +17,7 @@ describe('AboutComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 });

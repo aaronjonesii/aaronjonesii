@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { nav_path } from 'src/app/app-routing.module';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 import { NgOptimizedImage } from "@angular/common";
-import { SeoService } from "../../../../core/services/seo.service";
 import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
 import { appInformation } from "../../../../information";
+import { nav_path } from '../../../../app.routes';
+import { AuthService } from "../../../../shared/services/auth.service";
+import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
+import { SeoService } from "../../../../shared/services/seo.service";
 
 @Component({
   selector: 'aj-forgot-password',
@@ -23,23 +23,23 @@ import { appInformation } from "../../../../information";
     MatInputModule,
     MatButtonModule,
     RouterLink,
-    NgOptimizedImage
+    NgOptimizedImage,
   ],
 })
 export class ForgotPasswordComponent {
-  public readonly title = "Forgot password";
-  public readonly nav_path = nav_path;
-  public forgotPasswordForm = new FormGroup({
+  readonly title = "Forgot password";
+  readonly nav_path = nav_path;
+  forgotPasswordForm = new FormGroup({
     email: new FormControl<string>(
       '', {nonNullable: true, validators: [Validators.required, Validators.email]}
     )
   });
-  public loading = false;
+  loading = false;
 
   constructor(
-    public auth: AuthService,
-    private cLog: ConsoleLoggerService,
+    private auth: AuthService,
     private seoService: SeoService,
+    private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
@@ -58,7 +58,7 @@ export class ForgotPasswordComponent {
 
   async onSubmit(): Promise<void> {
     if (this.email.invalid) {
-      this.cLog.error(`Please enter a valid email address`);
+      this.logger.error(`Please enter a valid email address`);
       return;
     }
 
@@ -66,5 +66,9 @@ export class ForgotPasswordComponent {
 
     await this.auth.sendPasswordResetEmail(this.email.value)
       .finally(() => this.loading = false);
+  }
+
+  async googleLogin() {
+    await this.auth.googleLogin();
   }
 }

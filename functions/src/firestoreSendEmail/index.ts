@@ -305,6 +305,7 @@ async function processWrite(change: any) { // Change<FirebaseFirestore.DocumentS
   switch (payload.delivery.state) {
     case "SUCCESS":
       await events.recordSuccessEvent(change);
+      break;
     case "ERROR":
       await events.recordErrorEvent(change, payload, payload.delivery.error);
       return null;
@@ -333,6 +334,7 @@ async function processWrite(change: any) { // Change<FirebaseFirestore.DocumentS
       return null;
     case "PENDING":
       await events.recordPendingEvent(change, payload);
+      break;
     case "RETRY":
       /** Send retry event */
       await events.recordRetryEvent(change, payload);

@@ -3,15 +3,18 @@
 
 @use './forbidden/forbidden-theme' as forbidden;
 @use './page-not-found/page-not-found-theme' as pageNotFound;
+@use './error/error-theme' as error;
 
 @mixin componentColorMixins($theme) {
   @include forbidden.color($theme);
   @include pageNotFound.color($theme);
+  @include error.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include forbidden.typography($theme);
   @include pageNotFound.typography($theme);
+  @include error.typography($theme);
 }
 
 @mixin color($theme) {

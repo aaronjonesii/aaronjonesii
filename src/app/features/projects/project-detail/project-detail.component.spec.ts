@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectDetailComponent } from './project-detail.component';
+import { ActivatedRoute } from "@angular/router";
+import { FirestoreService } from "../../../shared/services/firestore.service";
+import { of } from "rxjs";
+import { AuthService } from "../../../shared/services/auth.service";
 
 describe('ProjectDetailComponent', () => {
   let component: ProjectDetailComponent;
@@ -8,7 +12,25 @@ describe('ProjectDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectDetailComponent ]
+      imports: [ProjectDetailComponent],
+      providers: [
+        {
+          provide: FirestoreService,
+          useValue: {},
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of()
+          },
+        },
+        {
+          provide: AuthService,
+          useValue: {
+            loadUser: of(null),
+          },
+        },
+      ],
     })
     .compileComponents();
 
@@ -17,7 +39,7 @@ describe('ProjectDetailComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 });

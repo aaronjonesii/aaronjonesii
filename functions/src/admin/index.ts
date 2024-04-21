@@ -28,6 +28,14 @@ function assertAdmin(admin: true): asserts admin {
   }
 }
 
+/** convert list of fields to object with strings from list as keys for object */
+function createObjectWithKeys(strings: string[]): Record<string, number> {
+  return strings.reduce<Record<string, number>>((a, c) => {
+    a[c] = 0;
+    return a;
+  }, {});
+}
+
 /* Update user custom claims */
 exports.updateClaims = functions.https.onCall(
   async (data, context) => {
@@ -46,7 +54,7 @@ exports.updateClaims = functions.https.onCall(
         'The function must be called while authenticated.'
       );
     }
-    if (!context.auth?.token.admin) {
+    if (!context.auth?.token['admin']) {
       logs.notAdmin(requestor);
       throw new functions.https.HttpsError(
         'permission-denied',
@@ -83,9 +91,9 @@ exports.updateClaims = functions.https.onCall(
           logs.errorUpdatingUserClaims(requestee, error);
           throw new functions.https.HttpsError('unknown', error.message);
         });
-    } catch (error: any) {
-      logs.errorUpdatingUserClaims(requestee, error);
-      throw new functions.https.HttpsError('internal', error.message);
+    } catch (error: unknown) {
+      logs.errorUpdatingUserClaims(requestee, <Error>error);
+      throw new functions.https.HttpsError('internal', (<Error>error).message);
     }
 
   });
@@ -101,7 +109,7 @@ exports.updateUser = functions.runWith({enforceAppCheck: true})
     }
 
     /* check if admin */
-    if (!context.auth?.token.admin) {
+    if (!context.auth?.token['admin']) {
       throw new functions.https.HttpsError(
         'permission-denied',
         'The function must be called as an admin.'
@@ -136,11 +144,11 @@ exports.updateUser = functions.runWith({enforceAppCheck: true})
       const creationTime = new Date(userRecord.metadata.creationTime);
       const joinedTimestamp = Timestamp.fromDate(creationTime);
       return userRef.update({
-        displayName: userDocument?.displayName ?? userRecord.displayName ?? null,
-        phoneNumber: userDocument?.phoneNumber ?? userRecord.phoneNumber ?? null,
-        photoURL: userDocument?.photoURL ?? userRecord.photoURL ?? null,
+        displayName: userDocument?.['displayName'] ?? userRecord.displayName ?? null,
+        phoneNumber: userDocument?.['phoneNumber'] ?? userRecord.phoneNumber ?? null,
+        photoURL: userDocument?.['photoURL'] ?? userRecord.photoURL ?? null,
         email: userRecord.email ?? null,
-        admin: userRecord.customClaims?.admin,
+        admin: userRecord.customClaims?.['admin'],
         joined: joinedTimestamp,
       }).then(() => ({ success: true, message: `Successfully updated user` }))
         .catch(error => { throw new functions.https.HttpsError(`unknown`, ``, error); });
@@ -154,7 +162,7 @@ exports.createDistributedCounters = functions.runWith({enforceAppCheck: true})
   .https.onCall(async (data: { collection: string, shards: number, fields: string[] }, context) => {
     assertAppCheck(context?.app);
 
-    assertAdmin(context.auth?.token?.admin);
+    assertAdmin(context.auth?.token?.['admin']);
 
     /* Initialize Admin SDK */
     const admin = await import('firebase-admin');
@@ -167,13 +175,6 @@ exports.createDistributedCounters = functions.runWith({enforceAppCheck: true})
       const colRef = admin.firestore().collection(data.collection);
       const numberOfShards = data.shards;
       const fieldsCounts = data.fields;
-      /** convert list of fields to object with strings from list as keys for object */
-      function createObjectWithKeys(strings: string[]): Record<string, number> {
-        return strings.reduce<Record<string, number>>((a, c) => {
-          a[c] = 0;
-          return a;
-        }, {});
-      }
       const shardDoc = createObjectWithKeys(fieldsCounts);
       const collectionDocs = await colRef.get();
 

@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { nav_path } from 'src/app/app-routing.module';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { ConsoleLoggerService } from 'src/app/core/services/console-logger.service';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { NgOptimizedImage } from "@angular/common";
-import { appInformation } from 'src/app/information';
-import { SeoService } from "../../../../core/services/seo.service";
 import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
+import { nav_path } from '../../../../app.routes';
+import { appInformation } from '../../../../information';
+import { AuthService } from "../../../../shared/services/auth.service";
+import { SeoService } from "../../../../shared/services/seo.service";
 
 @Component({
   selector: 'aj-sign-up',
@@ -46,7 +45,6 @@ export class SignUpComponent {
 
   constructor(
     public auth: AuthService,
-    private cLog: ConsoleLoggerService,
     private seoService: SeoService,
     private topAppBarService: TopAppBarService,
   ) {
