@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, switchMap, throwError } from "rxjs";
 import { QueryConstraint, where } from "@angular/fire/firestore";
-import { AsyncPipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
+import { AsyncPipe, NgOptimizedImage } from "@angular/common";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatCardModule } from "@angular/material/card";
 import { RouterLink } from "@angular/router";
@@ -41,11 +41,9 @@ export class ProjectsComponent {
 
   constructor(
     private db: FirestoreService,
-    private logger: ConsoleLoggerService,
-    @Inject(DOCUMENT) private document: Document,
-    private topAppBarService: TopAppBarService,
     private seoService: SeoService,
-
+    private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
       title: this.title,
@@ -107,23 +105,27 @@ export class ProjectsComponent {
     const title = project.name;
     const text = project.description;
 
-    // Feature detection to see if the Web Share API is supported.
-    if ('share' in navigator) {
-      return await navigator.share({
-        url,
-        text,
-        title,
-      }).catch(error => this.logger.error(`Something went wrong sharing project`, error));
-    }
+    try {
+      // Feature detection to see if the Web Share API is supported.
+      if ('share' in navigator) {
+        return await navigator.share({
+          url,
+          text,
+          title,
+        });
+      }
 
-    // Fallback to use Twitter's Web Intent URL.
-    // (https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent)
-    const shareURL = new URL('https://twitter.com/intent/tweet');
-    const params = new URLSearchParams();
-    params.append('text', text);
-    params.append('title', title);
-    params.append('url', url);
-    shareURL.search = params.toString();
-    window.open(shareURL, '_blank', 'popup,noreferrer,noopener');
+      // Fallback to use Twitter's Web Intent URL.
+      // (https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent)
+      const shareURL = new URL('https://twitter.com/intent/tweet');
+      const params = new URLSearchParams();
+      params.append('text', text);
+      params.append('title', title);
+      params.append('url', url);
+      shareURL.search = params.toString();
+      window.open(shareURL, '_blank', 'popup,noreferrer,noopener');
+    } catch (error: unknown) {
+      this.logger.error('Error sharing project', error);
+    }
   }
 }
