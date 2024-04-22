@@ -57,10 +57,8 @@ export class ContactComponent {
   private get message() { return this.contactForm.controls.message; }
 
   scrollToForm() {
-    afterNextRender(() => {
-      this.document.getElementById(`contact-container`)
-        ?.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
-    });
+    this.document.getElementById(`contact-container`)
+      ?.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
   }
 
   async onSubmit(): Promise<void> {
