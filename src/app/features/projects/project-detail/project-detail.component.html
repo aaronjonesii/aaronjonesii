@@ -10,99 +10,97 @@
   </div>
 } @else {
   @if (project) {
-    @if ({user: user$ | async}; as auth) {
-      <div class="article-container">
-        <article class="flex-col app-gap">
-          @if (project.image) {
-            <picture>
-              <img fill priority class="project-image"
-                   [ngSrc]="project.image" [alt]="project.name" />
-            </picture>
-          }
-          <div class="flex-col app-gap content">
-            <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
-            <small>{{project.views ?? 0}} {{project.views === 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
-            <div class="author-follow-container">
-              <div class="flex-row align-items-center app-gap">
-                <aj-user-photo [image]="project.author.image" />
-                <div class="flex-col justify-content-center">
-                  <h3 class="mat-headline-6 m-0">{{project.author.name}}</h3>
-                  <!-- todo: fix followers -->
-                  <small>15.1K followers</small>
-                </div>
+    <div class="article-container">
+      <article class="flex-col app-gap">
+        @if (project.image) {
+          <picture>
+            <img fill priority class="project-image"
+                 [ngSrc]="project.image" [alt]="project.name" />
+          </picture>
+        }
+        <div class="flex-col app-gap content">
+          <h1 class="mat-headline-4 m-0">{{project.name}}{{project.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
+          <small>{{project.views ?? 0}} {{project.views === 1 ? 'view' : 'views'}} - {{project.created.seconds * 1000 | date}}</small>
+          <div class="author-follow-container">
+            <div class="flex-row align-items-center app-gap">
+              <aj-user-photo [image]="project.author.image" />
+              <div class="flex-col justify-content-center">
+                <h3 class="mat-headline-6 m-0">{{project.author.name}}</h3>
+                <!-- todo: fix followers -->
+                <small>15.1K followers</small>
               </div>
-              <button mat-flat-button type="button" color="primary" class="follow-btn"
-                      (click)="updateFollowingStatus(auth.user)">
-                {{auth.user?.following ? 'Unfollow' : 'Follow'}}
-              </button>
             </div>
-            <p class="mat-body-2">{{project.description}}</p>
-            <mat-divider />
-            <p class="ck-content" [innerHTML]="project.content"></p>
+            <button mat-flat-button type="button" color="primary" class="follow-btn"
+                    (click)="updateFollowingStatus(user)">
+              {{user?.following === true ? 'Unfollow' : 'Follow'}}
+            </button>
           </div>
-        </article>
-      </div>
+          <p class="mat-body-2">{{project.description}}</p>
+          <mat-divider />
+          <p class="ck-content" [innerHTML]="project.content"></p>
+        </div>
+      </article>
+    </div>
 
-      <div class="support-panel-container">
-        <div id="comments"></div>
-        <div id="related-projects"></div>
-        <mat-tab-group color="primary" [fitInkBarToContent]="true">
-          <!-- Comments -->
-          <mat-tab label="Comments">
-            <ng-template matTabContent>
-              @if (project.allowComments) {
-                <button mat-button type="button" (click)="openComments(project)">
-                  <mat-icon class="material-icons-outlined" fontIcon="add" /> Comment
-                </button>
-                <div class="comments-container">
-                  @if (comments$ | async; as comments) {
-                    @for (comment of comments; track comment.id) {
-                      <aj-project-detail-comment [comment]="comment"
-                                                 (openComments)="openComments(project)" />
-                    } @empty {
-                      <h3 class="mat-headline-6 m-0">No comments.</h3>
-                    }
-                  }
-                </div>
-              } @else {
-                <h3 class="mat-headline-6 m-0">Comments are turned off.</h3>
-              }
-            </ng-template>
-          </mat-tab>
-
-          <!-- Related Projects -->
-          <mat-tab label="Related">
-            <ng-template matTabContent>
-              <div class="related-projects-container">
-                @if (relatedProjects$ | async; as relatedProjects) {
-                  @for (relatedProject of relatedProjects; track relatedProject.id) {
-                    <div class="related-project" [routerLink]="[nav_path.projects, relatedProject.slug]">
-                      @if (relatedProject.image) {
-                        <picture>
-                          <img fill priority
-                               [ngSrc]="relatedProject.image"
-                               [alt]="relatedProject.name" />
-                        </picture>
-                      }
-                      <span class="name">{{relatedProject.name}}</span>
-                    </div>
+    <div class="support-panel-container">
+      <div id="comments"></div>
+      <div id="related-projects"></div>
+      <mat-tab-group color="primary" [fitInkBarToContent]="true">
+        <!-- Comments -->
+        <mat-tab label="Comments">
+          <ng-template matTabContent>
+            @if (project.allowComments) {
+              <button mat-button type="button" (click)="openComments(project)">
+                <mat-icon class="material-icons-outlined" fontIcon="add" /> Comment
+              </button>
+              <div class="comments-container">
+                @if (comments$ | async; as comments) {
+                  @for (comment of comments; track comment.id) {
+                    <aj-project-detail-comment [comment]="comment"
+                                               (openComments)="openComments(project)" />
                   } @empty {
-                    <h3 class="mat-headline-6 m-0">No related projects.</h3>
+                    <h3 class="mat-headline-6 m-0">No comments.</h3>
                   }
                 }
               </div>
-            </ng-template>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
+            } @else {
+              <h3 class="mat-headline-6 m-0">Comments are turned off.</h3>
+            }
+          </ng-template>
+        </mat-tab>
 
-      <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
-      @if (isOwner(project, auth.user)) {
-        <button mat-fab type="button" color="accent" class="edit-btn"
-                [routerLink]="[nav_path.adminProjects, project.slug, 'edit']">
-          <mat-icon class="material-icons-outlined" fontIcon="edit" />
-        </button>
-      }
+        <!-- Related Projects -->
+        <mat-tab label="Related">
+          <ng-template matTabContent>
+            <div class="related-projects-container">
+              @if (relatedProjects$ | async; as relatedProjects) {
+                @for (relatedProject of relatedProjects; track relatedProject.id) {
+                  <div class="related-project" [routerLink]="[nav_path.projects, relatedProject.slug]">
+                    @if (relatedProject.image) {
+                      <picture>
+                        <img fill priority
+                             [ngSrc]="relatedProject.image"
+                             [alt]="relatedProject.name" />
+                      </picture>
+                    }
+                    <span class="name">{{relatedProject.name}}</span>
+                  </div>
+                } @empty {
+                  <h3 class="mat-headline-6 m-0">No related projects.</h3>
+                }
+              }
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    @if (isOwner(project, user)) {
+      <button mat-fab type="button" color="accent" class="edit-btn"
+              [routerLink]="[nav_path.adminProjects, project.slug, 'edit']">
+        <mat-icon class="material-icons-outlined" fontIcon="edit" />
+      </button>
     }
   } @else {
     <aj-loading />

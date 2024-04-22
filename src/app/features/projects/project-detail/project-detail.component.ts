@@ -66,6 +66,7 @@ export class ProjectDetailComponent implements OnDestroy {
   relatedProjects$?: Observable<ReadProject[] | null>;
   private subscriptions = new Subscription();
   project?: ReadProject;
+  user: UserWithID | null = null;
 
   constructor(
     private router: Router,
@@ -109,6 +110,12 @@ export class ProjectDetailComponent implements OnDestroy {
         this.relatedProjects$ = this.getRelatedProjects$(project);
       }),
     );
+
+    this.subscriptions.add(
+      this.auth.loadUser.subscribe(async (user) => {
+        this.user = user ? await this.getUser(user) : null;
+      }),
+    );
   }
 
   private watchForFragment () {
@@ -130,8 +137,14 @@ export class ProjectDetailComponent implements OnDestroy {
     }, {phase: AfterRenderPhase.Read});
   }
 
+  async getUser(user: User) {
+    const userSnap = await this.db.docSnap<readUser>(`users/${user.uid}`);
+    if (!userSnap.exists()) return Object.assign({id: user.uid}, user) as UserWithID;
+    else return Object.assign({id: user.uid}, userSnap.data()) as UserWithID;
+  }
+
   getUser$(user: User) {
-    return (this.db.doc$(`users/${user.uid}`) as Observable<readUser>)
+    return this.db.doc$<readUser>(`users/${user.uid}`)
       .pipe(map(userDoc => (Object.assign({id: user.uid}, userDoc) as UserWithID)));
   }
 
@@ -235,8 +248,10 @@ export class ProjectDetailComponent implements OnDestroy {
   }
 
   private async _updateFollowStatus(user: UserWithID): Promise<void> {
-    return await this.db.update(`users/${user.id}`, { following: user?.following ?!user.following : false })
-      .then(() => this.logger.log(user?.following ? 'Unfollowed' : 'Followed'));
+    const userFollowing = user?.following ? user.following : false;
+    return this.db.update(`users/${user.id}`, { following: !userFollowing })
+      .then(() => (<UserWithID>this.user).following = !userFollowing)
+      .then(() => this.logger.log(userFollowing ? 'Unfollowed' : 'Followed'));
   }
 
   openComments(project: ReadProject): void {
