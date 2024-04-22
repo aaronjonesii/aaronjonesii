@@ -28,6 +28,7 @@ import { AuthService } from "../../../shared/services/auth.service";
 import { ConsoleLoggerService } from "../../../shared/services/console-logger.service";
 import { SeoService } from "../../../shared/services/seo.service";
 import { FirebaseError } from "@angular/fire/app/firebase";
+import { RoutingService } from "../../../shared/services/routing.service";
 
 @Component({
   selector: 'aj-project-detail',
@@ -54,12 +55,6 @@ export class ProjectDetailComponent implements OnDestroy {
   readonly nav_path = nav_path;
   projectID$: Observable<string | null>;
   project$: Observable<ReadProject | null>;
-  user$ = this.auth.loadUser.pipe(
-    switchMap((user) => {
-      if (user) return this.getUser$(user);
-      else return of(user);
-    }),
-  );
   notAvailable = false;
   comments$?: Observable<CommentWithID[] | null>;
   readonly ProjectStatus = ProjectStatus;
@@ -75,6 +70,7 @@ export class ProjectDetailComponent implements OnDestroy {
     private db: FirestoreService,
     private route: ActivatedRoute,
     private seoService: SeoService,
+    private routing: RoutingService,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
     @Inject(DOCUMENT) private document: Document,
@@ -116,6 +112,8 @@ export class ProjectDetailComponent implements OnDestroy {
         this.user = user ? await this.getUser(user) : null;
       }),
     );
+
+    this.routing.watchAndRouteToFragment();
   }
 
   private watchForFragment () {
@@ -258,7 +256,7 @@ export class ProjectDetailComponent implements OnDestroy {
     const commentsDialogContract: CommentsDialogContract = {
       comments$: this.comments$,
       selectedComment: undefined,
-      user$: this.user$,
+      user$: of(this.user),
       parent: this.db.doc(`projects/${project.slug}`),
     };
     this.dialog.open(CommentsDialogComponent, {
