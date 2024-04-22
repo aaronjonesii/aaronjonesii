@@ -50,7 +50,12 @@
         </div>
       </mat-card>
     } @empty {
-      <h3 class="mat-headline-5 text-center">No projects yet, check back soon.</h3>
+      <h3 class="mat-headline-5 text-center">
+        No
+        @if ((filter$ | async) !== 'all') {
+          {{filter$ | async}}
+        }
+        projects yet, check back soon.</h3>
     }
   }
 </div>

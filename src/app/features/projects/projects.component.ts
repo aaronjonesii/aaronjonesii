@@ -35,7 +35,7 @@ import { SeoService } from "../../shared/services/seo.service";
 export class ProjectsComponent {
   private readonly title = 'Projects';
   readonly nav_path = nav_path;
-  filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('all');
+  filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('active');
   filter$ = this.filterSubject.asObservable();
   projects$?: Observable<ReadProject[]>;
 
