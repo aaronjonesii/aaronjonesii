@@ -17,9 +17,9 @@ You can click the Preview link to take a look at your changes.
 **Description**: Personal domain to display my ideas and projects.
 
 Project Features:
-- Angular 15
-- Angular Material 15
-- Angular Fire 7.5.0
+- Angular 17
+- Angular Material 17
+- Angular Fire 17
 
 ## Firebase Project
 Run `firebase init` to initialize firebase project.  
