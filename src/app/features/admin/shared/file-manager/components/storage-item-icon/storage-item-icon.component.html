@@ -1,0 +1,6 @@
+@if (type === 'folder') {
+  <mat-icon class="material-icons-round" fontIcon="folder" />
+} @else {
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  <mat-icon class="material-icons-round" [fontIcon]="getFileIcon(contentType)" />
+}

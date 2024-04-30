@@ -1,0 +1,20 @@
+@import "../../../../../assets/scss/partials/extras";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: $app-padding;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-comment-container mat-icon {
+  $size: 40px;
+  font-size: $size;
+  width: $size;
+  height: $size;
+}

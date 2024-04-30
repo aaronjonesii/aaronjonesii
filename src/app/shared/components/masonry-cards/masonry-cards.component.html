@@ -1,15 +1,19 @@
 <div class="cards">
-  <ng-container *ngIf="items.length; else empty">
-    <mat-card class="card" *ngFor="let item of items" [routerLink]="item.routerLink">
-      <mat-card-title>{{item.name}}</mat-card-title>
-      <mat-card-subtitle *ngIf="item.description">{{item.description}}</mat-card-subtitle>
-    </mat-card>
-  </ng-container>
-
-  <ng-template #empty>
+  @if (items.length) {
+    @for (item of items; track item.name) {
+      <mat-card class="card" [routerLink]="item.routerLink">
+        <mat-card-title>{{item.name}}</mat-card-title>
+        @if (item.description) {
+          <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
+        }
+      </mat-card>
+    }
+  } @else {
     <div class="card">
       <h2 class="word-wrap">No {{itemsName}} yet.</h2>
-      <p class="word-wrap" *ngIf="emptyText">{{emptyText}}</p>
+      @if (emptyText) {
+        <p class="word-wrap">{{emptyText}}</p>
+      }
     </div>
-  </ng-template>
+  }
 </div>

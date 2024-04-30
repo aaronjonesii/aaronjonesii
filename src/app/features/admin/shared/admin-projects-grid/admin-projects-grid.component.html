@@ -1,0 +1,100 @@
+<section class="header">
+  <div class="select-container">
+    <mat-checkbox [indeterminate]="someSelected"
+                  [checked]="allSelected"
+                  (change)="selectAll($event.checked)" />
+
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    @if (!selectionModel.isEmpty()) {
+      <span>{{selectionModel.selected.length}}</span>
+    }
+
+    <button mat-icon-button type="button" [matMenuTriggerFor]="selectMenu">
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #selectMenu="matMenu">
+      @if (!allSelected) {
+        <button mat-menu-item type="button" (click)="selectAll(true)">
+          Select all projects on this page
+        </button>
+      }
+      <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+      @if (!selectionModel.isEmpty()) {
+        <button mat-menu-item type="button" (click)="selectAll(false)">
+          Deselect all
+        </button>
+      }
+    </mat-menu>
+  </div>
+
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @if (!selectionModel.isEmpty()) {
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    <button mat-stroked-button type="button" [disabled]="selectionModel.isEmpty() || loading"
+            (click)="deleteSelectedProjects()">Delete</button>
+  }
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @if (!selectionModel.isEmpty() && allDraftsSelected()) {
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    <button mat-stroked-button type="button" [disabled]="selectionModel.isEmpty() || !allDraftsSelected() || loading"
+            (click)="publishSelectedProjects()">Publish</button>
+  }
+</section>
+<section class="products">
+  @for (project of projects; track project.id) {
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    <figure class="project" [ngClass]="{'selected': selectionModel.isSelected(project)}">
+      <div class="details" [routerLink]="[nav_path.adminProjects, project.id, 'edit']">
+        <picture>
+          <img fill priority
+               [alt]="project.name"
+               [ngSrc]="project?.image ?? 'https://via.placeholder.com/1200'" />
+        </picture>
+        <h3 class="text-ellipsis">{{project.name}}</h3>
+        <p class="text-ellipsis">{{project.description}}</p>
+        @if (project.status !== 'published') {
+          <p class="unpublished">
+            <mat-icon fontIcon="public_off" />
+            &nbsp;<em>Unpublished</em>
+          </p>
+        }
+      </div>
+      <div class="actions">
+        <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+        <mat-checkbox [disabled]="loading" [checked]="selectionModel.isSelected(project)"
+                      (change)="selectionModel.toggle(project)" />
+        <button mat-icon-button type="button"
+                [disabled]="loading"
+                [matTooltip]="(project.featured ? 'Unfeature' : 'Feature')+' this project'"
+                [matTooltipShowDelay]="500"
+                (click)="updateFeaturedProject(project.id, !project.featured)">
+          <mat-icon [color]="project.featured ? 'accent' : undefined"
+                    [fontIcon]="project.featured ? 'star' : 'star_outline'" />
+        </button>
+        <button mat-icon-button type="button" [disabled]="loading" [matMenuTriggerFor]="projectSettings">
+          <mat-icon fontIcon="settings" />
+        </button>
+        <mat-menu #projectSettings="matMenu">
+          <button mat-menu-item type="button" [routerLink]="[nav_path.adminProjects, project.id, 'edit']">
+            <mat-icon fontIcon="edit" />
+            <span>Edit</span>
+          </button>
+          @if (project.status !== 'published') {
+            <button mat-menu-item type="button" (click)="publishProject(project.id)">
+              <mat-icon fontIcon="public" />
+              <span>Publish</span>
+            </button>
+          }
+          <button mat-menu-item type="button" [routerLink]="[nav_path.projects, project.slug]">
+            <mat-icon fontIcon="store" />
+            <span>View project</span>
+          </button>
+          <button mat-menu-item type="button" (click)="deleteProject(project.id)">
+            <mat-icon fontIcon="delete" />
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </figure>
+  }
+</section>

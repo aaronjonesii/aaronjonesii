@@ -1,7 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'slugify'})
+@Pipe({
+  name: 'slugify',
+  standalone: true,
+})
 export class SlugifyPipe implements PipeTransform {
+
   transform(input: string): string {
     return input.toString().toLowerCase()
       .replace(/\s+/g, '-')           // Replace spaces with -

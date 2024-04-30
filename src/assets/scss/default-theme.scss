@@ -1,9 +1,7 @@
 @use '@angular/material' as mat;
 
-@use 'src/app/core/core-theme' as core;
-@use 'src/app/public/public-theme' as public;
-@use 'src/app/private/private-theme' as private;
-@use 'src/app/shared/shared-theme' as shared;
+@use '../../app/shared/shared-theme' as shared;
+@use '../../app/features/features-theme' as features;
 
 /* IMPORT BELOW ONLY ONCE */
 @include mat.core();
@@ -12,7 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 $aj-typography: mat.define-typography-config($font-family: 'Roboto Mono');
 
-@import 'src/assets/scss/partials/colors';
+@import '../../assets/scss/partials/colors';
 /* Light Theme */
 $light-primary: mat.define-palette(mat.$brown-palette);
 $light-accent: mat.define-palette(mat.$blue-grey-palette);
@@ -20,11 +18,11 @@ $light-accent: mat.define-palette(mat.$blue-grey-palette);
 $light-theme: mat.define-light-theme((
   color: (
     primary: $light-primary,
-    accent: $light-accent
+    accent: $light-accent,
   ),
   // Only include `typography` and `density` in the default theme.
   typography: $aj-typography,
-  density: 0
+  density: 0,
 ));
 
 /* Dark Theme */
@@ -62,10 +60,8 @@ $dark-theme: mat.define-dark-theme((
 
 
 /* Light theme feature components below */
-@include core.theme($light-theme);
-@include public.theme($light-theme);
-@include private.theme($light-theme);
 @include shared.theme($light-theme);
+@include features.theme($light-theme);
 
 /* Dark theme core & components below */
 .dark-theme {
@@ -91,10 +87,8 @@ $dark-theme: mat.define-dark-theme((
   @include mat.tabs-color($dark-theme);
 
   /* Dark theme feature components below */
-  @include core.color($dark-theme);
-  @include public.color($dark-theme);
-  @include private.color($dark-theme);
   @include shared.color($dark-theme);
+  @include features.color($dark-theme);
 }
 
 /* Use typography CSS classes */

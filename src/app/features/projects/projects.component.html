@@ -1,0 +1,61 @@
+<mat-chip-listbox aria-label="Filter selection"
+                  (change)="filterSubject.next($event.value)">
+  <mat-chip-option value="all" [selected]="(filter$ | async) === 'all'">All</mat-chip-option>
+  <mat-chip-option value="active" [selected]="(filter$ | async) === 'active'">Active</mat-chip-option>
+  <mat-chip-option value="inactive" [selected]="(filter$ | async) === 'inactive'">Inactive</mat-chip-option>
+</mat-chip-listbox>
+
+<div class="flex-col app-gap projects-container">
+  @if (projects$ | async; as projects) {
+    @for (project of projects; track project.id) {
+      <mat-card class="card">
+        @if (project.image) {
+          <picture>
+            <img mat-card-image fill priority
+                 [routerLink]="[nav_path.projects, project.slug]"
+                 [ngSrc]="project.image"
+                 [alt]="project.name" />
+          </picture>
+        }
+
+        <div class="info-container mat-body-1">
+          <a class="mat-headline-5 m-0 project-name"
+             [routerLink]="[nav_path.projects, project.slug]">{{project.name}}</a>
+          <p class="mat-body-1 m-0">{{project.description}}</p>
+          @if (project.tags?.length) {
+            <mat-chip-set role="list">
+              @for (tag of project.tags; track tag) {
+                <mat-chip role="listitem">{{tag}}</mat-chip>
+              }
+            </mat-chip-set>
+          }
+
+          <mat-divider />
+
+          <mat-card-actions class="actions-container">
+            @if (project.allowComments) {
+              <button mat-button type="button" color="primary" fragment="comments"
+                      [routerLink]="[nav_path.projects, project.slug]">
+                <mat-icon class="material-icons-outlined" fontIcon="comment_bank" /> Comments
+              </button>
+            } @else {
+              <button mat-button type="button" color="primary"
+                      [routerLink]="[nav_path.projects, project.slug]">View</button>
+            }
+
+            <button mat-flat-button type="button" color="primary" (click)="onShare(project)">
+              <mat-icon class="material-icons-outlined" fontIcon="share" /> Share
+            </button>
+          </mat-card-actions>
+        </div>
+      </mat-card>
+    } @empty {
+      <h3 class="mat-headline-5 text-center">
+        No
+        @if ((filter$ | async) !== 'all') {
+          {{filter$ | async}}
+        }
+        projects yet, check back soon.</h3>
+    }
+  }
+</div>

@@ -14,7 +14,7 @@ export interface User {
   reported?: DocumentReference[],
 }
 export interface readUser extends User {
-  joined?: TimeStamp
+  joined?: TimeStamp,
 }
 export interface UserWithID extends readUser {
   id: string,

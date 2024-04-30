@@ -1,0 +1,136 @@
+@import "../../../../assets/scss/partials/mixins";
+@import "../../../../assets/scss/partials/extras";
+@import "../../../../assets/scss/partials/media_queries";
+
+aj-project-detail {
+  width: 100%;
+  max-width: $desktop;
+  @media (min-width: calc(#{$desktop} + #{$app-navigation-drawer-width})) {
+    align-self: center;
+  }
+
+  button.edit-btn {
+    position: absolute;
+    bottom: 72px;
+    right: 32px;
+    z-index: 1000;
+  }
+
+  .not-available-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .not-available-container picture {
+    width: 50%;
+  }
+  .not-available-container picture img {
+    position: relative !important;
+  }
+  .article-container article picture {}
+  .article-container article img.project-image {
+    position: relative !important;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  .author-follow-container {
+    display: flex;
+    flex-direction: column;
+    gap: $app-gap;
+  }
+
+  .follow-btn {
+    min-height: 36px;
+    padding: 1rem 2rem;
+  }
+
+  mat-tab-group { gap: $app-gap; }
+  mat-tab-group mat-tab-header.mat-mdc-tab-header {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+  }
+  mat-tab-group mat-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mdc-tab.mat-mdc-tab .mdc-tab__content .mdc-tab-indicator .mdc-tab-indicator__content {
+    border-top-width: 4px;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .comments-container, .related-projects-container {
+    display: flex;
+    overflow-x: auto;
+    gap: $app-gap;
+    padding-bottom: 0.5rem;
+  }
+
+  .comments-container aj-project-detail-comment {
+    min-width: 300px;
+    width: 300px;
+  }
+  .related-projects-container .related-project {
+    min-width: 300px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: $app-border-radius;
+    cursor: pointer;
+  }
+  .related-projects-container .related-project picture {
+    width: 100%;
+  }
+  .related-projects-container .related-project picture img {
+    position: relative !important;
+    object-fit: cover;
+  }
+  .related-projects-container .related-project .name {
+    padding: $app-padding;
+  }
+  .related-projects-container .related-project:hover {
+    $border-radius: calc(#{$app-border-radius} - 0.25rem);
+    img { border-radius: $border-radius!important; }
+    border-radius: $border-radius;
+  }
+
+  @media (min-width: $tabletPortrait) {
+    display: flex;
+    flex-direction: column;
+    gap: $app-gap;
+    //height: calc(100vh - #{$app-header-height} - #{$app-padding * 2});
+
+
+    .article-container { overflow: auto; }
+    .article-container article,
+    .article-container .content {
+      padding: 0 $app-margin;
+    }
+    .author-follow-container {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  @media (min-width: $tabletLandscape) {
+    flex-direction: row;
+
+    .article-container { flex-grow: 1; }
+    .support-panel-container {
+      width: 250px;
+      min-width: 250px;
+    }
+
+    .comments-container, .related-projects-container {
+      overflow-y: auto;
+      flex-direction: column;
+    }
+    .comments-container aj-project-detail-comment,
+    .related-projects-container .related-project {
+      min-width: auto;
+      width: auto;
+    }
+  }
+  @media (min-width: $desktop) {
+    .support-panel-container {
+      width: 360px;
+      min-width: 360px;
+    }
+  }
+}

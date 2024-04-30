@@ -1,0 +1,20 @@
+<aj-top-app-bar title="Admin" />
+
+<main class="page-padding">
+  <h1 class="mat-headline-3">{{title}}</h1>
+
+  @if (projects) {
+    @if (projects.length) {
+      <aj-admin-projects-grid [projects]="projects" />
+    } @else {
+      <h2>No projects yet</h2>
+    }
+  } @else {
+    <aj-loading-or-error [error]="error" />
+  }
+</main>
+
+<button mat-fab type="button" color="accent" class="add-btn"
+        [routerLink]="[nav_path.adminAddProject]">
+  <mat-icon fontIcon="add" />
+</button>

@@ -1,0 +1,81 @@
+<aj-top-app-bar [title]="title" [showBackBtn]="true" [loading]="loading">
+  @if (user$ | async; as user) {
+    <button mat-flat-button color="primary" type="button"
+            [disabled]="addForm.invalid || loading" (click)="save(user)">
+      <mat-icon class="material-icons-outlined" fontIcon="save" /> Save
+    </button>
+  }
+</aj-top-app-bar>
+
+<main class="page-padding">
+  <form [formGroup]="addForm">
+    <aj-project-image [imageFormControl]="image" />
+
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" id="name" name="name"
+             autocomplete="name" formControlName="name"
+             aria-label="Project Name" (change)="setSlug($event)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Slug</mat-label>
+      <input matInput type="text" id="slug" name="slug"
+             autocomplete="on" formControlName="slug"
+             aria-label="Project Slug" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input matInput type="text" id="description"
+             name="description" autocomplete="on"
+             formControlName="description"
+             aria-label="Project Description" />
+    </mat-form-field>
+
+    <aj-project-tags [selectedTagsFormArray]="tags" [allTags$]="allTags$" />
+
+    <mat-form-field appearance="outline">
+      <mat-label>Live Preview Link</mat-label>
+      <input matInput type="text" id="livePreviewLink" name="livePreviewLink" autocomplete="on" formControlName="livePreviewLink" aria-label="Project Live Preview Link" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Source Code Link</mat-label>
+      <input matInput type="text" id="sourceCodeLink" name="sourceCodeLink" autocomplete="on" formControlName="sourceCodeLink" aria-label="Project Source Code link" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        @for (status of projectStatuses | keyvalue; track status.key) {
+          <mat-option [value]="status.value">{{status.key | titlecase}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Visibility</mat-label>
+      <mat-select formControlName="visibility">
+        @for (visibility of projectVisibilities | keyvalue; track visibility.key) {
+          <mat-option [value]="visibility.value">{{visibility.key | titlecase}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="featured">Featured</mat-checkbox>
+
+    <mat-checkbox formControlName="allowComments">Allow Comments</mat-checkbox>
+
+    <h3 class="mat-headline-5">Content</h3>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Content</mat-label>
+      <input matInput type="text" id="content" name="content" autocomplete="on" formControlName="content" aria-label="Project Content" />
+    </mat-form-field>
+    <aj-admin-editor [config]="editorConfig"
+                     [content]="this.content.value ?? ''"
+                     [disabled]="loading" (editorChange)="onProjectContentChange($event)" />
+  </form>
+</main>
+

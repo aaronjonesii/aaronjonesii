@@ -1,0 +1,63 @@
+<h1 class="mat-headline-3">Account Details</h1>
+
+<form [formGroup]="editAccountForm">
+  <!-- Image -->
+  <section class="profile-picture-container">
+    @if (this.user) {
+      <aj-photo-upload [user]="this.user" />
+    }
+  </section>
+
+  <!-- Name -->
+  <div class="name">
+    <mat-form-field>
+      <mat-label>Display Name</mat-label>
+      <input id="displayName" formControlName="displayName" matInput type="text"
+             name="displayName" autocomplete="name" placeholder="Display Name" />
+      @if (displayName.disabled) {
+        <button matSuffix mat-icon-button type="button" aria-label="Edit display name"
+                [disabled]="loading" (click)="displayName.enable()">
+          <mat-icon class="material-icons-outlined" fontIcon="edit" />
+        </button>
+      }
+      @if (displayName.errors?.['required']) {
+        <mat-error>Display name is <strong>required</strong>.</mat-error>
+      }
+    </mat-form-field>
+
+    @if (displayName.enabled) {
+      <div class="flex-row justify-content-center app-gap">
+        <button mat-button color="primary" type="button"
+                [disabled]="loading"
+                (click)="displayName.setValue(this.profile.displayName ?? '');displayName.disable()">
+          <mat-icon class="material-icons-outlined" fontIcon="cancel" /> Cancel
+        </button>
+        <button mat-flat-button color="primary" type="button"
+                [disabled]="loading || displayName.invalid"
+                (click)="saveDisplayName()">
+          <mat-icon fontIcon="save" /> {{loading ? 'Updating' : 'Save'}}
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Email -->
+  <div class="email">
+    <mat-form-field>
+      <mat-label>Email Address</mat-label>
+      <input matInput formControlName="email" type="email" id="email" name="email" autocomplete="email"
+             placeholder="Email Address" />
+      @if (email.disabled) {
+        <button matSuffix mat-icon-button type="button" aria-label="Edit email" (click)="editEmail()">
+          <mat-icon class="material-icons-outlined" fontIcon="edit" />
+        </button>
+      }
+      @if (email.errors?.['required']) {
+        <mat-error>Email address is <strong>required</strong>.</mat-error>
+      }
+      @if (email.errors?.['email']) {
+        <mat-error>Please enter a valid email address.</mat-error>
+      }
+    </mat-form-field>
+  </div>
+</form>

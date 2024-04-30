@@ -1,0 +1,10 @@
+@if (loaded && editor) {
+  <ckeditor
+        [disabled]="disabled"
+        [editor]="editor"
+        [config]="config"
+        [tagName]="tagName"
+        [(ngModel)]="content"
+        (ready)="onReady($event)"
+        (change)="onChange($event)"/>
+}

@@ -1,0 +1,20 @@
+@import "../../../assets/scss/partials/extras";
+@import "../../../assets/scss/partials/media_queries";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+
+  max-width: $desktop;
+  align-self: center;
+}
+picture { width: 100%; }
+picture img { position: relative !important; }
+
+@media (min-width: $tabletLandscape) {
+  .content {
+    align-self: center;
+    max-width: 1000px;
+  }
+}

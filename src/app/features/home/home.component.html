@@ -1,0 +1,45 @@
+<main class="page-padding flex-col app-gap">
+  <div class="greeting-container">
+    <mat-card class="card info">
+      <div>
+        <mat-card-title class="title">Heyooo, I'm Aaron, a Full Stack Engineer</mat-card-title>
+        <mat-card-subtitle class="subtitle">Crafting Unforgettable Web Experiences: Bridging the Gap Between Functionality and Aesthetics</mat-card-subtitle>
+
+        <mat-card-actions>
+          <button mat-flat-button type="button" color="primary"
+                  [routerLink]="[nav_path.contact]">Get in touch</button>
+        </mat-card-actions>
+      </div>
+    </mat-card>
+
+    <mat-card class="card image">
+      <img mat-card-image fill priority
+           ngSrc="assets/svgs/flat_afro.svg"
+           alt="Silhouette of a cartoon style afro" />
+    </mat-card>
+  </div>
+
+  <div class="projects-container">
+    @for (project of featuredProjects$ | async; track project.id; let e=$even) {
+      <mat-card class="card project">
+        <mat-card-header class="flex-row justify-space-between">
+          <div class="flex-grow">
+            <mat-card-title class="title">{{project.name}}</mat-card-title>
+            <mat-card-subtitle class="truncate-text subtitle">
+              {{project.description}}
+            </mat-card-subtitle>
+          </div>
+          <button mat-icon-button type="button"
+                  [routerLink]="[nav_path.projects, project.slug]">
+            <mat-icon fontIcon="arrow_forward" />
+          </button>
+        </mat-card-header>
+
+        @if (project.image) {
+          <img mat-card-image fill priority class="margin-top-auto"
+               [ngSrc]="project.image" [alt]="project.name" />
+        }
+      </mat-card>
+    }
+  </div>
+</main>

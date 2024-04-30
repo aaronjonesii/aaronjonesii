@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.crumbs {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+section.info picture img {
+  position: relative !important;
+  border-radius: 1rem;
+}
+
+section.info .details {
+  overflow: auto;
+  display: flex;
+  div { flex-basis: 50%; }
+  div:first-child { text-align: left; }
+  div:last-child { text-align: right; }
+}

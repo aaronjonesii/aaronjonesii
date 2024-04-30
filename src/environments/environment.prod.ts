@@ -1,7 +1,6 @@
 import { FIREBASE_API_KEY, RECAPTCHA3_SITE_KEY } from "./keys";
 
 export const environment = {
-  production: true,
   firebase: {
     apiKey: FIREBASE_API_KEY,
     authDomain: "aaronjonesii.firebaseapp.com",

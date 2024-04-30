@@ -32,12 +32,22 @@
 .text-center { text-align: center; }
 .w-100 { width: 100%; }
 .h-100 { height: 100%; }
-.page-padding { padding: $app-page-padding; }
+.app-padding, .page-padding { padding: $app-padding; }
 .display-none { display: none; }
 .overflow-auto { overflow: auto; }
+.overflow-visible { overflow: visible; }
 .flex-grow { flex-grow: 1; }
 .p-0 { padding: 0 !important; }
 .m-0 { margin: 0 !important; }
 .display-block { display: block; }
 .display-grid { display: grid; }
 .margin-top-auto { margin-top: auto; }
+.opacity-half { opacity: 0.5; }
+.opacity-full, .opacity-1 { opacity: 1; }
+.hidden, .visibility-hidden { visibility: hidden; }
+.visible, .visibility-visible { visibility: visible; }
+.grid-column-end-span-4 { grid-column-end: span 4; }
+.grid-column-end-span-8 { grid-column-end: span 8; }
+.grid-column-end-span-12 { grid-column-end: span 12; }
+.capitalize { text-transform: capitalize; }
+.cursor-pointer { cursor: pointer; }

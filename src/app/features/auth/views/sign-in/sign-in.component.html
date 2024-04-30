@@ -1,0 +1,57 @@
+<h2 class="mat-headline-4">Welcome back</h2>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Email address</mat-label>
+    <input matInput id="email" type="email" name="email"
+           autocomplete="email" formControlName="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput id="password" name="password"
+           autocomplete="password" formControlName="password"
+           [type]="hidePassword ? 'password' : 'text'" />
+    <button mat-icon-button matSuffix type="button"
+            [attr.aria-label]="hidePassword ? 'Show' : 'Hide'+' Password'"
+            [attr.aria-pressed]="hidePassword"
+            (click)="hidePassword = !hidePassword">
+      <mat-icon [fontIcon]="hidePassword ? 'visibility_off' : 'visibility'" />
+    </button>
+  </mat-form-field>
+
+  <div class="flex-row justify-content-end">
+    <button mat-button color="accent" type="button"
+            [disabled]="loading" [routerLink]="[nav_path.forgotPassword]">
+      Forgot password?
+    </button>
+  </div>
+
+  <p>
+    By continuing, I agree to {{appInformation.website}}
+    <a mat-button color="accent" target="_blank"
+       [routerLink]="[nav_path.privacyPolicy]">Privacy Policy</a>
+    and
+    <a mat-button color="accent" target="_blank"
+       [routerLink]="[nav_path.termsOfUse]">Terms of Use</a>.
+  </p>
+
+  <button mat-flat-button color="primary" class="fab-btn-padding"
+          type="submit" [disabled]="loading">Sign in</button>
+
+  <button mat-stroked-button class="fab-btn-padding" type="button"
+          [disabled]="loading" (click)="googleLogin()">
+    <span class="flex-row align-items-center app-gap">
+      <img class="mat-icon" ngSrc="assets/imgs/g-logo.png"
+           alt="Image of Google Icon with a white background"
+           width="80" height="80" />
+      Sign in with Google
+    </span>
+  </button>
+
+  <p class="text-center">
+    Don't have an account?
+    <a mat-button color="accent"
+       [disabled]="loading" [routerLink]="[nav_path.signUp]">Sign up</a>
+  </p>
+</form>

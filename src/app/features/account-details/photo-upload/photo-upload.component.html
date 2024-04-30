@@ -1,0 +1,19 @@
+<input #photoInput
+       type="file"
+       class="photo-input"
+       [accept]="validExtensions"
+       (change)="onFilesSelect($event)" />
+
+<div class="photo-container">
+  <aj-user-photo [image]="photo" [dim]="loading" [size]="200" />
+</div>
+<div class="photo-buttons app-gap">
+  <button mat-button color="primary" type="button"
+          [disabled]="loading" (click)="photoInput.click()">
+    <mat-icon class="material-icons-outlined" fontIcon="edit" /> {{loading ? 'Changing' : 'Change'}}
+  </button>
+  <button mat-button color="primary" type="button"
+          [disabled]="loading || !user?.photoURL" (click)="clear()">
+    <mat-icon class="material-icons-outlined" fontIcon="delete" /> Remove
+  </button>
+</div>

@@ -1,6 +1,0 @@
-<ng-container *ngIf="type === 'folder'; else file">
-  <mat-icon class="material-icons-round">folder</mat-icon>
-</ng-container>
-<ng-template #file>
-  <mat-icon class="material-icons-round">{{getFileIcon(contentType)}}</mat-icon>
-</ng-template>

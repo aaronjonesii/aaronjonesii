@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { User as dbUser } from '../../interfaces/user';
 import { User } from '@angular/fire/auth';
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'aj-user-photo',
   templateUrl: './user-photo.component.html',
-  styleUrls: ['./user-photo.component.scss']
+  styleUrl: './user-photo.component.scss',
+  standalone: true,
+  imports: [NgOptimizedImage],
 })
 export class UserPhotoComponent implements OnInit {
   @Input() user?: User | dbUser | null;
@@ -15,6 +18,7 @@ export class UserPhotoComponent implements OnInit {
   public userPhotoError = false;
 
   ngOnInit() {
+    /** todo: do not use setTimeout */
     setTimeout(() => {
       if (!this.image && this.user?.photoURL) this.image = this.user.photoURL;
     }, 50);

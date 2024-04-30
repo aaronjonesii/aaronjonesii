@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/**/*"
+    "projects/**/*",
+    "app.component.ts"
   ],
   "overrides": [
     {
@@ -11,8 +12,7 @@
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/all"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -30,7 +30,9 @@
             "prefix": "aj",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@angular-eslint/template/i18n": "off",
+        "@angular-eslint/prefer-on-push-component-change-detection": "off"
       }
     },
     {
@@ -38,9 +40,11 @@
         "*.html"
       ],
       "extends": [
-        "plugin:@angular-eslint/template/recommended"
+        "plugin:@angular-eslint/template/all"
       ],
-      "rules": {}
+      "rules": {
+        "@angular-eslint/template/i18n": "off"
+      }
     }
   ]
 }

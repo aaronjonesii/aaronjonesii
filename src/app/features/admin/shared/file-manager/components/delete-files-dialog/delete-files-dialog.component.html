@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>
+  <span>Delete files</span>
+</h1>
+
+<mat-dialog-content>
+  You may be deleting user data. After you delete this, it can not be recovered.
+</mat-dialog-content>
+
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="warn" type="button"
+          [mat-dialog-close]="true">Delete</button>
+</div>

@@ -1,0 +1,59 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@use './about/about-theme' as about;
+@use './auth/auth-theme' as auth;
+@use './coming-soon/coming-soon-theme' as comingSoon;
+@use './home/home-theme' as home;
+@use './projects/projects-theme' as projects;
+@use './policies/policies-theme' as policies;
+@use './admin/admin-theme' as admin;
+@use './errors/errors-theme' as errors;
+
+@mixin componentColorMixins($theme) {
+  @include about.color($theme);
+  @include auth.color($theme);
+  @include comingSoon.color($theme);
+  @include home.color($theme);
+  @include projects.color($theme);
+  @include policies.color($theme);
+  @include admin.color($theme);
+  @include errors.color($theme);
+}
+
+@mixin componentTypographyMixins($theme) {
+  @include about.typography($theme);
+  @include auth.typography($theme);
+  @include comingSoon.typography($theme);
+  @include home.typography($theme);
+  @include projects.typography($theme);
+  @include policies.typography($theme);
+  @include admin.typography($theme);
+  @include errors.typography($theme);
+}
+
+@mixin color($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: mat.get-color-from-palette($color-config, 'primary');
+  $accent-palette: mat.get-color-from-palette($color-config, accent);
+  $warn-palette: mat.get-color-from-palette($color-config, warn);
+  $foreground-palette: mat.get-color-from-palette($color-config, foreground);
+  $background-palette: mat.get-color-from-palette($color-config, background);
+  $grey-palette: mat.$gray-palette;
+
+  @include componentColorMixins($theme);
+}
+
+@mixin typography($theme) {
+  $typography-config: mat.get-typography-config($theme);
+
+  @include componentTypographyMixins($theme);
+}
+
+@mixin theme($theme) {
+  $color-config: mat.get-color-config($theme);
+  @if $color-config != null { @include color($theme); }
+
+  $typography-config: mat.get-typography-config($theme);
+  @if $typography-config != null { @include typography($theme); }
+}
