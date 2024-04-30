@@ -1,4 +1,4 @@
-import { afterNextRender, Component, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { DOCUMENT, NgOptimizedImage } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { ReactiveFormsModule } from "@angular/forms";
