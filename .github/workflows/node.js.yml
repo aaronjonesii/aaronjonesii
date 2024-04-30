@@ -23,10 +23,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build:production
+      - name: Create keys.ts
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          RECAPTCHA3_SITE_KEY: ${{ secrets.RECAPTCHA3_SITE_KEY }}
+        run: |
+          echo "export const FIREBASE_API_KEY = '$FIREBASE_API_KEY'; export const RECAPTCHA3_SITE_KEY = '$RECAPTCHA3_SITE_KEY'" > src/environments/keys.ts
+      - name: Clean install packages
+        run: npm ci
+      - name: Build
+        run: npm run build:production
 
-  unit:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -39,6 +47,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Create keys.ts
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          RECAPTCHA3_SITE_KEY: ${{ secrets.RECAPTCHA3_SITE_KEY }}
+        run: |
+          echo "export const FIREBASE_API_KEY = '$FIREBASE_API_KEY'; export const RECAPTCHA3_SITE_KEY = '$RECAPTCHA3_SITE_KEY'" > src/environments/keys.ts
       - run: npm ci
       - name: Run tests against emulator
         # forceExit: something is not cleaning up - likely firebase-app that needs to be deleted, investigate
