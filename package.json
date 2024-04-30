@@ -14,7 +14,7 @@
     "dev": "firebase emulators:exec --import=./seed --export-on-exit --ui \"npm run start:development\"",
     "build:ssr": "ng build && ng run aaronjonesii:server",
     "emulators": "firebase emulators:start --import=./seed --export-on-exit",
-    "serve:ssr:aaronjonesii": "node dist/aaronjonesii/server/server.mjs"
+    "serve:ssr": "node dist/aaronjonesii/server/server.mjs"
   },
   "private": true,
   "dependencies": {
