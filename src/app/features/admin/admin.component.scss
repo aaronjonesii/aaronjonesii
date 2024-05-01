@@ -1,6 +1,11 @@
-div.admin-router {
-  $navigationBarHeight: 56px;
+:host {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
 
-  height: calc(100vh - #{$navigationBarHeight});
-  overflow: hidden;
+main {
+  flex-grow: 1;
+  overflow: auto;
+  height: 0;
 }

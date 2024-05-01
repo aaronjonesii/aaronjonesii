@@ -1,5 +1,27 @@
-<div class="admin-router">
-  <router-outlet />
-</div>
+@if ({isTabletPortrait: isTabletPortrait$ | async, isDesktopExpanded: isDesktopExpanded$ | async}; as aside) {
+  <!-- Side Navigation Rail -->
+  @if (aside.isTabletPortrait && !aside.isDesktopExpanded) {
+    <aj-navigation-rail [@navigationRailAnimation] [segments]="segments" />
+  }
 
-<aj-navigation-bar [segments]="segments" />
+  <!-- Side Navigation Drawer -->
+  @if (aside.isDesktopExpanded) {
+    <aj-navigation-drawer [@navigationDrawerAnimation] [segments]="segments" />
+  }
+}
+
+<!-- Main Content -->
+<div class="flex-col overflow-auto flex-grow">
+  <!-- Header -->
+<!--  <aj-top-app-bar [title]="title" />-->
+
+  <!-- Content -->
+  <main class="page-padding flex-col">
+    <router-outlet />
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  @if (isMobile$ | async) {
+    <aj-navigation-bar [@navigationBarAnimation] [segments]="segments" />
+  }
+</div>
