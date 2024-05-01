@@ -7,6 +7,9 @@
 @use './shared/admin-editor/admin-editor-theme' as adminEditor;
 @use './shared/file-manager/file-manager-theme' as fileManager;
 @use './views/admin-users/admin-users-theme' as adminUsers;
+@use '../../shared/components/navigation-bar/navigation-bar-theme' as navigationBar;
+@use '../../shared/components/navigation-rail/navigation-rail-theme' as navigationRail;
+@use '../../shared/components/navigation-drawer/navigation-drawer-theme' as navigationDrawer;
 
 @mixin componentColorMixins($theme) {
   @include addProject.color($theme);
@@ -15,6 +18,9 @@
   @include adminEditor.color($theme);
   @include fileManager.color($theme);
   @include adminUsers.color($theme);
+  @include navigationBar.color($theme);
+  @include navigationRail.color($theme);
+  @include navigationDrawer.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -24,6 +30,9 @@
   @include adminEditor.typography($theme);
   @include fileManager.typography($theme);
   @include adminUsers.typography($theme);
+  @include navigationBar.typography($theme);
+  @include navigationRail.typography($theme);
+  @include navigationDrawer.typography($theme);
 }
 
 @mixin color($theme) {
