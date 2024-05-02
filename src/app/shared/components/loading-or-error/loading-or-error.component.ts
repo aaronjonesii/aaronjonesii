@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LoadingComponent } from "../loading/loading.component";
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'aj-loading-or-error',

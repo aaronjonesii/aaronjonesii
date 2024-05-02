@@ -1,26 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Functions, httpsCallableData, HttpsCallableOptions, FunctionsError } from '@angular/fire/functions';
+import {
+  Functions, httpsCallableData,
+  HttpsCallableOptions, FunctionsError,
+} from '@angular/fire/functions';
 import { lastValueFrom, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FunctionsService {
-
   constructor(private functions: Functions) {}
 
   /**
-   * Create a promise to return last value from Firebase Function observable
+   * Executes a Firebase Cloud Function and provides a Promise-based
+   * interface for retrieving the result.
    *
-   * @param functionName {string} - The firebase function's name.
-   * @param data - The firebase function's request data.
-   * @param options {HttpsCallableOptions} - The firebase function's request data.
+   * @param {string} functionName The name of the Firebase Cloud Function
+   * to execute.
+   * @param {unknown | null} data Optional data to pass as the argument to
+   * the Cloud Function.
+   * @param {HttpsCallableOptions} options Optional configuration options
+   * for the function call.
+   * @return {Promise<ResponseData | FunctionsError>} A Promise that resolves
+   * with either the response data (of type 'ResponseData') from the function,
+   * or a FunctionsError if an error occurs.
    */
-  httpsCallable<ResponseData = unknown>(
+  httpsCallable<RequestData = unknown, ResponseData = unknown>(
     functionName: string,
-    data?: unknown | null,
+    data?: RequestData | null,
     options?: HttpsCallableOptions
   ): Promise<ResponseData | FunctionsError> {
     return lastValueFrom(
-      httpsCallableData(this.functions, functionName, options)(data) as Observable<ResponseData | FunctionsError>,
+      httpsCallableData<RequestData, ResponseData>(
+        this.functions,
+        functionName,
+        options,
+      )(data) as Observable<ResponseData | FunctionsError>,
     );
   }
 }

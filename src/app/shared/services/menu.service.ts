@@ -1,47 +1,51 @@
 import { Injectable } from '@angular/core';
-import { nav_path } from "../../app.routes";
-import { GenericItem } from "../interfaces/generic-item";
+import { navPath } from '../../app.routes';
+import { GenericItem } from '../interfaces/generic-item';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
   readonly pages: GenericItem[] = [
-    { name: 'Home', icon: 'home', routerLink: [nav_path.home] },
-    { name: 'About', icon: 'person', routerLink: [nav_path.about] },
-    { name: 'Projects', icon: 'work_history', routerLink: [nav_path.projects] },
-    { name: 'Contact', icon: 'contact_support', routerLink: [nav_path.contact] },
+    { id: 'home', name: 'Home', icon: 'home', routerLink: [navPath.home] },
+    { id: 'about', name: 'About', icon: 'person', routerLink: [navPath.about] },
+    {
+      id: 'projects', name: 'Projects',
+      icon: 'work_history', routerLink: [navPath.projects],
+    },
+    {
+      id: 'contact', name: 'Contact',
+      icon: 'contact_support', routerLink: [navPath.contact],
+    },
   ];
   readonly adminPages: GenericItem[] = [
-    { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.adminDashboard],
-      description: 'Manage admin components throughout this website.' },
-    { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],
-      description: 'Manage files used throughout the website.' },
-    { name: 'Projects', description: 'Create and manage the projects displayed here.',
-      routerLink: ['/admin/projects'], tooltip: 'Projects', icon: 'work_history' },
-    // { name: 'Comments', icon: 'comment', routerLink: ['/admin/comments'],
-    //   description: 'Manage story comments.' },
-    { name: 'Users', description: 'Manage this websites users.',
-      routerLink: [nav_path.adminUsers], tooltip: 'Users', icon: 'manage_accounts' },
+    {
+      id: 'dashboard',
+      name: 'Dashboard',
+      icon: 'space_dashboard',
+      routerLink: [navPath.adminDashboard],
+      description: 'Manage admin components throughout this website.',
+    },
+    {
+      id: 'files',
+      name: 'Files',
+      icon: 'snippet_folder',
+      routerLink: [navPath.adminFileManager],
+      description: 'Manage files used throughout the website.',
+    },
+    {
+      id: 'projects',
+      name: 'Projects',
+      icon: 'work_history',
+      description: 'Create and manage the projects displayed here.',
+      routerLink: ['/admin/projects'],
+      tooltip: 'Projects',
+    },
+    {
+      id: 'users',
+      name: 'Users',
+      icon: 'manage_accounts',
+      description: 'Manage this websites users.',
+      routerLink: [navPath.adminUsers],
+      tooltip: 'Users',
+    },
   ];
-
-  readonly adminNavigationBarMenu = [
-    { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.adminDashboard] },
-    { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager] },
-    { name: 'Projects', icon: 'supervised_user_circle', routerLink: ['/admin/projects'] },
-    // { name: 'Comments', icon: 'work_history', routerLink: ['/admin/comments'] },
-    { name: 'Users', icon: 'contact_mail', routerLink: [nav_path.adminUsers] },
-    { name: 'Home', icon: 'home', routerLink: [nav_path.home] }
-  ];
-
-  readonly adminMenu: GenericItem[] = [
-    { name: 'Dashboard', icon: 'space_dashboard', routerLink: [nav_path.admin],
-      description: 'Manage admin components throughout this website.' },
-    { name: 'Files', icon: 'snippet_folder', routerLink: [nav_path.adminFileManager],
-      description: 'Manage files used throughout the website.' },
-    { name: 'Projects', description: 'Create and manage the projects displayed here.',
-      routerLink: ['/admin/projects'], tooltip: 'Projects', icon: 'work_history' },
-    // { name: 'Comments', icon: 'comment', routerLink: ['/admin/comments'],
-    //   description: 'Manage story comments.' },
-    { name: 'Users', description: 'Manage this websites users.',
-      routerLink: [nav_path.adminUsers], tooltip: 'Users', icon: 'manage_accounts' },
-  ]
 }

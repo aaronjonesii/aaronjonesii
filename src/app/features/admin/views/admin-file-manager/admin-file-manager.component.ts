@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { FileManagerComponent } from "../../shared/file-manager/file-manager.component";
-import { TopAppBarComponent } from "../../../../shared/components/top-app-bar/top-app-bar.component";
-import { environment } from "../../../../../environments/environment";
+import {
+  FileManagerComponent,
+} from '../../shared/file-manager/file-manager.component';
+import {
+  TopAppBarComponent,
+} from '../../../../shared/components/top-app-bar/top-app-bar.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'aj-admin-file-manager',

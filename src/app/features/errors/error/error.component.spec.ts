@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ErrorComponent } from './error.component';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 describe('ErrorComponent', () => {
   let fixture: ComponentFixture<ErrorComponent>;
@@ -16,7 +16,7 @@ describe('ErrorComponent', () => {
         },
       ],
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(ErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

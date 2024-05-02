@@ -12,7 +12,8 @@
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@angular-eslint/all"
+        "plugin:@angular-eslint/all",
+        "google"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -32,7 +33,11 @@
           }
         ],
         "@angular-eslint/template/i18n": "off",
-        "@angular-eslint/prefer-on-push-component-change-detection": "off"
+        "@angular-eslint/prefer-on-push-component-change-detection": "off",
+        "object-curly-spacing": ["error", "always"],
+        "indent": "off",
+        "new-cap": "off",
+        "require-jsdoc": "off"
       }
     },
     {

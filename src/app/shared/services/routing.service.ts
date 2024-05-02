@@ -1,7 +1,10 @@
-import { afterNextRender, AfterRenderPhase, Inject, Injectable, OnDestroy } from '@angular/core';
-import { DOCUMENT, Location } from "@angular/common";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import {
+  afterNextRender, AfterRenderPhase,
+  Inject, Injectable, OnDestroy,
+} from '@angular/core';
+import { DOCUMENT, Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RoutingService implements OnDestroy {
@@ -23,11 +26,12 @@ export class RoutingService implements OnDestroy {
       this.subscriptions.add(
         this.route.fragment.subscribe((fragment) => {
           setTimeout(() => {
-            this.document.querySelector(`#${fragment}`)?.scrollIntoView({behavior: 'smooth'});
+            this.document.querySelector(`#${fragment}`)
+              ?.scrollIntoView({ behavior: 'smooth' });
           }, 1000);
         }),
       );
-    }, {phase: AfterRenderPhase.Read});
+    }, { phase: AfterRenderPhase.Read });
   }
 
   ngOnDestroy() {

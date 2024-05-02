@@ -1,39 +1,61 @@
-import { afterNextRender, AfterRenderPhase, Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { catchError, first, map, Observable, of, Subscription, switchMap } from "rxjs";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import {
+  afterNextRender, AfterRenderPhase, Component,
+  Inject, OnDestroy, ViewEncapsulation,
+} from '@angular/core';
+import {
+  catchError, first, map, Observable,
+  of, Subscription, switchMap,
+} from 'rxjs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { User } from '@angular/fire/auth';
-import { MatDialog } from "@angular/material/dialog";
-import { increment, where } from "@angular/fire/firestore";
-import { CommentsDialogComponent, CommentsDialogContract } from "./comments-dialog/comments-dialog.component";
-import { AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatTabsModule } from "@angular/material/tabs";
-import { ProjectDetailCommentComponent } from "./project-detail-comment/project-detail-comment.component";
-import { MatIconModule } from "@angular/material/icon";
-import { UserPhotoComponent } from "../../../shared/components/user-photo/user-photo.component";
-import { LoadingComponent } from "../../../shared/components/loading/loading.component";
-import { ProjectStatus, ProjectVisibility, ReadProject } from "../../../shared/interfaces/project";
-import { CommentWithID } from "../../../shared/interfaces/comment";
-import { FirestoreService } from "../../../shared/services/firestore.service";
-import { TopAppBarService } from "../../../shared/components/top-app-bar/top-app-bar.service";
-import { appInformation } from "../../../information";
-import { readUser, UserWithID } from "../../../shared/interfaces/user";
+import { MatDialog } from '@angular/material/dialog';
+import { increment, where } from '@angular/fire/firestore';
+import {
+  CommentsDialogComponent, CommentsDialogContract,
+} from './comments-dialog/comments-dialog.component';
+import {
+  AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
+import {
+  ProjectDetailCommentComponent,
+} from './project-detail-comment/project-detail-comment.component';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  UserPhotoComponent,
+} from '../../../shared/components/user-photo/user-photo.component';
+import {
+  LoadingComponent,
+} from '../../../shared/components/loading/loading.component';
+import {
+  ProjectStatus, ProjectVisibility, ReadProject,
+} from '../../../shared/interfaces/project';
+import { CommentWithID } from '../../../shared/interfaces/comment';
+import { FirestoreService } from '../../../shared/services/firestore.service';
+import {
+  TopAppBarService,
+} from '../../../shared/components/top-app-bar/top-app-bar.service';
+import { appInformation } from '../../../information';
+import { readUser, UserWithID } from '../../../shared/interfaces/user';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogContract
-} from "../../../shared/components/confirm-dialog/confirm-dialog.component";
-import { nav_path } from '../../../app.routes';
-import { AuthService } from "../../../shared/services/auth.service";
-import { ConsoleLoggerService } from "../../../shared/services/console-logger.service";
-import { SeoService } from "../../../shared/services/seo.service";
-import { FirebaseError } from "@angular/fire/app/firebase";
-import { RoutingService } from "../../../shared/services/routing.service";
+  ConfirmDialogContract,
+} from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { navPath } from '../../../app.routes';
+import { AuthService } from '../../../shared/services/auth.service';
+import {
+  ConsoleLoggerService,
+} from '../../../shared/services/console-logger.service';
+import { SeoService } from '../../../shared/services/seo.service';
+import { FirebaseError } from '@angular/fire/app/firebase';
+import { RoutingService } from '../../../shared/services/routing.service';
 
 @Component({
   selector: 'aj-project-detail',
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
+  /* eslint-disable-next-line max-len */
   /* eslint-disable-next-line @angular-eslint/use-component-view-encapsulation */
   encapsulation: ViewEncapsulation.None,
   standalone: true,
@@ -52,7 +74,7 @@ import { RoutingService } from "../../../shared/services/routing.service";
   ],
 })
 export class ProjectDetailComponent implements OnDestroy {
-  readonly nav_path = nav_path;
+  readonly nav_path = navPath;
   projectID$: Observable<string | null>;
   project$: Observable<ReadProject | null>;
   notAvailable = false;
@@ -89,7 +111,9 @@ export class ProjectDetailComponent implements OnDestroy {
     this.project$ = this.projectID$.pipe(
       switchMap((projectID) => this.getProject$(projectID)),
       catchError((error: FirebaseError) => {
-        if (error.code !== 'permission-denied') this.logger.error('Error loading project', error);
+        if (error.code !== 'permission-denied') {
+          this.logger.error('Error loading project', error);
+        }
         return of(null);
       }),
     );
@@ -116,7 +140,7 @@ export class ProjectDetailComponent implements OnDestroy {
     this.routing.watchAndRouteToFragment();
   }
 
-  private watchForFragment () {
+  private watchForFragment() {
     this.subscriptions.add(
       this.router.routerState.root.fragment.subscribe((fragment) => {
         if (!fragment) return;
@@ -132,18 +156,26 @@ export class ProjectDetailComponent implements OnDestroy {
       if (!el) return;
 
       el?.scrollIntoView();
-    }, {phase: AfterRenderPhase.Read});
+    }, { phase: AfterRenderPhase.Read });
   }
 
+  /* todo: double check to make sure this makes sense */
   async getUser(user: User) {
     const userSnap = await this.db.docSnap<readUser>(`users/${user.uid}`);
-    if (!userSnap.exists()) return Object.assign({id: user.uid}, user) as UserWithID;
-    else return Object.assign({id: user.uid}, userSnap.data()) as UserWithID;
+    if (!userSnap.exists()) {
+      return Object.assign({ id: user.uid }, user) as UserWithID;
+    } else {
+      return Object.assign({ id: user.uid }, userSnap.data()) as UserWithID;
+    }
   }
 
   getUser$(user: User) {
     return this.db.doc$<readUser>(`users/${user.uid}`)
-      .pipe(map(userDoc => (Object.assign({id: user.uid}, userDoc) as UserWithID)));
+      .pipe(
+        map((userDoc) => {
+          return Object.assign({ id: user.uid }, userDoc) as UserWithID;
+        }),
+      );
   }
 
   private getProject$(id: string | null): Observable<ReadProject | null> {
@@ -157,7 +189,7 @@ export class ProjectDetailComponent implements OnDestroy {
           /** seo service */
           this.seoService.generateTags({
             title: project.name,
-            route: `${nav_path.projects}/${project.slug}`,
+            route: `${navPath.projects}/${project.slug}`,
             author: appInformation.name,
             description: project.description,
             type: 'article',
@@ -167,28 +199,45 @@ export class ProjectDetailComponent implements OnDestroy {
           if (!project?.shards) return project;
 
           /** increment view count */
-          const shard_id = Math.floor(Math.random() * project.shards).toString();
-          const shardRef = this.db.doc<object>(`projects/${project.slug}/shards/${shard_id}`);
+          const shardId = Math.floor(Math.random() * project.shards).toString();
+          const shardRef = this.db.doc<object>(
+            `projects/${project.slug}/shards/${shardId}`,
+          );
           await this.db.update(shardRef, { views: increment(1) });
 
           /** get view count from shards */
           let views = 0;
           for (let i = 0; i < project.shards; i++) {
-            views = views + (await this.db.docSnap(`projects/${project.slug}/shards/${i.toString()}`)).get('views');
+            const shardSnap = await this.db.docSnap(
+              `projects/${project.slug}/shards/${i.toString()}`,
+            );
+            views = views + shardSnap.get('views');
           }
 
-          return Object.assign({views: views}, project);
+          return Object.assign({ views: views }, project);
         }),
       );
   }
 
-  getComments$(project: ReadProject | null): Observable<CommentWithID[] | null> {
+  getComments$(
+    project: ReadProject | null,
+  ): Observable<CommentWithID[] | null> {
     if (!project) return of(null);
 
-    return this.db.col$<CommentWithID>(`projects/${project.slug}/comments`, { idField: 'id' });
+    return this.db.col$<CommentWithID>(
+      `projects/${project.slug}/comments`,
+      { idField: 'id' },
+    ).pipe(
+      /** Sort comments by newest first */
+      map((comments) => {
+        return comments.sort((a, b) => b.created.seconds - a.created.seconds);
+      }),
+    );
   }
 
-  private getRelatedProjects$(project: ReadProject | null): Observable<ReadProject[] | null> {
+  private getRelatedProjects$(
+    project: ReadProject | null,
+  ): Observable<ReadProject[] | null> {
     if (!project) return of(null);
 
     return this.db.colQuery$<ReadProject>(
@@ -210,9 +259,11 @@ export class ProjectDetailComponent implements OnDestroy {
       }),
       /** sort related projects by decreasing number of matching tags */
       map((relatedProjects) => {
-        return relatedProjects.sort((a,b) => {
-          const aIntersection = a?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
-          const bIntersection = b?.tags?.filter((t) => project?.tags?.includes(t)) ?? [];
+        return relatedProjects.sort((a, b) => {
+          const aIntersection = a?.tags
+            ?.filter((t) => project?.tags?.includes(t)) ?? [];
+          const bIntersection = b?.tags
+            ?.filter((t) => project?.tags?.includes(t)) ?? [];
           return bIntersection.length - aIntersection.length;
         });
       }),
@@ -237,8 +288,9 @@ export class ProjectDetailComponent implements OnDestroy {
           data: confirmDialogContract,
         });
 
-        dialogRef.afterClosed().pipe(first())
-          .forEach(async confirm => confirm ? await this._updateFollowStatus(user) : undefined);
+        dialogRef.afterClosed().pipe(first()).forEach(async (confirm) => {
+          return confirm ? await this._updateFollowStatus(user) : undefined;
+        });
       } else await this._updateFollowStatus(user);
     } catch (error) {
       /* swallow errors */
@@ -248,7 +300,7 @@ export class ProjectDetailComponent implements OnDestroy {
   private async _updateFollowStatus(user: UserWithID): Promise<void> {
     const userFollowing = user?.following ? user.following : false;
     return this.db.update(`users/${user.id}`, { following: !userFollowing })
-      .then(() => (<UserWithID>this.user).following = !userFollowing)
+      .then(() => (<UserWithID> this.user).following = !userFollowing)
       .then(() => this.logger.log(userFollowing ? 'Unfollowed' : 'Followed'));
   }
 

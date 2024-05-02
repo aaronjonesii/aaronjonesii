@@ -44,7 +44,7 @@
         <span>{{selection.selected.length}} {{selection.selected.length === 1 ? 'item' : 'items'}}</span>
         <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
         <button mat-raised-button type="button" color="accent" [disabled]="selectionIncludesFolder()"
-                (click)="storageService.openAllFiles(selection.selected)">Open all files</button>
+                (click)="openAllFiles(selection.selected)">Open all files</button>
         <button mat-stroked-button type="button"
                 (click)="deleteItems(selection.selected)">Delete</button>
       </header>

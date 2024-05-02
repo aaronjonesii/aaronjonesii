@@ -1,5 +1,5 @@
-import { firebaseTimestamp, TimeStamp } from "./timestamp";
-import { DocumentReference } from "@angular/fire/firestore";
+import { firebaseTimestamp, TimeStamp } from './timestamp';
+import { DocumentReference } from '@angular/fire/firestore';
 
 export interface User {
   displayName?: string,

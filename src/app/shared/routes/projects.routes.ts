@@ -1,4 +1,4 @@
-export const projects_nav_path = {
+export const projectsNavPath = {
   projects: '/projects',
   projectDetail: (id: string) => `/projects/${id}`,
 };

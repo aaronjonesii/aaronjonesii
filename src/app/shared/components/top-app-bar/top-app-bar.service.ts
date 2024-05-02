@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from "rxjs";
-import { appInformation } from "../../../information";
+import { BehaviorSubject } from 'rxjs';
+import { appInformation } from '../../../information';
 
 export interface TopAppBarOptions {
   title: string,

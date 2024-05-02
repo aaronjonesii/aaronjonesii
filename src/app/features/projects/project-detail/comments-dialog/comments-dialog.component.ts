@@ -1,23 +1,37 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
-import { Observable } from "rxjs";
-import { Router } from "@angular/router";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
-import { DocumentReference } from "@angular/fire/firestore";
-import { tap } from "rxjs/operators";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { AsyncPipe } from "@angular/common";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { CommentsDialogCommentComponent } from "./comments-dialog-comment/comments-dialog-comment.component";
-import { UserPhotoComponent } from "../../../../shared/components/user-photo/user-photo.component";
-import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
-import { CommentWithID, WriteComment } from "../../../../shared/interfaces/comment";
-import { UserWithID } from "../../../../shared/interfaces/user";
-import { FirestoreService } from "../../../../shared/services/firestore.service";
-import { nav_path } from "../../../../app.routes";
-import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
+import {
+  MAT_DIALOG_DATA, MatDialogModule, MatDialogRef,
+} from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DocumentReference } from '@angular/fire/firestore';
+import { tap } from 'rxjs/operators';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {
+  CommentsDialogCommentComponent,
+} from './comments-dialog-comment/comments-dialog-comment.component';
+import {
+  UserPhotoComponent,
+} from '../../../../shared/components/user-photo/user-photo.component';
+import {
+  LoadingComponent,
+} from '../../../../shared/components/loading/loading.component';
+import {
+  CommentWithID, WriteComment,
+} from '../../../../shared/interfaces/comment';
+import { UserWithID } from '../../../../shared/interfaces/user';
+import {
+  FirestoreService,
+} from '../../../../shared/services/firestore.service';
+import { navPath } from '../../../../app.routes';
+import {
+  ConsoleLoggerService,
+} from '../../../../shared/services/console-logger.service';
 
 export interface CommentsDialogContract {
   comments$?: Observable<CommentWithID[] | null>,
@@ -46,14 +60,14 @@ export interface CommentsDialogContract {
 })
 export class CommentsDialogComponent {
   comments$ = this.data.comments$?.pipe(
-    tap(comments => this.commentCount = comments?.length ?? 0),
+    tap((comments) => this.commentCount = comments?.length ?? 0),
   );
   commentInputContainerInFocus = false;
   user$ = this.data.user$;
   @ViewChild('commentInput') commentInput?: ElementRef;
   commentFormControl = new FormControl<string>(
     '',
-    {nonNullable: true, validators: Validators.required}
+    { nonNullable: true, validators: Validators.required }
   );
   commentCount = 0;
 
@@ -71,7 +85,9 @@ export class CommentsDialogComponent {
 
       this.commentInputContainerInFocus = true;
     } catch (error) {
-      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
+      this.logger.error(
+        (<Error>error).message ?? `Something went wrong`, error,
+      );
     }
   }
 
@@ -92,27 +108,38 @@ export class CommentsDialogComponent {
         created: this.db.timestamp,
         author: {
           name: user?.displayName,
-          image: user?.photoURL
+          image: user?.photoURL,
         },
       };
 
       await this.db.add(`${comment.parent?.path}/comments`, comment)
         .then(() => this.onCancelComment())
-        .catch(error => this.logger.error(`Something went wrong adding comment`, error, comment));
-    } catch(error) {
-      this.logger.error((<Error>error).message ?? `Something went wrong`, error);
+        .catch((error) => {
+          this.logger.error(
+            `Something went wrong adding comment`, error, comment,
+          );
+        });
+    } catch (error) {
+      this.logger.error(
+        (<Error>error).message ?? `Something went wrong`, error,
+      );
     }
   }
 
   onPhotoClick() {
-    this.router.navigate([nav_path.accountDetails])
+    this.router.navigate([navPath.accountDetails])
       .then(() => this.dialogRef.close());
   }
 
   private _assertUser(user: UserWithID | null): asserts user {
     if (!user) {
-      this.router.navigate([nav_path.signIn], { queryParams: { "redirectURL": this.router.routerState.snapshot.url }, fragment: 'comments' })
-        .then(() => this.dialogRef.close());
+      this.router.navigate(
+        [navPath.signIn],
+        {
+          queryParams: { 'redirectURL': this.router.routerState.snapshot.url },
+          fragment: 'comments',
+        },
+      ).then(() => this.dialogRef.close());
       throw new Error(`You must be signed in`);
     }
   }

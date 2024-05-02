@@ -37,5 +37,4 @@ export class FormatBytesPipe implements PipeTransform {
 
     return this.formatBytes(bytes);
   }
-
 }

@@ -18,28 +18,28 @@ export class ConsoleLoggerService {
     if (this.isInDevelopmentMode()) {
       console.info(`${value}: `, restOfError);
     }
-    this.openSnackBar(value, 'OK', {duration: 5000, panelClass: 'info'});
+    this.openSnackBar(value, 'OK', { duration: 5000, panelClass: 'info' });
   }
 
   log(value: string, ...restOfError: unknown[]): void {
     if (this.isInDevelopmentMode()) {
       console.log(`${value}: `, restOfError);
     }
-    this.openSnackBar(value, 'OK', {duration: 5000, panelClass: 'log'});
+    this.openSnackBar(value, 'OK', { duration: 5000, panelClass: 'log' });
   }
 
   warn(value: string, ...restOfError: unknown[]): void {
     if (this.isInDevelopmentMode()) {
       console.warn(`${value}: `, restOfError);
     }
-    this.openSnackBar(value, 'OK', {duration: 10000, panelClass: 'warn'});
+    this.openSnackBar(value, 'OK', { duration: 10000, panelClass: 'warn' });
   }
 
   error(value: string, ...restOfError: unknown[]): void {
     if (this.isInDevelopmentMode()) {
       console.error(`${value}: `, restOfError);
     }
-    this.openSnackBar(value, 'OK', {duration: 0, panelClass: 'error'});
+    this.openSnackBar(value, 'OK', { duration: 0, panelClass: 'error' });
   }
 
   openSnackBar(

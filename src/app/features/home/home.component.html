@@ -1,9 +1,9 @@
 <section class="hero">
   <h1 class="title">{{heroTitle}}</h1>
 
-  <p class="subtitle">{{heroSubtitle}}</p>
+  <p class="subtitle" [@slideInFromLeftAnimation]>{{heroSubtitle}}</p>
 
-  <div class="contact">
+  <div class="contact" [@slideInFromLeftAnimation]>
     <span>
       <button mat-icon-button type="button">
         <mat-icon fontIcon="my_location" class="material-icons-outlined" />
@@ -19,7 +19,7 @@
     </span>
   </div>
 
-  <div class="image">
+  <div class="image" [@slideInFromBottomAnimation]>
     <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
       <defs>
         <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">

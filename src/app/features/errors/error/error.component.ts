@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MatButton } from "@angular/material/button";
-import { nav_path } from '../../../app.routes';
-import { RouterLink } from "@angular/router";
+import { MatButton } from '@angular/material/button';
+import { navPath } from '../../../app.routes';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'aj-error',
@@ -11,5 +11,5 @@ import { RouterLink } from "@angular/router";
   imports: [MatButton, RouterLink],
 })
 export class ErrorComponent {
-  readonly nav_path = nav_path;
+  readonly nav_path = navPath;
 }

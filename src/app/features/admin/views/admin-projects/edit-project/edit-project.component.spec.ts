@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EditProjectComponent } from './edit-project.component';
-import { ActivatedRoute } from "@angular/router";
-import { FirestoreService } from "../../../../../shared/services/firestore.service";
-import { AuthService } from "../../../../../shared/services/auth.service";
+import { ActivatedRoute } from '@angular/router';
+import {
+  FirestoreService,
+} from '../../../../../shared/services/firestore.service';
+import { AuthService } from '../../../../../shared/services/auth.service';
 
 describe('EditProjectComponent', () => {
   let component: EditProjectComponent;
@@ -16,7 +17,7 @@ describe('EditProjectComponent', () => {
         {
           provide: FirestoreService,
           useValue: {
-            docSnap: async () => {}
+            docSnap: async () => {},
           },
         },
         {
@@ -24,9 +25,9 @@ describe('EditProjectComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: (val: string) => val
-              }
-            }
+                get: (val: string) => val,
+              },
+            },
           },
         },
         {

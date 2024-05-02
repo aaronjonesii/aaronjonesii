@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ContactComponent } from './contact.component';
-import { FirestoreService } from "../../shared/services/firestore.service";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { FirestoreService } from '../../shared/services/firestore.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ContactComponent', () => {
   let component: ContactComponent;

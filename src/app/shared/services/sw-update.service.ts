@@ -1,8 +1,8 @@
 import { afterNextRender, Inject, Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { DOCUMENT } from "@angular/common";
-import { ConsoleLoggerService } from "./console-logger.service";
-import { appInformation } from "../../information";
+import { DOCUMENT } from '@angular/common';
+import { ConsoleLoggerService } from './console-logger.service';
+import { appInformation } from '../../information';
 
 @Injectable({ providedIn: 'root' })
 export class SwUpdateService {
@@ -15,15 +15,16 @@ export class SwUpdateService {
   ) {}
 
   async checkForSwUpdate() {
-    if (this.swUpdate.isEnabled){
+    if (this.swUpdate.isEnabled) {
       await this.swUpdate.checkForUpdate()
-        .then(updateAvailable => {
+        .then((updateAvailable) => {
           if (updateAvailable) {
             this.updateAvailable = updateAvailable;
             this.notifyUpdateAvailable();
           }
-        })
-        .catch(error => this.logger.error(`error checking for service worker update`, error));
+        }).catch((error) => {
+          this.logger.error(`Error checking for service worker update`, error);
+        });
     }
   }
 

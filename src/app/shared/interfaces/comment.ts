@@ -1,6 +1,6 @@
-import { DocumentReference } from "@angular/fire/firestore";
-import { firebaseTimestamp, TimeStamp } from "./timestamp";
-import { FieldValue } from "@angular/fire/firestore/firebase";
+import { DocumentReference } from '@angular/fire/firestore';
+import { firebaseTimestamp, TimeStamp } from './timestamp';
+import { FieldValue } from '@angular/fire/firestore/firebase';
 
 export interface Comment {
   id?: string;

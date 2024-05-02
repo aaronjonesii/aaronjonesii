@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { User as dbUser } from '../../interfaces/user';
 import { User } from '@angular/fire/auth';
-import { NgOptimizedImage } from "@angular/common";
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'aj-user-photo',

@@ -54,13 +54,11 @@
                 <mat-icon class="material-icons-outlined" fontIcon="add" /> Comment
               </button>
               <div class="comments-container">
-                @if (comments$ | async; as comments) {
-                  @for (comment of comments; track comment.id) {
-                    <aj-project-detail-comment [comment]="comment"
-                                               (openComments)="openComments(project)" />
-                  } @empty {
-                    <h3 class="mat-headline-6 m-0">No comments.</h3>
-                  }
+                @for (comment of comments$ | async; track comment.id) {
+                  <aj-project-detail-comment [comment]="comment"
+                                             (openComments)="openComments(project)" />
+                } @empty {
+                  <h3 class="mat-headline-6 m-0">No comments.</h3>
                 }
               </div>
             } @else {

@@ -6,9 +6,7 @@ import { ListResult, StorageReference } from '@angular/fire/storage';
   standalone: true,
 })
 export class AllItemsPipe implements PipeTransform {
-
   transform(items: ListResult): StorageReference[] {
     return [...items.prefixes, ...items.items];
   }
-
 }

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage } from "@angular/common";
-import { appInformation } from "../../information";
-import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
-import { nav_path } from "../../app.routes";
-import { SeoService } from "../../shared/services/seo.service";
+import { NgOptimizedImage } from '@angular/common';
+import { appInformation } from '../../information';
+import {
+  TopAppBarService,
+} from '../../shared/components/top-app-bar/top-app-bar.service';
+import { navPath } from '../../app.routes';
+import { SeoService } from '../../shared/services/seo.service';
 
 @Component({
   selector: 'aj-about',
@@ -26,7 +28,7 @@ export class AboutComponent {
     });
 
     this.seoService.generateTags({
-      route: nav_path.about,
+      route: navPath.about,
     });
   }
 }

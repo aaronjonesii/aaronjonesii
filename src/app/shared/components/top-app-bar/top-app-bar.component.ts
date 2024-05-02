@@ -1,13 +1,13 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { nav_path } from "../../../app.routes";
-import { AsyncPipe, Location, NgClass } from "@angular/common";
-import { TopAppBarService } from "./top-app-bar.service";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { RouterLink, RouterLinkActive } from "@angular/router";
-import { AuthService } from "../../services/auth.service";
-import { Subscription } from "rxjs";
+import { navPath } from '../../../app.routes';
+import { AsyncPipe, Location, NgClass } from '@angular/common';
+import { TopAppBarService } from './top-app-bar.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'aj-top-app-bar',
@@ -28,7 +28,7 @@ export class TopAppBarComponent implements OnDestroy {
   @Input() title = 'Title';
   @Input() showBackBtn = false;
   @Input() loading = false;
-  readonly nav_path = nav_path;
+  readonly nav_path = navPath;
   private subscriptions = new Subscription();
 
   constructor(
@@ -38,7 +38,7 @@ export class TopAppBarComponent implements OnDestroy {
   ) {
     /** Set options from service */
     this.subscriptions.add(
-      this.topAppBarService.options$.subscribe(options => {
+      this.topAppBarService.options$.subscribe((options) => {
         this.title = options.title;
         this.showBackBtn = options.showBackBtn;
         this.loading = options.loading;

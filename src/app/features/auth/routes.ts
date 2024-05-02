@@ -1,6 +1,6 @@
-import { Route } from "@angular/router";
+import { Route } from '@angular/router';
 
-export const auth_nav_path = {
+export const authNavPath = {
   auth: '/auth',
   signIn: '/auth/sign-in',
   signUp: '/auth/sign-up',
@@ -15,6 +15,7 @@ export default [
   },
   {
     path: 'forgot-password',
+    // eslint-disable-next-line max-len
     loadComponent: () => import('./views/forgot-password/forgot-password.component')
       .then((m) => m.ForgotPasswordComponent),
   },

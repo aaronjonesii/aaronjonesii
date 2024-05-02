@@ -1,18 +1,18 @@
-const admin_projects_nav_path = {
+const adminProjectsNavPath = {
   adminProjects: '/admin/projects',
   adminAddProject: '/admin/projects/add',
   adminEditProject: (id: string) => `/admin/projects/${id}/edit`,
 };
 
-const admin_users_nav_path = {
+const adminUsersNavPath = {
   adminUsers: '/admin/users',
   adminUserDetail: (id: string) => `/admin/users/${id}`,
 };
 
-export const admin_nav_path = {
+export const adminNavPath = {
   admin: '/admin',
   adminDashboard: '/admin/dashboard',
-  ...admin_projects_nav_path,
+  ...adminProjectsNavPath,
   adminFileManager: '/admin/file-manager',
-  ...admin_users_nav_path,
+  ...adminUsersNavPath,
 };

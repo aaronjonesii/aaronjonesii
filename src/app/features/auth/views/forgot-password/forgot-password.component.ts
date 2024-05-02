@@ -1,16 +1,23 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
-import { RouterLink } from "@angular/router";
-import { NgOptimizedImage } from "@angular/common";
-import { TopAppBarService } from "../../../../shared/components/top-app-bar/top-app-bar.service";
-import { appInformation } from "../../../../information";
-import { nav_path } from '../../../../app.routes';
-import { AuthService } from "../../../../shared/services/auth.service";
-import { ConsoleLoggerService } from "../../../../shared/services/console-logger.service";
-import { SeoService } from "../../../../shared/services/seo.service";
+import {
+  FormControl, FormGroup,
+  ReactiveFormsModule, Validators,
+} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
+import {
+  TopAppBarService,
+} from '../../../../shared/components/top-app-bar/top-app-bar.service';
+import { appInformation } from '../../../../information';
+import { navPath } from '../../../../app.routes';
+import { AuthService } from '../../../../shared/services/auth.service';
+import {
+  ConsoleLoggerService,
+} from '../../../../shared/services/console-logger.service';
+import { SeoService } from '../../../../shared/services/seo.service';
 
 @Component({
   selector: 'aj-forgot-password',
@@ -27,12 +34,16 @@ import { SeoService } from "../../../../shared/services/seo.service";
   ],
 })
 export class ForgotPasswordComponent {
-  readonly title = "Forgot password";
-  readonly nav_path = nav_path;
+  readonly title = 'Forgot password';
+  readonly nav_path = navPath;
   forgotPasswordForm = new FormGroup({
     email: new FormControl<string>(
-      '', {nonNullable: true, validators: [Validators.required, Validators.email]}
-    )
+      '',
+      {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      },
+    ),
   });
   loading = false;
 
@@ -49,12 +60,15 @@ export class ForgotPasswordComponent {
     });
     this.seoService.generateTags({
       title: this.title,
+      // eslint-disable-next-line max-len
       description: `Authentication ${this.title} page for ${appInformation.website}`,
-      route: nav_path.forgotPassword
+      route: navPath.forgotPassword,
     });
   }
 
-  get email() { return this.forgotPasswordForm.controls.email; }
+  get email() {
+    return this.forgotPasswordForm.controls.email;
+  }
 
   async onSubmit(): Promise<void> {
     if (this.email.invalid) {

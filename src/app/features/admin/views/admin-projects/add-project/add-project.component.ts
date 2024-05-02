@@ -1,30 +1,45 @@
 import { Component } from '@angular/core';
-import { catchError, Observable, throwError } from "rxjs";
-import { tap } from "rxjs/operators";
-import { Router } from "@angular/router";
-import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
+import { catchError, Observable, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import { User } from "@angular/fire/auth";
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { ProjectImageComponent } from "../project-image/project-image.component";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { ProjectTagsComponent } from "../project-tags/project-tags.component";
-import { MatSelectModule } from "@angular/material/select";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { AdminEditorComponent } from "../../../shared/admin-editor/admin-editor.component";
-import { AsyncPipe, KeyValuePipe, TitleCasePipe } from "@angular/common";
-import { TopAppBarComponent } from "../../../../../shared/components/top-app-bar/top-app-bar.component";
-import { SlugifyPipe } from "../../../../../shared/pipes/slugify.pipe";
-import { ProjectForm } from "../../../../../shared/forms/project-form";
-import { ProjectStatus, ProjectVisibility, WriteProject } from "../../../../../shared/interfaces/project";
-import { Tag } from "../../../../../shared/interfaces/tag";
-import { FirestoreService } from "../../../../../shared/services/firestore.service";
-import { nav_path } from "../../../../../app.routes";
-import { ConsoleLoggerService } from "../../../../../shared/services/console-logger.service";
-import { AuthService } from "../../../../../shared/services/auth.service";
+import { User } from '@angular/fire/auth';
+import {
+  FormArray, FormControl, FormGroup,
+  ReactiveFormsModule, Validators,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  ProjectImageComponent,
+} from '../project-image/project-image.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ProjectTagsComponent } from '../project-tags/project-tags.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  AdminEditorComponent,
+} from '../../../shared/admin-editor/admin-editor.component';
+import { AsyncPipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
+import {
+  TopAppBarComponent,
+} from '../../../../../shared/components/top-app-bar/top-app-bar.component';
+import { SlugifyPipe } from '../../../../../shared/pipes/slugify.pipe';
+import { ProjectForm } from '../../../../../shared/forms/project-form';
+import {
+  ProjectStatus, ProjectVisibility, WriteProject,
+} from '../../../../../shared/interfaces/project';
+import { Tag } from '../../../../../shared/interfaces/tag';
+import {
+  FirestoreService,
+} from '../../../../../shared/services/firestore.service';
+import { navPath } from '../../../../../app.routes';
+import {
+  ConsoleLoggerService,
+} from '../../../../../shared/services/console-logger.service';
+import { AuthService } from '../../../../../shared/services/auth.service';
 
 @Component({
   selector: 'aj-add-project',
@@ -53,21 +68,42 @@ export class AddProjectComponent {
   readonly title = 'Add Project';
   loading = false;
   addForm = new FormGroup<ProjectForm>({
-    name: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
-    description: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
-    slug: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+    name: new FormControl<string>(
+      '',
+      { nonNullable: true, validators: Validators.required },
+    ),
+    description: new FormControl<string>(
+      '',
+      { nonNullable: true, validators: Validators.required },
+    ),
+    slug: new FormControl<string>(
+      '',
+      { nonNullable: true, validators: Validators.required },
+    ),
     content: new FormControl<string | null>(null),
     image: new FormControl<string | null>(null),
     tags: new FormArray<FormControl<string>>([]),
     livePreviewLink: new FormControl<string | null>(null),
     sourceCodeLink: new FormControl<string | null>(null),
-    status: new FormControl<ProjectStatus>(ProjectStatus.DRAFT, { nonNullable: true, validators: Validators.required }),
-    visibility: new FormControl<ProjectVisibility>(ProjectVisibility.PUBLIC, { nonNullable: true, validators: Validators.required }),
-    featured: new FormControl<boolean>(false, { nonNullable: true, validators: Validators.required }),
-    allowComments: new FormControl<boolean>(true, { nonNullable: true, validators: Validators.required })
+    status: new FormControl<ProjectStatus>(
+      ProjectStatus.DRAFT,
+      { nonNullable: true, validators: Validators.required },
+    ),
+    visibility: new FormControl<ProjectVisibility>(
+      ProjectVisibility.PUBLIC,
+      { nonNullable: true, validators: Validators.required },
+    ),
+    featured: new FormControl<boolean>(
+      false,
+      { nonNullable: true, validators: Validators.required },
+    ),
+    allowComments: new FormControl<boolean>(
+      true,
+      { nonNullable: true, validators: Validators.required },
+    ),
   });
   readonly projectStatuses = ProjectStatus;
-  readonly projectVisibilities = ProjectVisibility
+  readonly projectVisibilities = ProjectVisibility;
   allTags$: Observable<Tag[]>;
   private allTags: Tag[] = [];
   editorConfig = {
@@ -79,8 +115,8 @@ export class AddProjectComponent {
         /** todo: use these values */
         this.logger.log(`content character count`, storyCharacterCount);
         this.logger.log(`content word count`, storyWordCount);
-      }
-    }
+      },
+    },
   };
   user$ = this.auth.loadUser;
 
@@ -92,48 +128,95 @@ export class AddProjectComponent {
     private logger: ConsoleLoggerService,
   ) {
     this.allTags$ = db.col$<Tag>(`tags`).pipe(
-      tap(tags => this.allTags = tags),
-      catchError(error => {
+      tap((tags) => this.allTags = tags),
+      catchError((error) => {
         this.logger.error(`Something went wrong loading tags`, error);
         return throwError(error);
       }),
     );
   }
-  get image() { return this.addForm.controls.image; }
-  get name() { return this.addForm.controls.name; }
-  get description() { return this.addForm.controls.description; }
-  get slug() { return this.addForm.controls.slug; }
-  get tags() { return this.addForm.controls.tags; }
-  get livePreviewLink() { return this.addForm.controls.livePreviewLink; }
-  get sourceCodeLink() { return this.addForm.controls.sourceCodeLink; }
-  get content() { return this.addForm.controls.content; }
-  get featured() { return this.addForm.controls.featured; }
-  get allowComments() { return this.addForm.controls.allowComments; }
-  get status() { return this.addForm.controls.status; }
-  get visibility() { return this.addForm.controls.visibility; }
+  get image() {
+    return this.addForm.controls.image;
+  }
+  get name() {
+    return this.addForm.controls.name;
+  }
+  get description() {
+    return this.addForm.controls.description;
+  }
+  get slug() {
+    return this.addForm.controls.slug;
+  }
+  get tags() {
+    return this.addForm.controls.tags;
+  }
+  get livePreviewLink() {
+    return this.addForm.controls.livePreviewLink;
+  }
+  get sourceCodeLink() {
+    return this.addForm.controls.sourceCodeLink;
+  }
+  get content() {
+    return this.addForm.controls.content;
+  }
+  get featured() {
+    return this.addForm.controls.featured;
+  }
+  get allowComments() {
+    return this.addForm.controls.allowComments;
+  }
+  get status() {
+    return this.addForm.controls.status;
+  }
+  get visibility() {
+    return this.addForm.controls.visibility;
+  }
 
-  onProjectContentChange({editor}: ChangeEvent) {
+  onProjectContentChange({ editor }: ChangeEvent) {
     if (editor) this.content?.setValue(editor.getData());
   }
 
   setSlug(event: Event): void {
-    this.slug?.setValue(this.slugify.transform((event.target as HTMLInputElement).value));
+    this.slug?.setValue(
+      this.slugify.transform((event.target as HTMLInputElement).value),
+    );
   }
 
   private resetForm() {
     this.addForm = new FormGroup<ProjectForm>({
-      name: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
-      description: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
-      slug: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      name: new FormControl<string>(
+        '',
+        { nonNullable: true, validators: Validators.required },
+      ),
+      description: new FormControl<string>(
+        '',
+        { nonNullable: true, validators: Validators.required },
+      ),
+      slug: new FormControl<string>(
+        '',
+        { nonNullable: true, validators: Validators.required },
+      ),
       content: new FormControl<string | null>(null),
       image: new FormControl<string | null>(null),
       tags: new FormArray<FormControl<string>>([]),
       livePreviewLink: new FormControl<string | null>(null),
       sourceCodeLink: new FormControl<string | null>(null),
-      status: new FormControl<ProjectStatus>(ProjectStatus.DRAFT, { nonNullable: true, validators: Validators.required }),
-      visibility: new FormControl<ProjectVisibility>(ProjectVisibility.PUBLIC, { nonNullable: true, validators: Validators.required }),
-      featured: new FormControl<boolean>(false, { nonNullable: true, validators: Validators.required }),
-      allowComments: new FormControl<boolean>(true, { nonNullable: true, validators: Validators.required })
+      status: new FormControl<ProjectStatus>(
+        ProjectStatus.DRAFT,
+        { nonNullable: true, validators: Validators.required },
+      ),
+      visibility: new FormControl<ProjectVisibility>(
+        ProjectVisibility.PUBLIC,
+        { nonNullable: true, validators: Validators.required },
+      ),
+      featured: new FormControl<boolean>(
+        false,
+        { nonNullable: true, validators: Validators.required },
+      ),
+      allowComments: new FormControl<boolean>(
+        true,
+        { nonNullable: true, validators: Validators.required },
+      ),
     });
   }
 
@@ -143,7 +226,9 @@ export class AddProjectComponent {
     this.addForm.disable();
 
     if (await this.db.docExists(`projects/${this.slug.value}`)) {
-      this.logger.error(`Project with this name already exists, try changing the name or slug`);
+      this.logger.error(
+        `Project with this name already exists, try changing the name or slug`,
+      );
       this.loading = false;
       this.addForm.enable();
       return;
@@ -164,25 +249,28 @@ export class AddProjectComponent {
       allowComments: this.allowComments.value,
       created: this.db.timestamp,
       updated: null,
-      roles: {[user.uid]: 'owner'},
+      roles: { [user.uid]: 'owner' },
       shards: 5, // Initialize number of shards
       author: { name: user.displayName ?? '', image: user.photoURL ?? null },
     };
 
-    await this.db.batch(async batch => {
+    await this.db.batch(async (batch) => {
       /** tags */
       if (project.tags?.length) {
         for (let i = 0; i < project.tags.length; i++) {
           const projectTag = project.tags[i];
-          if (this.allTags.some(tag => tag.slug == projectTag)) {
-            const tagUpdates: Partial<Tag> = { projects: arrayRemove(projectTag), updated: this.db.timestamp };
+          if (this.allTags.some((tag) => tag.slug == projectTag)) {
+            const tagUpdates: Partial<Tag> = {
+              projects: arrayRemove(projectTag),
+              updated: this.db.timestamp,
+            };
             batch.update(this.db.doc(`tags/${projectTag}`), tagUpdates);
           } else {
             const newTag: Tag = {
               slug: projectTag,
               projects: arrayUnion(project.slug),
               created: this.db.timestamp,
-              featured: false
+              featured: false,
             };
             batch.set(this.db.doc(`tags/${projectTag}`), newTag);
           }
@@ -192,7 +280,9 @@ export class AddProjectComponent {
       /** shards for counts */
       /** Initialize each shard */
       for (let i = 0; i < project.shards; i++) {
-        const shardRef = this.db.doc(`projects/${project.slug}/shards/${i.toString()}`);
+        const shardRef = this.db.doc(
+          `projects/${project.slug}/shards/${i.toString()}`,
+        );
         batch.set(shardRef, { views: 0 });
       }
 
@@ -201,9 +291,11 @@ export class AddProjectComponent {
     })
       .then(() => this.resetForm())
       .then(() => this.logger.log(`Project created`))
-      .then(() => this.router.navigate([nav_path.adminProjects]))
-      .catch(error => {
-        this.logger.error(`Something went wrong creating project`, [error, project]);
+      .then(() => this.router.navigate([navPath.adminProjects]))
+      .catch((error) => {
+        this.logger.error(
+          `Something went wrong creating project`, [error, project],
+        );
         this.addForm.enable();
       })
       .finally(() => {
