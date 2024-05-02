@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RoutingService } from './routing.service';
-import { ActivatedRoute } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 describe('RoutingService', () => {
   let service: RoutingService;
@@ -8,10 +8,7 @@ describe('RoutingService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {},
-        },
+        provideRouter([]),
       ],
     }).compileComponents();
     service = TestBed.inject(RoutingService);
