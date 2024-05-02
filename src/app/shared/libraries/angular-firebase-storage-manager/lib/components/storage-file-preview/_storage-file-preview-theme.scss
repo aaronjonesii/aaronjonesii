@@ -1,23 +1,6 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use './components/layout/layout-theme' as layout;
-@use './components/masonry-cards/masonry-cards-theme' as masonryCards;
-@use './libraries/libraries-theme' as libraries;
-
-
-@mixin componentColorMixins($theme) {
-  @include layout.color($theme);
-  @include masonryCards.color($theme);
-  @include libraries.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include layout.typography($theme);
-  @include masonryCards.typography($theme);
-  @include libraries.typography($theme);
-}
-
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
   $primary-palette: mat.get-color-from-palette($color-config, 'primary');
@@ -27,13 +10,16 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  @include componentColorMixins($theme);
+  anon-storage-file-preview {
+    border-left-color: map.get($foreground-palette, 'divider');
+    background-color: map.get($background-palette, 'app-bar');
+  }
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
 
-  @include componentTypographyMixins($theme);
+  anon-storage-file-preview {}
 }
 
 @mixin theme($theme) {
@@ -41,5 +27,5 @@
   @if $color-config != null { @include color($theme); }
 
   $typography-config: mat.get-typography-config($theme);
-  @if $typography-config != null {  @include typography($theme); }
+  @if $typography-config != null { @include typography($theme); }
 }

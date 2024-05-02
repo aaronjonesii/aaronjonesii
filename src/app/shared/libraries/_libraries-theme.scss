@@ -1,21 +1,14 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use './components/layout/layout-theme' as layout;
-@use './components/masonry-cards/masonry-cards-theme' as masonryCards;
-@use './libraries/libraries-theme' as libraries;
-
+@use 'angular-firebase-storage-manager/lib/file-manager-theme' as afsm;
 
 @mixin componentColorMixins($theme) {
-  @include layout.color($theme);
-  @include masonryCards.color($theme);
-  @include libraries.color($theme);
+  @include afsm.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
-  @include layout.typography($theme);
-  @include masonryCards.typography($theme);
-  @include libraries.typography($theme);
+  @include afsm.typography($theme);
 }
 
 @mixin color($theme) {
@@ -41,5 +34,5 @@
   @if $color-config != null { @include color($theme); }
 
   $typography-config: mat.get-typography-config($theme);
-  @if $typography-config != null {  @include typography($theme); }
+  @if $typography-config != null { @include typography($theme); }
 }
