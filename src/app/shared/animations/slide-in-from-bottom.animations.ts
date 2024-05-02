@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 
-export const NavigationBarAnimation = [
-  trigger('navigationBarAnimation', [
+export const SlideInFromBottomAnimation = [
+  trigger('slideInFromBottomAnimation', [
     transition(':enter', [
       style({transform: 'translateY(100%)'}),
       /** Emphasized decelerate */

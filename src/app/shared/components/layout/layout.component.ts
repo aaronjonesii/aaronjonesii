@@ -4,9 +4,6 @@ import { nav_path } from "../../../app.routes";
 import { appInformation } from "../../../information";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { map, Subscription } from "rxjs";
-import { NavigationRailAnimation } from "../navigation-rail/navigation-rail.animations";
-import { NavigationBarAnimation } from "../navigation-bar/navigation-bar.animations";
-import { NavigationDrawerAnimation } from "../navigation-drawer/navigation-drawer.animations";
 import { NavigationRailComponent } from "../navigation-rail/navigation-rail.component";
 import { NavigationDrawerComponent } from "../navigation-drawer/navigation-drawer.component";
 import { TopAppBarComponent } from "../top-app-bar/top-app-bar.component";
@@ -14,15 +11,18 @@ import { NavigationBarComponent } from "../navigation-bar/navigation-bar.compone
 import { RouterOutlet } from "@angular/router";
 import { AsyncPipe } from "@angular/common";
 import { AuthService } from "../../services/auth.service";
+import { SlideInFromLeftAnimation } from "../../animations/slide-in-from-left.animations";
+import {
+  SlideInFromBottomAnimation
+} from "../../animations/slide-in-from-bottom.animations";
 
 @Component({
   selector: 'aj-layout',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   animations: [
-    NavigationRailAnimation,
-    NavigationBarAnimation,
-    NavigationDrawerAnimation,
+    SlideInFromLeftAnimation,
+    SlideInFromBottomAnimation,
   ],
   standalone: true,
   imports: [

@@ -1,8 +1,8 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 
-export const NavigationRailAnimation = [
+export const SlideInFromLeftAnimation = [
   trigger(
-    'navigationRailAnimation', [
+    'slideInFromLeftAnimation', [
       transition(':enter', [
         style({transform: 'translateX(-100%)'}),
         /** Emphasized decelerate */

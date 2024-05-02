@@ -16,14 +16,11 @@ import {
   TopAppBarComponent
 } from "../../shared/components/top-app-bar/top-app-bar.component";
 import {
-  NavigationRailAnimation
-} from "../../shared/components/navigation-rail/navigation-rail.animations";
+  SlideInFromLeftAnimation
+} from "../../shared/animations/slide-in-from-left.animations";
 import {
-  NavigationBarAnimation
-} from "../../shared/components/navigation-bar/navigation-bar.animations";
-import {
-  NavigationDrawerAnimation
-} from "../../shared/components/navigation-drawer/navigation-drawer.animations";
+  SlideInFromBottomAnimation
+} from "../../shared/animations/slide-in-from-bottom.animations";
 
 @Component({
   selector: 'aj-admin',
@@ -39,9 +36,8 @@ import {
     TopAppBarComponent,
   ],
   animations: [
-    NavigationRailAnimation,
-    NavigationBarAnimation,
-    NavigationDrawerAnimation,
+    SlideInFromLeftAnimation,
+    SlideInFromBottomAnimation,
   ],
 })
 export class AdminComponent {

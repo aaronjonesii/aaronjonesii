@@ -1,12 +1,12 @@
 @if ({isTabletPortrait: isTabletPortrait$ | async, isDesktopExpanded: isDesktopExpanded$ | async}; as aside) {
   <!-- Side Navigation Rail -->
   @if (aside.isTabletPortrait && !aside.isDesktopExpanded) {
-    <aj-navigation-rail [@navigationRailAnimation] [segments]="segments" />
+    <aj-navigation-rail [@slideInFromLeftAnimation] [segments]="segments" />
   }
 
   <!-- Side Navigation Drawer -->
   @if (aside.isDesktopExpanded) {
-    <aj-navigation-drawer [@navigationDrawerAnimation] [segments]="segments" />
+    <aj-navigation-drawer [@slideInFromLeftAnimation] [segments]="segments" />
   }
 }
 
@@ -22,6 +22,6 @@
 
   <!-- Bottom Navigation Bar -->
   @if (isMobile$ | async) {
-    <aj-navigation-bar [@navigationBarAnimation] [segments]="segments" />
+    <aj-navigation-bar [@slideInFromBottomAnimation] [segments]="segments" />
   }
 </div>

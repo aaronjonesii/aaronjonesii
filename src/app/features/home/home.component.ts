@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { catchError, Observable, of } from "rxjs";
 import { where } from "@angular/fire/firestore";
-import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
-import { RouterLink } from "@angular/router";
-import { AsyncPipe, NgOptimizedImage } from "@angular/common";
+import { NgOptimizedImage } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { appInformation } from "../../information";
 import { Project, ProjectStatus, ProjectVisibility } from "../../shared/interfaces/project";
