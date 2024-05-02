@@ -21,11 +21,8 @@ import { FirebaseError } from "@angular/fire/app/firebase";
   styleUrl: './home.component.scss',
   standalone: true,
   imports: [
-    MatCardModule,
-    MatButtonModule,
-    RouterLink,
-    AsyncPipe,
     MatIconModule,
+    MatButtonModule,
     NgOptimizedImage,
   ],
 })
@@ -33,6 +30,10 @@ export class HomeComponent {
   readonly title = appInformation.title;
   readonly nav_path = nav_path;
   featuredProjects$?: Observable<Project[] | null>;
+  readonly heroTitle = "Heyooo, I'm Aaron, a Full Stack Engineer";
+  readonly heroSubtitle = 'Crafting Unforgettable Web Experiences: Bridging the Gap Between Functionality and Aesthetics';
+  readonly contactEmail = appInformation.email;
+  readonly location = appInformation.location;
 
   constructor(
     private db: FirestoreService,

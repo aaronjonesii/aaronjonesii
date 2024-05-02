@@ -11,4 +11,5 @@ export const appInformation = {
   },
   website: 'aaronjonesii.dev',
   altEmail: 'hello@aaronjonesii.dev',
+  location: 'Michigan',
 };

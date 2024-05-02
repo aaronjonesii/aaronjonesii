@@ -1,45 +1,34 @@
-<main class="page-padding flex-col app-gap">
-  <div class="greeting-container">
-    <mat-card class="card info">
-      <div>
-        <mat-card-title class="title">Heyooo, I'm Aaron, a Full Stack Engineer</mat-card-title>
-        <mat-card-subtitle class="subtitle">Crafting Unforgettable Web Experiences: Bridging the Gap Between Functionality and Aesthetics</mat-card-subtitle>
+<section class="hero">
+  <h1 class="title">{{heroTitle}}</h1>
 
-        <mat-card-actions>
-          <button mat-flat-button type="button" color="primary"
-                  [routerLink]="[nav_path.contact]">Get in touch</button>
-        </mat-card-actions>
-      </div>
-    </mat-card>
+  <p class="subtitle">{{heroSubtitle}}</p>
 
-    <mat-card class="card image">
-      <img mat-card-image fill priority
-           ngSrc="assets/svgs/flat_afro.svg"
-           alt="Silhouette of a cartoon style afro" />
-    </mat-card>
+  <div class="contact">
+    <span>
+      <button mat-icon-button type="button">
+        <mat-icon fontIcon="my_location" class="material-icons-outlined" />
+      </button>
+      Based in {{location}}
+    </span>
+
+    <span>
+      <a mat-icon-button type="button" [href]="'mailto:'+contactEmail">
+        <mat-icon fontIcon="mail" class="material-icons-outlined" />
+      </a>
+      {{contactEmail}}
+    </span>
   </div>
 
-  <div class="projects-container">
-    @for (project of featuredProjects$ | async; track project.id; let e=$even) {
-      <mat-card class="card project">
-        <mat-card-header class="flex-row justify-space-between">
-          <div class="flex-grow">
-            <mat-card-title class="title">{{project.name}}</mat-card-title>
-            <mat-card-subtitle class="truncate-text subtitle">
-              {{project.description}}
-            </mat-card-subtitle>
-          </div>
-          <button mat-icon-button type="button"
-                  [routerLink]="[nav_path.projects, project.slug]">
-            <mat-icon fontIcon="arrow_forward" />
-          </button>
-        </mat-card-header>
-
-        @if (project.image) {
-          <img mat-card-image fill priority class="margin-top-auto"
-               [ngSrc]="project.image" [alt]="project.name" />
-        }
-      </mat-card>
-    }
+  <div class="image">
+    <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
+      <defs>
+        <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">
+          <path d="M0.495,0 A0.505,0.336,0,0,0,0,0.329 V1 H1 V0.329 A0.505,0.336,0,0,0,0.495,0" />
+        </clipPath>
+      </defs>
+    </svg>
+    <picture>
+      <img fill priority alt="" ngSrc="assets/imgs/aaron_jones_transparent.webp" />
+    </picture>
   </div>
-</main>
+</section>

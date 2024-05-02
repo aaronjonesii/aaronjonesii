@@ -12,35 +12,8 @@
   $grey-palette: mat.$gray-palette;
 
   aj-home {
-    .card {
-      background: linear-gradient(
-          0deg,
-          mat.get-color-from-palette($primary-palette, 300) 0%,
-          mat.get-color-from-palette($accent-palette, 100) 50%
-      );
-      /* Horizontal Linear Gradient */
-      @media (min-width: $tabletLandscape) {
-        background: linear-gradient(
-            270deg,
-            mat.get-color-from-palette($primary-palette, 300) 0%,
-            mat.get-color-from-palette($accent-palette, 100) 100%
-        );
-      }
-    }
-    .card:nth-child(2n) {
-      background: linear-gradient(
-          0deg,
-          mat.get-color-from-palette($accent-palette, 100) 0%,
-          mat.get-color-from-palette($primary-palette, 300) 50%
-      );
-      /* Horizontal Linear Gradient */
-      @media (min-width: $tabletLandscape) {
-        background: linear-gradient(
-            90deg,
-            mat.get-color-from-palette($primary-palette, 300) 0%,
-            mat.get-color-from-palette($accent-palette, 100) 100%
-        );
-      }
+    .hero picture {
+      background-color: mat.get-color-from-palette($primary-palette);
     }
   }
 }
@@ -49,44 +22,12 @@
   $typography-config: mat.get-typography-config($theme);
 
   aj-home {
-    /* Greeting */
-    .greeting-container .card.info .title {
-      @include mat.typography-level($typography-config, 'headline-5');
-      @media (min-width: $tabletPortrait) {
-        @include mat.typography-level($typography-config, 'headline-4');
-      }
-      @media (min-width: $desktop) {
-        @include mat.typography-level($typography-config, 'headline-3');
-      }
+    /* Hero */
+    .hero .title {
+      @include mat.typography-level($typography-config, 'headline-2');
     }
-    .greeting-container .card.info .subtitle {
-      @include mat.typography-level($typography-config, 'body-1');
-      @media (min-width: $tabletPortrait) {
-        @include mat.typography-level($typography-config, 'subtitle-1');
-      }
-      @media (min-width: $desktop) {
-        @include mat.typography-level($typography-config, 'headline-6');
-      }
-    }
-
-    /* Projects */
-    .projects-container .project.card .title {
+    .hero .subtitle, .hero .contact {
       @include mat.typography-level($typography-config, 'headline-6');
-      @media (min-width: $tabletPortrait) {
-        @include mat.typography-level($typography-config, 'headline-5');
-      }
-      @media (min-width: $desktop) {
-        @include mat.typography-level($typography-config, 'headline-4');
-      }
-    }
-    .projects-container .project.card .subtitle {
-      @include mat.typography-level($typography-config, 'body-1');
-      @media (min-width: $tabletPortrait) {
-        @include mat.typography-level($typography-config, 'subtitle-1');
-      }
-      @media (min-width: $desktop) {
-        @include mat.typography-level($typography-config, 'headline-6');
-      }
     }
   }
 }
