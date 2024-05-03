@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start:development": "ng serve",
-    "start:production": "ng serve --configuration=production",
+    "start:production": "ng serve --configuration production",
     "test": "ng test",
     "test:headless": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
     "lint": "ng lint",
@@ -15,7 +15,7 @@
     "build:ssr": "ng build && ng run aaronjonesii:server",
     "emulators": "firebase emulators:start --import=./seed --export-on-exit",
     "serve:ssr": "node dist/aaronjonesii/server/server.mjs",
-    "deploy:preview": "firebase hosting:channel:deploy preview_name"
+    "deploy:test": "firebase hosting:channel:deploy test"
   },
   "private": true,
   "dependencies": {
