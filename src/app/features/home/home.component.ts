@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { where } from '@angular/fire/firestore';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,26 +18,18 @@ import {
 } from '../../shared/services/console-logger.service';
 import { SeoService } from '../../shared/services/seo.service';
 import { FirebaseError } from '@angular/fire/app/firebase';
-import {
-  SlideInFromBottomAnimation,
-} from '../../shared/animations/slide-in-from-bottom.animations';
-import {
-  SlideInFromLeftAnimation,
-} from '../../shared/animations/slide-in-from-left.animations';
+import { HomeAnimations } from './home.animations';
 
 @Component({
   selector: 'aj-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   standalone: true,
+  animations: [...HomeAnimations],
   imports: [
     MatIconModule,
     MatButtonModule,
     NgOptimizedImage,
-  ],
-  animations: [
-    SlideInFromBottomAnimation,
-    SlideInFromLeftAnimation,
   ],
 })
 export class HomeComponent {
@@ -48,6 +40,7 @@ export class HomeComponent {
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.email;
   readonly location = appInformation.location;
+  titleAnimationDone = signal(false);
 
   constructor(
     private db: FirestoreService,

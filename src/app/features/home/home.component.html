@@ -1,9 +1,12 @@
 <section class="hero">
-  <h1 class="title">{{heroTitle}}</h1>
+  <h1 class="title" [@titleAnimation]
+      (@titleAnimation.done)="titleAnimationDone.set(true)">{{heroTitle}}</h1>
 
-  <p class="subtitle" [@slideInFromLeftAnimation]>{{heroSubtitle}}</p>
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @if (titleAnimationDone()) {
+    <p class="subtitle" [@slideInFromLeftAnimation]>{{heroSubtitle}}</p>
 
-  <div class="contact" [@slideInFromLeftAnimation]>
+    <div class="contact" [@slideInFromLeftAnimation]>
     <span>
       <button mat-icon-button type="button">
         <mat-icon fontIcon="my_location" class="material-icons-outlined" />
@@ -11,24 +14,25 @@
       Based in {{location}}
     </span>
 
-    <span>
+      <span>
       <a mat-icon-button type="button" [href]="'mailto:'+contactEmail">
         <mat-icon fontIcon="mail" class="material-icons-outlined" />
       </a>
-      {{contactEmail}}
+        {{contactEmail}}
     </span>
-  </div>
+    </div>
 
-  <div class="image" [@slideInFromBottomAnimation]>
-    <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
-      <defs>
-        <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">
-          <path d="M0.495,0 A0.505,0.336,0,0,0,0,0.329 V1 H1 V0.329 A0.505,0.336,0,0,0,0.495,0" />
-        </clipPath>
-      </defs>
-    </svg>
-    <picture>
-      <img fill priority alt="" ngSrc="assets/imgs/aaron_jones_transparent.webp" />
-    </picture>
-  </div>
+    <div class="image" [@imageAnimation]>
+      <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
+        <defs>
+          <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">
+            <path d="M0.495,0 A0.505,0.336,0,0,0,0,0.329 V1 H1 V0.329 A0.505,0.336,0,0,0,0.495,0" />
+          </clipPath>
+        </defs>
+      </svg>
+      <picture>
+        <img fill priority alt="" ngSrc="assets/imgs/aaron_jones_transparent.webp" />
+      </picture>
+    </div>
+  }
 </section>

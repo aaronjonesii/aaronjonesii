@@ -3,8 +3,8 @@
 @import "../../../assets/scss/partials/mixins";
 
 :host {
-  max-width: $desktop;
-  @media (min-width: $desktop) {
+  max-width: $large;
+  @media (min-width: $large) {
     align-self: center;
   }
 }
