@@ -72,21 +72,18 @@ export class LayoutComponent implements OnDestroy {
           routerLink: [navPath.adminDashboard],
         };
         const segmentsIncludeAdmin = this.segments.some((s) => {
-          return s.id !== adminSegment.id;
+          return s.id === adminSegment.id;
         });
 
-        if (await this.auth.isAdmin(user)) {
-          /** Add admin segment */
-          if (segmentsIncludeAdmin) {
+        const isAdmin = await this.auth.isAdmin(user);
+        /** Add admin segment */
+        if (isAdmin && !segmentsIncludeAdmin) {
             this.segments.push(adminSegment);
-          }
-        } else {
+        } else if (!isAdmin && segmentsIncludeAdmin) {
           /** Remove admin segment */
-          if (segmentsIncludeAdmin) {
-            this.segments = this.segments.filter((s) => {
-              return s.id !== adminSegment.id;
-            });
-          }
+          this.segments = this.segments.filter((s) => {
+            return s.id !== adminSegment.id;
+          });
         }
       }),
     );
