@@ -9,12 +9,12 @@ import {
   runTransaction, TransactionOptions, Transaction,
   writeBatch, WriteBatch, getDocs, WithFieldValue,
   PartialWithFieldValue, UpdateData, FieldValue,
+  SnapshotOptions, DocumentData,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { SetOptions } from '@firebase/firestore';
 import { Injectable } from '@angular/core';
-import { DocumentData, SnapshotOptions } from '@angular/fire/compat/firestore';
 
 type CollectionPredicate<T> = string | CollectionReference<T>;
 type CollectionGroupPredicate<T> = string | Query<T>;
