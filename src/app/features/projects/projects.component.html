@@ -1,14 +1,24 @@
 <mat-chip-listbox aria-label="Filter selection"
-                  (change)="filterSubject.next($event.value)">
-  <mat-chip-option value="all" [selected]="(filter$ | async) === 'all'">All</mat-chip-option>
-  <mat-chip-option value="active" [selected]="(filter$ | async) === 'active'">Active</mat-chip-option>
-  <mat-chip-option value="inactive" [selected]="(filter$ | async) === 'inactive'">Inactive</mat-chip-option>
+                  (change)="onFilterChange($event)">
+  <mat-chip-option value="all"
+                   [selected]="(filter$ | async) === 'all'">
+    All
+  </mat-chip-option>
+  <mat-chip-option value="active"
+                   [selected]="(filter$ | async) === 'active'">
+    Active
+  </mat-chip-option>
+  <mat-chip-option value="inactive"
+                   [selected]="(filter$ | async) === 'inactive'">
+    Inactive
+  </mat-chip-option>
 </mat-chip-listbox>
 
-<div class="flex-col app-gap projects-container">
-  @if (projects$ | async; as projects) {
-    @for (project of projects; track project.id) {
-      <mat-card class="card">
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+@defer (when loaded()) {
+  <div class="flex-col app-gap projects-container" [@projectsListAnimation]="loaded()">
+    @for (project of projects(); track project.id) {
+      <mat-card class="card" [@projectAnimation]>
         @if (project.image) {
           <picture>
             <img mat-card-image fill priority
@@ -57,5 +67,12 @@
         }
         projects yet, check back soon.</h3>
     }
-  }
-</div>
+  </div>
+} @placeholder (minimum 500ms) {
+  <div class="flex-col">
+    <h1 class="mat-headline-3">Placeholder</h1>
+  </div>
+} @error {
+  <aj-loading-or-error [error]="error()" />
+}
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

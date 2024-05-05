@@ -1,18 +1,29 @@
-import { Component } from '@angular/core';
 import {
-  BehaviorSubject, catchError, map,
-  Observable, switchMap, throwError,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy, signal,
+} from '@angular/core';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable, of,
+  Subscription,
+  switchMap,
 } from 'rxjs';
 import { QueryConstraint, where } from '@angular/fire/firestore';
 import { AsyncPipe, NgOptimizedImage } from '@angular/common';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  ProjectStatus, ProjectVisibility, ReadProject,
+  ProjectStatus,
+  ProjectVisibility,
+  ReadProject,
 } from '../../shared/interfaces/project';
 import { FirestoreService } from '../../shared/services/firestore.service';
 import {
@@ -24,33 +35,49 @@ import {
   ConsoleLoggerService,
 } from '../../shared/services/console-logger.service';
 import { SeoService } from '../../shared/services/seo.service';
+import { ProjectsAnimations } from './animations/projects.animations';
+import {
+  LoadingOrErrorComponent,
+} from '../../shared/components/loading-or-error/loading-or-error.component';
+import { FirebaseError } from '@angular/fire/app/firebase';
 
 @Component({
   selector: 'aj-projects',
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    MatChipsModule,
     AsyncPipe,
-    MatCardModule,
     RouterLink,
-    MatDividerModule,
-    MatButtonModule,
     MatIconModule,
+    MatCardModule,
+    MatChipsModule,
+    MatButtonModule,
     NgOptimizedImage,
+    MatDividerModule,
+    LoadingOrErrorComponent,
   ],
+  animations: [...ProjectsAnimations],
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnDestroy {
   private readonly title = 'Projects';
   readonly nav_path = navPath;
-  filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('active');
+  private filterSubject =
+    new BehaviorSubject<'all' | 'active' | 'inactive'>('active');
   filter$ = this.filterSubject.asObservable();
-  projects$?: Observable<ReadProject[]>;
+  private projectsSignal = signal<ReadProject[]>([]);
+  projects = this.projectsSignal.asReadonly();
+  private subscriptions = new Subscription();
+  private loadedSignal = signal(false);
+  loaded = this.loadedSignal.asReadonly();
+  private errorSignal = signal<FirebaseError | undefined>(undefined);
+  error = this.errorSignal.asReadonly();
 
   constructor(
     private db: FirestoreService,
     private seoService: SeoService,
+    private cdRef: ChangeDetectorRef,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -64,9 +91,20 @@ export class ProjectsComponent {
       route: navPath.projects,
     });
 
-    this.projects$ = this.filter$.pipe(
+    const projects$ = this.filter$.pipe(
       switchMap((filter) => this.getProjects$(filter)),
     );
+    this.subscriptions.add(
+      projects$.subscribe((projects) => {
+        this.projectsSignal.set(projects);
+        this.loadedSignal.set(true);
+        this.cdRef.markForCheck();
+      }),
+    );
+  }
+
+  onFilterChange(event: MatChipListboxChange) {
+    this.filterSubject.next(event.value);
   }
 
   private getProjects$(
@@ -104,9 +142,10 @@ export class ProjectsComponent {
       map((projects) => projects.sort((a, b) => {
         return b.featured.toString().localeCompare(a.featured.toString());
       })),
-      catchError((error) => {
+      catchError((error: FirebaseError) => {
         this.logger.error(`Something went wrong loading projects`, error);
-        return throwError(error);
+        this.errorSignal.set(error);
+        return of([]);
       })
     );
   }
@@ -140,5 +179,9 @@ export class ProjectsComponent {
     } catch (error: unknown) {
       this.logger.error('Error sharing project', error);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
