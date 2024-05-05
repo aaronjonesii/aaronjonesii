@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
   NavigationBarComponent,
@@ -6,8 +6,8 @@ import {
 import { GenericItem } from '../../shared/interfaces/generic-item';
 import { MenuService } from '../../shared/services/menu.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { map, Subscription } from 'rxjs';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   NavigationDrawerComponent,
 } from '../../shared/components/navigation-drawer/navigation-drawer.component';
@@ -30,19 +30,20 @@ import {
   styleUrl: './admin.component.scss',
   standalone: true,
   imports: [
-    RouterOutlet,
-    NavigationBarComponent,
+    NgClass,
     AsyncPipe,
-    NavigationDrawerComponent,
-    NavigationRailComponent,
+    RouterOutlet,
     TopAppBarComponent,
+    NavigationBarComponent,
+    NavigationRailComponent,
+    NavigationDrawerComponent,
   ],
   animations: [
     SlideInFromLeftAnimation,
     SlideInFromBottomAnimation,
   ],
 })
-export class AdminComponent {
+export class AdminComponent implements OnDestroy {
   readonly title = 'Admin';
   readonly segments: GenericItem[] = this.menuService.adminPages
     .concat(this.menuService.pages.filter((p) => p.id === 'home'));
@@ -55,9 +56,39 @@ export class AdminComponent {
     .pipe(map((state) => state.matches));
   isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
     .pipe(map((state) => state.matches));
+  private subscriptions = new Subscription();
+  private lastScrollY = 0;
+  showBottomBar = signal(false);
+  isMobile = signal(false);
 
   constructor(
     private menuService: MenuService,
     private breakpointObserver: BreakpointObserver,
-  ) {}
+  ) {
+    this.subscriptions.add(
+      this.isMobile$.subscribe((isMobile) => {
+        this.isMobile.set(isMobile);
+        this.showBottomBar.set(isMobile);
+      }),
+    );
+  }
+
+  onContentScroll(event: Event) {
+    if (!this.isMobile()) return;
+
+    const el = event.srcElement as HTMLElement;
+    const scrollY = el.scrollTop || 0;
+    const prevScrollY = this.lastScrollY || 0;
+    this.lastScrollY = scrollY;
+
+    if (scrollY > prevScrollY) {
+      this.showBottomBar.set(false);
+    } else {
+      this.showBottomBar.set(true);
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

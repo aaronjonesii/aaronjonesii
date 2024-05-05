@@ -20,9 +20,12 @@ section.header .select-container {
   gap: 0.5rem;
   padding: 0.25rem;
 }
-section.products {
+section.projects {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+  @media (min-width: $tabletPortrait) {
+    grid-template-columns: repeat(2, 1fr);
+  }
   @media (min-width: $tabletLandscape) {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -35,7 +38,7 @@ section.products {
   grid-template-rows: 1fr;
   gap: 1rem;
 }
-section.products figure.project {
+section.projects figure.project {
   display: flex;
   flex-direction: column;
 
@@ -46,21 +49,21 @@ section.products figure.project {
 
   margin: 0;
 }
-section.products figure.project > * {
+section.projects figure.project > * {
   padding: 0.5rem;
 }
-section.products figure.project .unpublished {
+section.projects figure.project .unpublished {
   display: flex;
   align-items: center;
 }
-section.products figure.project:hover {
+section.projects figure.project:hover {
   .details h3 { text-decoration: underline; }
 }
-section.products figure.project .details { cursor: pointer; }
-section.products figure.project .details picture {
+section.projects figure.project .details { cursor: pointer; }
+section.projects figure.project .details picture {
   width: 100%;
 }
-section.products figure.project .details picture img {
+section.projects figure.project .details picture img {
   position: relative !important;
   border-radius: 1rem;
 }
@@ -71,7 +74,7 @@ section.products figure.project .details picture img {
   overflow: hidden;
   width: 100%;
 }
-section.products figure.project .actions {
+section.projects figure.project .actions {
   margin-top: auto;
 
   border-top-width: 1px;

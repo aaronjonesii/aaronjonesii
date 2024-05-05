@@ -13,15 +13,18 @@
 <!-- Main Content -->
 <div class="flex-col overflow-auto flex-grow">
   <!-- Header -->
-<!--  <aj-top-app-bar [title]="title" />-->
+  <aj-top-app-bar title="Admin" />
 
   <!-- Content -->
-  <main class="page-padding flex-col">
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  <main class="page-padding flex-col" [ngClass]="{'mobile': isMobile()}"
+        (scroll)="onContentScroll($event)">
     <router-outlet />
   </main>
 
   <!-- Bottom Navigation Bar -->
-  @if (isMobile$ | async) {
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @if (showBottomBar()) {
     <aj-navigation-bar [@slideInFromBottomAnimation] [segments]="segments" />
   }
 </div>

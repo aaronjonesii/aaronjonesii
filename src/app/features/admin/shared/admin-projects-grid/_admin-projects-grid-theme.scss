@@ -11,16 +11,16 @@
   $grey-palette: mat.$gray-palette;
 
   aj-admin-projects-grid {
-    section.header .select-container, section.products figure.project {
+    section.header .select-container, section.projects figure.project {
       border-color: mat.get-color-from-palette($grey-palette, 300);
     }
-    section.products figure.project .unpublished {
+    section.projects figure.project .unpublished {
       color: mat.get-color-from-palette($accent-palette);
     }
-    section.products figure.project .actions {
+    section.projects figure.project .actions {
       border-top-color: inherit;
     }
-    section.products figure.project.selected {
+    section.projects figure.project.selected {
       border-color: mat.get-color-from-palette($primary-palette, 100);
       background-color: mat.get-color-from-palette($primary-palette, 50);
     }

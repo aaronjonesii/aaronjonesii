@@ -38,6 +38,9 @@ import {
   AdminUpdateUserResponse,
 } from '../../../../shared/interfaces/functions';
 import { FunctionsError } from '@angular/fire/functions';
+import {
+  TopAppBarService,
+} from '../../../../shared/components/top-app-bar/top-app-bar.service';
 
 @Component({
   selector: 'aj-admin-users',
@@ -69,7 +72,14 @@ export class AdminUsersComponent {
     private db: FirestoreService,
     private fn: FunctionsService,
     private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
   ) {
+    this.topAppBarService.setOptions({
+      title: `Admin ${this.title}`,
+      loading: false,
+      showBackBtn: true,
+    });
+
     this.users$ = this.db.col$<readUser>(`users`, { idField: 'id' })
       .pipe(catchError((error: FirebaseError) => {
         this.logger.error(`Something went wrong loading users`, error.message);

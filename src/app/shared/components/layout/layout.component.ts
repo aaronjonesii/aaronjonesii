@@ -1,8 +1,6 @@
 import {
   Component,
-  ElementRef,
   OnDestroy, signal,
-  ViewChild,
 } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { navPath } from '../../../app.routes';
@@ -63,7 +61,6 @@ export class LayoutComponent implements OnDestroy {
   isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
     .pipe(map((state) => state.matches));
   private subscriptions = new Subscription();
-  @ViewChild('content') contentEl?: ElementRef<HTMLElement>;
   private lastScrollY = 0;
   showBottomBar = signal(false);
   isMobile = signal(false);

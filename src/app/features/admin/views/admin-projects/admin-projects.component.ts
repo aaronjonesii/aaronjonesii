@@ -23,6 +23,9 @@ import {
   LoadingOrErrorComponent,
 // eslint-disable-next-line max-len
 } from '../../../../shared/components/loading-or-error/loading-or-error.component';
+import {
+  TopAppBarService
+} from "../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-admin-projects',
@@ -49,7 +52,14 @@ export class AdminProjectsComponent implements OnDestroy {
   constructor(
     private db: FirestoreService,
     private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
   ) {
+    this.topAppBarService.setOptions({
+      title: `Admin ${this.title}`,
+      loading: false,
+      showBackBtn: true,
+    });
+
     const projects$ = this.db.col$<ProjectWithID>(`projects`, { idField: 'id' })
       .pipe(
         catchError((error: FirebaseError) => {
