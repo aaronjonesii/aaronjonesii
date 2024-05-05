@@ -2,7 +2,8 @@
   "root": true,
   "ignorePatterns": [
     "projects/**/*",
-    "app.component.ts"
+    "app.component.ts",
+    "src/app/shared/libraries/*"
   ],
   "overrides": [
     {
