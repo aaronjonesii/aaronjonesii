@@ -3,7 +3,7 @@ import {
   AbstractControl, FormControl, FormGroup, ReactiveFormsModule,
   ValidationErrors, Validators,
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { first, Subscription } from 'rxjs';
 import { User } from '@angular/fire/auth';
 import { FunctionsError } from '@angular/fire/functions';
 import { Router } from '@angular/router';
@@ -161,7 +161,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         `Please reach out to update your email address!`,
         'Contact',
         { duration: 0 }
-      ).onAction().forEach(() => this.router.navigate([navPath.contact]));
+      ).onAction().pipe(first())
+        .forEach(() => this.router.navigate([navPath.contact]));
     } catch (error) {
       // eslint-disable-next-line max-len
       this.logger.error(`Something went wrong updating email address. Reauthenticate and try again`, error);
