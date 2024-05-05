@@ -1,10 +1,6 @@
 import {
-  SlideInFromBottomAnimation,
-} from '../../shared/animations/slide-in-from-bottom.animations';
-import {
   SlideInFromLeftAnimation,
 } from '../../shared/animations/slide-in-from-left.animations';
-import { WordAnimation } from '../../shared/animations/word.animations';
 import {
   animate,
   AnimationTriggerMetadata, style,
@@ -13,7 +9,6 @@ import {
 } from '@angular/animations';
 
 export const HomeAnimations: AnimationTriggerMetadata[] = [
-    ...SlideInFromLeftAnimation,
   trigger('titleAnimation', [
     transition(':enter', [
       style({ opacity: 0, transform: 'translateY(-50%)' }),
@@ -32,6 +27,8 @@ export const HomeAnimations: AnimationTriggerMetadata[] = [
       ),
     ]),
   ]),
+  trigger('subtitleAnimation', SlideInFromLeftAnimation[0].definitions,),
+  trigger('contactAnimation', SlideInFromLeftAnimation[0].definitions,),
   trigger('imageAnimation', [
     transition(':enter', [
       style({ transform: 'translateY(100%)' }),

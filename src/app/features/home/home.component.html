@@ -4,22 +4,22 @@
 
   <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
   @if (titleAnimationDone()) {
-    <p class="subtitle" [@slideInFromLeftAnimation]>{{heroSubtitle}}</p>
+    <p class="subtitle" [@subtitleAnimation]>{{heroSubtitle}}</p>
 
-    <div class="contact" [@slideInFromLeftAnimation]>
-    <span>
-      <button mat-icon-button type="button">
-        <mat-icon fontIcon="my_location" class="material-icons-outlined" />
-      </button>
-      Based in {{location}}
-    </span>
-
+    <div class="contact" [@contactAnimation]>
       <span>
-      <a mat-icon-button type="button" [href]="'mailto:'+contactEmail">
-        <mat-icon fontIcon="mail" class="material-icons-outlined" />
-      </a>
-        {{contactEmail}}
-    </span>
+        <button mat-icon-button type="button">
+          <mat-icon fontIcon="my_location" class="material-icons-outlined" />
+        </button>
+        Based in {{location}}
+      </span>
+
+        <span>
+        <a mat-icon-button type="button" [href]="'mailto:'+contactEmail">
+          <mat-icon fontIcon="mail" class="material-icons-outlined" />
+        </a>
+          {{contactEmail}}
+      </span>
     </div>
 
     <div class="image" [@imageAnimation]>
