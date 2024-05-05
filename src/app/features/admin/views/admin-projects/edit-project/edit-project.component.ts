@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormArray, FormControl, FormGroup,
@@ -6,7 +6,13 @@ import {
 } from '@angular/forms';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
-import { catchError, Observable, of, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  of, Subscription,
+  throwError,
+} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ProjectTagsComponent } from '../project-tags/project-tags.component';
 import { MatSelectModule } from '@angular/material/select';
-import { KeyValuePipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   AdminEditorComponent,
@@ -44,6 +50,9 @@ import { navPath } from '../../../../../app.routes';
 import {
   ConsoleLoggerService,
 } from '../../../../../shared/services/console-logger.service';
+import {
+  TopAppBarService,
+} from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 
 @Component({
   selector: 'aj-edit-project',
@@ -65,10 +74,11 @@ import {
     TitleCasePipe,
     MatCheckboxModule,
     AdminEditorComponent,
+    AsyncPipe,
   ],
   providers: [SlugifyPipe],
 })
-export class EditProjectComponent implements OnInit {
+export class EditProjectComponent implements OnInit, OnDestroy {
   readonly title = 'Edit project';
   private readonly projectID: string | null = null;
   private project?: ReadProject;
@@ -76,7 +86,8 @@ export class EditProjectComponent implements OnInit {
   editForm = initialProjectForm;
   readonly projectStatuses = ProjectStatus;
   readonly projectVisibilities = ProjectVisibility;
-  loading = true;
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSubject.asObservable();
   allTags$: Observable<Tag[]> = of([]);
   private allTags: Tag[] = [];
   editorConfig = {
@@ -91,6 +102,7 @@ export class EditProjectComponent implements OnInit {
       },
     },
   };
+  private subscriptions = new Subscription();
 
   constructor(
     private router: Router,
@@ -98,8 +110,19 @@ export class EditProjectComponent implements OnInit {
     private db: FirestoreService,
     private route: ActivatedRoute,
     private tagsService: TagsService,
-  private logger: ConsoleLoggerService,
+    private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
   ) {
+    this.subscriptions.add(
+      this.loading$.subscribe((loading) => {
+        this.topAppBarService.setOptions({
+          title: `Admin ${this.title}`,
+          showBackBtn: true,
+          loading,
+        });
+      }),
+    );
+
     this.projectID = this.route.snapshot.paramMap.get('projectID');
   }
   ngOnInit() {
@@ -123,7 +146,7 @@ export class EditProjectComponent implements OnInit {
           this.projectSnapshot = project;
           this.project = project;
           this.setForm(this.project);
-          this.loading = false;
+          this.loadingSubject.next(false);
         }
       }).catch((error: unknown) => {
         this.logger.error(
@@ -220,7 +243,7 @@ export class EditProjectComponent implements OnInit {
   }
 
   async save() {
-    this.loading = true;
+    this.loadingSubject.next(true);
 
     this.editForm.disable();
 
@@ -231,7 +254,7 @@ export class EditProjectComponent implements OnInit {
       if (await this.db.docExists(`projects/${this.slug.value}`)) {
         // eslint-disable-next-line max-len
         this.logger.error(`Project with this name already exists, try changing the name or slug`);
-        this.loading = false;
+        this.loadingSubject.next(false);
         return;
       }
     }
@@ -327,7 +350,11 @@ export class EditProjectComponent implements OnInit {
       })
       .finally(() => {
         this.editForm.enable();
-        this.loading = false;
+        this.loadingSubject.next(false);
       });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

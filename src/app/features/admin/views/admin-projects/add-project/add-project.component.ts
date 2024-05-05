@@ -1,5 +1,11 @@
-import { Component } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  Subscription,
+  throwError,
+} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
@@ -40,6 +46,9 @@ import {
   ConsoleLoggerService,
 } from '../../../../../shared/services/console-logger.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
+import {
+  TopAppBarService,
+} from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 
 @Component({
   selector: 'aj-add-project',
@@ -64,9 +73,10 @@ import { AuthService } from '../../../../../shared/services/auth.service';
   ],
   providers: [SlugifyPipe],
 })
-export class AddProjectComponent {
+export class AddProjectComponent implements OnDestroy {
   readonly title = 'Add Project';
-  loading = false;
+  loadingSubject = new BehaviorSubject(false);
+  loading$ = this.loadingSubject.asObservable();
   addForm = new FormGroup<ProjectForm>({
     name: new FormControl<string>(
       '',
@@ -119,6 +129,7 @@ export class AddProjectComponent {
     },
   };
   user$ = this.auth.loadUser;
+  private subscriptions = new Subscription();
 
   constructor(
     private router: Router,
@@ -126,7 +137,18 @@ export class AddProjectComponent {
     private db: FirestoreService,
     private slugify: SlugifyPipe,
     private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
   ) {
+    this.subscriptions.add(
+      this.loading$.subscribe((loading) => {
+        this.topAppBarService.setOptions({
+          title: `Admin ${this.title}`,
+          showBackBtn: true,
+          loading,
+        });
+      }),
+    );
+
     this.allTags$ = db.col$<Tag>(`tags`).pipe(
       tap((tags) => this.allTags = tags),
       catchError((error) => {
@@ -221,7 +243,7 @@ export class AddProjectComponent {
   }
 
   async save(user: User) {
-    this.loading = true;
+    this.loadingSubject.next(true);
 
     this.addForm.disable();
 
@@ -229,7 +251,7 @@ export class AddProjectComponent {
       this.logger.error(
         `Project with this name already exists, try changing the name or slug`,
       );
-      this.loading = false;
+      this.loadingSubject.next(false);
       this.addForm.enable();
       return;
     }
@@ -300,7 +322,11 @@ export class AddProjectComponent {
       })
       .finally(() => {
         this.addForm.enable();
-        this.loading = false;
+        this.loadingSubject.next(false);
       });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
