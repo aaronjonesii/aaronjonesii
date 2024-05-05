@@ -1,4 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy, signal,
+  ViewChild,
+} from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { navPath } from '../../../app.routes';
 import { appInformation } from '../../../information';
@@ -15,7 +20,7 @@ import {
   NavigationBarComponent,
 } from '../navigation-bar/navigation-bar.component';
 import { RouterOutlet } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import {
   SlideInFromLeftAnimation,
@@ -41,6 +46,7 @@ import { GenericItem } from '../../interfaces/generic-item';
     NavigationBarComponent,
     RouterOutlet,
     AsyncPipe,
+    NgClass,
   ],
 })
 export class LayoutComponent implements OnDestroy {
@@ -57,6 +63,10 @@ export class LayoutComponent implements OnDestroy {
   isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
     .pipe(map((state) => state.matches));
   private subscriptions = new Subscription();
+  @ViewChild('content') contentEl?: ElementRef<HTMLElement>;
+  private lastScrollY = 0;
+  showBottomBar = signal(false);
+  isMobile = signal(false);
 
   constructor(
     private auth: AuthService,
@@ -87,6 +97,28 @@ export class LayoutComponent implements OnDestroy {
         }
       }),
     );
+
+    this.subscriptions.add(
+      this.isMobile$.subscribe((isMobile) => {
+        this.isMobile.set(isMobile);
+        this.showBottomBar.set(isMobile);
+      }),
+    );
+  }
+
+  onContentScroll(event: Event) {
+    if (!this.isMobile()) return;
+
+    const el = event.srcElement as HTMLElement;
+    const scrollY = el.scrollTop || 0;
+    const prevScrollY = this.lastScrollY || 0;
+    this.lastScrollY = scrollY;
+
+    if (scrollY > prevScrollY) {
+      this.showBottomBar.set(false);
+    } else {
+      this.showBottomBar.set(true);
+    }
   }
 
   ngOnDestroy() {
