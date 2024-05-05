@@ -96,9 +96,11 @@ export class PhotoUploadComponent implements OnInit {
       'Reload',
       { duration: 0 }
     ).onAction().pipe(first()).forEach(() => {
-      afterNextRender(() => {
+      try {
         window.location.reload();
-      });
+      } catch (error: unknown) {
+        this.logger.error('Something went wrong reloading page', error);
+      }
     });
   }
 }
