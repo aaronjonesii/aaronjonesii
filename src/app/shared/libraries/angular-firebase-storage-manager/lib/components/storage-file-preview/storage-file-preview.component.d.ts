@@ -1,7 +1,7 @@
 import { EventEmitter, OnChanges } from '@angular/core';
 import { StorageFile } from '../../interfaces';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
-import { ConsoleLoggerService } from "../../services/console-logger.service";
+import { ConsoleLoggerService } from '../../services/console-logger.service';
 import * as i0 from "@angular/core";
 export declare class StorageFilePreviewComponent implements OnChanges {
     private cLog;

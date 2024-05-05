@@ -5,7 +5,7 @@ export declare class ConsoleLoggerService {
     /**
      * Checks if the application is currently running in development mode.
      *
-     * @returns {boolean} True if in development mode, false otherwise.
+     * @return {boolean} True if in development mode, false otherwise.
      */
     isInDevelopmentMode: () => boolean;
     constructor(snackBar: MatSnackBar);
@@ -13,15 +13,17 @@ export declare class ConsoleLoggerService {
      * Logs a debug message to the console if in development mode.
      *
      * @param {string} value - The primary message to log.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     debug(value: string, ...restOfError: unknown[]): void;
     /**
-     * Logs an informational message to the console and displays a snackbar notification
-     * if in development mode.
+     * Logs an informational message to the console and displays a snackbar
+     * notification if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     info(value: string, ...restOfError: unknown[]): void;
     /**
@@ -29,7 +31,8 @@ export declare class ConsoleLoggerService {
      * if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     log(value: string, ...restOfError: unknown[]): void;
     /**
@@ -37,7 +40,8 @@ export declare class ConsoleLoggerService {
      * if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     warn(value: string, ...restOfError: unknown[]): void;
     /**
@@ -45,17 +49,19 @@ export declare class ConsoleLoggerService {
      * if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     error(value: string, ...restOfError: unknown[]): void;
     /**
      * Opens a Material Design snackbar notification.
      *
      * @param {string} message - The text message to display.
-     * @param {string | undefined} action - Optional label for the snackbar action button.
+     * @param {string | undefined} action - Optional label for the snackbar
+     * action button.
      * @param {MatSnackBarConfig | undefined} config - Configuration options for
      * the snackbar.
-     * @returns {MatSnackBarRef<TextOnlySnackBar>} A reference to the snackbar.
+     * @return {MatSnackBarRef<TextOnlySnackBar>} A reference to the snackbar.
      */
     openSnackBar(message: string, action: string | undefined, config: MatSnackBarConfig | undefined): MatSnackBarRef<TextOnlySnackBar>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ConsoleLoggerService, never>;

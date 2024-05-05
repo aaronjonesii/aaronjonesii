@@ -32,8 +32,8 @@ class NewFolderDialogComponent {
      *
      * @param {NewFolderDialogContract} data - Injected data containing initial
      * folder information.
-     * @param {MatDialogRef} dialogRef - A reference to this dialog instance, used for
-     * controlling its behavior.
+     * @param {MatDialogRef} dialogRef - A reference to this dialog instance,
+     * used for controlling its behavior.
      */
     constructor(data, dialogRef) {
         this.data = data;
@@ -131,7 +131,7 @@ class StorageItemIconComponent {
      * the provided content type or a default.
      *
      * @param {string} contentType - The MIME content type of the file (optional).
-     * @returns {string} The name of the Material Design icon to use.
+     * @return {string} The name of the Material Design icon to use.
      */
     getFileIcon(contentType) {
         if (!contentType)
@@ -159,7 +159,7 @@ class FormatBytesPipe {
      * limiting to two decimal places.
      *
      * @param {number} num - The number to format.
-     * @returns {string} The formatted number as a string.
+     * @return {string} The formatted number as a string.
      */
     formatNumber(num) {
         const parts = num.toFixed(2).split('.');
@@ -174,7 +174,7 @@ class FormatBytesPipe {
      * (e.g., kB, MB, GB).
      *
      * @param {number} bytes - The number of bytes.
-     * @returns {string} The formatted byte size representation.
+     * @return {string} The formatted byte size representation.
      */
     formatBytes(bytes) {
         const threshold = 1024;
@@ -191,11 +191,11 @@ class FormatBytesPipe {
         return this.formatNumber(formattedBytes) + ' ' + units[u];
     }
     /**
-     * Transforms a value representing bytes into a human-readable formatted string.
-     * Accepts both numbers and strings as input.
+     * Transforms a value representing bytes into a human-readable formatted
+     * string. Accepts both numbers and strings as input.
      *
      * @param {string | number} bytes - The byte value to transform.
-     * @returns {string} The formatted string representing the byte size.
+     * @return {string} The formatted string representing the byte size.
      */
     transform(bytes) {
         if (typeof bytes === 'string')
@@ -219,7 +219,7 @@ class ConsoleLoggerService {
         /**
          * Checks if the application is currently running in development mode.
          *
-         * @returns {boolean} True if in development mode, false otherwise.
+         * @return {boolean} True if in development mode, false otherwise.
          */
         this.isInDevelopmentMode = () => isDevMode();
     }
@@ -227,7 +227,8 @@ class ConsoleLoggerService {
      * Logs a debug message to the console if in development mode.
      *
      * @param {string} value - The primary message to log.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     debug(value, ...restOfError) {
         if (!this.isInDevelopmentMode())
@@ -235,11 +236,12 @@ class ConsoleLoggerService {
         console.debug(`${value}: `, restOfError);
     }
     /**
-     * Logs an informational message to the console and displays a snackbar notification
-     * if in development mode.
+     * Logs an informational message to the console and displays a snackbar
+     * notification if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     info(value, ...restOfError) {
         if (this.isInDevelopmentMode()) {
@@ -252,7 +254,8 @@ class ConsoleLoggerService {
      * if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     log(value, ...restOfError) {
         if (this.isInDevelopmentMode()) {
@@ -265,7 +268,8 @@ class ConsoleLoggerService {
      * if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     warn(value, ...restOfError) {
         if (this.isInDevelopmentMode()) {
@@ -278,7 +282,8 @@ class ConsoleLoggerService {
      * if in development mode.
      *
      * @param {string} value - The primary message to log and display.
-     * @param {...unknown[]} restOfError - Additional values or error objects to log.
+     * @param {...unknown[]} restOfError - Additional values or error objects
+     * to log.
      */
     error(value, ...restOfError) {
         if (this.isInDevelopmentMode()) {
@@ -290,10 +295,11 @@ class ConsoleLoggerService {
      * Opens a Material Design snackbar notification.
      *
      * @param {string} message - The text message to display.
-     * @param {string | undefined} action - Optional label for the snackbar action button.
+     * @param {string | undefined} action - Optional label for the snackbar
+     * action button.
      * @param {MatSnackBarConfig | undefined} config - Configuration options for
      * the snackbar.
-     * @returns {MatSnackBarRef<TextOnlySnackBar>} A reference to the snackbar.
+     * @return {MatSnackBarRef<TextOnlySnackBar>} A reference to the snackbar.
      */
     openSnackBar(message, action, config) {
         return this.snackBar.open(message, action, config);
@@ -316,26 +322,28 @@ class FirebaseStorageService {
      * Firebase Storage at the given path.
      *
      * @param {string} path - The desired path within Firebase Storage.
-     * @returns {StorageReference} A reference to the specified location.
+     * @return {StorageReference} A reference to the specified location.
      */
     getRef(path) {
         return ref(this.storage, path);
     }
     /**
-     * Lists all files and prefixes (subfolders) within a Firebase Storage directory.
+     * Lists all files and prefixes (subfolders) within a Firebase Storage
+     * directory.
      *
      * @param {StorageReference} listRef - A reference to the directory to list.
-     * @returns {Promise<ListResult>} Resolves with the listing results.
+     * @return {Promise<ListResult>} Resolves with the listing results.
      */
     async listAll(listRef) {
         return await listAll(listRef);
     }
     /**
-     * Uploads a file to Firebase Storage with metadata for correct download behavior.
+     * Uploads a file to Firebase Storage with metadata for correct download
+     * behavior.
      *
      * @param {StorageReference} ref - Reference to the target upload location.
      * @param {File} file - The file object to upload.
-     * @returns {Promise<UploadResult>} Resolves with the upload results.
+     * @return {Promise<UploadResult>} Resolves with the upload results.
      */
     async uploadFile(ref, file) {
         /*
@@ -348,11 +356,12 @@ class FirebaseStorageService {
         return await uploadBytes(ref, file, metadata);
     }
     /**
-     * Uploads multiple files in parallel, optionally placing them within a folder.
+     * Uploads multiple files in parallel, optionally placing them within a
+     * folder.
      *
      * @param {File[]} files - An array of file objects to upload.
      * @param {string} [folder] - Optional folder name for the uploaded files.
-     * @returns {Promise<UploadResult[]>} Resolves with an array of upload results.
+     * @return {Promise<UploadResult[]>} Resolves with an array of upload results.
      */
     async uploadFiles(files, folder) {
         return Promise.all(files.map(async (file) => {
@@ -366,7 +375,8 @@ class FirebaseStorageService {
      * constructs a StorageFile object.
      *
      * @param {StorageReference} fileRef - A reference to the file.
-     * @returns {Promise<StorageFile>} Resolves with the StorageFile representation.
+     * @return {Promise<StorageFile>} Resolves with the StorageFile
+     * representation.
      */
     async importFile(fileRef) {
         const metadata = await getMetadata(fileRef);
@@ -376,20 +386,20 @@ class FirebaseStorageService {
      * Creates a StorageFolder object representing a Firebase Storage folder.
      *
      * @param {StorageReference} folder - A reference to the folder.
-     * @returns {StorageFolder}
+     * @return {StorageFolder}
      */
     importFolder(folder) {
         return {
             type: 'folder',
             name: folder.name,
-            fullPath: folder.fullPath
+            fullPath: folder.fullPath,
         };
     }
     /**
      * Retrieves a direct download URL for a file in Firebase Storage.
      *
      * @param {StorageReference} ref - A reference to the file.
-     * @returns {Promise<string>} Resolves with the download URL string.
+     * @return {Promise<string>} Resolves with the download URL string.
      */
     async getDownloadURL(ref) {
         return getDownloadURL(ref);
@@ -398,20 +408,21 @@ class FirebaseStorageService {
      * Opens all provided files in new browser tabs by generating download URLs
      * and triggering download links.
      *
-     * @param {StorageItem[]} files - An array of StorageItem objects representing files.
+     * @param {StorageItem[]} files - An array of StorageItem objects
+     * representing files.
      */
     async openAllFiles(files) {
-        const paths = files.map(file => file.fullPath);
-        const links = await Promise.all(paths.map(path => this.getRef(path))
-            .map(ref => this.getDownloadURL(ref)));
-        links.forEach(url => {
+        const paths = files.map((file) => file.fullPath);
+        const links = await Promise.all(paths.map((path) => this.getRef(path))
+            .map((ref) => this.getDownloadURL(ref)));
+        links.forEach((url) => {
             const anchor = this.createAnchorElement(url);
             anchor.click();
         });
     }
     /**
-     * Recursively deletes a folder and its contents from Firebase Storage. Handles
-     * potential errors if the physical folder doesn't exist.
+     * Recursively deletes a folder and its contents from Firebase Storage.
+     * Handles potential errors if the physical folder doesn't exist.
      *
      * @param {string} path - The full path of the folder to delete.
      */
@@ -453,17 +464,20 @@ class FirebaseStorageService {
      */
     async deleteFiles(items) {
         return await Promise.all(items.map(async (item) => {
-            if (item?.type === 'folder')
+            if (item?.type === 'folder') {
                 return await this.deleteFolder(item.fullPath);
-            else if (item?.type === 'file')
+            }
+            else if (item?.type === 'file') {
                 return await this.deleteFile(item.fullPath);
+            }
         }));
     }
     /**
      * Helper function to create a download link element.
      *
      * @param {string} url - The download URL for the file.
-     * @returns {HTMLAnchorElement} A configured anchor element for triggering a download.
+     * @return {HTMLAnchorElement} A configured anchor element for triggering
+     * a download.
      */
     createAnchorElement(url) {
         const a = this.document.createElement('a');
@@ -500,7 +514,9 @@ class StorageFilePreviewComponent {
     ngOnChanges() {
         if (!this.item)
             return;
-        /** Fetches the download URL for the new file and updates the preview state. */
+        /**
+         * Fetches the download URL for the new file and updates the preview state.
+         */
         const fileRef = this.storageService.getRef(this.item.fullPath);
         this.storageService.getDownloadURL(fileRef)
             .then((downloadURL) => {
@@ -546,8 +562,8 @@ class FileDropzoneDirective {
          */
         this.dropped = new EventEmitter();
         /**
-         * Emits a boolean indicating whether the host element is currently being hovered over
-         * during a drag operation.
+         * Emits a boolean indicating whether the host element is currently being
+         * hovered over during a drag operation.
          *
          * @event
          */
@@ -559,7 +575,8 @@ class FileDropzoneDirective {
         this.hoverClass = 'hovered';
     }
     /**
-     * Handles the 'drop' event, emitting the dropped files and preventing default behavior.
+     * Handles the 'drop' event, emitting the dropped files and preventing
+     * default behavior.
      *
      * @param {$event} $event - The DragEvent containing the dropped files.
      */
@@ -569,8 +586,8 @@ class FileDropzoneDirective {
         this.onDragLeave($event);
     }
     /**
-     * Handles the 'dragover' event, adding a hover class and emitting a 'hovered' event
-     * with a value of 'true'. Prevents default behavior.
+     * Handles the 'dragover' event, adding a hover class and emitting a
+     * 'hovered' event with a value of 'true'. Prevents default behavior.
      *
      * @param {$event} $event - The DragEvent.
      */
@@ -624,17 +641,21 @@ class LoadingComponent {
          */
         this.height = 250;
         /**
-         * A dynamic SVG string representing the loading animation. This string is generated
-         *  using the provided height.
+         * A dynamic SVG string representing the loading animation.
+         * This string is generated using the provided height.
          * @private
          */
         /* eslint-disable-next-line max-len */
         this.LOADING_SVG = (height) => `<?xml version="1.0" encoding="utf-8"?><svg width='${height}px' height='${height}px' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-ring"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><defs><filter id="uil-ring-shadow" x="-100%" y="-100%" width="300%" height="300%"><feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset><feGaussianBlur result="blurOut" in="offOut" stdDeviation="0"></feGaussianBlur><feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend></filter></defs><path d="M10,50c0,0,0,0.5,0.1,1.4c0,0.5,0.1,1,0.2,1.7c0,0.3,0.1,0.7,0.1,1.1c0.1,0.4,0.1,0.8,0.2,1.2c0.2,0.8,0.3,1.8,0.5,2.8 c0.3,1,0.6,2.1,0.9,3.2c0.3,1.1,0.9,2.3,1.4,3.5c0.5,1.2,1.2,2.4,1.8,3.7c0.3,0.6,0.8,1.2,1.2,1.9c0.4,0.6,0.8,1.3,1.3,1.9 c1,1.2,1.9,2.6,3.1,3.7c2.2,2.5,5,4.7,7.9,6.7c3,2,6.5,3.4,10.1,4.6c3.6,1.1,7.5,1.5,11.2,1.6c4-0.1,7.7-0.6,11.3-1.6 c3.6-1.2,7-2.6,10-4.6c3-2,5.8-4.2,7.9-6.7c1.2-1.2,2.1-2.5,3.1-3.7c0.5-0.6,0.9-1.3,1.3-1.9c0.4-0.6,0.8-1.3,1.2-1.9 c0.6-1.3,1.3-2.5,1.8-3.7c0.5-1.2,1-2.4,1.4-3.5c0.3-1.1,0.6-2.2,0.9-3.2c0.2-1,0.4-1.9,0.5-2.8c0.1-0.4,0.1-0.8,0.2-1.2 c0-0.4,0.1-0.7,0.1-1.1c0.1-0.7,0.1-1.2,0.2-1.7C90,50.5,90,50,90,50s0,0.5,0,1.4c0,0.5,0,1,0,1.7c0,0.3,0,0.7,0,1.1 c0,0.4-0.1,0.8-0.1,1.2c-0.1,0.9-0.2,1.8-0.4,2.8c-0.2,1-0.5,2.1-0.7,3.3c-0.3,1.2-0.8,2.4-1.2,3.7c-0.2,0.7-0.5,1.3-0.8,1.9 c-0.3,0.7-0.6,1.3-0.9,2c-0.3,0.7-0.7,1.3-1.1,2c-0.4,0.7-0.7,1.4-1.2,2c-1,1.3-1.9,2.7-3.1,4c-2.2,2.7-5,5-8.1,7.1 c-0.8,0.5-1.6,1-2.4,1.5c-0.8,0.5-1.7,0.9-2.6,1.3L66,87.7l-1.4,0.5c-0.9,0.3-1.8,0.7-2.8,1c-3.8,1.1-7.9,1.7-11.8,1.8L47,90.8 c-1,0-2-0.2-3-0.3l-1.5-0.2l-0.7-0.1L41.1,90c-1-0.3-1.9-0.5-2.9-0.7c-0.9-0.3-1.9-0.7-2.8-1L34,87.7l-1.3-0.6 c-0.9-0.4-1.8-0.8-2.6-1.3c-0.8-0.5-1.6-1-2.4-1.5c-3.1-2.1-5.9-4.5-8.1-7.1c-1.2-1.2-2.1-2.7-3.1-4c-0.5-0.6-0.8-1.4-1.2-2 c-0.4-0.7-0.8-1.3-1.1-2c-0.3-0.7-0.6-1.3-0.9-2c-0.3-0.7-0.6-1.3-0.8-1.9c-0.4-1.3-0.9-2.5-1.2-3.7c-0.3-1.2-0.5-2.3-0.7-3.3 c-0.2-1-0.3-2-0.4-2.8c-0.1-0.4-0.1-0.8-0.1-1.2c0-0.4,0-0.7,0-1.1c0-0.7,0-1.2,0-1.7C10,50.5,10,50,10,50z" fill="#337ab7" filter="url(#uil-ring-shadow)"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" repeatCount="indefinite" dur="1s"></animateTransform></path></svg>`;
     }
     ngOnInit() {
-        /** Generating a SafeHtml version of the loading SVG using the provided height. */
+        /**
+         * Generating a SafeHtml version of the loading SVG using the provided
+         * height.
+         */
         if (this.height) {
-            this.svg = this.sanitizer.bypassSecurityTrustHtml(this.LOADING_SVG(this.height));
+            this.svg = this.sanitizer
+                .bypassSecurityTrustHtml(this.LOADING_SVG(this.height));
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.3", ngImport: i0, type: LoadingComponent, deps: [{ token: i1$3.DomSanitizer }], target: i0.ɵɵFactoryTarget.Component }); }
@@ -716,7 +737,7 @@ class FileManagerComponent {
      * Checks if all items in the file listing are currently selected.
      *
      * @param {StorageItem[]} items - The list of file items.
-     * @returns {boolean} True if all items are selected, false otherwise.
+     * @return {boolean} True if all items are selected, false otherwise.
      */
     allItemsSelected(items) {
         return this.selection.selected.length === items.length &&
@@ -726,15 +747,16 @@ class FileManagerComponent {
      * Checks if some, but not all, items in the file listing are selected.
      *
      * @param {StorageItem[]} items - The list of file items.
-     * @returns {boolean} True if the selection state is indeterminate, false otherwise.
+     * @return {boolean} True if the selection state is indeterminate, false
+     * otherwise.
      */
     allItemsIndeterminate(items) {
         return this.selection.selected.length > 0 &&
             this.selection.selected.length < items.length;
     }
     /**
-     * Event handler for when a storage item is selected. Updates the navigation if a folder
-     * is selected, or sets the selected file if a file is selected.
+     * Event handler for when a storage item is selected. Updates the navigation
+     * if a folder is selected, or sets the selected file if a file is selected.
      *
      * @param {StorageItem} item - The selected StorageItem.
      */
@@ -747,28 +769,29 @@ class FileManagerComponent {
     /**
      * Checks if the current selection includes at least one folder.
      *
-     * @returns {boolean} True if a folder is part of the selection, false otherwise.
+     * @return {boolean} True if a folder is part of the selection, false
+     * otherwise.
      */
     get selectionIncludesFolder() {
-        return this.selection.selected.some(item => item.type === 'folder');
+        return this.selection.selected.some((item) => item.type === 'folder');
     }
     /**
-     * Opens a dialog to confirm deletion, and handles deleting selected items if confirmed.
-     * Clears the selection and updates the file listing.
+     * Opens a dialog to confirm deletion, and handles deleting selected items
+     * if confirmed. Clears the selection and updates the file listing.
      *
      * @param {StorageItem[]} items - The items to delete.
      */
     deleteItems(items) {
         const dialogRef = this.dialog.open(DeleteFilesDialogComponent, {
             id: 'delete-files-dialog',
-            minWidth: '250px'
+            minWidth: '250px',
         });
         dialogRef.afterClosed().pipe(first()).forEach((confirm) => {
             if (confirm) {
                 this.storageService.deleteFiles(items)
                     .then(() => {
                     this.selection.clear();
-                    if (items.some(item => item == this.selectedFile)) {
+                    if (items.some((item) => item == this.selectedFile)) {
                         this.selectedFile = undefined;
                     }
                 })
@@ -777,12 +800,13 @@ class FileManagerComponent {
         });
     }
     /**
-     * Constructs a breadcrumb-style path string based on the current path history.
-     * Used for navigation display.
+     * Constructs a breadcrumb-style path string based on the current path
+     * history. Used for navigation display.
      *
      * @param {string[]} pathArray - An array of path segments.
-     * @param {number} index - The index up to which path segments should be included.
-     * @returns {string} The constructed path string.
+     * @param {number} index - The index up to which path segments should be
+     * included.
+     * @return {string} The constructed path string.
      */
     getCrumbPath(pathArray, index) {
         pathArray.length = index + 1;
@@ -804,7 +828,7 @@ class FileManagerComponent {
      * Retrieves and processes all items within a given storage path.
      *
      * @param {string} path - The storage path to list.
-     * @returns {Promise<StorageItem[]>} A Promise resolving to the items,
+     * @return {Promise<StorageItem[]>} A Promise resolving to the items,
      * or undefined in case of error.
      */
     async getAllStorageItems(path) {
@@ -813,7 +837,7 @@ class FileManagerComponent {
             .then(async ({ items, prefixes }) => {
             const allItems = [
                 ...prefixes.map(this.storageService.importFolder),
-                ...(await Promise.all(items.map(this.storageService.importFile)))
+                ...(await Promise.all(items.map(this.storageService.importFile))),
             ];
             return allItems;
         })
@@ -837,11 +861,12 @@ class FileManagerComponent {
         this.items$ = this.storageService.listAll(pathRef)
             .then(async ({ items, prefixes }) => [
             ...prefixes.map(this.storageService.importFolder),
-            ...(await Promise.all(items.map(this.storageService.importFile)))
+            ...(await Promise.all(items.map(this.storageService.importFile))),
         ]);
     }
     /**
-     * Opens a dialog to create a new folder and updates folder listing if successful.
+     * Opens a dialog to create a new folder and updates folder listing
+     * if successful.
      */
     createNewFolder() {
         const newFolderContract = {
@@ -873,17 +898,20 @@ class FileManagerComponent {
         if (!files)
             return;
         // prevent file names to have ","(comma)
-        if (Array.from(files).some(file => file.name.includes(","))) {
+        if (Array.from(files).some((file) => file.name.includes(','))) {
             this.cLog.warn(`File names cannot include a ","(comma)`);
             return;
         }
         const uploadedFiles = [];
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            const fileRef = this.storageService.getRef(`${this.currentPath}/${file.name}`);
+            const fileRef = this.storageService
+                .getRef(`${this.currentPath}/${file.name}`);
             await this.storageService.uploadFile(fileRef, file)
                 .then((snapshot) => uploadedFiles.push(snapshot))
-                .catch((error) => this.handleUploadError(error, file.name));
+                .catch((error) => {
+                return this.handleUploadError(error, file.name);
+            });
         }
         if (!uploadedFiles.length)
             return;

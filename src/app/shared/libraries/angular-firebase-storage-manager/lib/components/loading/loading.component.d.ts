@@ -8,8 +8,8 @@ export declare class LoadingComponent implements OnInit {
      */
     height: number;
     /**
-     * A dynamic SVG string representing the loading animation. This string is generated
-     *  using the provided height.
+     * A dynamic SVG string representing the loading animation.
+     * This string is generated using the provided height.
      * @private
      */
     LOADING_SVG: (height: number) => string;

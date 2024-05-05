@@ -1,7 +1,8 @@
 import { MatDialogRef } from '@angular/material/dialog';
 import * as i0 from "@angular/core";
 /**
- * Defines the data contract for information passed to the NewFolderDialogComponent.
+ * Defines the data contract for information passed to the
+ * NewFolderDialogComponent.
  */
 export interface NewFolderDialogContract {
     folderName: string;
@@ -22,8 +23,8 @@ export declare class NewFolderDialogComponent {
      *
      * @param {NewFolderDialogContract} data - Injected data containing initial
      * folder information.
-     * @param {MatDialogRef} dialogRef - A reference to this dialog instance, used for
-     * controlling its behavior.
+     * @param {MatDialogRef} dialogRef - A reference to this dialog instance,
+     * used for controlling its behavior.
      */
     constructor(data: NewFolderDialogContract, dialogRef: MatDialogRef<NewFolderDialogComponent>);
     /**

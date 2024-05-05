@@ -6,7 +6,7 @@ export declare class FormatBytesPipe implements PipeTransform {
      * limiting to two decimal places.
      *
      * @param {number} num - The number to format.
-     * @returns {string} The formatted number as a string.
+     * @return {string} The formatted number as a string.
      */
     formatNumber(num: number): string;
     /**
@@ -14,15 +14,15 @@ export declare class FormatBytesPipe implements PipeTransform {
      * (e.g., kB, MB, GB).
      *
      * @param {number} bytes - The number of bytes.
-     * @returns {string} The formatted byte size representation.
+     * @return {string} The formatted byte size representation.
      */
     formatBytes(bytes: number): string;
     /**
-     * Transforms a value representing bytes into a human-readable formatted string.
-     * Accepts both numbers and strings as input.
+     * Transforms a value representing bytes into a human-readable formatted
+     * string. Accepts both numbers and strings as input.
      *
      * @param {string | number} bytes - The byte value to transform.
-     * @returns {string} The formatted string representing the byte size.
+     * @return {string} The formatted string representing the byte size.
      */
     transform(bytes: string | number): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<FormatBytesPipe, never>;

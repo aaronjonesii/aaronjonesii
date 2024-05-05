@@ -9,8 +9,8 @@ export declare class FileDropzoneDirective {
      */
     readonly dropped: EventEmitter<FileList>;
     /**
-     * Emits a boolean indicating whether the host element is currently being hovered over
-     * during a drag operation.
+     * Emits a boolean indicating whether the host element is currently being
+     * hovered over during a drag operation.
      *
      * @event
      */
@@ -22,14 +22,15 @@ export declare class FileDropzoneDirective {
     hoverClass: string;
     constructor(elementRef: ElementRef);
     /**
-     * Handles the 'drop' event, emitting the dropped files and preventing default behavior.
+     * Handles the 'drop' event, emitting the dropped files and preventing
+     * default behavior.
      *
      * @param {$event} $event - The DragEvent containing the dropped files.
      */
     onDrop($event: DragEvent): void;
     /**
-     * Handles the 'dragover' event, adding a hover class and emitting a 'hovered' event
-     * with a value of 'true'. Prevents default behavior.
+     * Handles the 'dragover' event, adding a hover class and emitting a
+     * 'hovered' event with a value of 'true'. Prevents default behavior.
      *
      * @param {$event} $event - The DragEvent.
      */

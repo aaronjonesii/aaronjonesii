@@ -4,7 +4,7 @@ import { FirebaseError } from '@angular/fire/app/firebase';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageItem, StorageFile } from './interfaces';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ConsoleLoggerService } from "./services/console-logger.service";
+import { ConsoleLoggerService } from './services/console-logger.service';
 import * as i0 from "@angular/core";
 export declare class FileManagerComponent implements OnInit {
     private dialog;
@@ -57,19 +57,20 @@ export declare class FileManagerComponent implements OnInit {
      * Checks if all items in the file listing are currently selected.
      *
      * @param {StorageItem[]} items - The list of file items.
-     * @returns {boolean} True if all items are selected, false otherwise.
+     * @return {boolean} True if all items are selected, false otherwise.
      */
     allItemsSelected(items: StorageItem[]): boolean;
     /**
      * Checks if some, but not all, items in the file listing are selected.
      *
      * @param {StorageItem[]} items - The list of file items.
-     * @returns {boolean} True if the selection state is indeterminate, false otherwise.
+     * @return {boolean} True if the selection state is indeterminate, false
+     * otherwise.
      */
     allItemsIndeterminate(items: StorageItem[]): boolean;
     /**
-     * Event handler for when a storage item is selected. Updates the navigation if a folder
-     * is selected, or sets the selected file if a file is selected.
+     * Event handler for when a storage item is selected. Updates the navigation
+     * if a folder is selected, or sets the selected file if a file is selected.
      *
      * @param {StorageItem} item - The selected StorageItem.
      */
@@ -77,23 +78,25 @@ export declare class FileManagerComponent implements OnInit {
     /**
      * Checks if the current selection includes at least one folder.
      *
-     * @returns {boolean} True if a folder is part of the selection, false otherwise.
+     * @return {boolean} True if a folder is part of the selection, false
+     * otherwise.
      */
     get selectionIncludesFolder(): boolean;
     /**
-     * Opens a dialog to confirm deletion, and handles deleting selected items if confirmed.
-     * Clears the selection and updates the file listing.
+     * Opens a dialog to confirm deletion, and handles deleting selected items
+     * if confirmed. Clears the selection and updates the file listing.
      *
      * @param {StorageItem[]} items - The items to delete.
      */
     deleteItems(items: StorageItem[]): void;
     /**
-     * Constructs a breadcrumb-style path string based on the current path history.
-     * Used for navigation display.
+     * Constructs a breadcrumb-style path string based on the current path
+     * history. Used for navigation display.
      *
      * @param {string[]} pathArray - An array of path segments.
-     * @param {number} index - The index up to which path segments should be included.
-     * @returns {string} The constructed path string.
+     * @param {number} index - The index up to which path segments should be
+     * included.
+     * @return {string} The constructed path string.
      */
     getCrumbPath(pathArray: string[], index: number): string;
     /**
@@ -107,7 +110,7 @@ export declare class FileManagerComponent implements OnInit {
      * Retrieves and processes all items within a given storage path.
      *
      * @param {string} path - The storage path to list.
-     * @returns {Promise<StorageItem[]>} A Promise resolving to the items,
+     * @return {Promise<StorageItem[]>} A Promise resolving to the items,
      * or undefined in case of error.
      */
     getAllStorageItems(path: string): Promise<StorageItem[]>;
@@ -119,7 +122,8 @@ export declare class FileManagerComponent implements OnInit {
      */
     reload(path?: string | null): void;
     /**
-     * Opens a dialog to create a new folder and updates folder listing if successful.
+     * Opens a dialog to create a new folder and updates folder listing
+     * if successful.
      */
     createNewFolder(): void;
     /**

@@ -27,7 +27,7 @@ export declare class StorageItemIconComponent {
      * the provided content type or a default.
      *
      * @param {string} contentType - The MIME content type of the file (optional).
-     * @returns {string} The name of the Material Design icon to use.
+     * @return {string} The name of the Material Design icon to use.
      */
     getFileIcon(contentType?: string): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<StorageItemIconComponent, never>;
