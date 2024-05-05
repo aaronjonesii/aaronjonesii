@@ -1,24 +1,19 @@
 import { Component, signal } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
-import { where } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { appInformation } from '../../information';
 import {
-  Project, ProjectStatus, ProjectVisibility,
+  Project,
 } from '../../shared/interfaces/project';
-import { FirestoreService } from '../../shared/services/firestore.service';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
 import { navPath } from '../../app.routes';
-import {
-  ConsoleLoggerService,
-} from '../../shared/services/console-logger.service';
 import { SeoService } from '../../shared/services/seo.service';
-import { FirebaseError } from '@angular/fire/app/firebase';
 import { HomeAnimations } from './home.animations';
+import { ProjectsService } from '../../shared/services/projects.service';
 
 @Component({
   selector: 'aj-home',
@@ -26,11 +21,7 @@ import { HomeAnimations } from './home.animations';
   styleUrl: './home.component.scss',
   standalone: true,
   animations: [...HomeAnimations],
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    NgOptimizedImage,
-  ],
+  imports: [MatIconModule, MatButtonModule, NgOptimizedImage],
 })
 export class HomeComponent {
   readonly title = appInformation.title;
@@ -40,12 +31,12 @@ export class HomeComponent {
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.email;
   readonly location = appInformation.location;
-  titleAnimationDone = signal(false);
+  private titleAnimationDoneSignal = signal(false);
+  titleAnimationDone = this.titleAnimationDoneSignal.asReadonly();
 
   constructor(
-    private db: FirestoreService,
     private seoService: SeoService,
-    private logger: ConsoleLoggerService,
+    private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
@@ -53,26 +44,12 @@ export class HomeComponent {
       showBackBtn: false,
       loading: false,
     });
-    this.seoService.generateTags({
-      route: navPath.home,
-    });
+    this.seoService.generateTags({ route: navPath.home });
 
-    this.featuredProjects$ = this.db.colQuery$<Project>(
-      `projects`,
-      { idField: 'id' },
-      /** only get featured projects */
-      where('featured', '==', true),
-      /** filter out drafts */
-      where('status', '!=', ProjectStatus.DRAFT),
-      /** filter out private projects */
-      where('visibility', '==', ProjectVisibility.PUBLIC),
-    ).pipe(
-      catchError((error: FirebaseError) => {
-        this.logger.error(
-          `Something went wrong loading featured projects`, error,
-        );
-        return of(null);
-      }),
-    );
+    this.featuredProjects$ = this.projectsService.featuredProjects$;
+  }
+
+  onTitleAnimationDone() {
+    this.titleAnimationDoneSignal.set(true);
   }
 }

@@ -1,6 +1,6 @@
 <section class="hero">
   <h1 class="title" [@titleAnimation]
-      (@titleAnimation.done)="titleAnimationDone.set(true)">{{heroTitle}}</h1>
+      (@titleAnimation.done)="onTitleAnimationDone()">{{heroTitle}}</h1>
 
   <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
   @if (titleAnimationDone()) {
