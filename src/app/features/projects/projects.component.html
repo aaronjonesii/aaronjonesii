@@ -16,7 +16,8 @@
 
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
 @defer (when loaded()) {
-  <div class="flex-col app-gap projects-container" [@projectsListAnimation]="loaded()">
+  <div class="flex-col app-gap projects-container"
+       [@projectsListAnimation]="projects().length">
     @for (project of projects(); track project.id) {
       <mat-card class="card" [@projectAnimation]>
         @if (project.image) {
