@@ -40,6 +40,9 @@ import {
   LoadingOrErrorComponent,
 } from '../../shared/components/loading-or-error/loading-or-error.component';
 import { FirebaseError } from '@angular/fire/app/firebase';
+import {
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'aj-projects',
@@ -57,6 +60,7 @@ import { FirebaseError } from '@angular/fire/app/firebase';
     NgOptimizedImage,
     MatDividerModule,
     LoadingOrErrorComponent,
+    SkeletonComponent,
   ],
   animations: [...ProjectsAnimations],
 })
@@ -73,6 +77,7 @@ export class ProjectsComponent implements OnDestroy {
   loaded = this.loadedSignal.asReadonly();
   private errorSignal = signal<FirebaseError | undefined>(undefined);
   error = this.errorSignal.asReadonly();
+  readonly placeholders = Array(4).fill(() => '');
 
   constructor(
     private db: FirestoreService,

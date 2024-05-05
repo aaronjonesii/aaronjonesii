@@ -69,8 +69,31 @@
     }
   </div>
 } @placeholder (minimum 500ms) {
-  <div class="flex-col">
-    <h1 class="mat-headline-3">Placeholder</h1>
+  <div class="flex-col app-gap projects-container">
+    @for (p of placeholders; track p) {
+      <mat-card class="card">
+        <picture>
+          <aj-skeleton [styles]="{width: '600px', height: '300px'}" />
+        </picture>
+        <div class="info-container mat-body-1">
+          <aj-skeleton class="project-name" />
+          <aj-skeleton />
+
+          <div class="flex-row app-gap">
+            <aj-skeleton [styles]="{width: '50px'}" />
+            <aj-skeleton [styles]="{width: '50px'}" />
+          </div>
+
+          <mat-divider />
+
+          <mat-card-actions class="actions-container">
+            <aj-skeleton [styles]="{width: '100px', height: '30px'}" />
+
+            <aj-skeleton [styles]="{width: '100px', height: '30px'}" />
+          </mat-card-actions>
+        </div>
+      </mat-card>
+    }
   </div>
 } @error {
   <aj-loading-or-error [error]="error()" />
