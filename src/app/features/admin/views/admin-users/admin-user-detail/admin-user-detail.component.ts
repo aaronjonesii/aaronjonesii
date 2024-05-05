@@ -37,8 +37,8 @@ import {
   AdminUpdateClaimsRequest, AdminUpdateClaimsResponse,
 } from '../../../../../shared/interfaces/functions';
 import {
-  TopAppBarService
-} from "../../../../../shared/components/top-app-bar/top-app-bar.service";
+  TopAppBarService,
+} from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 
 @Component({
   selector: 'aj-admin-user-detail',

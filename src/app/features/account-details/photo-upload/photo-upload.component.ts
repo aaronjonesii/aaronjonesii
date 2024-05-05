@@ -1,4 +1,4 @@
-import { afterNextRender, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
