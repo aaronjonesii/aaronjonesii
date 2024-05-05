@@ -6,6 +6,12 @@ import {
 } from '../../shared/components/top-app-bar/top-app-bar.service';
 import { navPath } from '../../app.routes';
 import { SeoService } from '../../shared/services/seo.service';
+import {
+  SlideInFromRightAnimation,
+} from '../../shared/animations/slide-in-from-right.animations';
+import {
+  SlideInFromBottomAnimation,
+} from '../../shared/animations/slide-in-from-bottom.animations';
 
 @Component({
   selector: 'aj-about',
@@ -13,6 +19,10 @@ import { SeoService } from '../../shared/services/seo.service';
   styleUrl: './about.component.scss',
   standalone: true,
   imports: [NgOptimizedImage],
+  animations: [
+    SlideInFromRightAnimation,
+    SlideInFromBottomAnimation,
+  ],
 })
 export class AboutComponent {
   private readonly title = appInformation.title;
