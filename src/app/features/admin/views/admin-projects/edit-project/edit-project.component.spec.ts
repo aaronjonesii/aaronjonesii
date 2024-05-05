@@ -5,6 +5,8 @@ import {
   FirestoreService,
 } from '../../../../../shared/services/firestore.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
+import { Storage } from '@angular/fire/storage';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('EditProjectComponent', () => {
   let component: EditProjectComponent;
@@ -12,8 +14,11 @@ describe('EditProjectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditProjectComponent],
+      imports: [
+        EditProjectComponent,
+      ],
       providers: [
+        provideAnimations(),
         {
           provide: FirestoreService,
           useValue: {
@@ -33,6 +38,10 @@ describe('EditProjectComponent', () => {
         {
           provide: AuthService,
            useValue: {},
+        },
+        {
+          provide: Storage,
+          useValue: {},
         },
       ],
     })
