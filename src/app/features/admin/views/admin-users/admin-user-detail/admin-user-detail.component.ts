@@ -36,6 +36,9 @@ import { FunctionsError } from '@angular/fire/functions';
 import {
   AdminUpdateClaimsRequest, AdminUpdateClaimsResponse,
 } from '../../../../../shared/interfaces/functions';
+import {
+  TopAppBarService
+} from "../../../../../shared/components/top-app-bar/top-app-bar.service";
 
 @Component({
   selector: 'aj-admin-user-detail',
@@ -67,7 +70,14 @@ export class AdminUserDetailComponent implements OnDestroy {
     private fn: FunctionsService,
     private route: ActivatedRoute,
     private logger: ConsoleLoggerService,
+    private topAppBarService: TopAppBarService,
   ) {
+    this.topAppBarService.setOptions({
+      title: `Admin ${this.title}`,
+      loading: false,
+      showBackBtn: true,
+    });
+
     this.subscriptions.add(
       this.route.paramMap.subscribe(async (paramMap) => {
         const id = paramMap.get('userUID');
