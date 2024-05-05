@@ -24,8 +24,8 @@ import {
 // eslint-disable-next-line max-len
 } from '../../../../shared/components/loading-or-error/loading-or-error.component';
 import {
-  TopAppBarService
-} from "../../../../shared/components/top-app-bar/top-app-bar.service";
+  TopAppBarService,
+} from '../../../../shared/components/top-app-bar/top-app-bar.service';
 
 @Component({
   selector: 'aj-admin-projects',
