@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { navPath } from '../../../app.routes';
-import { AsyncPipe, Location, NgClass } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { TopAppBarService } from './top-app-bar.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import {
+  SlideInFromLeftAnimation,
+} from '../../animations/slide-in-from-left.animations';
 
 @Component({
   selector: 'aj-top-app-bar',
@@ -21,8 +24,8 @@ import { Subscription } from 'rxjs';
     RouterLink,
     RouterLinkActive,
     AsyncPipe,
-    NgClass,
   ],
+  animations: [SlideInFromLeftAnimation],
 })
 export class TopAppBarComponent implements OnDestroy {
   @Input() title = 'Title';
