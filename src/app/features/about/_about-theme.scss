@@ -23,7 +23,16 @@
         @include mat.typography-level($typography-config, 'headline-1');
       }
     }
-    p.text {
+    .strengths .title {
+      @include mat.typography-level($typography-config, 'headline-4');
+      @media (min-width: $desktop) {
+        @include mat.typography-level($typography-config, 'headline-3');
+      }
+    }
+    .strengths .strength-title {
+      @include mat.typography-level($typography-config, 'headline-5');
+    }
+    .text {
       @include mat.typography-level($typography-config, 'headline-6');
     }
   }

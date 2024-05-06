@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { appInformation } from '../../information';
 import {
   TopAppBarService,
@@ -12,23 +12,39 @@ import {
 import {
   SlideInFromBottomAnimation,
 } from '../../shared/animations/slide-in-from-bottom.animations';
+import { StrengthsService } from '../../shared/services/strengths.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  SlideInFromLeftAnimation,
+} from '../../shared/animations/slide-in-from-left.animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'aj-about',
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [
+    AsyncPipe,
+    MatIconModule,
+    MatButtonModule,
+    NgOptimizedImage,
+  ],
   animations: [
+    SlideInFromLeftAnimation,
     SlideInFromRightAnimation,
     SlideInFromBottomAnimation,
   ],
 })
 export class AboutComponent {
   private readonly title = appInformation.title;
+  readonly strengths$ = this.strengthsService.strengths$;
 
   constructor(
+    private router: Router,
     private seoService: SeoService,
+    private strengthsService: StrengthsService,
     private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
@@ -37,8 +53,10 @@ export class AboutComponent {
       loading: false,
     });
 
-    this.seoService.generateTags({
-      route: navPath.about,
-    });
+    this.seoService.generateTags({ route: navPath.about });
+  }
+
+  async onConnectBtnClick() {
+    await this.router.navigate([navPath.contact]);
   }
 }
