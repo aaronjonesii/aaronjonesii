@@ -3,7 +3,7 @@
     @if (showBackBtn) {
       <button mat-icon-button color="primary" class="back-btn" type="button"
               [disabled]="loading" [@slideInFromLeftAnimation]
-              (click)="location.back()">
+              (click)="onBackBtnClick()">
         <mat-icon class="material-icons-outlined" fontIcon="arrow_back" />
       </button>
     }
@@ -16,10 +16,11 @@
   </div>
 
   @if (!content.children.length) {
-    @if (auth.user$ | async) {
+<!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    @if (user()) {
       <button mat-button type="button"
               [disabled]="loading"
-              (click)="auth.logout()">
+              (click)="onSignOutBtnClick()">
         <mat-icon fontIcon="logout" />
         Sign out
       </button>

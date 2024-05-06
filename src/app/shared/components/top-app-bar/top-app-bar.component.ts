@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, signal } from '@angular/core';
 import { navPath } from '../../../app.routes';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { TopAppBarService } from './top-app-bar.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import {
   SlideInFromLeftAnimation,
 } from '../../animations/slide-in-from-left.animations';
+import { RoutingService } from '../../services/routing.service';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'aj-top-app-bar',
@@ -33,10 +35,12 @@ export class TopAppBarComponent implements OnDestroy {
   @Input() loading = false;
   readonly nav_path = navPath;
   private subscriptions = new Subscription();
+  private userSignal = signal<User | null>(null);
+  user = this.userSignal.asReadonly();
 
   constructor(
-    public location: Location,
-    public auth: AuthService,
+    private auth: AuthService,
+    private routing: RoutingService,
     private topAppBarService: TopAppBarService,
   ) {
     /** Set options from service */
@@ -47,6 +51,18 @@ export class TopAppBarComponent implements OnDestroy {
         this.loading = options.loading;
       }),
     );
+
+    this.subscriptions.add(
+      this.auth.user$.subscribe((user) => this.userSignal.set(user)),
+    );
+  }
+
+  onBackBtnClick() {
+    this.routing.goBack();
+  }
+
+  async onSignOutBtnClick() {
+    await this.auth.logout();
   }
 
   ngOnDestroy() {
