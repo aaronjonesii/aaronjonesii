@@ -6,11 +6,17 @@
   display: flex;
 }
 
-#mainContent {
+main {
+  flex-grow: 1;
   overflow: auto;
+  height: 0;
+}
+
+main.mobile {
   padding-bottom: $app-navigation-bar-height;
 }
 
+/* In your layout.component.scss */
 aj-navigation-bar {
   position: fixed;
   bottom: 0;

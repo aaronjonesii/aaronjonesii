@@ -11,14 +11,14 @@
 }
 
 <!-- Main Content -->
-<div id="mainContent" class="flex-col overflow-auto flex-grow"
-     (scroll)="onContentScroll($event)">
+<div class="flex-col overflow-auto flex-grow">
   <!-- Header -->
   <aj-top-app-bar [title]="title" />
 
   <!-- Content -->
   <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
-  <main class="page-padding flex-col">
+  <main class="page-padding flex-col" [ngClass]="{'mobile': isMobile()}"
+        (scroll)="onContentScroll($event)">
     <router-outlet />
   </main>
 
