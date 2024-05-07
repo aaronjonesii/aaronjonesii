@@ -19,6 +19,9 @@ import {
   SlideInFromLeftAnimation,
 } from '../../shared/animations/slide-in-from-left.animations';
 import { Router } from '@angular/router';
+import {
+  SkeletonComponent
+} from "../../shared/components/skeleton/skeleton.component";
 
 @Component({
   selector: 'aj-about',
@@ -30,6 +33,7 @@ import { Router } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     NgOptimizedImage,
+    SkeletonComponent,
   ],
   animations: [
     SlideInFromLeftAnimation,
