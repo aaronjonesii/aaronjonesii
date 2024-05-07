@@ -29,7 +29,7 @@ export class HomeComponent {
   featuredProjects$?: Observable<Project[] | null>;
   readonly heroTitle = 'Heyooo, I\'m Aaron, a Full Stack Engineer';
   readonly heroSubtitle = appInformation.description;
-  readonly contactEmail = appInformation.email;
+  readonly contactEmail = appInformation.altEmail;
   readonly location = appInformation.location;
   private titleAnimationDoneSignal = signal(false);
   titleAnimationDone = this.titleAnimationDoneSignal.asReadonly();

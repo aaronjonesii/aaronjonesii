@@ -13,7 +13,7 @@ export class MenuService {
     },
     {
       id: 'contact', name: 'Contact',
-      icon: 'contact_support', routerLink: [navPath.contact],
+      icon: 'contact_page', routerLink: [navPath.contact],
     },
   ];
   readonly adminPages: GenericItem[] = [

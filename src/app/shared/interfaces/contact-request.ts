@@ -1,7 +1,6 @@
 import { firebaseTimestamp } from './timestamp';
-import { FieldValue } from '@angular/fire/firestore/firebase';
 
-export interface Contact {
+export interface ContactRequest {
   id?: string;
   name: string;
   company: string;
@@ -9,8 +8,4 @@ export interface Contact {
   message: string;
   created?: firebaseTimestamp;
   updated?: firebaseTimestamp;
-}
-export interface writeContact extends Contact {
-  created?: FieldValue;
-  joined?: FieldValue;
 }

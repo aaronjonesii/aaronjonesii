@@ -438,10 +438,10 @@ export class FirestoreService {
         return updateFunction(batch)
           .then(() => batch.commit())
           .then(() => resolve(undefined))
-          .catch((error) => {
-            reject(error.message);
+          .catch((error: FirebaseError) => {
+            reject(error);
           });
-      } catch (error) {
+      } catch (error: unknown) {
         return reject(error);
       }
     });

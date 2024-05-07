@@ -62,7 +62,7 @@ service cloud.firestore {
     }
 
     // contact
-    match /contact/{contactID} {
+    match /contact-requests/{contactRequestID} {
       allow read: if isAdmin();
       allow create: if verifyFields(['name', 'company', 'email', 'message', 'created'], []);
     }
@@ -70,7 +70,7 @@ service cloud.firestore {
     // mail
     match /mail/{mailID} {
       allow read: if isAdmin();
-      allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments']);
+      allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments', 'created', 'updated']);
     }
 
     // reports
