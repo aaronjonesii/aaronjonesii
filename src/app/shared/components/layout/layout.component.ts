@@ -108,7 +108,7 @@ export class LayoutComponent implements OnDestroy {
 
     const el = event.srcElement as HTMLElement;
     const scrollY = el.scrollTop || 0;
-    const prevScrollY = this.lastScrollY || 0;
+    const prevScrollY = scrollY > 0 ? (this.lastScrollY || 0) : scrollY;
     this.lastScrollY = scrollY;
 
     if (scrollY > prevScrollY) {
