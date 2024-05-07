@@ -1,12 +1,9 @@
-:host {
-  position: sticky;
-  top: 0;
-}
+@import '../../../../assets/scss/partials/_extras.scss';
 
 mat-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  height: 56px;
+  gap: $app-gap;
+  height: $app-header-height;
 }
