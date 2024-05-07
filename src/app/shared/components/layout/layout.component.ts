@@ -38,13 +38,13 @@ import { GenericItem } from '../../interfaces/generic-item';
   ],
   standalone: true,
   imports: [
-    NavigationRailComponent,
-    NavigationDrawerComponent,
+    NgClass,
+    AsyncPipe,
+    RouterOutlet,
     TopAppBarComponent,
     NavigationBarComponent,
-    RouterOutlet,
-    AsyncPipe,
-    NgClass,
+    NavigationRailComponent,
+    NavigationDrawerComponent,
   ],
 })
 export class LayoutComponent implements OnDestroy {
