@@ -17,6 +17,7 @@ import {
 import { SeoService } from '../../shared/services/seo.service';
 import {
   ContactRequestFormComponent,
+// eslint-disable-next-line max-len
 } from '../../shared/components/contact-request-form/contact-request-form.component';
 import { ContactRequest } from '../../shared/interfaces/contact-request';
 import { RoutingService } from '../../shared/services/routing.service';
@@ -35,12 +36,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+/* eslint-disable no-unused-vars */
 enum Status {
   PENDING = 'pending',
   ERROR = 'error',
   SUCCESS = 'success',
   LOADING = 'loading',
 }
+/* eslint-enable no-unused-vars */
 
 @Component({
   selector: 'aj-contact',

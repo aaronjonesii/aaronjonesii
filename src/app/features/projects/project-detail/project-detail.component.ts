@@ -1,12 +1,12 @@
 import {
-  afterNextRender, AfterRenderPhase, Component,
-  Inject, OnDestroy, ViewEncapsulation,
+  Component,
+  OnDestroy, ViewEncapsulation,
 } from '@angular/core';
 import {
   catchError, first, map, Observable,
   of, Subscription, switchMap,
 } from 'rxjs';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { increment, where } from '@angular/fire/firestore';
@@ -14,7 +14,7 @@ import {
   CommentsDialogComponent, CommentsDialogContract,
 } from './comments-dialog/comments-dialog.component';
 import {
-  AsyncPipe, DatePipe, DOCUMENT, NgOptimizedImage } from '@angular/common';
+  AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -86,7 +86,6 @@ export class ProjectDetailComponent implements OnDestroy {
   user: UserWithID | null = null;
 
   constructor(
-    private router: Router,
     private auth: AuthService,
     private dialog: MatDialog,
     private db: FirestoreService,
@@ -95,7 +94,6 @@ export class ProjectDetailComponent implements OnDestroy {
     private routing: RoutingService,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
-    @Inject(DOCUMENT) private document: Document,
   ) {
     /** title service */
     this.topAppBarService.setOptions({
@@ -138,25 +136,6 @@ export class ProjectDetailComponent implements OnDestroy {
     );
 
     this.routing.watchAndRouteToFragment();
-  }
-
-  private watchForFragment() {
-    this.subscriptions.add(
-      this.router.routerState.root.fragment.subscribe((fragment) => {
-        if (!fragment) return;
-
-        this._routeToFragment(fragment);
-      }),
-    );
-  }
-
-  private _routeToFragment(fragment: string) {
-    afterNextRender(() => {
-      const el = this.document.querySelector(`#${fragment}`);
-      if (!el) return;
-
-      el?.scrollIntoView();
-    }, { phase: AfterRenderPhase.Read });
   }
 
   /* todo: double check to make sure this makes sense */
