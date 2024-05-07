@@ -1,4 +1,4 @@
-import { afterNextRender, Inject, Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { DOCUMENT } from '@angular/common';
 import { ConsoleLoggerService } from './console-logger.service';
@@ -6,8 +6,6 @@ import { appInformation } from '../../information';
 
 @Injectable({ providedIn: 'root' })
 export class SwUpdateService {
-  private updateAvailable = false;
-
   constructor(
     private swUpdate: SwUpdate,
     private logger: ConsoleLoggerService,
@@ -19,11 +17,10 @@ export class SwUpdateService {
       await this.swUpdate.checkForUpdate()
         .then((updateAvailable) => {
           if (updateAvailable) {
-            this.updateAvailable = updateAvailable;
             this.notifyUpdateAvailable();
           }
         }).catch((error) => {
-          this.logger.error(`Error checking for service worker update`, error);
+          this.logger.error(`Error checking for new version`, error);
         });
     }
   }
@@ -37,9 +34,6 @@ export class SwUpdateService {
   }
 
   reloadPage() {
-    // Reload the page to update to the latest version.
-    afterNextRender(() => {
-      this.document.location.reload();
-    });
+    this.document.location.reload();
   }
 }
