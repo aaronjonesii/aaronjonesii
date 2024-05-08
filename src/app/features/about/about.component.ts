@@ -20,8 +20,8 @@ import {
 } from '../../shared/animations/slide-in-from-left.animations';
 import { Router } from '@angular/router';
 import {
-  SkeletonComponent
-} from "../../shared/components/skeleton/skeleton.component";
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'aj-about',
