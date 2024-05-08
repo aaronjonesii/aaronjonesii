@@ -1,20 +1,27 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
-  OnDestroy, ViewEncapsulation,
+  OnDestroy, signal,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
-  catchError, first, map, Observable,
-  of, Subscription, switchMap,
+  catchError,
+  first,
+  map,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
 } from 'rxjs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { increment, where } from '@angular/fire/firestore';
 import {
-  CommentsDialogComponent, CommentsDialogContract,
+  CommentsDialogComponent,
+  CommentsDialogContract,
 } from './comments-dialog/comments-dialog.component';
-import {
-  AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -29,7 +36,9 @@ import {
   LoadingComponent,
 } from '../../../shared/components/loading/loading.component';
 import {
-  ProjectStatus, ProjectVisibility, ReadProject,
+  ProjectStatus,
+  ProjectVisibility,
+  ReadProject,
 } from '../../../shared/interfaces/project';
 import { CommentWithID } from '../../../shared/interfaces/comment';
 import { FirestoreService } from '../../../shared/services/firestore.service';
@@ -58,6 +67,7 @@ import { RoutingService } from '../../../shared/services/routing.service';
   /* eslint-disable-next-line max-len */
   /* eslint-disable-next-line @angular-eslint/use-component-view-encapsulation */
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     MatButtonModule,
@@ -74,10 +84,11 @@ import { RoutingService } from '../../../shared/services/routing.service';
   ],
 })
 export class ProjectDetailComponent implements OnDestroy {
-  readonly nav_path = navPath;
+  protected readonly navPath = navPath;
   projectID$: Observable<string | null>;
   project$: Observable<ReadProject | null>;
-  notAvailable = false;
+  private notAvailableSignal = signal(false);
+  notAvailable = this.notAvailableSignal.asReadonly();
   comments$?: Observable<CommentWithID[] | null>;
   readonly ProjectStatus = ProjectStatus;
   relatedProjects$?: Observable<ReadProject[] | null>;
@@ -92,6 +103,7 @@ export class ProjectDetailComponent implements OnDestroy {
     private route: ActivatedRoute,
     private seoService: SeoService,
     private routing: RoutingService,
+    private cdRef: ChangeDetectorRef,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -119,13 +131,14 @@ export class ProjectDetailComponent implements OnDestroy {
     this.subscriptions.add(
       this.project$.subscribe((project) => {
         if (!project) {
-          this.notAvailable = true;
+          this.notAvailableSignal.set(true);
           return;
         }
 
         this.project = project;
         this.comments$ = this.getComments$(project);
         this.relatedProjects$ = this.getRelatedProjects$(project);
+        this.cdRef.markForCheck();
       }),
     );
 
@@ -162,7 +175,7 @@ export class ProjectDetailComponent implements OnDestroy {
       .pipe(
         switchMap(async (project) => {
           if (!project) {
-            this.notAvailable = true;
+            this.notAvailableSignal.set(true);
             return null;
           }
           /** seo service */
