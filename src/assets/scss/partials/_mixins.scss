@@ -5,3 +5,8 @@
   overflow: hidden;
   width: 100%;
 }
+
+@mixin verticalText() {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}
