@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirestoreService } from './firestore.service';
 import { readUser, User, UserWithID } from '../interfaces/user';
 import { User as FirebaseUser } from '@angular/fire/auth';
-import { ConsoleLoggerService } from "./console-logger.service";
+import { ConsoleLoggerService } from './console-logger.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {

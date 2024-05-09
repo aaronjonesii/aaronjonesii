@@ -5,7 +5,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { appInformation } from '../../information';
 import {
-  Project, ProjectWithID,
+  ProjectWithID,
 } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
