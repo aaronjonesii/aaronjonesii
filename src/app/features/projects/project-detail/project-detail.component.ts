@@ -1,27 +1,21 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component,
-  OnDestroy, signal,
-  ViewEncapsulation,
+  ChangeDetectionStrategy, ViewEncapsulation,
+  ChangeDetectorRef, OnDestroy,
+  Component, computed, signal,
 } from '@angular/core';
 import {
-  catchError,
-  first,
-  map,
-  Observable,
-  of,
-  Subscription,
-  switchMap,
+  Observable, Subscription,
+  of, switchMap,
+  first, map,
 } from 'rxjs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { User } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
-import { increment, where } from '@angular/fire/firestore';
 import {
-  CommentsDialogComponent,
-  CommentsDialogContract,
-} from './comments-dialog/comments-dialog.component';
-import { AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
+  AsyncPipe,
+  DatePipe,
+  NgOptimizedImage,
+  NgTemplateOutlet,
+} from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -36,29 +30,27 @@ import {
   LoadingComponent,
 } from '../../../shared/components/loading/loading.component';
 import {
-  ProjectStatus,
-  ProjectVisibility,
-  ReadProject,
+  ProjectStatus, ProjectWithID,
 } from '../../../shared/interfaces/project';
-import { CommentWithID } from '../../../shared/interfaces/comment';
-import { FirestoreService } from '../../../shared/services/firestore.service';
 import {
   TopAppBarService,
 } from '../../../shared/components/top-app-bar/top-app-bar.service';
 import { appInformation } from '../../../information';
-import { readUser, UserWithID } from '../../../shared/interfaces/user';
+import { UserWithID } from '../../../shared/interfaces/user';
 import {
   ConfirmDialogComponent,
   ConfirmDialogContract,
 } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { navPath } from '../../../app.routes';
 import { AuthService } from '../../../shared/services/auth.service';
-import {
-  ConsoleLoggerService,
-} from '../../../shared/services/console-logger.service';
 import { SeoService } from '../../../shared/services/seo.service';
-import { FirebaseError } from '@angular/fire/app/firebase';
 import { RoutingService } from '../../../shared/services/routing.service';
+import { FetchStatus } from '../../../shared/enums/fetch-status';
+import {
+  SkeletonComponent,
+} from '../../../shared/components/skeleton/skeleton.component';
+import { ProjectsService } from '../../../shared/services/projects.service';
+import { UsersService } from '../../../shared/services/users.service';
 
 @Component({
   selector: 'aj-project-detail',
@@ -70,41 +62,61 @@ import { RoutingService } from '../../../shared/services/routing.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    MatButtonModule,
-    RouterLink,
-    AsyncPipe,
     DatePipe,
-    UserPhotoComponent,
-    MatDividerModule,
+    AsyncPipe,
+    RouterLink,
     MatTabsModule,
-    ProjectDetailCommentComponent,
     MatIconModule,
+    MatButtonModule,
     LoadingComponent,
     NgOptimizedImage,
+    NgTemplateOutlet,
+    MatDividerModule,
+    SkeletonComponent,
+    UserPhotoComponent,
+    ProjectDetailCommentComponent,
   ],
 })
 export class ProjectDetailComponent implements OnDestroy {
   protected readonly navPath = navPath;
-  projectID$: Observable<string | null>;
-  project$: Observable<ReadProject | null>;
-  private notAvailableSignal = signal(false);
-  notAvailable = this.notAvailableSignal.asReadonly();
-  comments$?: Observable<CommentWithID[] | null>;
-  readonly ProjectStatus = ProjectStatus;
-  relatedProjects$?: Observable<ReadProject[] | null>;
+  protected readonly ProjectStatus = ProjectStatus;
   private subscriptions = new Subscription();
-  project?: ReadProject;
-  user: UserWithID | null = null;
+  private projectSignal = signal<ProjectWithID | null>(null);
+  project = this.projectSignal.asReadonly();
+  private userSignal = signal<UserWithID | null>(null);
+  user = this.userSignal.asReadonly();
+  user$ = computed(() => of(this.user()));
+  private projectFetchStatusSignal = signal(FetchStatus.PENDING);
+  projectFetchStatus = this.projectFetchStatusSignal.asReadonly();
+  isOwner = computed(() => {
+    const user = this.user();
+    return user ? this.project()?.roles[user.id] === 'owner' : false;
+  });
+  protected readonly FetchStatus = FetchStatus;
+  private loadedSignal = signal(false);
+  loaded = this.loadedSignal.asReadonly();
+  commentsSignal$ = computed(() => {
+    const project = this.project();
+    return project ?
+      this.projectsService.getProjectComments$(project.id) :
+      of(null);
+  });
+  relatedProjectsSignal$ = computed(() => {
+    const project = this.project();
+    return project ?
+      this.projectsService.getRelatedProjectsByTags$(project.id, project.tags) :
+      of(null);
+  });
 
   constructor(
     private auth: AuthService,
     private dialog: MatDialog,
-    private db: FirestoreService,
     private route: ActivatedRoute,
     private seoService: SeoService,
     private routing: RoutingService,
     private cdRef: ChangeDetectorRef,
-    private logger: ConsoleLoggerService,
+    private usersService: UsersService,
+    private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
   ) {
     /** title service */
@@ -114,203 +126,86 @@ export class ProjectDetailComponent implements OnDestroy {
       loading: false,
     });
 
-    this.projectID$ = this.route.paramMap.pipe(
-      map((params) => params.get('projectID')),
+    const projectID$ = this.route.paramMap.pipe(
+      map((params) => params.get('projectID') ?? 'undefined'),
     );
 
-    this.project$ = this.projectID$.pipe(
-      switchMap((projectID) => this.getProject$(projectID)),
-      catchError((error: FirebaseError) => {
-        if (error.code !== 'permission-denied') {
-          this.logger.error('Error loading project', error);
-        }
-        return of(null);
+    const project$ = projectID$.pipe(
+      switchMap((projectID) => {
+        return this.projectsService.getProjectById$(projectID);
       }),
     );
 
     this.subscriptions.add(
-      this.project$.subscribe((project) => {
+      project$.subscribe((project) => {
         if (!project) {
-          this.notAvailableSignal.set(true);
+          this.projectFetchStatusSignal.set(FetchStatus.ERROR);
+          this.loadedSignal.set(true);
           return;
         }
 
-        this.project = project;
-        this.comments$ = this.getComments$(project);
-        this.relatedProjects$ = this.getRelatedProjects$(project);
-        this.cdRef.markForCheck();
+        this.seoService.generateProjectTags(project);
+
+        this.projectSignal.set(project);
+        this.projectFetchStatusSignal.set(FetchStatus.SUCCESS);
+        this.loadedSignal.set(true);
       }),
     );
 
     this.subscriptions.add(
       this.auth.loadUser.subscribe(async (user) => {
-        this.user = user ? await this.getUser(user) : null;
+        this.userSignal.set(
+          user ? await this.usersService.getUserFromDB(user) : null,
+        );
       }),
     );
 
     this.routing.watchAndRouteToFragment();
   }
 
-  /* todo: double check to make sure this makes sense */
-  async getUser(user: User) {
-    const userSnap = await this.db.docSnap<readUser>(`users/${user.uid}`);
-    if (!userSnap.exists()) {
-      return Object.assign({ id: user.uid }, user) as UserWithID;
-    } else {
-      return Object.assign({ id: user.uid }, userSnap.data()) as UserWithID;
-    }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
-  getUser$(user: User) {
-    return this.db.doc$<readUser>(`users/${user.uid}`)
-      .pipe(
-        map((userDoc) => {
-          return Object.assign({ id: user.uid }, userDoc) as UserWithID;
-        }),
-      );
-  }
+  async updateFollowingStatus() {
+    const user = this.user();
+    this.auth.assertUser(user);
 
-  private getProject$(id: string | null): Observable<ReadProject | null> {
-    return (this.db.doc$(`projects/${id}`) as Observable<ReadProject>)
-      .pipe(
-        switchMap(async (project) => {
-          if (!project) {
-            this.notAvailableSignal.set(true);
-            return null;
-          }
-          /** seo service */
-          this.seoService.generateTags({
-            title: project.name,
-            route: `${navPath.projects}/${project.slug}`,
-            author: appInformation.name,
-            description: project.description,
-            type: 'article',
-            image: project.image ?? '',
-          });
+    if (user?.following) {
+      const confirmDialogContract: ConfirmDialogContract = {
+        description: `Unfollow from ${appInformation.name}?`,
+        buttonText: `Unfollow`,
+      };
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        id: 'confirm-unfollow-dialog',
+        data: confirmDialogContract,
+      });
 
-          if (!project?.shards) return project;
-
-          /** increment view count */
-          const shardId = Math.floor(Math.random() * project.shards).toString();
-          const shardRef = this.db.doc<object>(
-            `projects/${project.slug}/shards/${shardId}`,
-          );
-          await this.db.update(shardRef, { views: increment(1) });
-
-          /** get view count from shards */
-          let views = 0;
-          for (let i = 0; i < project.shards; i++) {
-            const shardSnap = await this.db.docSnap(
-              `projects/${project.slug}/shards/${i.toString()}`,
-            );
-            views = views + shardSnap.get('views');
-          }
-
-          return Object.assign({ views: views }, project);
-        }),
-      );
-  }
-
-  getComments$(
-    project: ReadProject | null,
-  ): Observable<CommentWithID[] | null> {
-    if (!project) return of(null);
-
-    return this.db.col$<CommentWithID>(
-      `projects/${project.slug}/comments`,
-      { idField: 'id' },
-    ).pipe(
-      /** Sort comments by newest first */
-      map((comments) => {
-        return comments.sort((a, b) => b.created.seconds - a.created.seconds);
-      }),
-    );
-  }
-
-  private getRelatedProjects$(
-    project: ReadProject | null,
-  ): Observable<ReadProject[] | null> {
-    if (!project) return of(null);
-
-    return this.db.colQuery$<ReadProject>(
-      `projects`,
-      {},
-      /** filter out private projects */
-      where('visibility', '==', ProjectVisibility.PUBLIC),
-      /** filter out drafts */
-      where('status', '!=', ProjectStatus.DRAFT),
-    ).pipe(
-      /** filter projects if they don't match current project's tags */
-      map((projects) => {
-        return projects.filter((p) => {
-          if (!p?.tags?.length) return false;
-          if (p.slug === project.slug) return false;
-
-          return p?.tags.some((t) => project?.tags?.includes(t));
-        });
-      }),
-      /** sort related projects by decreasing number of matching tags */
-      map((relatedProjects) => {
-        return relatedProjects.sort((a, b) => {
-          const aIntersection = a?.tags
-            ?.filter((t) => project?.tags?.includes(t)) ?? [];
-          const bIntersection = b?.tags
-            ?.filter((t) => project?.tags?.includes(t)) ?? [];
-          return bIntersection.length - aIntersection.length;
-        });
-      }),
-    );
-  }
-
-  isOwner(project: ReadProject, user: UserWithID | null): boolean {
-    return user ? project.roles[user.id] === 'owner' : false;
-  }
-
-  async updateFollowingStatus(user: UserWithID | null) {
-    try {
-      this.auth.assertUser(user);
-
-      if (user?.following) {
-        const confirmDialogContract: ConfirmDialogContract = {
-          description: `Unfollow from ${appInformation.name}?`,
-          buttonText: `Unfollow`,
-        };
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-          id: 'confirm-unfollow-dialog',
-          data: confirmDialogContract,
-        });
-
-        dialogRef.afterClosed().pipe(first()).forEach(async (confirm) => {
-          return confirm ? await this._updateFollowStatus(user) : undefined;
-        });
-      } else await this._updateFollowStatus(user);
-    } catch (error) {
-      /* swallow errors */
-    }
+      dialogRef.afterClosed().pipe(first()).forEach(async (confirm) => {
+        return confirm ? await this._updateFollowStatus(user) : undefined;
+      });
+    } else await this._updateFollowStatus(user);
   }
 
   private async _updateFollowStatus(user: UserWithID): Promise<void> {
-    const userFollowing = user?.following ? user.following : false;
-    return this.db.update(`users/${user.id}`, { following: !userFollowing })
-      .then(() => (<UserWithID> this.user).following = !userFollowing)
-      .then(() => this.logger.log(userFollowing ? 'Unfollowed' : 'Followed'));
+    if (!user) return;
+
+    await this.usersService.updateUserFollowingStatus(user)
+      .then(() => {
+        this.userSignal.set({ ...user, following: !user.following });
+      });
   }
 
-  openComments(project: ReadProject): void {
-    const commentsDialogContract: CommentsDialogContract = {
-      comments$: this.comments$,
-      selectedComment: undefined,
-      user$: of(this.user),
-      parent: this.db.doc(`projects/${project.slug}`),
-    };
-    this.dialog.open(CommentsDialogComponent, {
-      id: 'comments-dialog',
-      data: commentsDialogContract,
-      disableClose: true,
-    });
+  async openComments(): Promise<void> {
+    const project = this.project();
+    if (!project || !this.user()) return;
+    this.projectsService.openProjectCommentsDialogById(
+      project.id,
+      this.user$() as Observable<UserWithID>,
+    );
   }
 
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+  onTryLoadAgain() {
+    window.location.reload();
   }
 }

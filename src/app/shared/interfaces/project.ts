@@ -35,12 +35,14 @@ export enum ProjectVisibility {
 }
 /* eslint-enable no-unused-vars */
 
-export interface ProjectWithID extends Project { id: string; }
 export interface WriteProject extends Project {
   created: FieldValue,
   updated: FieldValue | null,
 }
+
 export interface ReadProject extends Project {
   created: TimeStamp,
   updated: TimeStamp | null,
 }
+
+export interface ProjectWithID extends ReadProject { id: string; }

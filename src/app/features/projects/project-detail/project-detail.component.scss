@@ -16,14 +16,14 @@ aj-project-detail {
     z-index: 1000;
   }
 
-  .not-available-container {
+  .not-found-container, .error-container {
     margin-top: calc(#{$app-margin} * 3);
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
   }
-  .not-available-container ul {
+  .not-found-container ul {
     text-align: left;
   }
   .article-container article picture {}
