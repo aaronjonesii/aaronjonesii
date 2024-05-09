@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { appInformation } from '../../information';
+import { ProjectWithID } from '../interfaces/project';
+import { navPath } from '../../app.routes';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
@@ -10,6 +12,17 @@ export class SeoService {
     private titleService: Title,
     @Inject(DOCUMENT) private document: Document,
   ) {}
+
+  generateProjectTags(project: ProjectWithID) {
+    this.generateTags({
+      title: project.name,
+      route: navPath.projectDetail(project.id),
+      author: appInformation.name,
+      description: project.description,
+      type: 'article',
+      image: project.image ?? '',
+    });
+  }
 
   generateTags(tags: {
     title?: string,
