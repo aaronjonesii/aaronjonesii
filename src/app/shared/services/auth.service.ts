@@ -8,7 +8,7 @@ import {
   signInWithEmailAndPassword, signInWithPopup, signOut,
   sendPasswordResetEmail, updateEmail, getIdTokenResult,
 } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ConsoleLoggerService } from './console-logger.service';
 import {
   UpdateProfileRequest,
@@ -435,21 +435,65 @@ export class AuthService implements OnDestroy {
    * user is not signed in.
    *
    * @param {UserWithID | User | null} user - The user to check
+   * @throws {Error} If the user is not signed in.
    */
-  assertUser(user: UserWithID | User | null): asserts user {
+  /**
+   * Asserts that the current user is signed in and has a valid user ID.
+   * If the user is not authenticated, they are redirected to the sign-in page.
+   * This method is intended for use within route guards or other scenarios
+   * where authentication is strictly required.
+   *
+   * @param {UserWithID | User | null} user - The user object to check for
+   * authentication status.
+   * @param {NavigationExtras} navigationExtras - (Optional) An object
+   * containing additional navigation settings to pass to the sign-in
+   * redirect. See {@link NavigationExtras}.
+   * @throws {Error} If the user is not signed in, triggering a redirection.
+   */
+  assertUser(
+    user: UserWithID | User | null,
+    navigationExtras?: NavigationExtras,
+  ): asserts user {
     if (!user) {
-      this.router.navigate(
-        [navPath.signIn],
-        {
-          queryParams: { 'redirectURL': this.router.routerState.snapshot.url },
-        },
-      );
+      this.navigateToSignInWithRedirectUrl(navigationExtras);
       throw new Error(`You must be signed in`);
     }
   }
 
-  private _displayNameOrEmail(userCredential: UserCredential) {
-    return userCredential.user.displayName ?? userCredential.user.email;
+  /**
+   * Redirects the user to the sign-in page, optionally including additional
+   * navigation settings. This method intelligently captures the current
+   * URL as a 'redirectURL' query parameter, allowing the user to return
+   * to their intended page after successful sign-in.
+   *
+   * @param {NavigationExtras} navigationExtras - (Optional) An object
+   * containing additional navigation settings to merge with the default
+   * redirect behavior. See {@link NavigationExtras}.
+   */
+  async navigateToSignInWithRedirectUrl(navigationExtras?: NavigationExtras) {
+    const defaultExtras: NavigationExtras = {
+      queryParams: { 'redirectURL': this.router.routerState.snapshot.url },
+    };
+    const extras = Object.assign(navigationExtras ?? {}, defaultExtras);
+    await this.router.navigate([navPath.signIn], extras);
+  }
+
+  /**
+   * Extracts the display name of a user, or falls back to their email
+   * address, and finally to their UID if necessary for display purposes.
+   *
+   * @param {UserCredential} userCredential - The UserCredential object
+   * containing the user's information.
+   * @return {string} A display-friendly string representing the user. Priority
+   * is given to:
+   *                  1. Display Name (if set).
+   *                  2. Email Address.
+   *                  3. UID (as a last resort).
+   */
+  private _displayNameOrEmail(userCredential: UserCredential): string {
+    const displayNameOrEmail =
+      userCredential.user.displayName ?? userCredential.user.email;
+    return displayNameOrEmail ?? userCredential.user.uid;
   }
 
   ngOnDestroy() {
