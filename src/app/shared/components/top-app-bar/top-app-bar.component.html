@@ -26,8 +26,8 @@
       </button>
     } @else {
       <button mat-button type="button"
-              [routerLink]="[nav_path.signIn]"
-              [disabled]="loading">
+              [disabled]="loading"
+              (click)="onSignInBtnClick()">
         <mat-icon fontIcon="login" />
         Sign in
       </button>

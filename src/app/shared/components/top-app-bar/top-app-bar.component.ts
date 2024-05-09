@@ -20,12 +20,12 @@ import { User } from '@angular/fire/auth';
   styleUrl: './top-app-bar.component.scss',
   standalone: true,
   imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    RouterLink,
-    RouterLinkActive,
     AsyncPipe,
+    RouterLink,
+    MatIconModule,
+    MatButtonModule,
+    RouterLinkActive,
+    MatToolbarModule,
   ],
   animations: [SlideInFromLeftAnimation],
 })
@@ -59,6 +59,10 @@ export class TopAppBarComponent implements OnDestroy {
 
   onBackBtnClick() {
     this.routing.goBack();
+  }
+
+  async onSignInBtnClick() {
+    await this.auth.navigateToSignInWithRedirectUrl();
   }
 
   async onSignOutBtnClick() {
