@@ -5,7 +5,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { appInformation } from '../../information';
 import {
-  Project,
+  Project, ProjectWithID,
 } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
@@ -26,7 +26,7 @@ import { ProjectsService } from '../../shared/services/projects.service';
 export class HomeComponent {
   readonly title = appInformation.title;
   readonly nav_path = navPath;
-  featuredProjects$?: Observable<Project[] | null>;
+  featuredProjects$?: Observable<ProjectWithID[] | null>;
   readonly heroTitle = 'Heyooo, I\'m Aaron, a Full Stack Engineer';
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.altEmail;
