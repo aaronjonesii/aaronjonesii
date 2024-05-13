@@ -13,7 +13,7 @@ FIREBASE_PROJECT="$GCP_PROJECT"
 read -p "Input Firebase deployment message: " DEPLOYMENT_MESSAGE
 
 # Build Application
-npm run build:ssr || {
+npm run build:production || {
   echo "Failed to build production application"
   exit 1
 }
