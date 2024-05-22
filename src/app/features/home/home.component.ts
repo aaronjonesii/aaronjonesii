@@ -14,6 +14,7 @@ import { navPath } from '../../app.routes';
 import { SeoService } from '../../shared/services/seo.service';
 import { HomeAnimations } from './home.animations';
 import { ProjectsService } from '../../shared/services/projects.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'aj-home',
@@ -21,13 +22,13 @@ import { ProjectsService } from '../../shared/services/projects.service';
   styleUrl: './home.component.scss',
   standalone: true,
   animations: [...HomeAnimations],
-  imports: [MatIconModule, MatButtonModule, NgOptimizedImage],
+  imports: [MatIconModule, MatButtonModule, NgOptimizedImage, RouterLink],
 })
 export class HomeComponent {
   readonly title = appInformation.title;
   readonly nav_path = navPath;
   featuredProjects$?: Observable<ProjectWithID[] | null>;
-  readonly heroTitle = 'Heyooo, I\'m Aaron, a Full Stack Engineer';
+  readonly heroTitle = 'Heyooo, I\'m Aaron';
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.altEmail;
   readonly location = appInformation.location;
