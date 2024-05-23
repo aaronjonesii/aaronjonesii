@@ -1,5 +1,17 @@
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
-@defer (when loaded()) {
+@if (isBrowser()) {
+  @defer (when loaded()) {
+    <ng-template [ngTemplateOutlet]="unnamedTmpl" />
+  } @placeholder (minimum 500ms) {
+    <ng-template [ngTemplateOutlet]="projectPlaceholderTmpl" />
+  } @error {
+    <ng-template [ngTemplateOutlet]="errorTmpl" />
+  }
+} @else {
+  <ng-template [ngTemplateOutlet]="unnamedTmpl" />
+}
+
+<ng-template #unnamedTmpl>
   @switch (projectFetchStatus()) {
     @case (FetchStatus.PENDING || FetchStatus.LOADING) {
       <ng-template [ngTemplateOutlet]="projectPlaceholderTmpl" />
@@ -11,11 +23,7 @@
       <ng-template [ngTemplateOutlet]="notFoundTmpl" />
     }
   }
-} @placeholder (minimum 500ms) {
-  <ng-template [ngTemplateOutlet]="projectPlaceholderTmpl" />
-} @error {
-  <ng-template [ngTemplateOutlet]="errorTmpl" />
-}
+</ng-template>
 
 <ng-template #projectTmpl>
   <div class="article-container">

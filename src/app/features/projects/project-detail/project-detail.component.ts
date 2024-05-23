@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy, ViewEncapsulation,
   ChangeDetectorRef, OnDestroy,
-  Component, computed, signal,
+  Component, computed, signal, OnInit,
 } from '@angular/core';
 import {
   Observable, Subscription,
@@ -51,6 +51,7 @@ import {
 } from '../../../shared/components/skeleton/skeleton.component';
 import { ProjectsService } from '../../../shared/services/projects.service';
 import { UsersService } from '../../../shared/services/users.service';
+import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
 
 @Component({
   selector: 'aj-project-detail',
@@ -77,24 +78,27 @@ import { UsersService } from '../../../shared/services/users.service';
     ProjectDetailCommentComponent,
   ],
 })
-export class ProjectDetailComponent implements OnDestroy {
-  protected readonly navPath = navPath;
-  protected readonly ProjectStatus = ProjectStatus;
-  private subscriptions = new Subscription();
+export class ProjectDetailComponent implements OnInit, OnDestroy {
   private projectSignal = signal<ProjectWithID | null>(null);
   project = this.projectSignal.asReadonly();
   private userSignal = signal<UserWithID | null>(null);
   user = this.userSignal.asReadonly();
-  user$ = computed(() => of(this.user()));
   private projectFetchStatusSignal = signal(FetchStatus.PENDING);
   projectFetchStatus = this.projectFetchStatusSignal.asReadonly();
+  private loadedSignal = signal(false);
+  isBrowser = signal(this.ssrSafeService.isBrowser);
+
+  loaded = this.loadedSignal.asReadonly();
+  protected readonly navPath = navPath;
+  protected readonly FetchStatus = FetchStatus;
+  protected readonly ProjectStatus = ProjectStatus;
+  private subscriptions = new Subscription();
+
+  user$ = computed(() => of(this.user()));
   isOwner = computed(() => {
     const user = this.user();
     return user ? this.project()?.roles[user.id] === 'owner' : false;
   });
-  protected readonly FetchStatus = FetchStatus;
-  private loadedSignal = signal(false);
-  loaded = this.loadedSignal.asReadonly();
   commentsSignal$ = computed(() => {
     const project = this.project();
     return project ?
@@ -116,6 +120,7 @@ export class ProjectDetailComponent implements OnDestroy {
     private routing: RoutingService,
     private cdRef: ChangeDetectorRef,
     private usersService: UsersService,
+    private ssrSafeService: SSRSafeService,
     private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -141,13 +146,11 @@ export class ProjectDetailComponent implements OnDestroy {
         if (!project) {
           this.projectFetchStatusSignal.set(FetchStatus.ERROR);
           this.loadedSignal.set(true);
-          return;
+        } else {
+          this.seoService.generateProjectTags(project);
+          this.projectSignal.set(project);
+          this.projectFetchStatusSignal.set(FetchStatus.SUCCESS);
         }
-
-        this.seoService.generateProjectTags(project);
-
-        this.projectSignal.set(project);
-        this.projectFetchStatusSignal.set(FetchStatus.SUCCESS);
         this.loadedSignal.set(true);
       }),
     );
@@ -161,6 +164,11 @@ export class ProjectDetailComponent implements OnDestroy {
     );
 
     this.routing.watchAndRouteToFragment();
+  }
+
+  ngOnInit() {
+    /** Wait to load on server */
+    setTimeout(() => {}, 100);
   }
 
   ngOnDestroy() {
