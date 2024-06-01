@@ -52,7 +52,6 @@ import {
 import { ProjectsService } from '../../../shared/services/projects.service';
 import { UsersService } from '../../../shared/services/users.service';
 import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
-import { tap } from "rxjs/operators";
 
 @Component({
   selector: 'aj-project-detail',
