@@ -120,7 +120,7 @@ export class ProjectsService {
     if (!projectTags?.length) return of(null);
 
     return this.db.colQuery$<ProjectWithID>(
-      `projects`,
+      this.collectionName,
       { idField: 'id' },
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
