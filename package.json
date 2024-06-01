@@ -41,10 +41,8 @@
     "@ckeditor/ckeditor5-watchdog": "^41.2.1",
     "angular-firebase-storage-manager": "file:./src/app/shared/libraries/angular-firebase-storage-manager",
     "express": "^4.19.2",
-    "firebase-admin": "^12.1.0",
     "rxjs": "~7.8.1",
-    "tslib": "^2.6.2",
-    "zone.js": "~0.14.4"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.5",
