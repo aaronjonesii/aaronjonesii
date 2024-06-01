@@ -6,7 +6,7 @@ import {
 import {
   Observable, Subscription,
   of, switchMap,
-  first, map,
+  first, map, filter,
 } from 'rxjs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -52,6 +52,7 @@ import {
 import { ProjectsService } from '../../../shared/services/projects.service';
 import { UsersService } from '../../../shared/services/users.service';
 import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: 'aj-project-detail',
@@ -132,12 +133,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     });
 
     const projectID$ = this.route.paramMap.pipe(
-      map((params) => params.get('projectID') ?? 'undefined'),
+      map((params) => params.get('projectID') || 'undefined'),
     );
 
     const project$ = projectID$.pipe(
-      switchMap((projectID) => {
-        return this.projectsService.getProjectById$(projectID);
+      /** fixme: receiving the below strings as the projectId instead of actual
+       * skeleton.component.css.map, navigation-rail.component.css.map */
+      filter((projectId) => !projectId.includes('.')),
+      switchMap((projectId) => {
+        return this.projectsService.getProjectById$(projectId);
       }),
     );
 
@@ -168,7 +172,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     /** Wait to load on server */
-    setTimeout(() => {}, 100);
+    setTimeout(() => {}, 1000);
   }
 
   ngOnDestroy() {
