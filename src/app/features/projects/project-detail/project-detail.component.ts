@@ -170,10 +170,22 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     this.routing.watchAndRouteToFragment();
   }
 
-  ngOnInit() {
+  /* eslint-disable-next-line @angular-eslint/no-async-lifecycle-method */
+  async ngOnInit() {
     /** Wait to load on server */
-    setTimeout(() => {}, 1000);
+    const maxMillisecondsToWait = 2000;
+    const incrementMilliseconds = 100;
+    const maxTries = Math.floor(maxMillisecondsToWait / incrementMilliseconds);
+    let i = 0;
+    while (i < maxTries && !this.loaded()) {
+      await this.delay(incrementMilliseconds);
+      i++;
+    }
   }
+
+  delay = (timeout: number) => new Promise<void>((resolve) => {
+    setTimeout(resolve, timeout);
+  });
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
