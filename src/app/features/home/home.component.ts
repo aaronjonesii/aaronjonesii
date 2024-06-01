@@ -1,12 +1,8 @@
-import { Component, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { appInformation } from '../../information';
-import {
-  ProjectWithID,
-} from '../../shared/interfaces/project';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
@@ -15,11 +11,13 @@ import { SeoService } from '../../shared/services/seo.service';
 import { HomeAnimations } from './home.animations';
 import { ProjectsService } from '../../shared/services/projects.service';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'aj-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   animations: [...HomeAnimations],
   imports: [MatIconModule, MatButtonModule, NgOptimizedImage, RouterLink],
@@ -27,13 +25,13 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent {
   readonly title = appInformation.title;
   readonly nav_path = navPath;
-  featuredProjects$?: Observable<ProjectWithID[] | null>;
   readonly heroTitle = 'Heyooo, I\'m Aaron';
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.altEmail;
   readonly location = appInformation.location;
   private titleAnimationDoneSignal = signal(false);
   titleAnimationDone = this.titleAnimationDoneSignal.asReadonly();
+  featuredProjects = toSignal(this.projectsService.featuredProjects$);
 
   constructor(
     private seoService: SeoService,
@@ -46,8 +44,6 @@ export class HomeComponent {
       loading: false,
     });
     this.seoService.generateTags({ route: navPath.home });
-
-    this.featuredProjects$ = this.projectsService.featuredProjects$;
   }
 
   onTitleAnimationDone() {
