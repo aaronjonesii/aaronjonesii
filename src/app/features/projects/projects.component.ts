@@ -19,7 +19,7 @@ import {
   AsyncPipe,
   KeyValue,
   KeyValuePipe, LowerCasePipe,
-  NgOptimizedImage
+  NgOptimizedImage,
 } from '@angular/common';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
