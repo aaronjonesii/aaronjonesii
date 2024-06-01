@@ -6,20 +6,22 @@ service cloud.firestore {
 
     // functions
     function isSignedIn() { return request.auth != null; }
-    function isAdmin() { return request.auth.token.admin == true; }
+    function isAdmin() { return isSignedIn() && request.auth.token.admin == true; }
+    function hasRsc() { return resource != null }
+    function hasRequestRsc() { return request.resource != null }
     function verifyFields(required, optional) {
       let allAllowedFields = required.concat(optional);
-      return request.resource.data.keys().hasAll(required) && request.resource.data.keys().hasOnly(allAllowedFields);
+      return hasRequestRsc() && request.resource.data.keys().hasAll(required) && request.resource.data.keys().hasOnly(allAllowedFields);
     }
 
     // projects collection
     match /projects/{projectID} {
       // project functions
-      function getRole(rsc) { return rsc.data.roles[request.auth.uid]; }
-      function isOneOfRoles(rsc, array) { return isSignedIn() && (getRole(rsc) in array); }
-      function isNotDraft(rsc) { return rsc.data.status != 'draft'; }
-      function isPublic(rsc) { return rsc.data.visibility == 'public'; }
-      function isCommentsEnabled(rsc) { return rsc.data.allowComments == true; }
+      function getRole(rsc) { return hasRsc() && rsc.data.roles[request.auth.uid]; }
+      function isOneOfRoles(rsc, array) { return isSignedIn() && hasRsc() && (getRole(rsc) in array); }
+      function isNotDraft(rsc) { return hasRsc() && rsc.data.status != 'draft'; }
+      function isPublic(rsc) { return hasRsc() && rsc.data.visibility == 'public'; }
+      function isCommentsEnabled(rsc) { return hasRsc() && rsc.data.allowComments == true; }
 
       allow read: if isAdmin() || isOneOfRoles(resource, ['owner', 'writer', 'reader']) || isPublic(resource) && isNotDraft(resource);
       allow create, update: if isAdmin() && isOneOfRoles(request.resource, ['owner']);
@@ -33,7 +35,7 @@ service cloud.firestore {
       // project comments collection
       match /comments/{commentID} {
         // comment functions
-        function isValidComment() { return request.resource.data.user == /databases/$(database)/documents/users/$(request.auth.uid); }
+        function isValidComment() { return hasRequestRsc() && request.resource.data.user == /databases/$(database)/documents/users/$(request.auth.uid); }
         function projectRsc() {
           let project = get(/databases/$(database)/documents/projects/$(projectID));
           return project;
@@ -55,14 +57,14 @@ service cloud.firestore {
     // users
     match /users/{uid} {
       // users functions
-      function isValidUpdate() { return (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reported', 'following', 'updated'])); }
+      function isValidUpdate() { return hasRequestRsc() && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reported', 'following', 'updated'])); }
 
-      allow read: if request.auth.uid == uid || isAdmin();
-      allow update: if request.auth.uid == uid && isValidUpdate();
+      allow read: if isSignedIn() && request.auth.uid == uid || isAdmin();
+      allow update: if isSignedIn() && request.auth.uid == uid && isValidUpdate();
     }
 
     // contact
-    match /contact-requests/{contactRequestID} {
+    match /contact/{contactID} {
       allow read: if isAdmin();
       allow create: if verifyFields(['name', 'company', 'email', 'message', 'created'], []);
     }
@@ -70,13 +72,13 @@ service cloud.firestore {
     // mail
     match /mail/{mailID} {
       allow read: if isAdmin();
-      allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments', 'created', 'updated']);
+      allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments']);
     }
 
     // reports
     match /reports/{reportID} {
       // reports functions
-      function isValidReport() { return request.resource.data.by == /databases/$(database)/documents/users/$(request.auth.uid) }
+      function isValidReport() { return hasRequestRsc() && request.resource.data.by == /databases/$(database)/documents/users/$(request.auth.uid) }
 
       allow create: if isValidReport() && verifyFields(['created', 'by', 'reason', 'document'], ['updated']);
       allow read: if isAdmin();
