@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContactRequestFormComponent } from './contact-request-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ContactRequestFormComponent', () => {
   let component: ContactRequestFormComponent;
@@ -7,7 +8,10 @@ describe('ContactRequestFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactRequestFormComponent],
+      imports: [
+        ContactRequestFormComponent,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContactRequestFormComponent);

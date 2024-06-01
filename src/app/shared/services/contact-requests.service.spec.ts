@@ -1,12 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ContactRequestsService } from './contact-requests.service';
+import { FirestoreService } from './firestore.service';
 
 describe('ContactRequestsService', () => {
   let service: ContactRequestsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: FirestoreService,
+          useValue: {},
+        },
+      ],
+    });
     service = TestBed.inject(ContactRequestsService);
   });
 

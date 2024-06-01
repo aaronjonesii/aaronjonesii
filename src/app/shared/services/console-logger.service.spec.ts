@@ -132,7 +132,9 @@ describe('ConsoleLoggerService', () => {
 
       service.error('test');
 
-      expect(console.error).toHaveBeenCalledWith('test: ', []);
+      const testError = new Error('test');
+
+      expect(console.error).toHaveBeenCalledWith(testError, []);
     });
 
     it('should call openSnackBar in production mode', () => {
