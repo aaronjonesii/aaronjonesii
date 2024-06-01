@@ -1,25 +1,13 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  signal,
+  ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy,
+  Component, signal,
 } from '@angular/core';
 import {
-  BehaviorSubject,
-  catchError,
-  map,
-  Observable,
-  of,
-  Subscription,
-  switchMap,
+  BehaviorSubject, Subscription,
+  catchError, switchMap, of,
 } from 'rxjs';
-import { QueryConstraint, where } from '@angular/fire/firestore';
 import {
-  AsyncPipe,
-  KeyValue,
-  KeyValuePipe, LowerCasePipe,
-  NgOptimizedImage,
+  AsyncPipe, KeyValue, KeyValuePipe, LowerCasePipe, NgOptimizedImage,
 } from '@angular/common';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
@@ -27,12 +15,7 @@ import { RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  ProjectStatus,
-  ProjectVisibility,
-  ReadProject,
-} from '../../shared/interfaces/project';
-import { FirestoreService } from '../../shared/services/firestore.service';
+import { ReadProject } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
@@ -51,6 +34,7 @@ import {
   SkeletonComponent,
 } from '../../shared/components/skeleton/skeleton.component';
 import { ProjectsFilter } from '../../shared/enums/projects-filter';
+import { ProjectsService } from '../../shared/services/projects.service';
 
 @Component({
   selector: 'aj-projects',
@@ -91,10 +75,10 @@ export class ProjectsComponent implements OnDestroy {
   protected readonly ProjectsFilter = ProjectsFilter;
 
   constructor(
-    private db: FirestoreService,
     private seoService: SeoService,
     private cdRef: ChangeDetectorRef,
     private logger: ConsoleLoggerService,
+    private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
   ) {
     this.topAppBarService.setOptions({
@@ -108,7 +92,15 @@ export class ProjectsComponent implements OnDestroy {
     });
 
     const projects$ = this.filter$.pipe(
-      switchMap((filter) => this.getProjects$(filter)),
+      switchMap((filter) => {
+        return this.projectsService.getFilteredProjects$(filter).pipe(
+          catchError((error: FirebaseError) => {
+            this.logger.error(`Something went wrong loading projects`, error);
+            this.errorSignal.set(error);
+            return of([]);
+          })
+        );
+      }),
     );
     this.subscriptions.add(
       projects$.subscribe((projects) => {
@@ -130,49 +122,6 @@ export class ProjectsComponent implements OnDestroy {
 
   onFilterChange(event: MatChipListboxChange) {
     this.filterSubject.next(event.value);
-  }
-
-  private getProjects$(
-    filter: ProjectsFilter,
-  ): Observable<ReadProject[]> {
-    const queryConstraints: QueryConstraint[] = [
-      /** filter out private projects */
-      where('visibility', '==', ProjectVisibility.PUBLIC),
-    ];
-
-    switch (filter) {
-      case ProjectsFilter.ALL:
-        /** filter out drafts */
-        queryConstraints.push(where('status', '!=', ProjectStatus.DRAFT));
-        break;
-      case ProjectsFilter.ACTIVE:
-        /** only show published projects */
-        queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
-        break;
-      case ProjectsFilter.ARCHIVED:
-        /** only show archived projects */
-        queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED));
-        break;
-      default:
-        this.logger.warn(`Something went wrong filtering projects`, filter);
-        break;
-    }
-
-    return (this.db.colQuery$<ReadProject>(
-      `projects`,
-      { idField: 'id' },
-        ...queryConstraints,
-    )).pipe(
-      /** sort by featured projects */
-      map((projects) => projects.sort((a, b) => {
-        return b.featured.toString().localeCompare(a.featured.toString());
-      })),
-      catchError((error: FirebaseError) => {
-        this.logger.error(`Something went wrong loading projects`, error);
-        this.errorSignal.set(error);
-        return of([]);
-      })
-    );
   }
 
   async onShare(project: ReadProject) {

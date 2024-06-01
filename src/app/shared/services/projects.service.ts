@@ -5,7 +5,12 @@ import {
   ProjectStatus,
   ProjectVisibility, ProjectWithID, ReadProject,
 } from '../interfaces/project';
-import { DocumentReference, increment, where } from '@angular/fire/firestore';
+import {
+  DocumentReference,
+  increment,
+  QueryConstraint,
+  where,
+} from '@angular/fire/firestore';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { ConsoleLoggerService } from './console-logger.service';
@@ -17,6 +22,7 @@ import {
 } from '../../features/projects/project-detail/comments-dialog/comments-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { User, UserWithID } from '../interfaces/user';
+import { ProjectsFilter } from '../enums/projects-filter';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectsService {
@@ -192,5 +198,43 @@ export class ProjectsService {
           `Error adding comment to project`, error, comment,
         );
       });
+  }
+
+  getFilteredProjects$(
+    filter: ProjectsFilter,
+  ): Observable<ReadProject[]> {
+    const queryConstraints: QueryConstraint[] = [
+      /** filter out private projects */
+      where('visibility', '==', ProjectVisibility.PUBLIC),
+    ];
+
+    switch (filter) {
+      case ProjectsFilter.ALL:
+        /** filter out drafts */
+        queryConstraints.push(where('status', '!=', ProjectStatus.DRAFT));
+        break;
+      case ProjectsFilter.ACTIVE:
+        /** only show published projects */
+        queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
+        break;
+      case ProjectsFilter.ARCHIVED:
+        /** only show archived projects */
+        queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED));
+        break;
+      default:
+        this.logger.warn(`Something went wrong filtering projects`, filter);
+        break;
+    }
+
+    return (this.db.colQuery$<ReadProject>(
+      `projects`,
+      { idField: 'id' },
+      ...queryConstraints,
+    )).pipe(
+      /** sort by featured projects */
+      map((projects) => projects.sort((a, b) => {
+        return b.featured.toString().localeCompare(a.featured.toString());
+      })),
+    );
   }
 }
