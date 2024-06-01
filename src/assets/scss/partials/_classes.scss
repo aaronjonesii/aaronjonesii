@@ -31,7 +31,9 @@
 .app-gap { gap: $app-gap; }
 .text-center { text-align: center; }
 .w-100 { width: 100%; }
+.w-0 { width: 0; }
 .h-100 { height: 100%; }
+.h-0 { height: 0; }
 .app-padding, .page-padding { padding: $app-padding; }
 .display-none { display: none; }
 .overflow-auto { overflow: auto; }
@@ -51,3 +53,10 @@
 .grid-column-end-span-12 { grid-column-end: span 12; }
 .capitalize { text-transform: capitalize; }
 .cursor-pointer { cursor: pointer; }
+.uppercase { text-transform: uppercase; }
+.position-absolute { position: absolute; }
+.text-bold { font-weight: bold; }
+.text-break-word { word-break: break-word; }
+.text-upright {
+  text-orientation: upright;
+}

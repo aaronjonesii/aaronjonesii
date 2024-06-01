@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ChangeEvent, CKEditorModule } from "@ckeditor/ckeditor5-angular";
-import { FormsModule } from "@angular/forms";
-import { Editor, EditorConfig } from "@ckeditor/ckeditor5-core";
+import { ChangeEvent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { FormsModule } from '@angular/forms';
+import { Editor, EditorConfig } from '@ckeditor/ckeditor5-core';
 
 @Component({
   selector: 'aj-admin-editor',
@@ -25,6 +25,7 @@ export class AdminEditorComponent {
   @Input() disabled = false;
   @Output() readonly readyChange = new EventEmitter<unknown>();
   @Output() readonly editorChange = new EventEmitter<ChangeEvent>();
+  // eslint-disable-next-line max-len
   editor?: {create(sourceElementOrData: (HTMLElement | string), config?: EditorConfig): Promise<Editor>};
   @Input() content?: string = '';
   @Input() tagName = 'div';
@@ -38,6 +39,10 @@ export class AdminEditorComponent {
       });
   }
 
-  onReady(ready_event: unknown) { this.readyChange.emit(ready_event); }
-  onChange(change_event: ChangeEvent) { this.editorChange.emit(change_event); }
+  onReady(readyEvent: unknown) {
+    this.readyChange.emit(readyEvent);
+  }
+  onChange(changeEvent: ChangeEvent) {
+    this.editorChange.emit(changeEvent);
+  }
 }

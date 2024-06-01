@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectsComponent } from './projects.component';
-import { FirestoreService } from "../../shared/services/firestore.service";
+import { FirestoreService } from '../../shared/services/firestore.service';
 
 describe('ProjectsComponent', () => {
   let component: ProjectsComponent;

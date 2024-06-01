@@ -1,18 +1,20 @@
-import { Route } from "@angular/router";
-import { AdminComponent } from "./admin.component";
+import { Route } from '@angular/router';
+import { AdminComponent } from './admin.component';
 
 export default [
   { path: '', component: AdminComponent, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
+        // eslint-disable-next-line max-len
         loadComponent: () => import('./views/admin-dashboard/admin-dashboard.component')
-          .then(m => m.AdminDashboardComponent),
+          .then((m) => m.AdminDashboardComponent),
       },
       {
         path: 'file-manager',
+        // eslint-disable-next-line max-len
         loadComponent: () => import('./views/admin-file-manager/admin-file-manager.component')
-          .then(m => m.AdminFileManagerComponent),
+          .then((m) => m.AdminFileManagerComponent),
       },
       {
         path: 'projects',
@@ -22,5 +24,5 @@ export default [
         path: 'users',
         loadChildren: () => import('./views/admin-users/routes'),
       },
-    ] }
+    ] },
 ] satisfies Route[];

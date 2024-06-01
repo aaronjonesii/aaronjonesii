@@ -1,9 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EditProjectComponent } from './edit-project.component';
-import { ActivatedRoute } from "@angular/router";
-import { FirestoreService } from "../../../../../shared/services/firestore.service";
-import { AuthService } from "../../../../../shared/services/auth.service";
+import { ActivatedRoute } from '@angular/router';
+import {
+  FirestoreService,
+} from '../../../../../shared/services/firestore.service';
+import { AuthService } from '../../../../../shared/services/auth.service';
+import { Storage } from '@angular/fire/storage';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('EditProjectComponent', () => {
   let component: EditProjectComponent;
@@ -11,12 +14,15 @@ describe('EditProjectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditProjectComponent],
+      imports: [
+        EditProjectComponent,
+      ],
       providers: [
+        provideAnimations(),
         {
           provide: FirestoreService,
           useValue: {
-            docSnap: async () => {}
+            docSnap: async () => {},
           },
         },
         {
@@ -24,14 +30,18 @@ describe('EditProjectComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: (val: string) => val
-              }
-            }
+                get: (val: string) => val,
+              },
+            },
           },
         },
         {
           provide: AuthService,
            useValue: {},
+        },
+        {
+          provide: Storage,
+          useValue: {},
         },
       ],
     })

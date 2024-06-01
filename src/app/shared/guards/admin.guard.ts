@@ -1,10 +1,13 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot, CanActivateFn,
+  Router, RouterStateSnapshot,
+} from '@angular/router';
 import { catchError, from, of } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-import { nav_path } from "../../app.routes";
-import { AuthService } from "../services/auth.service";
-import { ConsoleLoggerService } from "../services/console-logger.service";
+import { navPath } from '../../app.routes';
+import { AuthService } from '../services/auth.service';
+import { ConsoleLoggerService } from '../services/console-logger.service';
 
 export const AdminGuard: CanActivateFn = (
   next: ActivatedRouteSnapshot,
@@ -16,20 +19,26 @@ export const AdminGuard: CanActivateFn = (
 
   return auth.loadUser.pipe(
     take(1),
-    switchMap(user => {
+    switchMap((user) => {
       if (user) {
         return from(auth.loadUserToken(user)).pipe(
-          map(idTokenResult => !!idTokenResult?.claims['admin']),
-          tap((isAdmin) => { if (!isAdmin) router.navigate([nav_path.forbidden])})
+          map((idTokenResult) => !!idTokenResult?.claims['admin']),
+          tap((isAdmin) => {
+            if (!isAdmin) router.navigate([navPath.forbidden]);
+          })
         );
       } else {
-        router.navigate([nav_path.signIn], { queryParams:{'redirectURL':state.url} });
-        return of(false); }
+        router.navigate(
+          [navPath.signIn],
+          { queryParams: { 'redirectURL': state.url } },
+        );
+        return of(false);
+      }
     }),
     catchError((error) => {
       logger.error('Error in AdminGuard:', error);
-      router.navigate([nav_path.error]);
+      router.navigate([navPath.error]);
       return of(false);
     }),
   );
-}
+};

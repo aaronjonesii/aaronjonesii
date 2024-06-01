@@ -1,0 +1,29 @@
+<form class="text-center" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" name="name" id="name"
+           formControlName="name" autocomplete="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Company</mat-label>
+    <input matInput type="text" name="company" id="company"
+           formControlName="company" autocomplete="organization" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" name="email" id="email"
+           formControlName="email" autocomplete="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Message</mat-label>
+    <textarea matInput type="text" name="message" id="message"
+              formControlName="message" autocomplete="off"></textarea>
+  </mat-form-field>
+
+  <button mat-stroked-button type="submit" color="primary" [disabled]="invalid">
+    <mat-icon class="material-icons-outlined" fontIcon="send" /> Submit
+  </button>
+</form>

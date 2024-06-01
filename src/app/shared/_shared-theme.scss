@@ -3,16 +3,22 @@
 
 @use './components/layout/layout-theme' as layout;
 @use './components/masonry-cards/masonry-cards-theme' as masonryCards;
+@use './libraries/libraries-theme' as libraries;
+@use './components/skeleton/skeleton-theme' as skeleton;
 
 
 @mixin componentColorMixins($theme) {
   @include layout.color($theme);
   @include masonryCards.color($theme);
+  @include libraries.color($theme);
+  @include skeleton.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
   @include layout.typography($theme);
   @include masonryCards.typography($theme);
+  @include libraries.typography($theme);
+  @include skeleton.typography($theme);
 }
 
 @mixin color($theme) {

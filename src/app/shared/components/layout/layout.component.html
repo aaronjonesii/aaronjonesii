@@ -1,12 +1,12 @@
 @if ({isTabletPortrait: isTabletPortrait$ | async, isDesktopExpanded: isDesktopExpanded$ | async}; as aside) {
   <!-- Side Navigation Rail -->
   @if (aside.isTabletPortrait && !aside.isDesktopExpanded) {
-    <aj-navigation-rail [@navigationRailAnimation] [segments]="segments" />
+    <aj-navigation-rail [@slideInFromLeftAnimation] [segments]="segments" />
   }
 
   <!-- Side Navigation Drawer -->
   @if (aside.isDesktopExpanded) {
-    <aj-navigation-drawer [@navigationDrawerAnimation] [segments]="segments" />
+    <aj-navigation-drawer [@slideInFromLeftAnimation] [segments]="segments" />
   }
 }
 
@@ -16,12 +16,15 @@
   <aj-top-app-bar [title]="title" />
 
   <!-- Content -->
-  <main class="page-padding flex-col">
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  <main class="page-padding flex-col" [ngClass]="{'mobile': isMobile()}"
+        (scroll)="onContentScroll($event)">
     <router-outlet />
   </main>
 
   <!-- Bottom Navigation Bar -->
-  @if (isMobile$ | async) {
-    <aj-navigation-bar [@navigationBarAnimation] [segments]="segments" />
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @if (showBottomBar()) {
+    <aj-navigation-bar [@slideInFromBottomAnimation] [segments]="segments" />
   }
 </div>

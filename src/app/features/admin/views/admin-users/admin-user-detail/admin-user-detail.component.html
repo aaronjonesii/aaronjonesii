@@ -1,54 +1,50 @@
-<aj-top-app-bar [title]="title" [showBackBtn]="true" />
+@if (user) {
+  <div class="crumbs">
+    <button mat-button type="button" [routerLink]="[nav_path.adminUsers]">Users</button>
+    <mat-icon fontIcon="chevron_right" />
+    <button mat-button type="button" disabled>{{user.displayName ?? user.id}}</button>
+  </div>
 
-<main class="page-padding">
-  @if (user) {
-    <div class="crumbs">
-      <button mat-button type="button" [routerLink]="[nav_path.adminUsers]">Users</button>
-      <mat-icon fontIcon="chevron_right" />
-      <button mat-button type="button" disabled>{{user.displayName ?? user.id}}</button>
-    </div>
+  <div class="header">
+    <h1>{{user.displayName ?? 'Unknown name'}}</h1>
 
-    <div class="header">
-      <h1>{{user.displayName ?? 'Unknown name'}}</h1>
+    <button mat-stroked-button type="button" color="accent" (click)="updateAdminRole(user)">
+      <mat-icon fontIcon="admin_panel_settings" />
+      {{user.admin === true ? 'Revoke' : 'Grant'}} Admin
+    </button>
+  </div>
 
-      <button mat-stroked-button type="button" color="accent" (click)="updateAdminRole(user)">
-        <mat-icon fontIcon="admin_panel_settings" />
-        {{user.admin === true ? 'Revoke' : 'Grant'}} Admin
-      </button>
-    </div>
-
-    <section class="info">
-      @if (user.photoURL) {
-        <picture>
-          <img fill priority
-               [ngSrc]="user.photoURL"
-               [alt]="user.displayName ?? user.email + ' photo'" />
-        </picture>
-      } @else {
-        <picture>
-          <img fill priority
-               ngSrc="assets/svgs/flat_afro.svg"
-               [alt]="user.displayName ?? user.email + ' photo'" />
-        </picture>
-      }
-      <div class="details">
-        <div>
-          <h3>UID</h3>
-          <h3>Joined</h3>
-          <h3>Email Address</h3>
-          <h3>Phone Number</h3>
-        </div>
-        <div>
-          <h3>{{user.id ?? 'Unknown UID'}}</h3>
-          <h3>{{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</h3>
-          <h3>{{user.email ? user.email : 'Unknown email'}}</h3>
-          <h3>{{user.phoneNumber ?? 'Unknown number'}}</h3>
-        </div>
+  <section class="info">
+    @if (user.photoURL) {
+      <picture>
+        <img fill priority
+             [ngSrc]="user.photoURL"
+             [alt]="user.displayName ?? user.email + ' photo'" />
+      </picture>
+    } @else {
+      <picture>
+        <img fill priority
+             ngSrc="assets/svgs/flat_afro.svg"
+             [alt]="user.displayName ?? user.email + ' photo'" />
+      </picture>
+    }
+    <div class="details">
+      <div>
+        <h3>UID</h3>
+        <h3>Joined</h3>
+        <h3>Email Address</h3>
+        <h3>Phone Number</h3>
       </div>
-    </section>
+      <div>
+        <h3>{{user.id ?? 'Unknown UID'}}</h3>
+        <h3>{{user.joined ? (user.joined.seconds * 1000 | date) : 'Unknown date'}}</h3>
+        <h3>{{user.email ? user.email : 'Unknown email'}}</h3>
+        <h3>{{user.phoneNumber ?? 'Unknown number'}}</h3>
+      </div>
+    </div>
+  </section>
 
-    <!-- todo: add user comments -->
-  } @else {
-    <aj-loading-or-error [error]="error" />
-  }
-</main>
+  <!-- todo: add user comments -->
+} @else {
+  <aj-loading-or-error [error]="error" />
+}

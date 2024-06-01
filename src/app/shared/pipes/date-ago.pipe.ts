@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class DateAgoPipe implements PipeTransform {
-
   transform(date: Date | number): number | Date | string {
     if (date) {
       const seconds = Math.floor((+new Date() - +new Date(date)) / 1000);
@@ -17,14 +16,18 @@ export class DateAgoPipe implements PipeTransform {
         'day': 86400,
         'hour': 3600,
         'minute': 60,
-        'second': 1
+        'second': 1,
       };
       let counter;
       for (const i in intervals) {
-        counter = Math.floor(seconds / intervals[i]);
-        if (counter > 0) {
-          if (counter === 1) return counter + ' ' + i + ' ago'; // singular (1 day ago)
-          else return counter + ' ' + i + 's ago'; // plural (2 days ago)
+        if (Object.prototype.hasOwnProperty.call(intervals, i)) {
+          counter = Math.floor(seconds / intervals[i]);
+          if (counter > 0) {
+            /** singular (1 day ago) */
+            if (counter === 1) return counter + ' ' + i + ' ago';
+            /** plural (2 days ago) */
+            else return counter + ' ' + i + 's ago';
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ProjectStatus, ProjectVisibility } from "../interfaces/project";
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ProjectStatus, ProjectVisibility } from '../interfaces/project';
 
 export interface ProjectForm {
   name: FormControl<string>,
@@ -17,16 +17,37 @@ export interface ProjectForm {
 }
 
 export const initialProjectForm = new FormGroup<ProjectForm>({
-  name: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
-  description: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
-  slug: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+  name: new FormControl<string>(
+    '',
+    { nonNullable: true, validators: Validators.required },
+  ),
+  description: new FormControl<string>(
+    '',
+    { nonNullable: true, validators: Validators.required },
+  ),
+  slug: new FormControl<string>(
+    '',
+    { nonNullable: true, validators: Validators.required },
+  ),
   content: new FormControl<string | null>(null),
   image: new FormControl<string | null>(null),
   tags: new FormArray<FormControl<string>>([]),
   livePreviewLink: new FormControl<string | null>(null),
   sourceCodeLink: new FormControl<string | null>(null),
-  status: new FormControl<ProjectStatus>(ProjectStatus.DRAFT, { nonNullable: true, validators: Validators.required }),
-  visibility: new FormControl<ProjectVisibility>(ProjectVisibility.PUBLIC, { nonNullable: true, validators: Validators.required }),
-  featured: new FormControl<boolean>(false, { nonNullable: true, validators: Validators.required }),
-  allowComments: new FormControl<boolean>(true, { nonNullable: true, validators: Validators.required })
+  status: new FormControl<ProjectStatus>(
+    ProjectStatus.DRAFT,
+    { nonNullable: true, validators: Validators.required },
+  ),
+  visibility: new FormControl<ProjectVisibility>(
+    ProjectVisibility.PUBLIC,
+    { nonNullable: true, validators: Validators.required },
+  ),
+  featured: new FormControl<boolean>(
+    false,
+    { nonNullable: true, validators: Validators.required },
+  ),
+  allowComments: new FormControl<boolean>(
+    true,
+    { nonNullable: true, validators: Validators.required },
+  ),
 });

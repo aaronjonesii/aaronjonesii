@@ -1,29 +1,28 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from "@angular/router";
-import { NavigationBarComponent } from "../../shared/components/navigation-bar/navigation-bar.component";
-import { GenericItem } from "../../shared/interfaces/generic-item";
-import { MenuService } from "../../shared/services/menu.service";
-import { BreakpointObserver } from "@angular/cdk/layout";
-import { map } from "rxjs";
-import { AsyncPipe } from "@angular/common";
+import { Component, OnDestroy, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import {
-  NavigationDrawerComponent
-} from "../../shared/components/navigation-drawer/navigation-drawer.component";
+  NavigationBarComponent,
+} from '../../shared/components/navigation-bar/navigation-bar.component';
+import { GenericItem } from '../../shared/interfaces/generic-item';
+import { MenuService } from '../../shared/services/menu.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map, Subscription } from 'rxjs';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
-  NavigationRailComponent
-} from "../../shared/components/navigation-rail/navigation-rail.component";
+  NavigationDrawerComponent,
+} from '../../shared/components/navigation-drawer/navigation-drawer.component';
 import {
-  TopAppBarComponent
-} from "../../shared/components/top-app-bar/top-app-bar.component";
+  NavigationRailComponent,
+} from '../../shared/components/navigation-rail/navigation-rail.component';
 import {
-  NavigationRailAnimation
-} from "../../shared/components/navigation-rail/navigation-rail.animations";
+  TopAppBarComponent,
+} from '../../shared/components/top-app-bar/top-app-bar.component';
 import {
-  NavigationBarAnimation
-} from "../../shared/components/navigation-bar/navigation-bar.animations";
+  SlideInFromLeftAnimation,
+} from '../../shared/animations/slide-in-from-left.animations';
 import {
-  NavigationDrawerAnimation
-} from "../../shared/components/navigation-drawer/navigation-drawer.animations";
+  SlideInFromBottomAnimation,
+} from '../../shared/animations/slide-in-from-bottom.animations';
 
 @Component({
   selector: 'aj-admin',
@@ -31,32 +30,65 @@ import {
   styleUrl: './admin.component.scss',
   standalone: true,
   imports: [
-    RouterOutlet,
-    NavigationBarComponent,
+    NgClass,
     AsyncPipe,
-    NavigationDrawerComponent,
-    NavigationRailComponent,
+    RouterOutlet,
     TopAppBarComponent,
+    NavigationBarComponent,
+    NavigationRailComponent,
+    NavigationDrawerComponent,
   ],
   animations: [
-    NavigationRailAnimation,
-    NavigationBarAnimation,
-    NavigationDrawerAnimation,
+    SlideInFromLeftAnimation,
+    SlideInFromBottomAnimation,
   ],
 })
-export class AdminComponent {
+export class AdminComponent implements OnDestroy {
   readonly title = 'Admin';
-  readonly segments: GenericItem[] = this.menuService.adminNavigationBarMenu;
-  /** Breakpoints can be found from src/assets/scss/partials/_media_queries.scss */
+  readonly segments: GenericItem[] = this.menuService.adminPages
+    .concat(this.menuService.pages.filter((p) => p.id === 'home'));
+  /**
+   * Breakpoints can be found at src/assets/scss/partials/_media_queries.scss
+   */
   isMobile$ = this.breakpointObserver.observe('(max-width: 599px)')
-    .pipe(map(state => state.matches));
+    .pipe(map((state) => state.matches));
   isTabletPortrait$ = this.breakpointObserver.observe('(min-width: 600px)')
-    .pipe(map(state => state.matches));
+    .pipe(map((state) => state.matches));
   isDesktopExpanded$ = this.breakpointObserver.observe('(min-width: 1648px)')
-    .pipe(map(state => state.matches));
+    .pipe(map((state) => state.matches));
+  private subscriptions = new Subscription();
+  private lastScrollY = 0;
+  showBottomBar = signal(false);
+  isMobile = signal(false);
 
   constructor(
     private menuService: MenuService,
     private breakpointObserver: BreakpointObserver,
-  ) {}
+  ) {
+    this.subscriptions.add(
+      this.isMobile$.subscribe((isMobile) => {
+        this.isMobile.set(isMobile);
+        this.showBottomBar.set(isMobile);
+      }),
+    );
+  }
+
+  onContentScroll(event: Event) {
+    if (!this.isMobile()) return;
+
+    const el = event.srcElement as HTMLElement;
+    const scrollY = el.scrollTop || 0;
+    const prevScrollY = this.lastScrollY || 0;
+    this.lastScrollY = scrollY;
+
+    if (scrollY > prevScrollY) {
+      this.showBottomBar.set(false);
+    } else {
+      this.showBottomBar.set(true);
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

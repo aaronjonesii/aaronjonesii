@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MatButtonModule } from "@angular/material/button";
-import { RouterLink } from "@angular/router";
-import { nav_path } from '../../../app.routes';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { navPath } from '../../../app.routes';
 
 @Component({
   selector: 'aj-forbidden',
@@ -11,5 +11,5 @@ import { nav_path } from '../../../app.routes';
   imports: [MatButtonModule, RouterLink],
 })
 export class ForbiddenComponent {
-  readonly nav_path = nav_path;
+  readonly nav_path = navPath;
 }

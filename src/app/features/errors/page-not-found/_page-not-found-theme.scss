@@ -10,15 +10,23 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-page-not-found {
-    .header-text {
-      color: map.get($foreground-palette, 'hint-text');
-    }
-  }
+  aj-page-not-found {}
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
+
+  aj-page-not-found {
+    .not-found .title {
+      @include mat.typography-level($typography-config, 'headline-4');
+    }
+    .not-found .text {
+      @include mat.typography-level($typography-config, 'headline-6');
+    }
+    .not-found .circle {
+      @include mat.typography-level($typography-config, 'headline-1');
+    }
+  }
 }
 
 @mixin theme($theme) {

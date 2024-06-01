@@ -26,21 +26,41 @@ mat-icon.scroll-icon {
 }
 
 .info-container {
-  width: 225px;
+  @media (min-width: $small) {
+    width: 350px;
+  }
   align-self: flex-end;
   text-align: right;
 }
 
-form mat-form-field {
-  width: 100%;
+.submitted-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-style: solid;
+  border-top-width: 4px;
+  border-radius: $app-border-radius;
+  padding: $app-padding;
+  gap: $app-gap;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
-
-.success-container picture {
-  width: 100%;
+.submitted-container.loading {
+  border: 0;
 }
-.success-container picture img {
-  position: relative !important;
-  object-fit: contain;
+.submitted-container mat-icon {
+  $icon-size: 100px;
+  width: $icon-size;
+  height: $icon-size;
+  font-size: $icon-size;
+}
+.submitted-container mat-progress-bar {
+  position: absolute;
+  top: 0;
+}
+.submitted-container .mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: unset;
 }
 
 .bounce-top {

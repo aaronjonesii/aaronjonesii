@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { LayoutComponent } from "../components/layout/layout.component";
-import { Route, RouterModule } from "@angular/router";
-import { AuthGuard } from "../guards/auth.guard";
+import { LayoutComponent } from '../components/layout/layout.component';
+import { Route, RouterModule } from '@angular/router';
+import { AuthGuard } from '../guards/auth.guard';
 
 export const routes: Route[] = [
   { path: '', component: LayoutComponent, children: [
@@ -19,8 +19,9 @@ export const routes: Route[] = [
       {
         path: 'account-details',
         canActivate: [AuthGuard],
+        // eslint-disable-next-line max-len
         loadComponent: () => import('../../features/account-details/account-details.component')
-          .then(m => m.AccountDetailsComponent),
+          .then((m) => m.AccountDetailsComponent),
       },
       {
         path: 'auth',
@@ -41,6 +42,7 @@ export const routes: Route[] = [
       },
       {
         path: '**',
+        // eslint-disable-next-line max-len
         loadComponent: () => import('../../features/errors/page-not-found/page-not-found.component')
           .then((m) => m.PageNotFoundComponent),
       },

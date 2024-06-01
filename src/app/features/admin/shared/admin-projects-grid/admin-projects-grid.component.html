@@ -40,7 +40,8 @@
             (click)="publishSelectedProjects()">Publish</button>
   }
 </section>
-<section class="products">
+
+<section class="projects">
   @for (project of projects; track project.id) {
     <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
     <figure class="project" [ngClass]="{'selected': selectionModel.isSelected(project)}">

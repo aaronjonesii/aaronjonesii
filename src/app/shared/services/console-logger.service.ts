@@ -9,37 +9,53 @@ export class ConsoleLoggerService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  debug(value: string, ...restOfError: unknown[]): void {
+  debug(value: string, ...restOfDebug: unknown[]): void {
     if (!this.isInDevelopmentMode()) return;
-    console.debug(`${value}: `, restOfError);
+    console.debug(`${value}: `, restOfDebug);
   }
 
-  info(value: string, ...restOfError: unknown[]): void {
+  info(value: string, ...restOfInfo: unknown[]): void {
     if (this.isInDevelopmentMode()) {
-      console.info(`${value}: `, restOfError);
+      console.info(`${value}: `, restOfInfo);
     }
-    this.openSnackBar(value, 'OK', {duration: 5000, panelClass: 'info'});
+    this.openSnackBar(value, 'OK', { duration: 5000, panelClass: 'info' });
   }
 
-  log(value: string, ...restOfError: unknown[]): void {
+  log(value: string, ...restOfLog: unknown[]): void {
     if (this.isInDevelopmentMode()) {
-      console.log(`${value}: `, restOfError);
+      console.log(`${value}: `, restOfLog);
     }
-    this.openSnackBar(value, 'OK', {duration: 5000, panelClass: 'log'});
+    this.openSnackBar(value, 'OK', { duration: 5000, panelClass: 'log' });
   }
 
-  warn(value: string, ...restOfError: unknown[]): void {
+  warn(value: string, ...restOfWarn: unknown[]): void {
     if (this.isInDevelopmentMode()) {
-      console.warn(`${value}: `, restOfError);
+      console.warn(`${value}: `, restOfWarn);
     }
-    this.openSnackBar(value, 'OK', {duration: 10000, panelClass: 'warn'});
+    this.openSnackBar(value, 'OK', { duration: 10000, panelClass: 'warn' });
   }
 
-  error(value: string, ...restOfError: unknown[]): void {
+  error(message: string, ...restOfError: unknown[]): void {
     if (this.isInDevelopmentMode()) {
-      console.error(`${value}: `, restOfError);
+      let errorIndex: number | null = null;
+      for (let i = 0; i < restOfError.length; i++) {
+        if (restOfError[i] instanceof Error) errorIndex = i;
+      }
+
+      if (typeof errorIndex === 'number') {
+        const error = restOfError[errorIndex] as Error;
+        restOfError.splice(errorIndex, 1);
+        console.error(`${message}: `, error.stack, restOfError);
+      } else {
+        const errorPattern = /^Error /;
+        if (errorPattern.test(message)) {
+          message = message.replace(errorPattern, '');
+        }
+        const error = new Error(message);
+        console.error(error, restOfError);
+      }
     }
-    this.openSnackBar(value, 'OK', {duration: 0, panelClass: 'error'});
+    this.openSnackBar(message, 'OK', { duration: 0, panelClass: 'error' });
   }
 
   openSnackBar(

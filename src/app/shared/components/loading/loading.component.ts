@@ -7,7 +7,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     <div class="loading">
       <div [style.height]="height+'px'" [innerHTML]="svg"></div>
     </div>`,
-  styles: `.loading { display: flex; align-items: center; justify-content: center; }`,
+  styles: `
+    .loading { display: flex; align-items: center; justify-content: center; }
+  `,
   standalone: true,
 })
 export class LoadingComponent implements OnInit {
@@ -21,6 +23,10 @@ export class LoadingComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    if (this.height) this.svg = this.sanitizer.bypassSecurityTrustHtml(this.LOADING_SVG(this.height));
+    if (this.height) {
+      this.svg = this.sanitizer.bypassSecurityTrustHtml(
+        this.LOADING_SVG(this.height),
+      );
+    }
   }
 }

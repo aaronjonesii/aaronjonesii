@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { SwUpdateService } from "./shared/services/sw-update.service";
+import { SwUpdateService } from './shared/services/sw-update.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -13,7 +13,7 @@ describe('AppComponent', () => {
         {
           provide: SwUpdateService,
           useValue: {
-            checkForSwUpdate: async () => {}
+            checkForSwUpdate: async () => {},
           },
         },
       ],

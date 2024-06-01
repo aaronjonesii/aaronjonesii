@@ -1,10 +1,10 @@
-import { ConsoleLoggerService } from "./console-logger.service";
-import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { TestBed } from "@angular/core/testing";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { Component } from "@angular/core";
-import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
-import { MatSnackBarHarness } from "@angular/material/snack-bar/testing";
+import { ConsoleLoggerService } from './console-logger.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component } from '@angular/core';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatSnackBarHarness } from '@angular/material/snack-bar/testing';
 
 @Component({
   selector: 'aj-test-console-logger',
@@ -72,7 +72,7 @@ describe('ConsoleLoggerService', () => {
       expect(service.openSnackBar).toHaveBeenCalledWith(
         'test',
         'OK',
-        {duration: 5000, panelClass: 'info'},
+        { duration: 5000, panelClass: 'info' },
       );
     });
   });
@@ -96,7 +96,7 @@ describe('ConsoleLoggerService', () => {
       expect(service.openSnackBar).toHaveBeenCalledWith(
         'test',
         'OK',
-        {duration: 5000, panelClass: 'log'},
+        { duration: 5000, panelClass: 'log' },
       );
     });
   });
@@ -120,7 +120,7 @@ describe('ConsoleLoggerService', () => {
       expect(service.openSnackBar).toHaveBeenCalledWith(
         'test',
         'OK',
-        {duration: 10000, panelClass: 'warn'},
+        { duration: 10000, panelClass: 'warn' },
       );
     });
   });
@@ -132,7 +132,9 @@ describe('ConsoleLoggerService', () => {
 
       service.error('test');
 
-      expect(console.error).toHaveBeenCalledWith('test: ', []);
+      const testError = new Error('test');
+
+      expect(console.error).toHaveBeenCalledWith(testError, []);
     });
 
     it('should call openSnackBar in production mode', () => {
@@ -144,7 +146,7 @@ describe('ConsoleLoggerService', () => {
       expect(service.openSnackBar).toHaveBeenCalledWith(
         'test',
         'OK',
-        {duration: 0, panelClass: 'error'},
+        { duration: 0, panelClass: 'error' },
       );
     });
   });
@@ -155,7 +157,8 @@ describe('ConsoleLoggerService', () => {
 
       service.openSnackBar('test-message', 'test-action', {});
 
-      expect(snackBar.open).toHaveBeenCalledWith('test-message', 'test-action', {});
+      expect(snackBar.open)
+        .toHaveBeenCalledWith('test-message', 'test-action', {});
     });
 
     it('should show snackbar with message', async () => {

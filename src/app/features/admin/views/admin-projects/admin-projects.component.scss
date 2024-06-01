@@ -1,20 +1,13 @@
 @import "../../../../../assets/scss/partials/extras";
 
 :host {
-  display: block;
-  height: 100vh;
-}
-
-main {
-  display: block;
-  height: calc(100vh - #{$app-header-height} - #{$app-navigation-bar-height});
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 button.add-btn {
   position: fixed;
-  $navigationBarHeight: 56px;
-  bottom: calc(#{$navigationBarHeight} + 1rem);
+  bottom: calc(#{$app-navigation-bar-height} + 1rem);
   right: 1rem;
   z-index: 100;
 }

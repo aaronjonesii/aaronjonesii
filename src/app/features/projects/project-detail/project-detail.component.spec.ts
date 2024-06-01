@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectDetailComponent } from './project-detail.component';
-import { ActivatedRoute } from "@angular/router";
-import { FirestoreService } from "../../../shared/services/firestore.service";
-import { of } from "rxjs";
-import { AuthService } from "../../../shared/services/auth.service";
+import { ActivatedRoute } from '@angular/router';
+import { FirestoreService } from '../../../shared/services/firestore.service';
+import { of } from 'rxjs';
+import { AuthService } from '../../../shared/services/auth.service';
 
 describe('ProjectDetailComponent', () => {
   let component: ProjectDetailComponent;
@@ -21,7 +21,7 @@ describe('ProjectDetailComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: of()
+            paramMap: of(),
           },
         },
         {

@@ -1,47 +1,88 @@
-import { Component } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, switchMap, throwError } from "rxjs";
-import { QueryConstraint, where } from "@angular/fire/firestore";
-import { AsyncPipe, NgOptimizedImage } from "@angular/common";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatCardModule } from "@angular/material/card";
-import { RouterLink } from "@angular/router";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
-import { ProjectStatus, ProjectVisibility, ReadProject } from "../../shared/interfaces/project";
-import { FirestoreService } from "../../shared/services/firestore.service";
-import { TopAppBarService } from "../../shared/components/top-app-bar/top-app-bar.service";
-import { appInformation } from "../../information";
-import { nav_path } from '../../app.routes';
-import { ConsoleLoggerService } from "../../shared/services/console-logger.service";
-import { SeoService } from "../../shared/services/seo.service";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy, signal,
+} from '@angular/core';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable, of,
+  Subscription,
+  switchMap,
+} from 'rxjs';
+import { QueryConstraint, where } from '@angular/fire/firestore';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import {
+  ProjectStatus,
+  ProjectVisibility,
+  ReadProject,
+} from '../../shared/interfaces/project';
+import { FirestoreService } from '../../shared/services/firestore.service';
+import {
+  TopAppBarService,
+} from '../../shared/components/top-app-bar/top-app-bar.service';
+import { appInformation } from '../../information';
+import { navPath } from '../../app.routes';
+import {
+  ConsoleLoggerService,
+} from '../../shared/services/console-logger.service';
+import { SeoService } from '../../shared/services/seo.service';
+import { ProjectsAnimations } from './animations/projects.animations';
+import {
+  LoadingOrErrorComponent,
+} from '../../shared/components/loading-or-error/loading-or-error.component';
+import { FirebaseError } from '@angular/fire/app/firebase';
+import {
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'aj-projects',
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    MatChipsModule,
     AsyncPipe,
-    MatCardModule,
     RouterLink,
-    MatDividerModule,
-    MatButtonModule,
     MatIconModule,
+    MatCardModule,
+    MatChipsModule,
+    MatButtonModule,
     NgOptimizedImage,
+    MatDividerModule,
+    LoadingOrErrorComponent,
+    SkeletonComponent,
   ],
+  animations: [...ProjectsAnimations],
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnDestroy {
   private readonly title = 'Projects';
-  readonly nav_path = nav_path;
-  filterSubject = new BehaviorSubject<'all' | 'active' | 'inactive'>('active');
+  readonly nav_path = navPath;
+  private filterSubject =
+    new BehaviorSubject<'all' | 'active' | 'inactive'>('active');
   filter$ = this.filterSubject.asObservable();
-  projects$?: Observable<ReadProject[]>;
+  private projectsSignal = signal<ReadProject[]>([]);
+  projects = this.projectsSignal.asReadonly();
+  private subscriptions = new Subscription();
+  private loadedSignal = signal(false);
+  loaded = this.loadedSignal.asReadonly();
+  private errorSignal = signal<FirebaseError | undefined>(undefined);
+  error = this.errorSignal.asReadonly();
+  readonly placeholders = Array(4).fill(() => '');
 
   constructor(
     private db: FirestoreService,
     private seoService: SeoService,
+    private cdRef: ChangeDetectorRef,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -52,32 +93,45 @@ export class ProjectsComponent {
     });
     this.seoService.generateTags({
       title: this.title,
-      route: nav_path.projects,
+      route: navPath.projects,
     });
 
-    this.projects$ = this.filter$.pipe(
-      switchMap(filter => this.getProjects$(filter)),
+    const projects$ = this.filter$.pipe(
+      switchMap((filter) => this.getProjects$(filter)),
+    );
+    this.subscriptions.add(
+      projects$.subscribe((projects) => {
+        this.projectsSignal.set(projects);
+        this.loadedSignal.set(true);
+        this.cdRef.markForCheck();
+      }),
     );
   }
 
-  private getProjects$(filter: 'all' | 'active' | 'inactive'): Observable<ReadProject[]> {
+  onFilterChange(event: MatChipListboxChange) {
+    this.filterSubject.next(event.value);
+  }
+
+  private getProjects$(
+    filter: 'all' | 'active' | 'inactive',
+  ): Observable<ReadProject[]> {
     const queryConstraints: QueryConstraint[] = [
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
     ];
 
     switch (filter) {
-      case "all":
+      case 'all':
         /** filter out drafts */
-        queryConstraints.push(where('status', '!=', ProjectStatus.DRAFT))
+        queryConstraints.push(where('status', '!=', ProjectStatus.DRAFT));
         break;
-      case "active":
+      case 'active':
         /** only show published projects */
-        queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED))
+        queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
         break;
-      case "inactive":
+      case 'inactive':
         /** only show archived projects */
-        queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED))
+        queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED));
         break;
       default:
         this.logger.warn(`Something went wrong filtering projects`, filter);
@@ -86,21 +140,24 @@ export class ProjectsComponent {
 
     return (this.db.colQuery$<ReadProject>(
       `projects`,
-      {idField: 'id'},
+      { idField: 'id' },
         ...queryConstraints,
     )).pipe(
       /** sort by featured projects */
-      map(projects => projects.sort((a, b) => b.featured.toString().localeCompare(a.featured.toString()))),
-      catchError(error => {
+      map((projects) => projects.sort((a, b) => {
+        return b.featured.toString().localeCompare(a.featured.toString());
+      })),
+      catchError((error: FirebaseError) => {
         this.logger.error(`Something went wrong loading projects`, error);
-        return throwError(error);
+        this.errorSignal.set(error);
+        return of([]);
       })
     );
   }
 
   async onShare(project: ReadProject) {
     const host = `https://${appInformation.website}`;
-    const path = `${nav_path.projects}/${project.slug}`;
+    const path = `${navPath.projects}/${project.slug}`;
     const url = host + path;
     const title = project.name;
     const text = project.description;
@@ -127,5 +184,9 @@ export class ProjectsComponent {
     } catch (error: unknown) {
       this.logger.error('Error sharing project', error);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

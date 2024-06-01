@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { UserPhotoComponent } from "../../../../shared/components/user-photo/user-photo.component";
-import { DateAgoPipe } from "../../../../shared/pipes/date-ago.pipe";
-import { CommentWithID } from "../../../../shared/interfaces/comment";
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  UserPhotoComponent,
+} from '../../../../shared/components/user-photo/user-photo.component';
+import { DateAgoPipe } from '../../../../shared/pipes/date-ago.pipe';
+import { CommentWithID } from '../../../../shared/interfaces/comment';
 
 @Component({
   selector: 'aj-project-detail-comment',

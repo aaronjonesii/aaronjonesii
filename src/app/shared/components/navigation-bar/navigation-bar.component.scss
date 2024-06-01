@@ -7,7 +7,7 @@
   gap: $app-gap;
   justify-content: space-between;
   align-items: center;
-  height: 56px;
+  height: $app-navigation-bar-height;
   overflow: hidden;
   border-radius: 1rem 1rem 0 0;
   z-index: 100;

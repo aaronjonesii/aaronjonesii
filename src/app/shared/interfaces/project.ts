@@ -1,5 +1,5 @@
-import { firebaseTimestamp, TimeStamp } from "./timestamp";
-import { FieldValue } from "@angular/fire/firestore/firebase";
+import { firebaseTimestamp, TimeStamp } from './timestamp';
+import { FieldValue } from '@angular/fire/firestore/firebase';
 
 export interface Project {
   id?: string,
@@ -17,11 +17,12 @@ export interface Project {
   updated: firebaseTimestamp | null,
   featured: boolean,
   allowComments: boolean,
-  roles: { [key: string]: "owner" | "writer" | "reader" | "commenter" },
+  roles: { [key: string]: 'owner' | 'writer' | 'reader' | 'commenter' },
   shards: number,
   views?: number, // sharded distributed counter
   author: { name: string, image: string | null },
 }
+/* eslint-disable no-unused-vars */
 export enum ProjectStatus {
   DRAFT = 'draft',
   ARCHIVED = 'archived',
@@ -32,7 +33,16 @@ export enum ProjectVisibility {
   PUBLIC = 'public',
   PRIVATE = 'private',
 }
+/* eslint-enable no-unused-vars */
 
-export interface ProjectWithID extends Project { id: string; }
-export interface WriteProject extends Project { created: FieldValue, updated: FieldValue | null }
-export interface ReadProject extends Project { created: TimeStamp, updated: TimeStamp | null }
+export interface WriteProject extends Project {
+  created: FieldValue,
+  updated: FieldValue | null,
+}
+
+export interface ReadProject extends Project {
+  created: TimeStamp,
+  updated: TimeStamp | null,
+}
+
+export interface ProjectWithID extends ReadProject { id: string; }
