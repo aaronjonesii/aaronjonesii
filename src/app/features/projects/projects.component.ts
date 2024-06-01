@@ -18,7 +18,7 @@ import { QueryConstraint, where } from '@angular/fire/firestore';
 import {
   AsyncPipe,
   KeyValue,
-  KeyValuePipe,
+  KeyValuePipe, LowerCasePipe,
   NgOptimizedImage
 } from '@angular/common';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
@@ -64,12 +64,13 @@ import { ProjectsFilter } from '../../shared/enums/projects-filter';
     KeyValuePipe,
     MatIconModule,
     MatCardModule,
+    LowerCasePipe,
     MatChipsModule,
     MatButtonModule,
     NgOptimizedImage,
     MatDividerModule,
-    LoadingOrErrorComponent,
     SkeletonComponent,
+    LoadingOrErrorComponent,
   ],
   animations: [...ProjectsAnimations],
 })

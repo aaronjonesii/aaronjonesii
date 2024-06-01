@@ -58,7 +58,7 @@
       <h3 class="mat-headline-5 text-center">
         No
         @if ((filter$ | async) !== ProjectsFilter.ALL) {
-          {{filter$ | async}}
+          {{filter$ | async | lowercase}}
         }
         projects yet, check back soon.</h3>
     }
