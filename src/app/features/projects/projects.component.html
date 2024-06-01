@@ -1,17 +1,11 @@
 <mat-chip-listbox aria-label="Filter selection"
                   (change)="onFilterChange($event)">
-  <mat-chip-option value="all"
-                   [selected]="(filter$ | async) === 'all'">
-    All
-  </mat-chip-option>
-  <mat-chip-option value="active"
-                   [selected]="(filter$ | async) === 'active'">
-    Active
-  </mat-chip-option>
-  <mat-chip-option value="inactive"
-                   [selected]="(filter$ | async) === 'inactive'">
-    Inactive
-  </mat-chip-option>
+  @for (filter of ProjectsFilter | keyvalue: keepSameOrder; track filter.key) {
+    <mat-chip-option [value]="filter.value"
+                     [selected]="(filter$ | async) === filter.value">
+      {{filter.value}}
+    </mat-chip-option>
+  }
 </mat-chip-listbox>
 
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
@@ -63,7 +57,7 @@
     } @empty {
       <h3 class="mat-headline-5 text-center">
         No
-        @if ((filter$ | async) !== 'all') {
+        @if ((filter$ | async) !== ProjectsFilter.ALL) {
           {{filter$ | async}}
         }
         projects yet, check back soon.</h3>
