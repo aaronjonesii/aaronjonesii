@@ -2,18 +2,25 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnDestroy, signal,
+  OnDestroy,
+  signal,
 } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
   map,
-  Observable, of,
+  Observable,
+  of,
   Subscription,
   switchMap,
 } from 'rxjs';
 import { QueryConstraint, where } from '@angular/fire/firestore';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import {
+  AsyncPipe,
+  KeyValue,
+  KeyValuePipe, LowerCasePipe,
+  NgOptimizedImage,
+} from '@angular/common';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
@@ -43,6 +50,7 @@ import { FirebaseError } from '@angular/fire/app/firebase';
 import {
   SkeletonComponent,
 } from '../../shared/components/skeleton/skeleton.component';
+import { ProjectsFilter } from '../../shared/enums/projects-filter';
 
 @Component({
   selector: 'aj-projects',
@@ -53,14 +61,16 @@ import {
   imports: [
     AsyncPipe,
     RouterLink,
+    KeyValuePipe,
     MatIconModule,
     MatCardModule,
+    LowerCasePipe,
     MatChipsModule,
     MatButtonModule,
     NgOptimizedImage,
     MatDividerModule,
-    LoadingOrErrorComponent,
     SkeletonComponent,
+    LoadingOrErrorComponent,
   ],
   animations: [...ProjectsAnimations],
 })
@@ -68,7 +78,7 @@ export class ProjectsComponent implements OnDestroy {
   private readonly title = 'Projects';
   readonly nav_path = navPath;
   private filterSubject =
-    new BehaviorSubject<'all' | 'active' | 'inactive'>('active');
+    new BehaviorSubject<ProjectsFilter>(ProjectsFilter.ACTIVE);
   filter$ = this.filterSubject.asObservable();
   private projectsSignal = signal<ReadProject[]>([]);
   projects = this.projectsSignal.asReadonly();
@@ -78,6 +88,7 @@ export class ProjectsComponent implements OnDestroy {
   private errorSignal = signal<FirebaseError | undefined>(undefined);
   error = this.errorSignal.asReadonly();
   readonly placeholders = Array(4).fill(() => '');
+  protected readonly ProjectsFilter = ProjectsFilter;
 
   constructor(
     private db: FirestoreService,
@@ -108,12 +119,21 @@ export class ProjectsComponent implements OnDestroy {
     );
   }
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  keepSameOrder(
+    k: KeyValue<unknown, unknown>,
+    v: KeyValue<unknown, unknown>,
+  ) {
+    return 1;
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
   onFilterChange(event: MatChipListboxChange) {
     this.filterSubject.next(event.value);
   }
 
   private getProjects$(
-    filter: 'all' | 'active' | 'inactive',
+    filter: ProjectsFilter,
   ): Observable<ReadProject[]> {
     const queryConstraints: QueryConstraint[] = [
       /** filter out private projects */
@@ -121,15 +141,15 @@ export class ProjectsComponent implements OnDestroy {
     ];
 
     switch (filter) {
-      case 'all':
+      case ProjectsFilter.ALL:
         /** filter out drafts */
         queryConstraints.push(where('status', '!=', ProjectStatus.DRAFT));
         break;
-      case 'active':
+      case ProjectsFilter.ACTIVE:
         /** only show published projects */
         queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
         break;
-      case 'inactive':
+      case ProjectsFilter.ARCHIVED:
         /** only show archived projects */
         queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED));
         break;
