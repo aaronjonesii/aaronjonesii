@@ -34,6 +34,7 @@
                [ngSrc]="project()?.image ?? ''" [alt]="project.name" />
         </picture>
       }
+
       <div class="flex-col app-gap content">
         <h1 class="mat-headline-4 m-0">{{project()?.name}}{{project()?.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
 

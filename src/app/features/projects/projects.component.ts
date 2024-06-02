@@ -19,7 +19,6 @@ import { ReadProject } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
-import { appInformation } from '../../information';
 import { navPath } from '../../app.routes';
 import {
   ConsoleLoggerService,

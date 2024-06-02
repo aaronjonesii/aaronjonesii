@@ -23,8 +23,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { User, UserWithID } from '../interfaces/user';
 import { ProjectsFilter } from '../enums/projects-filter';
-import { appInformation } from "../../information";
-import { navPath } from "../../app.routes";
+import { appInformation } from '../../information';
+import { navPath } from '../../app.routes';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectsService {
