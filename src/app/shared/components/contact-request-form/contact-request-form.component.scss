@@ -1,3 +1,8 @@
-form mat-form-field {
-  width: 100%;
+form {
+  display: flex;
+  flex-direction: column;
+}
+form button {
+  min-height: 50px;
+  border-radius: 2rem !important;
 }
