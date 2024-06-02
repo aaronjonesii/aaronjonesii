@@ -125,34 +125,7 @@ export class ProjectsComponent implements OnDestroy {
   }
 
   async onShare(project: ReadProject) {
-    const host = `https://${appInformation.website}`;
-    const path = `${navPath.projects}/${project.slug}`;
-    const url = host + path;
-    const title = project.name;
-    const text = project.description;
-
-    try {
-      // Feature detection to see if the Web Share API is supported.
-      if ('share' in navigator) {
-        return await navigator.share({
-          url,
-          text,
-          title,
-        });
-      }
-
-      // Fallback to use Twitter's Web Intent URL.
-      // (https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent)
-      const shareURL = new URL('https://twitter.com/intent/tweet');
-      const params = new URLSearchParams();
-      params.append('text', text);
-      params.append('title', title);
-      params.append('url', url);
-      shareURL.search = params.toString();
-      window.open(shareURL, '_blank', 'popup,noreferrer,noopener');
-    } catch (error: unknown) {
-      this.logger.error('Error sharing project', error);
-    }
+    return this.projectsService.shareProject(project);
   }
 
   ngOnDestroy() {
