@@ -27,7 +27,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles.scss"
