@@ -7,6 +7,9 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import {
+  FadeInOutAnimation
+} from "../../shared/animations/fade-in-out.animations";
 
 export const HomeAnimations: AnimationTriggerMetadata[] = [
   trigger('titleAnimation', [
@@ -47,4 +50,6 @@ export const HomeAnimations: AnimationTriggerMetadata[] = [
       ),
     ]),
   ]),
+  trigger('marqueeAnimation', FadeInOutAnimation[0].definitions),
+  trigger('appointmentAnimation', FadeInOutAnimation[0].definitions),
 ];

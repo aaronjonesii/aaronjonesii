@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { NgOptimizedImage } from '@angular/common';
+import { NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { appInformation } from '../../information';
 import {
@@ -15,6 +15,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MarqueeComponent,
 } from '../../shared/components/marquee/marquee.component';
+import {
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'aj-home',
@@ -26,7 +29,8 @@ import {
   imports: [
     MatIconModule, MatButtonModule,
     NgOptimizedImage, RouterLink,
-    MarqueeComponent,
+    MarqueeComponent, NgClass,
+    NgTemplateOutlet, SkeletonComponent,
   ],
 })
 export class HomeComponent {

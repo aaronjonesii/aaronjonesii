@@ -1,8 +1,8 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
 <section class="hero">
   <h1 class="title" [@titleAnimation]
       (@titleAnimation.done)="onTitleAnimationDone()">{{heroTitle}}</h1>
 
-  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
   @if (titleAnimationDone()) {
     <p class="subtitle" [@subtitleAnimation]>{{heroSubtitle}}</p>
 
@@ -25,19 +25,6 @@
       </span>
     </div>
 
-    <div class="scroll-container">
-      <h3 class="mat-headline-5">My Expertise</h3>
-      <aj-marquee>
-        <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
-        @for (scrollImage of scrollImages(); track scrollImage.id) {
-          <picture>
-            <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"
-                 [height]="scrollImage.height" [width]="scrollImage.width"/>
-          </picture>
-        }
-      </aj-marquee>
-    </div>
-
     <div class="image" [@imageAnimation]>
       <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
         <defs>
@@ -54,3 +41,73 @@
     </div>
   }
 </section>
+
+@if (titleAnimationDone()) {
+  @defer (on viewport) {
+    <section class="marquee">
+      <h3 class="mat-headline-5" [@marqueeAnimation]>My Expertise</h3>
+
+      <aj-marquee [@marqueeAnimation]>
+        @for (
+                scrollImage of scrollImages().concat(scrollImages());
+            track scrollImage.id;
+              ) {
+          <picture>
+            <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"
+                 [height]="scrollImage.height" [width]="scrollImage.width"/>
+          </picture>
+        }
+      </aj-marquee>
+    </section>
+  } @placeholder (minimum 500ms) {
+    <section class="marquee placeholder">
+      <h3 class="mat-headline-5" >
+        <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
+      </h3>
+
+      <aj-marquee>
+        <picture>
+          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+        </picture>
+        <picture>
+          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+        </picture>
+        <picture>
+          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+        </picture>
+        <picture>
+          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+        </picture>
+        <picture>
+          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+        </picture>
+        <picture>
+          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+        </picture>
+      </aj-marquee>
+    </section>
+  }
+
+  @defer (on viewport) {
+    <section class="appointment">
+      <h3 class="mat-headline-5" [@appointmentAnimation]>Book an appointment!</h3>
+
+      <button mat-raised-button type="button" color="primary" [@appointmentAnimation]>
+        <div class="flex-row align-items-center">
+          <span>Book appointment</span>
+          <mat-icon fontIcon="arrow_forward" />
+        </div>
+      </button>
+    </section>
+  } @placeholder (minimum 500ms) {
+    <section class="appointment placeholder">
+      <h3 class="mat-headline-5" >
+        <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
+      </h3>
+
+
+      <aj-skeleton [styles]="{height: '60px', width: '100%', maxWidth: '300px'}" />
+    </section>
+  }
+}
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

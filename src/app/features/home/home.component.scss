@@ -3,6 +3,9 @@
 @import "../../../assets/scss/partials/mixins";
 
 :host {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
   max-width: $large;
   @media (min-width: $large) {
     align-self: center;
@@ -45,20 +48,10 @@
   gap: $app-gap;
 }
 
-.hero .scroll-container {
-  grid-area: 12 / 2 / 13 / 10;
-  z-index: 3;
-  width: 100%;
-}
-.hero .scroll-container picture {
-  min-width: 200px;
-  max-height: 100px;
-}
-
 .hero .image {
   display: flex;
   align-items: center;
-  grid-area: 13 / 2 / 22 / 10;
+  grid-area: 11 / 2 / 22 / 10;
   z-index: 3;
   width: 100%;
 }
@@ -70,6 +63,22 @@
 
 .hero .image picture img {
   position: unset !important;
+}
+
+.marquee {
+  text-align: center;
+}
+.marquee picture {
+  min-width: 200px;
+  max-height: 100px;
+}
+
+.appointment {
+  text-align: center;
+}
+.appointment button {
+  height: 60px;
+  border-radius: calc(#{$app-border-radius} * 2);
 }
 
 @media (min-width: 768px) {
@@ -94,7 +103,6 @@
   .hero .subtitle { grid-area: 11 / 2 / 13 / 14; }
   .hero .contact { grid-area: 14 / 2 / 16 / 14; }
   .hero .image { grid-area: 1 / 14 / 16 / 26; }
-  .hero .scroll-container { grid-area: 16 / 2 / 17 / 26; }
 }
 
 /* grid notes
