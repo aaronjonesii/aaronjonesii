@@ -8,7 +8,6 @@ import {
 } from '../../shared/components/top-app-bar/top-app-bar.service';
 import { navPath } from '../../app.routes';
 import { SeoService } from '../../shared/services/seo.service';
-import { HomeAnimations } from './home.animations';
 import { ProjectsService } from '../../shared/services/projects.service';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -18,6 +17,9 @@ import {
 import {
   SkeletonComponent,
 } from '../../shared/components/skeleton/skeleton.component';
+import {
+  FadeInOutAnimation,
+} from '../../shared/animations/fade-in-out.animations';
 
 @Component({
   selector: 'aj-home',
@@ -25,7 +27,7 @@ import {
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  animations: [...HomeAnimations],
+  animations: [FadeInOutAnimation],
   imports: [
     MatIconModule, MatButtonModule,
     NgOptimizedImage, RouterLink,

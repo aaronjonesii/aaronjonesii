@@ -1,10 +1,10 @@
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
-<section class="hero">
-  <h1 class="title" [@titleAnimation]>{{heroTitle}}</h1>
+<section class="hero" [@fadeInOutStaggerAnimation]>
+  <h1 class="title" [@fadeInOutAnimation]>{{heroTitle}}</h1>
 
-  <p class="subtitle" [@subtitleAnimation]>{{heroSubtitle}}</p>
+  <p class="subtitle" [@fadeInOutAnimation]>{{heroSubtitle}}</p>
 
-  <div class="contact" [@contactAnimation]>
+  <div class="contact" [@fadeInOutAnimation]>
       <span>
         <button mat-icon-button type="button"
                 [routerLink]="[nav_path.contact]">
@@ -23,7 +23,7 @@
       </span>
   </div>
 
-  <div class="image" [@imageAnimation]>
+  <div class="image" [@fadeInOutAnimation]>
     <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
       <defs>
         <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">
@@ -40,10 +40,10 @@
 </section>
 
 @defer (on viewport) {
-  <section class="marquee">
-    <h3 class="mat-headline-5" [@marqueeAnimation]>My Expertise</h3>
+  <section class="marquee" [@fadeInOutStaggerAnimation]>
+    <h3 class="mat-headline-5" [@fadeInOutAnimation]>My Expertise</h3>
 
-    <aj-marquee [@marqueeAnimation]>
+    <aj-marquee [@fadeInOutAnimation]>
       @for (
               scrollImage of scrollImages().concat(scrollImages());
           track scrollImage.id;
@@ -85,11 +85,11 @@
 }
 
 @defer (on viewport) {
-  <section class="appointment">
-    <h3 class="mat-headline-5" [@appointmentAnimation]>Book an appointment!</h3>
+  <section class="appointment" [@fadeInOutStaggerAnimation]>
+    <h3 class="mat-headline-5" [@fadeInOutAnimation]>Book an appointment!</h3>
 
     <button mat-raised-button type="button" color="primary"
-            [@appointmentAnimation]
+            [@fadeInOutAnimation]
             [routerLink]="[navPath.bookAppointment]">
       <div class="flex-row align-items-center">
         <span>Book appointment</span>
