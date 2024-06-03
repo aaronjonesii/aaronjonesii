@@ -25,6 +25,19 @@
       </span>
     </div>
 
+    <div class="scroll-container">
+      <h3 class="mat-headline-5">My Expertise</h3>
+      <aj-marquee>
+        <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+        @for (scrollImage of scrollImages(); track scrollImage.id) {
+          <picture>
+            <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"
+                 [height]="scrollImage.height" [width]="scrollImage.width"/>
+          </picture>
+        }
+      </aj-marquee>
+    </div>
+
     <div class="image" [@imageAnimation]>
       <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
         <defs>
@@ -34,7 +47,9 @@
         </defs>
       </svg>
       <picture>
-        <img fill priority alt="" ngSrc="assets/imgs/aaron_jones_transparent.webp" />
+        <img fill priority
+             alt="Photo of Aaron Jones smiling at the camera with a transparent background"
+             ngSrc="assets/imgs/aaron_jones_transparent.webp" />
       </picture>
     </div>
   }

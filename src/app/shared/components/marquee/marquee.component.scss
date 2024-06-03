@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  overflow: hidden;
+}
+
+.scroll-container {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 5s infinite linear;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

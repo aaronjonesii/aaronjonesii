@@ -12,6 +12,9 @@ import { HomeAnimations } from './home.animations';
 import { ProjectsService } from '../../shared/services/projects.service';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  MarqueeComponent,
+} from '../../shared/components/marquee/marquee.component';
 
 @Component({
   selector: 'aj-home',
@@ -20,7 +23,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   animations: [...HomeAnimations],
-  imports: [MatIconModule, MatButtonModule, NgOptimizedImage, RouterLink],
+  imports: [
+    MatIconModule, MatButtonModule,
+    NgOptimizedImage, RouterLink,
+    MarqueeComponent,
+  ],
 })
 export class HomeComponent {
   readonly title = appInformation.title;
@@ -32,6 +39,29 @@ export class HomeComponent {
   private titleAnimationDoneSignal = signal(false);
   titleAnimationDone = this.titleAnimationDoneSignal.asReadonly();
   featuredProjects = toSignal(this.projectsService.featuredProjects$);
+  scrollImages = signal([
+    {
+      id: 'angular',
+      alt: 'Angular gradient color logo',
+      src: 'assets/imgs/angular_gradient.webp',
+      height: '1920',
+      width: '1920',
+    },
+    {
+      id: 'firebase',
+      alt: 'Firebase full color logo',
+      src: 'assets/imgs/firebase_logomark_full_color.webp',
+      height: '600',
+      width: '600',
+    },
+    {
+      id: 'google-cloud',
+      alt: 'Google Cloud full color logo',
+      src: 'assets/imgs/google_cloud_full_color_rgb_544x96px.webp',
+      height: '96',
+      width: '544',
+    },
+  ]);
 
   constructor(
     private seoService: SeoService,
