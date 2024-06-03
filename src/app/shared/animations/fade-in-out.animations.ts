@@ -5,14 +5,14 @@ import {
   trigger,
 } from '@angular/animations';
 
-function generateRandomDelay(min: number = 5, max: number = 30): number {
+function generateRandomDelay(min: number = 0, max: number = 300): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export const FadeInOutAnimation = [
   trigger('fadeInOutStaggerAnimation', [
     transition(':enter', [
-      query('*', [
+      query('@*', [
         style({ opacity: 0 }),
         stagger(generateRandomDelay(), [
           animate(
