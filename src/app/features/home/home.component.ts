@@ -40,8 +40,6 @@ export class HomeComponent {
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.altEmail;
   readonly location = appInformation.location;
-  private titleAnimationDoneSignal = signal(false);
-  titleAnimationDone = this.titleAnimationDoneSignal.asReadonly();
   featuredProjects = toSignal(this.projectsService.featuredProjects$);
   scrollImages = signal([
     {
@@ -79,9 +77,5 @@ export class HomeComponent {
       loading: false,
     });
     this.seoService.generateTags({ route: navPath.home });
-  }
-
-  onTitleAnimationDone() {
-    this.titleAnimationDoneSignal.set(true);
   }
 }

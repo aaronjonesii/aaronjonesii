@@ -1,12 +1,10 @@
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
 <section class="hero">
-  <h1 class="title" [@titleAnimation]
-      (@titleAnimation.done)="onTitleAnimationDone()">{{heroTitle}}</h1>
+  <h1 class="title" [@titleAnimation]>{{heroTitle}}</h1>
 
-  @if (titleAnimationDone()) {
-    <p class="subtitle" [@subtitleAnimation]>{{heroSubtitle}}</p>
+  <p class="subtitle" [@subtitleAnimation]>{{heroSubtitle}}</p>
 
-    <div class="contact" [@contactAnimation]>
+  <div class="contact" [@contactAnimation]>
       <span>
         <button mat-icon-button type="button"
                 [routerLink]="[nav_path.contact]">
@@ -16,100 +14,97 @@
         Based in {{location}}
       </span>
 
-        <span>
+    <span>
         <a mat-icon-button type="button" [href]="'mailto:'+contactEmail">
           <mat-icon fontIcon="contact_mail" color="accent"
                     class="material-icons-outlined" />
         </a>
-          {{contactEmail}}
+      {{contactEmail}}
       </span>
-    </div>
+  </div>
 
-    <div class="image" [@imageAnimation]>
-      <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
-        <defs>
-          <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">
-            <path d="M0.495,0 A0.505,0.336,0,0,0,0,0.329 V1 H1 V0.329 A0.505,0.336,0,0,0,0.495,0" />
-          </clipPath>
-        </defs>
-      </svg>
-      <picture>
-        <img fill priority
-             alt="Photo of Aaron Jones smiling at the camera with a transparent background"
-             ngSrc="assets/imgs/aaron_jones_transparent.webp" />
-      </picture>
-    </div>
-  }
+  <div class="image" [@imageAnimation]>
+    <svg data-image-mask-id="heroPictureClipPath" width="0" height="0">
+      <defs>
+        <clipPath id="topPillClipPath" clipPathUnits="objectBoundingBox">
+          <path d="M0.495,0 A0.505,0.336,0,0,0,0,0.329 V1 H1 V0.329 A0.505,0.336,0,0,0,0.495,0" />
+        </clipPath>
+      </defs>
+    </svg>
+    <picture>
+      <img fill priority
+           alt="Photo of Aaron Jones smiling at the camera with a transparent background"
+           ngSrc="assets/imgs/aaron_jones_transparent.webp" />
+    </picture>
+  </div>
 </section>
 
-@if (titleAnimationDone()) {
-  @defer (on viewport) {
-    <section class="marquee">
-      <h3 class="mat-headline-5" [@marqueeAnimation]>My Expertise</h3>
+@defer (on viewport) {
+  <section class="marquee">
+    <h3 class="mat-headline-5" [@marqueeAnimation]>My Expertise</h3>
 
-      <aj-marquee [@marqueeAnimation]>
-        @for (
-                scrollImage of scrollImages().concat(scrollImages());
-            track scrollImage.id;
-              ) {
-          <picture>
-            <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"
-                 [height]="scrollImage.height" [width]="scrollImage.width"/>
-          </picture>
-        }
-      </aj-marquee>
-    </section>
-  } @placeholder (minimum 500ms) {
-    <section class="marquee placeholder">
-      <h3 class="mat-headline-5" >
-        <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
-      </h3>
+    <aj-marquee [@marqueeAnimation]>
+      @for (
+              scrollImage of scrollImages().concat(scrollImages());
+          track scrollImage.id;
+            ) {
+        <picture>
+          <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"
+               [height]="scrollImage.height" [width]="scrollImage.width"/>
+        </picture>
+      }
+    </aj-marquee>
+  </section>
+} @placeholder (minimum 500ms) {
+  <section class="marquee placeholder">
+    <h3 class="mat-headline-5" >
+      <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
+    </h3>
 
-      <aj-marquee>
-        <picture>
-          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-        </picture>
-        <picture>
-          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-        </picture>
-        <picture>
-          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-        </picture>
-        <picture>
-          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-        </picture>
-        <picture>
-          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-        </picture>
-        <picture>
-          <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-        </picture>
-      </aj-marquee>
-    </section>
-  }
+    <aj-marquee>
+      <picture>
+        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+      </picture>
+      <picture>
+        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+      </picture>
+      <picture>
+        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+      </picture>
+      <picture>
+        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+      </picture>
+      <picture>
+        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+      </picture>
+      <picture>
+        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
+      </picture>
+    </aj-marquee>
+  </section>
+}
 
-  @defer (on viewport) {
-    <section class="appointment">
-      <h3 class="mat-headline-5" [@appointmentAnimation]>Book an appointment!</h3>
+@defer (on viewport) {
+  <section class="appointment">
+    <h3 class="mat-headline-5" [@appointmentAnimation]>Book an appointment!</h3>
 
-      <button mat-raised-button type="button" color="primary"
-              [@appointmentAnimation]
-              [routerLink]="[navPath.bookAppointment]">
-        <div class="flex-row align-items-center">
-          <span>Book appointment</span>
-          <mat-icon fontIcon="arrow_forward" />
-        </div>
-      </button>
-    </section>
-  } @placeholder (minimum 500ms) {
-    <section class="appointment placeholder">
-      <h3 class="mat-headline-5" >
-        <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
-      </h3>
+    <button mat-raised-button type="button" color="primary"
+            [@appointmentAnimation]
+            [routerLink]="[navPath.bookAppointment]">
+      <div class="flex-row align-items-center">
+        <span>Book appointment</span>
+        <mat-icon fontIcon="arrow_forward" />
+      </div>
+    </button>
+  </section>
+} @placeholder (minimum 500ms) {
+  <section class="appointment placeholder">
+    <h3 class="mat-headline-5" >
+      <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
+    </h3>
 
 
-      <aj-skeleton [styles]="{height: '60px', width: '100%', maxWidth: '300px'}" />
-    </section>
-  }
+    <aj-skeleton [styles]="{height: '60px', width: '100%', maxWidth: '300px'}" />
+  </section>
 }
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->
