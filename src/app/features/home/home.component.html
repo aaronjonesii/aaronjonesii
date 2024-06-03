@@ -92,7 +92,9 @@
     <section class="appointment">
       <h3 class="mat-headline-5" [@appointmentAnimation]>Book an appointment!</h3>
 
-      <button mat-raised-button type="button" color="primary" [@appointmentAnimation]>
+      <button mat-raised-button type="button" color="primary"
+              [@appointmentAnimation]
+              [routerLink]="[navPath.bookAppointment]">
         <div class="flex-row align-items-center">
           <span>Book appointment</span>
           <mat-icon fontIcon="arrow_forward" />

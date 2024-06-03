@@ -66,6 +66,7 @@ export class HomeComponent {
       width: '544',
     },
   ]);
+  protected readonly navPath = navPath;
 
   constructor(
     private seoService: SeoService,

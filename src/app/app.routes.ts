@@ -7,16 +7,17 @@ import { projectsNavPath } from './shared/routes/projects.routes';
 import { policiesNavPath } from './shared/routes/policies.routes';
 
 export const navPath = {
-  home: '/',
-  comingSoon: '/coming-soon',
   about: '/about',
-  contact: '/contact',
   accountDetails: '/account-details',
-  ...authNavPath,
   ...adminNavPath,
+  ...authNavPath,
+  bookAppointment: '/book-appointment',
+  comingSoon: '/coming-soon',
+  contact: '/contact',
+  ...errorsNavPath,
+  home: '/',
   ...policiesNavPath,
   ...projectsNavPath,
-  ...errorsNavPath,
 };
 
 export const routes: Routes = [
