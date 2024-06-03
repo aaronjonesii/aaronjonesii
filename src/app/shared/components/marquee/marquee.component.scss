@@ -8,7 +8,7 @@
 .scroll-container {
   display: flex;
   white-space: nowrap;
-  animation: marquee 5s infinite linear;
+  animation: marquee 10s infinite linear;
 }
 
 @keyframes marquee {
