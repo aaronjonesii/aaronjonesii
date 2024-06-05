@@ -1,26 +1,39 @@
 <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
 @switch (status()) {
   @case (Status.PENDING) {
-    <div class="full-height-container align-items-center justify-content-center text-center" [@slideInFromRightAnimation]>
+    <div class="full-height-container align-items-center justify-content-center text-center" [@fadeInOutAnimation]>
       <h1 class="mat-headline-2 headline overflow-wrap-anywhere">Let's Build Something Amazing Together</h1>
       <mat-icon class="material-icons-outlined scroll-icon bounce-top"
                 fontIcon="keyboard_double_arrow_down"
                 color="primary" on-mouseover="scrollToForm()" on-focus="scrollToForm()" />
     </div>
 
-    <div class="full-height-container app-gap" id="contact-container" [@slideInFromRightAnimation]>
-      <div class="info-container mat-body-1 overflow-wrap-anywhere">
-        <p>Email me directly: {{contactEmail}}</p>
-        <p class="capitalize">Open to new opportunities and collaborations.</p>
-        <p>Based in Michigan.</p>
-      </div>
+    @defer (on viewport) {
+      <div class="full-height-container app-gap" id="contact-container" [@fadeInOutStaggerAnimation]>
+        <div class="info-container mat-body-1 overflow-wrap-anywhere" [@fadeInOutAnimation]>
+          <p>Email me directly: {{contactEmail}}</p>
+          <p class="capitalize">Open to new opportunities and collaborations.</p>
+          <p>Based in Michigan.</p>
+        </div>
 
-      <h1 class="overflow-wrap-anywhere">Interested in working together?</h1>
-      <aj-contact-request-form (formSubmitted)="onSubmit($event)" />
-    </div>
+        <h1 class="overflow-wrap-anywhere" [@fadeInOutAnimation]>Interested in working together?</h1>
+        <aj-contact-request-form [@fadeInOutAnimation] (formSubmitted)="onSubmit($event)"  />
+      </div>
+    } @placeholder (minimum 500ms) {
+      <div class="full-height-container app-gap placeholder" id="placeholder-contact-container">
+        <div class="info-container mat-body-1 overflow-wrap-anywhere">
+          <p><aj-skeleton [styles]="{width: '300px'}" /></p>
+          <p class="capitalize"><aj-skeleton [styles]="{width: '200px'}" /></p>
+          <p><aj-skeleton [styles]="{width: '100px'}" /></p>
+        </div>
+
+        <h1 class="overflow-wrap-anywhere"><aj-skeleton [styles]="{width: '150px'}" /></h1>
+        <aj-skeleton [styles]="{height: '500px'}" />
+      </div>
+    }
   }
   @case (Status.LOADING) {
-    <div class="submitted-container loading" [@slideInFromLeftAnimation]>
+    <div class="submitted-container loading" [@fadeInOutAnimation]>
       <mat-progress-bar mode="indeterminate" />
       <h1 class="title text-break-word">Sending contact request...</h1>
       <mat-icon class="material-icons-outlined" fontIcon="pending"
@@ -31,7 +44,7 @@
     </div>
   }
   @case (Status.SUCCESS) {
-    <div class="submitted-container success" [@slideInFromLeftAnimation]>
+    <div class="submitted-container success" [@fadeInOutAnimation]>
       <h1 class="title text-break-word">Success</h1>
       <mat-icon class="material-icons-outlined" fontIcon="check_circle" />
       <p class="mat-headline-6">
@@ -45,7 +58,7 @@
     </div>
   }
   @case (Status.ERROR) {
-    <div class="submitted-container error" [@slideInFromLeftAnimation]>
+    <div class="submitted-container error" [@fadeInOutAnimation]>
       <h1 class="title text-break-word">Error</h1>
       <mat-icon class="material-icons-outlined" fontIcon="error" />
       <p class="mat-headline-6">

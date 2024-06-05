@@ -25,16 +25,16 @@ import {
   ContactRequestsService,
 } from '../../shared/services/contact-requests.service';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  SlideInFromLeftAnimation,
-} from '../../shared/animations/slide-in-from-left.animations';
 import { FirebaseError } from '@angular/fire/app';
-import {
-  SlideInFromRightAnimation,
-} from '../../shared/animations/slide-in-from-right.animations';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {
+  FadeInOutAnimation,
+} from '../../shared/animations/fade-in-out.animations';
+import {
+  SkeletonComponent
+} from "../../shared/components/skeleton/skeleton.component";
 
 /* eslint-disable no-unused-vars */
 enum Status {
@@ -60,10 +60,10 @@ enum Status {
     MatProgressBarModule,
     MatProgressSpinnerModule,
     ContactRequestFormComponent,
+    SkeletonComponent,
   ],
   animations: [
-    SlideInFromLeftAnimation,
-    SlideInFromRightAnimation,
+    FadeInOutAnimation,
   ],
 })
 export class ContactComponent {
