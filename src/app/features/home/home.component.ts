@@ -20,6 +20,10 @@ import {
 import {
   FadeInOutAnimation,
 } from '../../shared/animations/fade-in-out.animations';
+import {
+  CarouselComponent
+} from "../../shared/components/carousel/carousel.component";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: 'aj-home',
@@ -32,7 +36,7 @@ import {
     MatIconModule, MatButtonModule,
     NgOptimizedImage, RouterLink,
     MarqueeComponent, NgClass,
-    NgTemplateOutlet, SkeletonComponent,
+    NgTemplateOutlet, SkeletonComponent, CarouselComponent,
   ],
 })
 export class HomeComponent {
@@ -42,7 +46,12 @@ export class HomeComponent {
   readonly heroSubtitle = appInformation.description;
   readonly contactEmail = appInformation.altEmail;
   readonly location = appInformation.location;
-  featuredProjects = toSignal(this.projectsService.featuredProjects$);
+  featuredProjects = toSignal(
+    this.projectsService.featuredProjects$.pipe(
+      tap(() => this.featuredProjectsLoaded.set(true)),
+    ),
+  );
+  featuredProjectsLoaded = signal(false);
   scrollImages = signal([
     {
       id: 'angular',

@@ -1,0 +1,15 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+@defer (when loaded()) {
+  @for (item of items(); track item.id; let i=$index) {
+    <figure class="item" [tabindex]="i"
+            [ngClass]="{'active': activeIndex() === i}"
+            (click)="activeIndex.set(i)" (keyup)="activeIndex.set(i)" >
+      <img class="image" [src]="item.image" [alt]="item.name" />
+
+      <figcaption class="name">{{item.name}}</figcaption>
+    </figure>
+  }
+} @placeholder (minimum 500ms) {
+  <div class="placeholder"></div>
+}
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->
