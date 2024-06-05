@@ -14,7 +14,7 @@ export class SkillsService {
         { id: 'typescript', name: 'Typescript', rating: 5 },
         { id: 'python', name: 'Python', rating: 4 },
         { id: 'php', name: 'PHP', rating: 3 },
-        { id: 'c-cpp-csharp', name: 'C/C++/C#', rating: 1 },
+        { id: 'c-cpp-csharp', name: 'C/C++/C#', rating: 2 },
       ],
     },
     {
@@ -23,9 +23,9 @@ export class SkillsService {
       skills: [
         { id: 'angular', name: 'Angular', rating: 5 },
         { id: 'django', name: 'Django', rating: 4 },
-        { id: 'flutter', name: 'Flutter', rating: 0 },
-        { id: 'dotnet', name: '.NET', rating: 0 },
-        { id: 'react', name: 'React', rating: 0 },
+        // { id: 'flutter', name: 'Flutter', rating: 0 },
+        // { id: 'dotnet', name: '.NET', rating: 0 },
+        // { id: 'react', name: 'React', rating: 0 },
       ],
     },
     {
