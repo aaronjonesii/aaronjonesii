@@ -39,73 +39,73 @@
   </div>
 </section>
 
-@defer (on viewport) {
-  <section class="marquee" [@fadeInOutStaggerAnimation]>
-    <h3 class="mat-headline-5" [@fadeInOutAnimation]>My Expertise</h3>
+<!--@defer (on viewport) {-->
+<!--  <section class="marquee" [@fadeInOutStaggerAnimation]>-->
+<!--    <h3 class="mat-headline-5" [@fadeInOutAnimation]>My Expertise</h3>-->
 
-    <aj-marquee [@fadeInOutAnimation]>
-      @for (
-              scrollImage of scrollImages().concat(scrollImages());
-          track scrollImage.id;
-            ) {
-        <picture>
-          <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"
-               [height]="scrollImage.height" [width]="scrollImage.width"/>
-        </picture>
-      }
-<!--      <mat-icon class="flutter" fontIcon="flutter_dash" />-->
-    </aj-marquee>
-  </section>
-} @placeholder (minimum 500ms) {
-  <section class="marquee placeholder">
-    <h3 class="mat-headline-5" >
-      <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
-    </h3>
+<!--    <aj-marquee [@fadeInOutAnimation]>-->
+<!--      @for (-->
+<!--              scrollImage of scrollImages().concat(scrollImages());-->
+<!--          track scrollImage.id;-->
+<!--            ) {-->
+<!--        <picture>-->
+<!--          <img [alt]="scrollImage.alt" [ngSrc]="scrollImage.src"-->
+<!--               [height]="scrollImage.height" [width]="scrollImage.width"/>-->
+<!--        </picture>-->
+<!--      }-->
+<!--&lt;!&ndash;      <mat-icon class="flutter" fontIcon="flutter_dash" />&ndash;&gt;-->
+<!--    </aj-marquee>-->
+<!--  </section>-->
+<!--} @placeholder (minimum 500ms) {-->
+<!--  <section class="marquee placeholder">-->
+<!--    <h3 class="mat-headline-5" >-->
+<!--      <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />-->
+<!--    </h3>-->
 
-    <aj-marquee>
-      <picture>
-        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-      </picture>
-      <picture>
-        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-      </picture>
-      <picture>
-        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-      </picture>
-      <picture>
-        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-      </picture>
-      <picture>
-        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-      </picture>
-      <picture>
-        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />
-      </picture>
-    </aj-marquee>
-  </section>
-}
+<!--    <aj-marquee>-->
+<!--      <picture>-->
+<!--        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />-->
+<!--      </picture>-->
+<!--      <picture>-->
+<!--        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />-->
+<!--      </picture>-->
+<!--      <picture>-->
+<!--        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />-->
+<!--      </picture>-->
+<!--      <picture>-->
+<!--        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />-->
+<!--      </picture>-->
+<!--      <picture>-->
+<!--        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />-->
+<!--      </picture>-->
+<!--      <picture>-->
+<!--        <aj-skeleton [styles]="{width: '200px', height: '200px'}" />-->
+<!--      </picture>-->
+<!--    </aj-marquee>-->
+<!--  </section>-->
+<!--}-->
 
-@defer (on viewport) {
-  <section class="appointment" [@fadeInOutStaggerAnimation]>
-    <h3 class="mat-headline-5" [@fadeInOutAnimation]>Book an appointment!</h3>
+<!--@defer (on viewport) {-->
+<!--  <section class="appointment" [@fadeInOutStaggerAnimation]>-->
+<!--    <h3 class="mat-headline-5" [@fadeInOutAnimation]>Book an appointment!</h3>-->
 
-    <button mat-raised-button type="button" color="primary"
-            [@fadeInOutAnimation]
-            [routerLink]="[navPath.bookAppointment]">
-      <div class="flex-row align-items-center">
-        <span>Book appointment</span>
-        <mat-icon fontIcon="arrow_forward" />
-      </div>
-    </button>
-  </section>
-} @placeholder (minimum 500ms) {
-  <section class="appointment placeholder">
-    <h3 class="mat-headline-5" >
-      <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />
-    </h3>
+<!--    <button mat-raised-button type="button" color="primary"-->
+<!--            [@fadeInOutAnimation]-->
+<!--            [routerLink]="[navPath.bookAppointment]">-->
+<!--      <div class="flex-row align-items-center">-->
+<!--        <span>Book appointment</span>-->
+<!--        <mat-icon fontIcon="arrow_forward" />-->
+<!--      </div>-->
+<!--    </button>-->
+<!--  </section>-->
+<!--} @placeholder (minimum 500ms) {-->
+<!--  <section class="appointment placeholder">-->
+<!--    <h3 class="mat-headline-5" >-->
+<!--      <aj-skeleton [styles]="{width: '100%', maxWidth: '250px', height: '35px'}" />-->
+<!--    </h3>-->
 
 
-    <aj-skeleton [styles]="{height: '60px', width: '100%', maxWidth: '300px'}" />
-  </section>
-}
+<!--    <aj-skeleton [styles]="{height: '60px', width: '100%', maxWidth: '300px'}" />-->
+<!--  </section>-->
+<!--}-->
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->
