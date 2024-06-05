@@ -68,6 +68,7 @@ section.hobbies ul {
   display: flex;
   flex-wrap: wrap;
   gap: $app-gap;
+  justify-content: center;
 }
 section.hobbies ul li {
   display: flex;
@@ -81,6 +82,17 @@ section.hobbies ul li {
   }
 }
 
+section.projects .heading {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+section.projects .heading .heading-container {
+  display: flex;
+  align-items: center;
+  gap: $app-gap;
+}
 section.projects ul {
   list-style: outside;
   ul {

@@ -76,35 +76,36 @@
 
     @if (projects()?.length) {
       <section class="projects">
-        <div class="heading flex-row align-items-center justify-space-between flex-wrap">
-          <div class="flex-row align-items-center app-gap">
+        <div class="heading">
+          <div class="heading-container">
             <mat-icon fontIcon="work_history" />
 
             <h3>Projects</h3>
           </div>
 
-          <button mat-button type="button" [routerLink]="[navPath.projects]">
-            See all
-          </button>
+          @if ((projects()?.length ?? 0) > 3) {
+            <button mat-button type="button" [routerLink]="[navPath.projects]">
+              See all
+            </button>
+          }
         </div>
 
         <div class="content">
-          <ul>
+          <mat-list>
             @for (project of projects(); track project.id; let i=$index) {
               @if (i < 3) {
-                <li class="project">
-                  <a class="name default"
-                     [routerLink]="[navPath.projectDetail(project.id ?? '')]">
-                    {{project.name}}
-                  </a>
+                <mat-list-item>
+                  <span matListItemTitle>{{project.name}}</span>
+                  <span matListItemLine>{{project.description}}</span>
 
-                  <ul>
-                    <li class="description">{{project.description}}</li>
-                  </ul>
-                </li>
+                  <button mat-icon-button matListItemMeta type="button"
+                          [routerLink]="[navPath.projectDetail(project.id ?? '')]">
+                    <mat-icon fontIcon="arrow_forward" />
+                  </button>
+                </mat-list-item>
               }
             }
-          </ul>
+          </mat-list>
         </div>
       </section>
     }

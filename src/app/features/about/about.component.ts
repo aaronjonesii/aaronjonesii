@@ -27,6 +27,7 @@ import { ProjectsFilter } from '../../shared/enums/projects-filter';
 import { RouterLink } from '@angular/router';
 import { SocialsService } from '../../shared/services/socials.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'aj-about',
@@ -38,6 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     NgClass,
     AsyncPipe,
     RouterLink,
+    MatListModule,
     MatIconModule,
     MatButtonModule,
     NgOptimizedImage,
