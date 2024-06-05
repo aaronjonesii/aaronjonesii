@@ -1,5 +1,6 @@
 @import "../../../assets/scss/partials/extras";
 @import "../../../assets/scss/partials/media_queries";
+@import "../../../assets/scss/partials/animations";
 
 :host {
   display: flex;
@@ -9,6 +10,7 @@
   max-width: $desktop;
   align-self: center;
 }
+* { transition: all $emphasizedDecelerate; }
 picture { width: 100%; }
 picture img { position: relative !important; }
 .connect-btn {
@@ -93,12 +95,8 @@ section.projects .heading .heading-container {
   align-items: center;
   gap: $app-gap;
 }
-section.projects ul {
-  list-style: outside;
-  ul {
-    list-style: circle;
-    padding-left: $app-padding;
-  }
+section.projects mat-list {
+  display: grid;
 }
 
 @media (min-width: $tabletLandscape) {

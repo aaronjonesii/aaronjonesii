@@ -3,7 +3,8 @@ export const appInformation = {
   name: 'Aaron Jones II',
   title: 'Aaron Jones II',
   // eslint-disable-next-line max-len
-  description: 'Passionate software engineer crafting user-centered web applications with a focus on accessibility.',
+  description: `Passionate software engineer transforming concepts
+  into intuitive, impactful applications that enhance peoples lives.`,
   email: 'contact@aaronjonesii.dev',
   socials: {
     github: 'https://github.com/aaronjonesii',

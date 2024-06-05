@@ -21,120 +21,232 @@
 }
 
 <div class="sections">
-  <div class="column">
-    <section class="about">
-      <div class="heading">
+  <div class="column" [@fadeInOutStaggerAnimation]>
+    <section class="about" [@fadeInOutStaggerAnimation]>
+      <div class="heading" [@fadeInOutAnimation]>
         <mat-icon fontIcon="favorite" />
 
         <h3>About Me</h3>
       </div>
 
-      <div class="content">
+      <div class="content" [@fadeInOutAnimation]>
         <p>
-          Heyoo! I'm Aaron, a software engineer passionate about crafting
-          elegant solutions to complex problems. I enjoy the challenge of turning
-          ideas into functional, user-friendly applications that make a difference.
+          Heyooo! I'm Aaron, a software engineer who thrives on finding
+          innovative solutions.
+          I'm passionate about transforming concepts into intuitive,
+          impactful applications that enhance people's lives.
         </p>
       </div>
     </section>
 
-    <section class="journey">
-      <div class="heading">
-        <mat-icon fontIcon="route" />
+    @defer (on viewport) {
+      <section class="journey" [@fadeInOutStaggerAnimation]>
+        <div class="heading" [@fadeInOutAnimation]>
+          <mat-icon fontIcon="route" />
 
-        <h3>My Journey</h3>
-      </div>
+          <h3>My Journey</h3>
+        </div>
 
-      <div class="content">
-        <p>
-          I've always been fascinated by technology and how it can empower us to
-          achieve more. My journey into software engineering began with the
-          curiosity of cyber security and creating scripts for exploitations.
-          Since then, I've developed many state of the art web applications using
-          the top leading technologies.
-        </p>
-      </div>
-    </section>
-
-    <section class="approach">
-      <div class="heading">
-        <mat-icon fontIcon="accessibility" />
-
-        <h3>My Approach</h3>
-      </div>
-
-      <div class="content">
-        <p>
-          I believe that collaboration, clear communication, and a focus on the
-          user experience are essential to building successful software. I enjoy
-          working with teams to brainstorm, architect, and implement innovative
-          solutions. I'm also a strong advocate for writing clean, maintainable
-          code and using best practices.
-        </p>
-      </div>
-    </section>
-
-    @if (projects()?.length) {
-      <section class="projects">
+        <div class="content" [@fadeInOutAnimation]>
+          <p>
+            My fascination with technology sparked my journey into software
+            engineering. What started with curiosity about cybersecurity and
+            scripting evolved into a passion for building cutting-edge web
+            applications using the latest technologies. I'm constantly
+            learning and pushing the boundaries of what's possible.
+          </p>
+        </div>
+      </section>
+    } @placeholder (minimum 500ms) {
+      <section class="journey placeholder">
         <div class="heading">
-          <div class="heading-container">
-            <mat-icon fontIcon="work_history" />
+          <aj-skeleton appearance="circle" />
 
-            <h3>Projects</h3>
+          <h3><aj-skeleton [styles]="{width: '100px'}" /></h3>
+        </div>
+
+        <div class="content">
+          <p>
+            <aj-skeleton [styles]="{width: '100%'}" />
+            <aj-skeleton [styles]="{width: '100%'}" />
+            <aj-skeleton [styles]="{width: '100%'}" />
+            <aj-skeleton [styles]="{width: '100%', maxWidth: '75%'}" />
+          </p>
+        </div>
+      </section>
+    }
+
+    @defer (on viewport) {
+      <section class="approach" [@fadeInOutStaggerAnimation]>
+        <div class="heading" [@fadeInOutAnimation]>
+          <mat-icon fontIcon="accessibility" />
+
+          <h3>My Approach</h3>
+        </div>
+
+        <div class="content" [@fadeInOutAnimation]>
+          <p>
+            I believe that collaboration, clear communication, and a focus on the
+            user experience are essential to building successful software. I enjoy
+            working with teams to brainstorm, architect, and implement innovative
+            solutions. I strive to write clean, maintainable code and
+            embrace industry best practices. I'm also committed to ensuring
+            the software I build is accessible and intuitive for all users.
+          </p>
+        </div>
+      </section>
+    } @placeholder (minimum 500ms) {
+      <section class="approach placeholder">
+        <div class="heading">
+          <aj-skeleton appearance="circle" />
+
+          <h3><aj-skeleton [styles]="{width: '100px'}" /></h3>
+        </div>
+
+        <div class="content">
+          <p>
+            <aj-skeleton [styles]="{width: '100%'}" />
+            <aj-skeleton [styles]="{width: '100%'}" />
+            <aj-skeleton [styles]="{width: '100%'}" />
+            <aj-skeleton [styles]="{width: '100%', maxWidth: '50%'}" />
+          </p>
+        </div>
+      </section>
+    }
+
+    @defer (on viewport) {
+      @if (projects()?.length) {
+        <section class="projects" [@fadeInOutStaggerAnimation]>
+          <div class="heading" [@fadeInOutAnimation]>
+            <div class="heading-container">
+              <mat-icon fontIcon="work_history" />
+
+              <h3>Projects</h3>
+            </div>
+
+            @if ((projects()?.length ?? 0) > 3) {
+              <button mat-button type="button" [routerLink]="[navPath.projects]">
+                See all
+              </button>
+            }
           </div>
 
-          @if ((projects()?.length ?? 0) > 3) {
-            <button mat-button type="button" [routerLink]="[navPath.projects]">
-              See all
-            </button>
-          }
+          <div class="content" [@fadeInOutAnimation]>
+            <mat-list>
+              @for (project of projects(); track project.id; let i=$index) {
+                @if (i < 3) {
+                  <mat-list-item>
+                    <span matListItemTitle>{{project.name}}</span>
+                    <span matListItemLine>{{project.description}}</span>
+
+                    <button mat-icon-button matListItemMeta type="button"
+                            [routerLink]="[navPath.projectDetail(project.id ?? '')]">
+                      <mat-icon fontIcon="arrow_forward" />
+                    </button>
+                  </mat-list-item>
+                }
+              }
+            </mat-list>
+          </div>
+        </section>
+      }
+    } @placeholder (minimum 500ms) {
+      <section class="projects placeholder">
+        <div class="heading">
+          <div class="heading-container">
+            <aj-skeleton appearance="circle" />
+
+            <h3><aj-skeleton [styles]="{width: '100px'}" /></h3>
+          </div>
+
+          <aj-skeleton [styles]="{width: '100px', height: '50px'}" />
         </div>
 
         <div class="content">
           <mat-list>
-            @for (project of projects(); track project.id; let i=$index) {
-              @if (i < 3) {
-                <mat-list-item>
-                  <span matListItemTitle>{{project.name}}</span>
-                  <span matListItemLine>{{project.description}}</span>
+            <mat-list-item>
+              <span matListItemTitle><aj-skeleton [styles]="{width: '150px'}" /></span>
+              <span matListItemLine><aj-skeleton [styles]="{width: '200px'}" /></span>
 
-                  <button mat-icon-button matListItemMeta type="button"
-                          [routerLink]="[navPath.projectDetail(project.id ?? '')]">
-                    <mat-icon fontIcon="arrow_forward" />
-                  </button>
-                </mat-list-item>
-              }
-            }
+              <aj-skeleton matListItemMeta appearance="circle" />
+            </mat-list-item>
+
+            <mat-list-item>
+              <span matListItemTitle><aj-skeleton [styles]="{width: '150px'}" /></span>
+              <span matListItemLine><aj-skeleton [styles]="{width: '200px'}" /></span>
+
+              <aj-skeleton matListItemMeta appearance="circle" />
+            </mat-list-item>
+
+            <mat-list-item>
+              <span matListItemTitle><aj-skeleton [styles]="{width: '150px'}" /></span>
+              <span matListItemLine><aj-skeleton [styles]="{width: '200px'}" /></span>
+
+              <aj-skeleton matListItemMeta appearance="circle" />
+            </mat-list-item>
           </mat-list>
         </div>
       </section>
     }
   </div>
 
-  <div class="column">
-    @if (skills()?.length) {
-      <section class="skills">
-        <div class="heading">
-          <mat-icon fontIcon="school" />
+  <div class="column" [@fadeInOutStaggerAnimation]>
+    @defer (on viewport) {
+      @if (skills()?.length) {
+        <section class="skills" [@fadeInOutStaggerAnimation]>
+          <div class="heading" [@fadeInOutAnimation]>
+            <mat-icon fontIcon="school" />
 
-          <h3>Skills & Expertise</h3>
+            <h3>Skills & Expertise</h3>
+          </div>
+
+          <div class="content" [@fadeInOutAnimation]>
+            <dl>
+              @for (skillCategory of skills(); track skillCategory.id) {
+                <dt class="skill-category">{{skillCategory.name}}</dt>
+                <dd>
+                  <ul>
+                    @for (skill of skillCategory.skills; track skill.id) {
+                      <li class="skill">
+                        <span class="name">{{skill.name}}</span>
+
+                        <div class="rating">
+                          @for (_ of [].constructor(5); track _; let i=$index) {
+                            <mat-icon class="material-icons-outlined"
+                                      fontIcon="circle"
+                                      [ngClass]="{'material-icons-outlined': i >= skill.rating}" />
+                          }
+                        </div>
+                      </li>
+                    }
+                  </ul>
+                </dd>
+              }
+            </dl>
+          </div>
+        </section>
+      }
+    } @placeholder (minimum 500ms) {
+      <section class="skills placeholder">
+        <div class="heading">
+          <aj-skeleton appearance="circle" />
+
+          <h3><aj-skeleton [styles]="{width: '100px'}" /></h3>
         </div>
 
         <div class="content">
           <dl>
-            @for (skillCategory of skills(); track skillCategory.id) {
-              <dt class="skill-category">{{skillCategory.name}}</dt>
+            @for (skillCategory of [].constructor(generateRandomNumber(1, 3)); track skillCategory) {
+              <dt class="skill-category"><aj-skeleton [styles]="{width: '200px'}" /></dt>
               <dd>
                 <ul>
-                  @for (skill of skillCategory.skills; track skill.id) {
+                  @for (skill of [].constructor(generateRandomNumber(1, 6)); track skill) {
                     <li class="skill">
-                      <span class="name">{{skill.name}}</span>
+                      <span class="name"><aj-skeleton [styles]="{width: '150px'}" /></span>
 
                       <div class="rating">
                         @for (_ of [].constructor(5); track _; let i=$index) {
-                          <mat-icon class="material-icons-outlined"
-                                    fontIcon="circle"
-                                    [ngClass]="{'material-icons-outlined': i >= skill.rating}" />
+                          <aj-skeleton appearance="circle" />
                         }
                       </div>
                     </li>
@@ -147,21 +259,43 @@
       </section>
     }
 
-    @if (hobbies()?.length) {
-      <section class="hobbies">
-        <div class="heading">
-          <mat-icon fontIcon="sports_esports" />
+    @defer (on viewport) {
+      @if (hobbies()?.length) {
+        <section class="hobbies" [@fadeInOutStaggerAnimation]>
+          <div class="heading" [@fadeInOutAnimation]>
+            <mat-icon fontIcon="sports_esports" />
 
-          <h3>Hobbies</h3>
+            <h3>Hobbies</h3>
+          </div>
+
+          <div class="content" [@fadeInOutAnimation]>
+            <ul>
+              @for (hobby of hobbies(); track hobby.id) {
+                <li class="hobby">
+                  <mat-icon [fontIcon]="hobby.icon" />
+
+                  <span class="name">{{hobby.name}}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </section>
+      }
+    } @placeholder (minimum 500ms) {
+      <section class="hobbies placeholder">
+        <div class="heading">
+          <aj-skeleton appearance="circle" />
+
+          <h3><aj-skeleton [styles]="{width: '100px'}" /></h3>
         </div>
 
         <div class="content">
           <ul>
-            @for (hobby of hobbies(); track hobby.id) {
+            @for (_ of [].constructor(6); track _) {
               <li class="hobby">
-                <mat-icon [fontIcon]="hobby.icon" />
+                <aj-skeleton appearance="circle" />
 
-                <span class="name">{{hobby.name}}</span>
+                <span class="name"><aj-skeleton [styles]="{width: '100px'}" /></span>
               </li>
             }
           </ul>
@@ -171,21 +305,38 @@
   </div>
 </div>
 
-<section class="connect">
-  <div class="heading">
-    <mat-icon fontIcon="contact_mail" />
+@defer (on viewport) {
+  <section class="connect" [@fadeInOutStaggerAnimation]>
+    <div class="heading" [@fadeInOutAnimation]>
+      <mat-icon fontIcon="contact_mail" />
 
-    <h3>Let's Connect</h3>
-  </div>
+      <h3>Let's Collaborate</h3>
+    </div>
 
-  <div class="content">
-    <p>
-      I'm always open to discussing potential collaborations, new
-      opportunities, or even just geeking out about the latest tech
-      trends. Feel free to reach out through the contact form on this
-      site or connect with me on [LinkedIn/GitHub]. I look forward to
-      hearing from you!
-    </p>
-  </div>
-</section>
+    <div class="content" [@fadeInOutAnimation]>
+      <p>
+        I'm always eager to discuss exciting projects, new opportunities,
+        or simply chat about the latest tech trends.  Reach out through
+        the contact form or connect with me on social media. I'm looking
+        forward to hearing from you!
+      </p>
+    </div>
+  </section>
+} @placeholder (minimum 500ms) {
+  <section class="connect placeholder">
+    <div class="heading">
+      <aj-skeleton appearance="circle" />
+
+      <h3><aj-skeleton [styles]="{width: '200px'}" /></h3>
+    </div>
+
+    <div class="content">
+      <p>
+        <aj-skeleton [styles]="{width: '100%'}" />
+        <aj-skeleton [styles]="{width: '100%'}" />
+        <aj-skeleton [styles]="{width: '100%', maxWidth: '50%'}" />
+      </p>
+    </div>
+  </section>
+}
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->

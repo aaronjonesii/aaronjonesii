@@ -50,6 +50,7 @@ import { MatListModule } from '@angular/material/list';
 })
 export class AboutComponent implements OnInit {
   private readonly title = appInformation.title;
+  protected readonly navPath = navPath;
 
   private seoService = inject(SeoService);
   private skillsService = inject(SkillsService);
@@ -74,5 +75,7 @@ export class AboutComponent implements OnInit {
     this.seoService.generateTags({ route: navPath.about });
   }
 
-  protected readonly navPath = navPath;
+  generateRandomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 }

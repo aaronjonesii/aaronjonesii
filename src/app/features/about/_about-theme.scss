@@ -11,6 +11,25 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
+  aj-about {
+    section.skills .content ul .skill .rating:hover mat-icon:not(.material-icons-outlined) {
+      color: mat.get-color-from-palette($primary-palette);
+    }
+
+    section.hobbies .content .hobby:hover mat-icon{
+      color: mat.get-color-from-palette($primary-palette);
+    }
+
+    section:hover {
+      .heading {
+        background-color: mat.get-color-from-palette($primary-palette, 50);
+      }
+      .heading mat-icon {
+        color: mat.get-color-from-palette($primary-palette);
+      }
+    }
+  }
+
 }
 
 @mixin typography($theme) {
