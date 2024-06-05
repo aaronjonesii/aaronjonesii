@@ -35,6 +35,19 @@
     .text {
       @include mat.typography-level($typography-config, 'headline-6');
     }
+
+    section .heading h3 {
+      @include mat.typography-level($typography-config, 'headline-5');
+    }
+    section .content p {
+      @include mat.typography-level($typography-config, 'body-1')
+    }
+    section.skills .content .skill-category {
+      @include mat.typography-level($typography-config, 'headline-6');
+    }
+    section.skills .content ul .skill .name {
+      @include mat.typography-level($typography-config, 'body-1');
+    }
   }
 }
 

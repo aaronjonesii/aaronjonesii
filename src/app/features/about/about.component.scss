@@ -16,6 +16,46 @@ picture img { position: relative !important; }
   font-size: 1.25rem;
 }
 
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  @media (min-width: $tabletLandscape) {
+    flex-direction: row;
+    .column {
+      flex-basis: 50%;
+    }
+  }
+}
+.sections .column {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}
+
+section .heading {
+  border-radius: calc(#{$app-border-radius} * 2);
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: $app-gap;
+  padding: calc(#{$app-padding} / 2);
+}
+section .content {
+  padding-left: $app-padding;
+}
+
+section.skills .content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+section.skills .content ul .skill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 @media (min-width: $tabletLandscape) {
   .content {
     align-self: center;
