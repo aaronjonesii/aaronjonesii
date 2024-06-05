@@ -33,6 +33,11 @@ picture img { position: relative !important; }
   gap: inherit;
 }
 
+section {
+  display: flex;
+  flex-direction: column;
+  gap: calc(#{$app-gap} / 2);
+}
 section .heading {
   border-radius: calc(#{$app-border-radius} * 2);
   border: 1px solid;
@@ -45,16 +50,37 @@ section .content {
   padding-left: $app-padding;
 }
 
-section.skills .content ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
 section.skills .content ul .skill {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
+section.hobbies ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $app-gap;
+}
+section.hobbies ul li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  mat-icon {
+    $icon-size: 50px;
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+  }
+}
+
+section.projects ul {
+  list-style: outside;
+  ul {
+    list-style: circle;
+    padding-left: $app-padding;
+  }
+}
+section.projects .project .name {}
 
 @media (min-width: $tabletLandscape) {
   .content {

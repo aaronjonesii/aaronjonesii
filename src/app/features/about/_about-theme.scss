@@ -48,6 +48,12 @@
     section.skills .content ul .skill .name {
       @include mat.typography-level($typography-config, 'body-1');
     }
+    section.projects ul .project .name {
+      @include mat.typography-level($typography-config, 'headline-6');
+    }
+    section.projects ul .project .description {
+      @include mat.typography-level($typography-config, 'body-1');
+    }
   }
 }
 
