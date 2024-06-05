@@ -50,6 +50,14 @@ section .content {
   padding-left: $app-padding;
 }
 
+section.socials {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 section.skills .content ul .skill {
   display: flex;
   flex-direction: column;
@@ -80,7 +88,6 @@ section.projects ul {
     padding-left: $app-padding;
   }
 }
-section.projects .project .name {}
 
 @media (min-width: $tabletLandscape) {
   .content {

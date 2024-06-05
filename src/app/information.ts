@@ -9,6 +9,8 @@ export const appInformation = {
     github: 'https://github.com/aaronjonesii',
     twitter: 'https://twitter.com/aaronjonesii',
     linkedin: 'https://linkedin.com/in/aaronjonesii',
+    facebook: 'https://www.facebook.com/gameraa',
+    instagram: 'https://www.instagram.com/aaronjonesii/',
   },
   website: 'aaronjonesii.dev',
   altEmail: 'hello@aaronjonesii.dev',

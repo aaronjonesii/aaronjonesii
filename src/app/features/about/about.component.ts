@@ -25,6 +25,8 @@ import { HobbiesService } from '../../shared/services/hobbies.service';
 import { ProjectsService } from '../../shared/services/projects.service';
 import { ProjectsFilter } from '../../shared/enums/projects-filter';
 import { RouterLink } from '@angular/router';
+import { SocialsService } from '../../shared/services/socials.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'aj-about',
@@ -39,6 +41,7 @@ import { RouterLink } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     NgOptimizedImage,
+    MatTooltipModule,
     SkeletonComponent,
   ],
   animations: [FadeInOutAnimation],
@@ -51,11 +54,13 @@ export class AboutComponent implements OnInit {
   private topAppBarService = inject(TopAppBarService);
   private hobbiesService = inject(HobbiesService);
   private projectsService = inject(ProjectsService);
+  private socialsService = inject(SocialsService);
 
   skills = toSignal(this.skillsService.getSkills$);
   hobbies = toSignal(this.hobbiesService.getHobbies$);
   projects =
     toSignal(this.projectsService.getFilteredProjects$(ProjectsFilter.ACTIVE));
+  socials = toSignal(this.socialsService.getSocials$);
 
   ngOnInit() {
     this.topAppBarService.setOptions({
