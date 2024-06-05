@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AboutComponent } from './about.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { ProjectsService } from '../../shared/services/projects.service';
+import { of } from 'rxjs';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -14,6 +15,12 @@ describe('AboutComponent', () => {
       ],
       providers: [
         provideAnimations(),
+        {
+          provide: ProjectsService,
+          useValue: {
+            getFilteredProjects$: () => of([]),
+          },
+        },
       ],
     }).compileComponents();
 

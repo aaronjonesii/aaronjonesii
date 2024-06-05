@@ -33,8 +33,8 @@ import {
   FadeInOutAnimation,
 } from '../../shared/animations/fade-in-out.animations';
 import {
-  SkeletonComponent
-} from "../../shared/components/skeleton/skeleton.component";
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 /* eslint-disable no-unused-vars */
 enum Status {
