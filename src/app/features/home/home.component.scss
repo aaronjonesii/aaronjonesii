@@ -72,6 +72,14 @@
   min-width: 200px;
   max-height: 100px;
 }
+.marquee mat-icon {
+  $icon-size: 100px;
+  font-size: $icon-size;
+  width: $icon-size;
+  min-width: 200px;
+  height: $icon-size;
+  min-height: $icon-size;
+}
 
 .appointment {
   text-align: center;
