@@ -31,8 +31,8 @@ import {
 import { tap } from 'rxjs/operators';
 import { CarouselItem } from '../../shared/interfaces/carousel';
 import {
-  generateRandomNumber
-} from "../../shared/utils/generate-random-number";
+  generateRandomNumber,
+} from '../../shared/utils/generate-random-number';
 
 @Component({
   selector: 'aj-home',

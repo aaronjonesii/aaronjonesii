@@ -29,8 +29,8 @@ import { SocialsService } from '../../shared/services/socials.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import {
-  generateRandomNumber
-} from "../../shared/utils/generate-random-number";
+  generateRandomNumber,
+} from '../../shared/utils/generate-random-number';
 
 @Component({
   selector: 'aj-about',

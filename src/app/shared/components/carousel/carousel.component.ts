@@ -8,7 +8,7 @@ import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { generateRandomNumber } from '../../utils/generate-random-number';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
-import { isTouchDevice } from "../../utils/is-touch-device";
+import { isTouchDevice } from '../../utils/is-touch-device';
 
 @Component({
   selector: 'aj-carousel',
