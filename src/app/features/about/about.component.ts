@@ -28,6 +28,9 @@ import { RouterLink } from '@angular/router';
 import { SocialsService } from '../../shared/services/socials.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
+import {
+  generateRandomNumber
+} from "../../shared/utils/generate-random-number";
 
 @Component({
   selector: 'aj-about',
@@ -51,6 +54,10 @@ import { MatListModule } from '@angular/material/list';
 export class AboutComponent implements OnInit {
   private readonly title = appInformation.title;
   protected readonly navPath = navPath;
+  protected readonly generateRandomNumber = (
+    min: number,
+    max: number,
+  ) => generateRandomNumber(min, max);
 
   private seoService = inject(SeoService);
   private skillsService = inject(SkillsService);
@@ -73,9 +80,5 @@ export class AboutComponent implements OnInit {
     });
 
     this.seoService.generateTags({ route: navPath.about });
-  }
-
-  generateRandomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

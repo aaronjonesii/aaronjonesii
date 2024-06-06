@@ -40,7 +40,8 @@
 </section>
 
 <section class="featured-projects">
-  <aj-carousel [loaded]="featuredProjectsLoaded()" />
+  <h3 class="mat-headline-5 text-center">Featured Projects</h3>
+  <aj-carousel [loaded]="featuredProjectsLoaded()" [items]="carouselItems()" />
 </section>
 
 <!--@defer (on viewport) {-->

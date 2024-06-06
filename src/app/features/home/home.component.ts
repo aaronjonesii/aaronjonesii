@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,9 +26,10 @@ import {
   FadeInOutAnimation,
 } from '../../shared/animations/fade-in-out.animations';
 import {
-  CarouselComponent
-} from "../../shared/components/carousel/carousel.component";
-import { tap } from "rxjs/operators";
+  CarouselComponent,
+} from '../../shared/components/carousel/carousel.component';
+import { tap } from 'rxjs/operators';
+import { CarouselItem } from '../../shared/interfaces/carousel';
 
 @Component({
   selector: 'aj-home',
@@ -52,6 +58,14 @@ export class HomeComponent {
     ),
   );
   featuredProjectsLoaded = signal(false);
+  carouselItems = computed<CarouselItem[]>(() => {
+    return this.featuredProjects()?.map((project) => ({
+      id: project.id,
+      name: project.name,
+      image: project.image || '',
+      routerLink: [navPath.projectDetail(project.id)],
+    })) || [];
+  });
   scrollImages = signal([
     {
       id: 'angular',

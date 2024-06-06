@@ -1,10 +1,14 @@
 import {
   ChangeDetectionStrategy,
-  Component,
-  input, model,
+  Component, inject,
+  input, model, output, signal,
 } from '@angular/core';
 import { CarouselItem } from '../../interfaces/carousel';
-import { NgClass } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { generateRandomNumber } from '../../utils/generate-random-number';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { isTouchDevice } from "../../utils/is-touch-device";
 
 @Component({
   selector: 'aj-carousel',
@@ -12,33 +16,55 @@ import { NgClass } from '@angular/common';
   styleUrl: './carousel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass],
+  imports: [
+    NgClass,
+    NgOptimizedImage, RouterLink,
+    SkeletonComponent,
+  ],
 })
 export class CarouselComponent {
-  items = input<CarouselItem[]>([
-    { id: 'test', name: 'Test', image: 'assets/imgs/AICowboy.png' },
-    {
-      id: 'test1',
-      name: 'Tests',
-      image: 'assets/imgs/aaron_jones_transparent.webp',
-    },
-    {
-      id: 'test2',
-      name: 'Testing',
-      image: 'assets/imgs/small_mixed_kid_with_an_afro.png',
-    },
-    { id: 'test', name: 'Test', image: 'assets/imgs/AICowboy.png' },
-    {
-      id: 'test1',
-      name: 'Tests',
-      image: 'assets/imgs/aaron_jones_transparent.webp',
-    },
-    {
-      id: 'test2',
-      name: 'Testing',
-      image: 'assets/imgs/small_mixed_kid_with_an_afro.png',
-    },
-  ]);
+  router = inject(Router);
+
+  protected readonly generateRandomNumber = (
+    min: number,
+    max: number,
+  ) => generateRandomNumber(min, max);
+
+  items = input<CarouselItem[]>([]);
   loaded = input(false);
   activeIndex = model(0);
+  private previousIndex = signal(0);
+
+  get isTouchDevice(): boolean {
+    return isTouchDevice();
+  }
+
+  itemClicked = output<CarouselItem>();
+
+  onMouseEnter(index: number) {
+    if (!this.isTouchDevice) this.activeIndex.set(index);
+  }
+
+  onItemClick(index: number) {
+    const item = this.items().at(index);
+    if (!item) return;
+
+    /** handle touch interactions */
+    if (this.isTouchDevice) {
+      if (index === this.activeIndex()) {
+        this.navigateToItem(item);
+      } else this.activeIndex.set(index);
+    } else {
+      this.navigateToItem(item);
+    }
+
+    this.itemClicked.emit(item);
+  }
+
+  navigateToItem(item: CarouselItem) {
+    if (item?.routerLink) {
+      this.router.navigate(Array.isArray(item.routerLink) ?
+        item.routerLink : [item.routerLink]);
+    }
+  }
 }

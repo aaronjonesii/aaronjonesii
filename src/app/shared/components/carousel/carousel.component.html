@@ -1,15 +1,37 @@
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
 @defer (when loaded()) {
   @for (item of items(); track item.id; let i=$index) {
-    <figure class="item" [tabindex]="i"
-            [ngClass]="{'active': activeIndex() === i}"
-            (click)="activeIndex.set(i)" (keyup)="activeIndex.set(i)" >
-      <img class="image" [src]="item.image" [alt]="item.name" />
+    <figure class="item" [tabindex]="i" [attr.data-index]="i"
+            [ngClass]="{'active': activeIndex() === i, 'cursor-pointer': !!item.routerLink}"
+            (mouseenter)="onMouseEnter(i)"
+            (click)="onItemClick(i)"
+            (keyup)="onItemClick(i)">
+      <picture>
+        @if (item.image) {
+          <img class="image" fill [ngSrc]="item.image" [alt]="item.name" />
+        }
+      </picture>
 
-      <figcaption class="name">{{item.name}}</figcaption>
+      <figcaption class="name hidden truncate-text"
+                  [ngClass]="{'visible': activeIndex() === i}">
+        {{item.name}}
+      </figcaption>
     </figure>
   }
 } @placeholder (minimum 500ms) {
-  <div class="placeholder"></div>
+  @for (item of [].constructor(generateRandomNumber(2, 6)); track item; let i=$index) {
+    <figure class="item placeholder" [tabindex]="i"
+            [ngClass]="{'active': activeIndex() === i}"
+            (mouseenter)="onMouseEnter(i)">
+      <picture>
+        <aj-skeleton [styles]="{height: '200px', width: '600px'}" />
+      </picture>
+
+      <figcaption class="name hidden truncate-text"
+                  [ngClass]="{'visible': activeIndex() === i}">
+        <aj-skeleton [styles]="{width: generateRandomNumber(50, 150)+'px'}" />
+      </figcaption>
+    </figure>
+  }
 }
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->
