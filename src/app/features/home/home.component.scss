@@ -5,7 +5,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: $app-gap;
+  gap: calc(#{$app-gap} * 2);
   max-width: $large;
   @media (min-width: $large) {
     align-self: center;
@@ -15,7 +15,7 @@
 .hero {
   display: grid;
   grid-template-columns: minmax($app-padding, 1fr) repeat(8, 1fr) minmax($app-padding, 1fr);
-  grid-template-rows: repeat(22, minmax(24px, auto));
+  grid-template-rows: repeat(21, minmax(24px, auto));
   gap: $app-gap;
 
   * {
@@ -65,28 +65,15 @@
   position: unset !important;
 }
 
-.marquee {
-  text-align: center;
+.book-appointment {
+  display: flex;
+  justify-content: center;
 }
-.marquee picture {
-  min-width: 200px;
-  max-height: 100px;
-}
-.marquee mat-icon {
-  $icon-size: 100px;
-  font-size: $icon-size;
-  width: $icon-size;
-  min-width: 200px;
-  height: $icon-size;
-  min-height: $icon-size;
-}
-
-.appointment {
-  text-align: center;
-}
-.appointment button {
+.book-appointment button {
   height: 60px;
   border-radius: calc(#{$app-border-radius} * 2);
+  width: 100%;
+  max-width: 400px;
 }
 
 @media (min-width: 768px) {

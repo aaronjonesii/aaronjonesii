@@ -30,6 +30,9 @@ import {
 } from '../../shared/components/carousel/carousel.component';
 import { tap } from 'rxjs/operators';
 import { CarouselItem } from '../../shared/interfaces/carousel';
+import {
+  generateRandomNumber
+} from "../../shared/utils/generate-random-number";
 
 @Component({
   selector: 'aj-home',
@@ -103,4 +106,6 @@ export class HomeComponent {
     });
     this.seoService.generateTags({ route: navPath.home });
   }
+
+  protected readonly generateRandomNumber = generateRandomNumber;
 }
