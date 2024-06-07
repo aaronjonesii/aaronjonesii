@@ -48,6 +48,9 @@ import { UsersService } from '../../../shared/services/users.service';
 import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { DateAgoPipe } from '../../../shared/pipes/date-ago.pipe';
+import {
+  ConsoleLoggerService
+} from "../../../shared/services/console-logger.service";
 
 @Component({
   selector: 'aj-project-detail',
@@ -152,6 +155,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     private routing: RoutingService,
     private dateAgoPipe: DateAgoPipe,
     private usersService: UsersService,
+    private logger: ConsoleLoggerService,
     private ssrSafeService: SSRSafeService,
     private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
@@ -224,7 +228,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
   async openComments(): Promise<void> {
     const project = this.project();
-    if (!project || !this.user()) return;
+    if (!project) return;
+    if (!this.user()) {
+      this.auth.navigateToSignInWithRedirectUrl();
+      this.logger.warn('Must be signed in to add/view comments');
+      return;
+    }
     this.projectsService.openProjectCommentsDialogById(
       project.id,
       this.user$() as Observable<UserWithID>,
