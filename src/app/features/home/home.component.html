@@ -39,26 +39,14 @@
   </div>
 </section>
 
-<section class="featured-projects">
-  <h3 class="mat-headline-5 text-center">Featured Projects</h3>
-  <aj-carousel [loaded]="featuredProjectsLoaded()" [items]="carouselItems()" />
-</section>
-
-<section class="marquee">
+<section class="featured-projects" [@fadeInOutStaggerAnimation]>
   @defer (on viewport) {
-    <aj-marquee [@fadeInOutAnimation]>
-      @for (_ of [].constructor(6); track _) {
-        <span class="mat-headline-3 m-0">See you soon &nbsp;</span>
-      }
-    </aj-marquee>
+    <h3 class="mat-headline-5 text-center" [@fadeInOutAnimation]>Featured Projects</h3>
+    <aj-carousel [loaded]="featuredProjectsLoaded()"
+                 [items]="featuredProjectsCarouselItems()"
+                 [@fadeInOutAnimation] />
   } @placeholder (minimum 500ms) {
-    <aj-marquee>
-      @for (_ of [].constructor(6); track _) {
-        <span class="mat-headline-3 m-0">
-          <aj-skeleton [styles]="{width: generateRandomNumber(150, 350)+'px', height: '100px'}" /> &nbsp;
-        </span>
-      }
-    </aj-marquee>
+    <aj-skeleton [styles]="{width: '100%', height: '200px'}" />
   }
 </section>
 

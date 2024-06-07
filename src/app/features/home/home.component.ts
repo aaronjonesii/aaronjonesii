@@ -50,6 +50,7 @@ import {
 })
 export class HomeComponent {
   readonly title = appInformation.title;
+  protected readonly navPath = navPath;
   readonly nav_path = navPath;
   readonly heroTitle = 'Heyooo, I\'m Aaron';
   readonly heroSubtitle = appInformation.description;
@@ -61,7 +62,7 @@ export class HomeComponent {
     ),
   );
   featuredProjectsLoaded = signal(false);
-  carouselItems = computed<CarouselItem[]>(() => {
+  featuredProjectsCarouselItems = computed<CarouselItem[]>(() => {
     return this.featuredProjects()?.map((project) => ({
       id: project.id,
       name: project.name,
@@ -69,30 +70,6 @@ export class HomeComponent {
       routerLink: [navPath.projectDetail(project.id)],
     })) || [];
   });
-  scrollImages = signal([
-    {
-      id: 'angular',
-      alt: 'Angular gradient color logo',
-      src: 'assets/imgs/angular_gradient.webp',
-      height: '1920',
-      width: '1920',
-    },
-    {
-      id: 'firebase',
-      alt: 'Firebase full color logo',
-      src: 'assets/imgs/firebase_logomark_full_color.webp',
-      height: '600',
-      width: '600',
-    },
-    {
-      id: 'google-cloud',
-      alt: 'Google Cloud full color logo',
-      src: 'assets/imgs/google_cloud_full_color_rgb_544x96px.webp',
-      height: '96',
-      width: '544',
-    },
-  ]);
-  protected readonly navPath = navPath;
 
   constructor(
     private seoService: SeoService,
