@@ -30,8 +30,9 @@
     <article class="flex-col app-gap">
       @if (project()?.image) {
         <picture>
-          <img fill priority class="project-image"
-               [ngSrc]="project()?.image ?? ''" [alt]="project.name" />
+          <img priority class="project-image"
+               [ngSrc]="project()?.image ?? ''" [alt]="project.name"
+               [height]="400" [width]="600" />
         </picture>
       }
 
@@ -172,7 +173,7 @@
   <div class="article-container">
     <article class="flex-col app-gap">
       <picture>
-        <aj-skeleton [styles]="{width: '600px', height: '300px'}" />
+        <aj-skeleton [styles]="{width: '600px', height: '400px'}" />
       </picture>
 
       <div class="flex-col app-gap content">

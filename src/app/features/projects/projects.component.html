@@ -16,10 +16,10 @@
       <mat-card class="card" [@projectAnimation]>
         @if (project.image) {
           <picture>
-            <img mat-card-image fill priority
+            <img mat-card-image priority
                  [routerLink]="[nav_path.projects, project.slug]"
                  [ngSrc]="project.image"
-                 [alt]="project.name" />
+                 [alt]="project.name" [height]="300" [width]="400" />
           </picture>
         }
 

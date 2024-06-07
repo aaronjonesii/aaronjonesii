@@ -17,7 +17,9 @@ ul {
 }
 * { transition: all $emphasizedDecelerate; }
 picture { width: 100%; }
-picture img { position: relative !important; }
+picture img {
+  position: relative !important;
+}
 .connect-btn {
   height: 50px;
   font-size: 1.25rem;
