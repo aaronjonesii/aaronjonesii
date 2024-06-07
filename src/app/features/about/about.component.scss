@@ -81,6 +81,8 @@ section.hobbies ul li {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100px;
+  text-align: center;
   mat-icon {
     $icon-size: 50px;
     font-size: $icon-size;
