@@ -50,6 +50,18 @@
   }
 </section>
 
+<section class="memoji">
+  @defer (on viewport) {
+    <picture>
+      <img ngSrc="assets/imgs/memoji_call.webp"
+           alt="Memoji of Aaron Jones"
+           width="420" height="434" />
+    </picture>
+  } @placeholder (minimum 500ms) {
+    <aj-skeleton [styles]="{width: '100%', maxWidth: '420px', height: '434px'}" />
+  }
+</section>
+
 <section class="book-appointment">
   @defer (on viewport) {
     <button mat-raised-button type="button" color="primary"
