@@ -37,6 +37,11 @@ aj-project-detail {
     border-radius: $app-border-radius;
     display: flex;
     flex-direction: column;
+    gap: calc(#{$app-gap} / 2);
+  }
+  .show-more-container .updated-created-container {
+    display: flex;
+    flex-direction: column;
   }
   .links {
     display: flex;

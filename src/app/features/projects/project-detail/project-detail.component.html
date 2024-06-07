@@ -55,9 +55,11 @@
         </div>
 
         <div class="show-more-container" [ngClass]="{'expanded': showMore()}">
-          <small class="views">{{projectViewsText()}}</small>
+          <div class="views-description-container">
+            <small class="views">{{projectViewsText()}}</small>
 
-          <p class="mat-body-2">{{project()?.description}}</p>
+            <p class="mat-body-2">{{project()?.description}}</p>
+          </div>
 
           @if (showMore()) {
             <div class="tags">
@@ -86,10 +88,12 @@
               }
             </div>
 
-            @if (project()?.updated) {
-              <small>{{projectLastUpdatedText()}}</small>
-            }
-            <small>{{projectCreatedText()}}</small>
+            <div class="updated-created-container">
+              @if (project()?.updated) {
+                <small>{{projectLastUpdatedText()}}</small>
+              }
+              <small>{{projectCreatedText()}}</small>
+            </div>
           }
 
           <button mat-button type="button" (click)="onShowMoreToggle()">
