@@ -70,3 +70,10 @@
 .align-self-center {
   align-self: center;
 }
+.placeholder {
+  display: inherit;
+  flex-direction: inherit;
+  gap: inherit;
+  width: inherit;
+  height: inherit;
+}

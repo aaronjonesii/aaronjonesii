@@ -8,8 +8,8 @@
                 color="primary" on-mouseover="scrollToForm()" on-focus="scrollToForm()" />
     </div>
 
-    @defer (on viewport) {
-      <div class="full-height-container app-gap" id="contact-container" [@fadeInOutStaggerAnimation]>
+    <div class="full-height-container app-gap" id="contact-container" [@fadeInOutStaggerAnimation]>
+      @defer (on viewport) {
         <div class="info-container mat-body-1 overflow-wrap-anywhere" [@fadeInOutAnimation]>
           <p>Email me directly: {{contactEmail}}</p>
           <p class="capitalize">Open to new opportunities and collaborations.</p>
@@ -18,19 +18,19 @@
 
         <h1 class="overflow-wrap-anywhere" [@fadeInOutAnimation]>Interested in working together?</h1>
         <aj-contact-request-form [@fadeInOutAnimation] (formSubmitted)="onSubmit($event)"  />
-      </div>
-    } @placeholder (minimum 500ms) {
-      <div class="full-height-container app-gap placeholder" id="placeholder-contact-container">
-        <div class="info-container mat-body-1 overflow-wrap-anywhere">
-          <p><aj-skeleton [styles]="{width: '300px'}" /></p>
-          <p class="capitalize"><aj-skeleton [styles]="{width: '200px'}" /></p>
-          <p><aj-skeleton [styles]="{width: '100px'}" /></p>
-        </div>
+      } @placeholder (minimum 500ms) {
+        <div class="placeholder">
+          <div class="info-container mat-body-1 overflow-wrap-anywhere">
+            <p><aj-skeleton [styles]="{width: '300px'}" /></p>
+            <p class="capitalize"><aj-skeleton [styles]="{width: '200px'}" /></p>
+            <p><aj-skeleton [styles]="{width: '100px'}" /></p>
+          </div>
 
-        <h1 class="overflow-wrap-anywhere"><aj-skeleton [styles]="{width: '150px'}" /></h1>
-        <aj-skeleton [styles]="{height: '500px'}" />
-      </div>
-    }
+          <h1 class="overflow-wrap-anywhere"><aj-skeleton [styles]="{width: '150px'}" /></h1>
+          <aj-skeleton [styles]="{height: '500px'}" />
+        </div>
+      }
+    </div>
   }
   @case (Status.LOADING) {
     <div class="submitted-container loading" [@fadeInOutAnimation]>
