@@ -67,6 +67,18 @@ section.socials {
   width: 100%;
 }
 
+section.skills .content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $app-gap;
+}
+section.skills .content dl {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 section.skills .content ul .skill {
   display: flex;
   flex-direction: column;

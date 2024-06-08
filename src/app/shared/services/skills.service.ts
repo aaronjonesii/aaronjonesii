@@ -6,18 +6,6 @@ import { toObservable } from '@angular/core/rxjs-interop';
 export class SkillsService {
   protected readonly mockSkills = signal<SkillCategory[]>([
     {
-      id: 'programming-languages',
-      name: 'Programming Languages',
-      skills: [
-        { id: 'html-css', name: 'HTML/CSS', rating: 5 },
-        { id: 'java-javascript', name: 'Java/Javascript', rating: 5 },
-        { id: 'typescript', name: 'Typescript', rating: 5 },
-        { id: 'python', name: 'Python', rating: 4 },
-        { id: 'php', name: 'PHP', rating: 3 },
-        { id: 'c-cpp-csharp', name: 'C/C++/C#', rating: 2 },
-      ],
-    },
-    {
       id: 'frameworks',
       name: 'Frameworks',
       skills: [
@@ -35,6 +23,18 @@ export class SkillsService {
         { id: 'nosql', name: 'No-SQL', rating: 5 },
         { id: 'mysql', name: 'MySQL', rating: 4 },
         { id: 'sql', name: 'SQL', rating: 4 },
+      ],
+    },
+    {
+      id: 'programming-languages',
+      name: 'Programming Languages',
+      skills: [
+        { id: 'html-css', name: 'HTML/CSS', rating: 5 },
+        { id: 'java-javascript', name: 'Java/Javascript', rating: 5 },
+        { id: 'typescript', name: 'Typescript', rating: 5 },
+        { id: 'python', name: 'Python', rating: 4 },
+        { id: 'php', name: 'PHP', rating: 3 },
+        { id: 'c-cpp-csharp', name: 'C/C++/C#', rating: 3 },
       ],
     },
     // {
