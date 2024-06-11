@@ -11,8 +11,8 @@ export class SkillsService {
       skills: [
         { id: 'angular', name: 'Angular', rating: 5 },
         { id: 'django', name: 'Django', rating: 4 },
+        { id: 'dotnet', name: '.NET', rating: 3 },
         // { id: 'flutter', name: 'Flutter', rating: 0 },
-        // { id: 'dotnet', name: '.NET', rating: 0 },
         // { id: 'react', name: 'React', rating: 0 },
       ],
     },
