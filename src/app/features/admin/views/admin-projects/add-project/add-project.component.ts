@@ -115,8 +115,6 @@ export class AddProjectComponent implements OnDestroy {
   });
   readonly projectStatuses = ProjectStatus;
   readonly projectVisibilities = ProjectVisibility;
-  allTags$: Observable<Tag[]>;
-  private allTags: Tag[] = [];
   tagsSignal = toSignal(this.db.col$<Tag>(`tags`));
   editorConfig = {
     placeholder: 'Write content here...',
@@ -148,14 +146,6 @@ export class AddProjectComponent implements OnDestroy {
           showBackBtn: true,
           loading,
         });
-      }),
-    );
-
-    this.allTags$ = db.col$<Tag>(`tags`).pipe(
-      tap((tags) => this.allTags = tags),
-      catchError((error) => {
-        this.logger.error(`Something went wrong loading tags`, error);
-        return throwError(error);
       }),
     );
   }
@@ -283,7 +273,7 @@ export class AddProjectComponent implements OnDestroy {
       if (project.tags?.length) {
         for (let i = 0; i < project.tags.length; i++) {
           const projectTag = project.tags[i];
-          if (this.allTags.some((tag) => tag.slug == projectTag)) {
+          if (this.tagsSignal()?.find((tag) => tag.slug == projectTag)) {
             const tagUpdates: Partial<Tag> = {
               projects: arrayRemove(projectTag),
               updated: this.db.timestamp,

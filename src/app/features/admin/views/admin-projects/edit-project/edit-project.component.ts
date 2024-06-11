@@ -51,6 +51,7 @@ import {
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { add } from "@ckeditor/ckeditor5-utils/src/translation-service";
 
 @Component({
   selector: 'aj-edit-project',
@@ -86,7 +87,6 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   readonly projectVisibilities = ProjectVisibility;
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
-  private allTags: Tag[] = [];
   tagsSignal = toSignal(this.db.col$<Tag>(`tags`));
   editorConfig = {
     placeholder: 'Write content here...',
@@ -292,7 +292,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         /** update tags added to project */
         for (let i = 0; i < addedTags.length; i++) {
           const addTag = addedTags[i];
-          if (this.allTags.some((tag) => tag.slug == addTag)) {
+          if (this.tagsSignal()?.find((tag) => tag.slug == addTag)) {
             const tagUpdates: Partial<Tag> = {
               projects: arrayUnion(project.slug),
               updated: this.db.timestamp,
@@ -305,7 +305,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
               created: this.db.timestamp,
               featured: false,
             };
-            batch.update(this.db.doc(`tags/${addTag}`), newTag);
+            batch.set(this.db.doc(`tags/${addTag}`), newTag);
           }
         }
       }
