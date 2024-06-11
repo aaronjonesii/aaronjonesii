@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule, Validators,
 } from '@angular/forms';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, DocumentData } from '@angular/fire/firestore';
 import {
   BehaviorSubject,
   catchError,
@@ -53,6 +53,8 @@ import {
 import {
   TopAppBarService,
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
+import { AuthService } from "../../../../../shared/services/auth.service";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'aj-edit-project',
@@ -103,6 +105,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     },
   };
   private subscriptions = new Subscription();
+  private user = toSignal(this.authService.loadUser);
 
   constructor(
     private router: Router,
@@ -110,6 +113,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     private db: FirestoreService,
     private route: ActivatedRoute,
     private tagsService: TagsService,
+    private authService: AuthService,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -243,6 +247,8 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   }
 
   async save() {
+    const user = this.user();
+    if (!user || this.editForm.invalid) return;
     this.loadingSubject.next(true);
 
     this.editForm.disable();
@@ -305,7 +311,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
             };
             batch.update(this.db.doc(`tags/${addTag}`), tagUpdates);
           } else {
-            const newTag: Tag = {
+            const newTag: Partial<Tag> = {
               slug: addTag,
               projects: arrayRemove(project.slug),
               created: this.db.timestamp,
@@ -317,23 +323,31 @@ export class EditProjectComponent implements OnInit, OnDestroy {
       }
 
       /** save project changes */
-      const projectRef = this.db.doc(`projects/${project.slug}`);
+      const projectRef = this.db.doc(`projects/${this.projectSnapshot?.slug}`);
       batch.update(projectRef, project);
 
       /** check project slug for changes */
       if (this.projectSnapshot?.slug != project.slug) {
-        /* create new project */
+        /** create new project */
+        project.roles = this.projectSnapshot?.roles || { [user.uid]: 'owner' };
         batch.set(this.db.doc(`projects/${project.slug}`), project);
 
         /** remove old slug and add new slug to tags */
         if (project.tags?.length) {
           for (const tag of project.tags) {
-            const tagRef = this.db.doc(`tags/${tag}`);
-            batch.update(
+            const tagRef = this.db.doc<Tag>(`tags/${tag}`);
+            batch.update<Tag, Partial<Tag>>(
               tagRef,
-              { products: arrayRemove(this.projectSnapshot?.slug) },
+              {
+                projects: arrayRemove(this.projectSnapshot?.slug),
+              },
             );
-            batch.update(tagRef, { products: arrayUnion(project.slug) });
+            batch.update<Tag, Partial<Tag>>(
+              tagRef,
+              {
+                projects: arrayUnion(project.slug),
+              },
+            );
           }
         }
 
