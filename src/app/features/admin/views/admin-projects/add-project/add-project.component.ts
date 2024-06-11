@@ -49,6 +49,7 @@ import { AuthService } from '../../../../../shared/services/auth.service';
 import {
   TopAppBarService,
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'aj-add-project',
@@ -116,6 +117,7 @@ export class AddProjectComponent implements OnDestroy {
   readonly projectVisibilities = ProjectVisibility;
   allTags$: Observable<Tag[]>;
   private allTags: Tag[] = [];
+  tagsSignal = toSignal(this.db.col$<Tag>(`tags`));
   editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {

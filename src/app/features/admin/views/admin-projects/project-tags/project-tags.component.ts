@@ -1,23 +1,32 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  input,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
-import { Observable, of, startWith } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import {
-  MatAutocompleteModule, MatAutocompleteSelectedEvent,
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AsyncPipe } from '@angular/common';
 import { Tag } from '../../../../../shared/interfaces/tag';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'aj-project-tags',
   templateUrl: './project-tags.component.html',
   styleUrl: './project-tags.component.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatFormFieldModule,
     MatChipsModule,
@@ -28,34 +37,22 @@ import { Tag } from '../../../../../shared/interfaces/tag';
     AsyncPipe,
   ],
 })
-export class ProjectTagsComponent implements OnInit {
+export class ProjectTagsComponent {
   @Input() selectedTagsFormArray = new FormArray<FormControl<string>>([]);
-  @Input() allTags$: Observable<Tag[]> = of([]);
-  tags$: Observable<string[]> = of([]);
+  allTags = input<Tag[] | null | undefined>(null);
+  tags = computed(() => {
+    return this.allTags()?.map((t) => t.slug) || [];
+  });
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
   tagCtrl = new FormControl('');
-  filteredTags$: Observable<string[]>;
   @ViewChild('tagInput') tagInput?: ElementRef<HTMLInputElement>;
-
-  constructor() {
-    this.filteredTags$ = this.tagCtrl.valueChanges.pipe(
-      startWith(null),
-      switchMap((inputValue: string | null) => (
-        inputValue ?
-          this._filter(inputValue).pipe(map(this.filterSelectedTags)) :
-          this.tags$.pipe(map(this.filterSelectedTags))
-      ))
-    );
-  }
-
-  ngOnInit() {
-    this.tags$ = this.allTags$.pipe(
-      map((tags) => tags.map((tag) => tag.slug)),
-    );
-  }
-
-  private filterSelectedTags = (tags: string[]) => tags.filter((tag) => {
-    return !this.selectedTagsFormArray.value?.includes(tag);
+  inputValue = toSignal(this.tagCtrl.valueChanges);
+  filteredTags = computed(() => {
+    const inputValue = this.inputValue();
+    const filteredTags = inputValue ? this._filter(inputValue) : this.tags();
+    return filteredTags.filter((tag) => {
+      return !this.selectedTagsFormArray.value?.includes(tag);
+    });
   });
 
   add(event: MatChipInputEvent): void {
@@ -92,13 +89,9 @@ export class ProjectTagsComponent implements OnInit {
     this.tagCtrl.setValue(null);
   }
 
-  private _filter(inputValue: string): Observable<string[]> {
+  private _filter(inputValue: string): string[] {
     const filterValue = inputValue.toLowerCase();
 
-    return this.tags$.pipe(
-      map((tags) => {
-        return tags.filter((tag) => tag.toLowerCase().includes(filterValue));
-      }),
-    );
+    return this.tags().filter((tag) => tag.toLowerCase().includes(filterValue));
   }
 }

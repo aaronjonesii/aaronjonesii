@@ -23,7 +23,8 @@
            aria-label="Project Description"></textarea>
   </mat-form-field>
 
-  <aj-project-tags [selectedTagsFormArray]="tags" [allTags$]="allTags$" />
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  <aj-project-tags [selectedTagsFormArray]="tags" [allTags]="tagsSignal()" />
 
   <mat-form-field appearance="outline">
     <mat-label>Live Preview Link</mat-label>

@@ -49,8 +49,8 @@ import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { DateAgoPipe } from '../../../shared/pipes/date-ago.pipe';
 import {
-  ConsoleLoggerService
-} from "../../../shared/services/console-logger.service";
+  ConsoleLoggerService,
+} from '../../../shared/services/console-logger.service';
 
 @Component({
   selector: 'aj-project-detail',

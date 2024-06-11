@@ -5,15 +5,11 @@ import {
   ReactiveFormsModule, Validators,
 } from '@angular/forms';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import { arrayRemove, arrayUnion, DocumentData } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import {
   BehaviorSubject,
-  catchError,
-  Observable,
-  of, Subscription,
-  throwError,
+  Subscription,
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -53,8 +49,8 @@ import {
 import {
   TopAppBarService,
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
-import { AuthService } from "../../../../../shared/services/auth.service";
-import { toSignal } from "@angular/core/rxjs-interop";
+import { AuthService } from '../../../../../shared/services/auth.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'aj-edit-project',
@@ -90,8 +86,8 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   readonly projectVisibilities = ProjectVisibility;
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
-  allTags$: Observable<Tag[]> = of([]);
   private allTags: Tag[] = [];
+  tagsSignal = toSignal(this.db.col$<Tag>(`tags`));
   editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {
@@ -138,14 +134,6 @@ export class EditProjectComponent implements OnInit, OnDestroy {
             `Something went wrong loading project`, this.projectID,
           );
         } else {
-          this.allTags$ = (this.db.col$(`tags`) as Observable<Tag[]>)
-            .pipe(
-              tap((tags) => this.allTags = tags),
-              catchError((error) => {
-                this.logger.error(`Something went wrong loading tags`, error);
-                return throwError(error);
-              })
-            );
           const project = docSnapshot.data() as ReadProject;
           this.projectSnapshot = project;
           this.project = project;
