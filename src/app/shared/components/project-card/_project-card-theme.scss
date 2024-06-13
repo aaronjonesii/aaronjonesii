@@ -1,15 +1,9 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use './project-detail/project-detail-theme' as projectDetail;
+@mixin componentColorMixins($theme) {}
 
-@mixin componentColorMixins($theme) {
-  @include projectDetail.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include projectDetail.typography($theme);
-}
+@mixin componentTypographyMixins($theme) {}
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
@@ -20,13 +14,20 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-projects {}
+  aj-project-card {
+    .project-name:hover {
+      color: mat.get-color-from-palette($primary-palette);
+      text-decoration-color: mat.get-color-from-palette($primary-palette);
+    }
+  }
 
   @include componentColorMixins($theme);
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
+
+  aj-project-card {}
 
   @include componentTypographyMixins($theme);
 }

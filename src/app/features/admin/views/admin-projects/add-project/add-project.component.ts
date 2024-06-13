@@ -1,12 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import {
   BehaviorSubject,
-  catchError,
-  Observable,
   Subscription,
-  throwError,
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';

@@ -6,6 +6,7 @@
 @use './libraries/libraries-theme' as libraries;
 @use './components/skeleton/skeleton-theme' as skeleton;
 @use './components/carousel/carousel-theme' as carousel;
+@use './components/project-card/project-card-theme' as projectCard;
 
 
 @mixin componentColorMixins($theme) {
@@ -14,6 +15,7 @@
   @include libraries.color($theme);
   @include skeleton.color($theme);
   @include carousel.color($theme);
+  @include projectCard.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -22,6 +24,7 @@
   @include libraries.typography($theme);
   @include skeleton.typography($theme);
   @include carousel.typography($theme);
+  @include projectCard.typography($theme);
 }
 
 @mixin color($theme) {

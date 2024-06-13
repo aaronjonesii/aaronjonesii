@@ -204,7 +204,7 @@ export class ProjectsService {
 
   getFilteredProjects$(
     filter: ProjectsFilter,
-  ): Observable<ReadProject[]> {
+  ): Observable<ProjectWithID[]> {
     const queryConstraints: QueryConstraint[] = [
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
@@ -228,7 +228,7 @@ export class ProjectsService {
         break;
     }
 
-    return (this.db.colQuery$<ReadProject>(
+    return (this.db.colQuery$<ProjectWithID>(
       `projects`,
       { idField: 'id' },
       ...queryConstraints,

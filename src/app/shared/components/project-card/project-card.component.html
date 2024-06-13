@@ -1,0 +1,39 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+<mat-card class="card">
+  <div class="info-container mat-body-1">
+    <a class="mat-headline-5 m-0 project-name"
+       [routerLink]="[navPath.projectDetail(project()?.id || '')]">
+      {{project()?.name}}
+    </a>
+    <p class="mat-body-1 m-0">{{project()?.description}}</p>
+    @if (project()?.tags?.length) {
+      <mat-chip-set role="list">
+        @for (tag of project()?.tags; track tag) {
+          <mat-chip role="listitem">{{tag}}</mat-chip>
+        }
+      </mat-chip-set>
+    }
+
+    <mat-divider />
+
+    <mat-card-actions class="actions-container">
+      @if (project()?.allowComments) {
+        <button mat-button type="button" color="primary" fragment="comments"
+                [routerLink]="[navPath.projectDetail(project()?.id || '')]">
+          <mat-icon class="material-icons-outlined" fontIcon="comment_bank" />
+          Comments
+        </button>
+      } @else {
+        <button mat-button type="button" color="primary"
+                [routerLink]="[navPath.projectDetail(project()?.id || '')]">
+          View
+        </button>
+      }
+
+      <button mat-flat-button type="button" color="primary">
+        <mat-icon class="material-icons-outlined" fontIcon="share" /> Share
+      </button>
+    </mat-card-actions>
+  </div>
+</mat-card>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

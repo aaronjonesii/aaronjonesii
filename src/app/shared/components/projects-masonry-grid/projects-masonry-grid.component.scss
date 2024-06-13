@@ -1,0 +1,13 @@
+section.masonry-grid {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-auto-rows: 0;
+  grid-gap: 1rem;
+  .masonry-item {
+    overflow: hidden;
+    .masonry-content {
+      overflow: hidden;
+    }
+  }
+}

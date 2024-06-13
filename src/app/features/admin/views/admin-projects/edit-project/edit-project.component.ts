@@ -51,7 +51,6 @@ import {
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { add } from "@ckeditor/ckeditor5-utils/src/translation-service";
 
 @Component({
   selector: 'aj-edit-project',
