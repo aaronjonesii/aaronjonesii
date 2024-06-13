@@ -66,7 +66,7 @@ export class ProjectsMasonryGridComponent implements AfterViewChecked, AfterView
   resizeMasonryItem(item: HTMLElement) {
     // get grid object, row-gap, and size of its implicit rows
     const grid = this.document.getElementsByClassName('masonry-grid')[0];
-    if (!grid) return;
+    if (!grid || !this.ssrSafe.hasWindow) return;
 
     const rowGap = parseInt(
       window.getComputedStyle(grid).getPropertyValue('grid-row-gap'),

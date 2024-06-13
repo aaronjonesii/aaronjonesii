@@ -8,4 +8,8 @@ export class SSRSafeService {
   get isBrowser() {
     return isPlatformBrowser(this.platformId);
   }
+
+  get hasWindow() {
+    return typeof window !== 'undefined';
+  }
 }
