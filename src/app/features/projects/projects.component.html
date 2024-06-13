@@ -14,15 +14,6 @@
        [@projectsListAnimation]="projects().length">
     @for (project of projects(); track project.id) {
       <mat-card class="card" [@projectAnimation]>
-        @if (project.image) {
-          <picture>
-            <img mat-card-image priority
-                 [routerLink]="[nav_path.projects, project.slug]"
-                 [ngSrc]="project.image"
-                 [alt]="project.name" [height]="300" [width]="400" />
-          </picture>
-        }
-
         <div class="info-container mat-body-1">
           <a class="mat-headline-5 m-0 project-name"
              [routerLink]="[nav_path.projects, project.slug]">{{project.name}}</a>
