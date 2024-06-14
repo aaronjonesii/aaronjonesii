@@ -1,12 +1,13 @@
 ## 🚀 Heyooo! I'm Aaron
 A software engineer who thrives on finding innovative solutions. I'm passionate about transforming concepts into intuitive, impactful applications that enhance people's lives.
 
-<img src="https://aaronjonesii.dev/assets/svgs/flat_afro.svg" alt="logo" width="500"/>
-
-
+---
 # aaronjonesii.dev
 
 Angular-powered portfolio showcasing real-time project updates, a user-friendly Angular Material UI, and secure Firebase integration for seamless browsing and authentication.
+
+
+<img src="https://aaronjonesii.dev/assets/svgs/flat_afro.svg" alt="logo" width="500"/>
 
 
 ## Screenshots
