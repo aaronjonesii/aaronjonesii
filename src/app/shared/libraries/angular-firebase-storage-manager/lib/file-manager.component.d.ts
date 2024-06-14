@@ -39,6 +39,8 @@ export declare class FileManagerComponent implements OnInit {
      * The root path within the storage system where the file manager operates.
      */
     rootStoragePath: string;
+    selectionChangeSignal: import("@angular/core").Signal<import("@angular/cdk/collections").SelectionChange<StorageItem> | undefined>;
+    selectionChange: import("@angular/core").OutputEmitterRef<StorageItem[] | null>;
     constructor(dialog: MatDialog, cLog: ConsoleLoggerService, storageService: FirebaseStorageService);
     ngOnInit(): void;
     /**
@@ -147,5 +149,5 @@ export declare class FileManagerComponent implements OnInit {
      */
     handleUploadError(error: FirebaseError, filename: string): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<FileManagerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<FileManagerComponent, "anon-file-manager", never, { "selection": { "alias": "selection"; "required": false; }; "selectedFile": { "alias": "selectedFile"; "required": false; }; "rootStoragePath": { "alias": "rootStoragePath"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FileManagerComponent, "anon-file-manager", never, { "selection": { "alias": "selection"; "required": false; }; "selectedFile": { "alias": "selectedFile"; "required": false; }; "rootStoragePath": { "alias": "rootStoragePath"; "required": false; }; }, { "selectionChange": "selectionChange"; }, never, never, true, never>;
 }

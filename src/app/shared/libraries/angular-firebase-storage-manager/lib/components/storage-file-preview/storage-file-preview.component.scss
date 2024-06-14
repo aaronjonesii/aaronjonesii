@@ -42,7 +42,9 @@
 .download-link {
   overflow-wrap: break-word;
 }
-.download-btn {
+.btn-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 1rem;
 }
