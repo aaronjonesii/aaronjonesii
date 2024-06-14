@@ -3,7 +3,6 @@
   flex-direction: column;
   border-radius: 1rem;
   overflow: hidden;
-  max-height: 600px;
 }
 header.header {
   height: 56px;
@@ -99,7 +98,8 @@ td { border: none!important; }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 200px;
+  min-height: 200px;
+  height: 100%;
 }
 .grid-column-end-span-4 { grid-column-end: span 4; }
 .grid-column-end-span-8 { grid-column-end: span 8; }

@@ -15,11 +15,10 @@ import { RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ReadProject } from '../../shared/interfaces/project';
+import { ProjectWithID, ReadProject } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
-import { appInformation } from '../../information';
 import { navPath } from '../../app.routes';
 import {
   ConsoleLoggerService,
@@ -35,6 +34,8 @@ import {
 } from '../../shared/components/skeleton/skeleton.component';
 import { ProjectsFilter } from '../../shared/enums/projects-filter';
 import { ProjectsService } from '../../shared/services/projects.service';
+// eslint-disable-next-line max-len
+import { ProjectsMasonryGridComponent } from '../../shared/components/projects-masonry-grid/projects-masonry-grid.component';
 
 @Component({
   selector: 'aj-projects',
@@ -55,6 +56,7 @@ import { ProjectsService } from '../../shared/services/projects.service';
     MatDividerModule,
     SkeletonComponent,
     LoadingOrErrorComponent,
+    ProjectsMasonryGridComponent,
   ],
   animations: [...ProjectsAnimations],
 })
@@ -64,7 +66,7 @@ export class ProjectsComponent implements OnDestroy {
   private filterSubject =
     new BehaviorSubject<ProjectsFilter>(ProjectsFilter.ACTIVE);
   filter$ = this.filterSubject.asObservable();
-  private projectsSignal = signal<ReadProject[]>([]);
+  private projectsSignal = signal<ProjectWithID[]>([]);
   projects = this.projectsSignal.asReadonly();
   private subscriptions = new Subscription();
   private loadedSignal = signal(false);
@@ -125,34 +127,7 @@ export class ProjectsComponent implements OnDestroy {
   }
 
   async onShare(project: ReadProject) {
-    const host = `https://${appInformation.website}`;
-    const path = `${navPath.projects}/${project.slug}`;
-    const url = host + path;
-    const title = project.name;
-    const text = project.description;
-
-    try {
-      // Feature detection to see if the Web Share API is supported.
-      if ('share' in navigator) {
-        return await navigator.share({
-          url,
-          text,
-          title,
-        });
-      }
-
-      // Fallback to use Twitter's Web Intent URL.
-      // (https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent)
-      const shareURL = new URL('https://twitter.com/intent/tweet');
-      const params = new URLSearchParams();
-      params.append('text', text);
-      params.append('title', title);
-      params.append('url', url);
-      shareURL.search = params.toString();
-      window.open(shareURL, '_blank', 'popup,noreferrer,noopener');
-    } catch (error: unknown) {
-      this.logger.error('Error sharing project', error);
-    }
+    return this.projectsService.shareProject(project);
   }
 
   ngOnDestroy() {

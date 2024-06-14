@@ -28,6 +28,12 @@ export const routes: Route[] = [
         loadChildren: () => import('../../features/auth/routes'),
       },
       {
+        path: 'book-appointment',
+        // eslint-disable-next-line max-len
+        loadComponent: () => import('../../features/book-appointment/book-appointment.component')
+          .then((m) => m.BookAppointmentComponent),
+      },
+      {
         path: 'contact',
         loadComponent: () => import('../../features/contact/contact.component')
           .then((m) => m.ContactComponent),

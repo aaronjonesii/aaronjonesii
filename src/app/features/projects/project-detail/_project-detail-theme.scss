@@ -32,6 +32,18 @@
     .related-projects-container .related-project:hover {
       background-color: mat.get-color-from-palette($primary-palette, 200);
     }
+
+    .show-more-container {
+      background-color: mat.get-color-from-palette($background-palette, 'app-bar');
+    }
+
+    .links .chip {
+      border-color: mat.get-color-from-palette($foreground-palette, 'divider');
+    }
+    .links .chip:hover {
+      background-color: mat.get-color-from-palette($primary-palette, 50);
+      color: mat.get-color-from-palette($primary-palette);
+    }
   }
 
   @include componentColorMixins($theme);

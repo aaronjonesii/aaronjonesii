@@ -1,17 +1,17 @@
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
 @if (isBrowser()) {
   @defer (when loaded()) {
-    <ng-template [ngTemplateOutlet]="unnamedTmpl" />
+    <ng-template [ngTemplateOutlet]="projectContentTmpl" />
   } @placeholder (minimum 500ms) {
     <ng-template [ngTemplateOutlet]="projectPlaceholderTmpl" />
   } @error {
     <ng-template [ngTemplateOutlet]="errorTmpl" />
   }
 } @else {
-  <ng-template [ngTemplateOutlet]="unnamedTmpl" />
+  <ng-template [ngTemplateOutlet]="projectContentTmpl" />
 }
 
-<ng-template #unnamedTmpl>
+<ng-template #projectContentTmpl>
   @switch (projectFetchStatus()) {
     @case (FetchStatus.PENDING || FetchStatus.LOADING) {
       <ng-template [ngTemplateOutlet]="projectPlaceholderTmpl" />
@@ -30,41 +30,81 @@
     <article class="flex-col app-gap">
       @if (project()?.image) {
         <picture>
-          <img fill priority class="project-image"
-               [ngSrc]="project()?.image ?? ''" [alt]="project.name" />
+          <img priority class="project-image"
+               [ngSrc]="project()?.image ?? ''" [alt]="project.name"
+               [height]="400" [width]="600" />
         </picture>
       }
+
       <div class="flex-col app-gap content">
         <h1 class="mat-headline-4 m-0">{{project()?.name}}{{project()?.status === ProjectStatus.DRAFT ? ' (draft)' : ''}}</h1>
-        <small>{{project()?.views ?? 0}} {{project()?.views === 1 ? 'view' : 'views'}} - {{(project()?.created?.seconds ?? 0) * 1000 | date}}</small>
+
         <div class="author-follow-container">
           <div class="flex-row align-items-center app-gap">
             <aj-user-photo [image]="project()?.author?.image" />
             <div class="flex-col justify-content-center">
               <h3 class="mat-headline-6 m-0">{{project()?.author?.name}}</h3>
-              <!-- todo: fix followers -->
-              <small class="followers">15.1K followers</small>
+              <small class="date">{{projectCreatedOrLastUpdatedText()}}</small>
             </div>
           </div>
-          @switch (user()?.following) {
-            @case (false || undefined) {
-              <button mat-flat-button type="button"
-                      color="primary" class="follow-btn"
-                      (click)="updateFollowingStatus()">
-                Follow
-              </button>
-            }
-            @case (true) {
-              <button mat-button type="button"
-                      color="primary" class="follow-btn"
-                      (click)="updateFollowingStatus()">
-                Unfollow
-              </button>
-            }
-          }
+          <button mat-button type="button"
+                  color="primary" class="share-btn"
+                  (click)="onShareBtnClick()">
+            <mat-icon fontIcon="share" />
+            Share
+          </button>
         </div>
-        <p class="mat-body-2">{{project()?.description}}</p>
+
+        <div class="show-more-container" [ngClass]="{'expanded': showMore()}">
+          <div class="views-description-container">
+            <small class="views">{{projectViewsText()}}</small>
+
+            <p class="mat-body-2">{{project()?.description}}</p>
+          </div>
+
+          @if (showMore()) {
+            <div class="tags">
+              <small>Tags</small>
+              <mat-chip-listbox [selectable]="false" [multiple]="false">
+                @for (tag of project()?.tags; track tag) {
+                  <mat-chip-option>{{tag}}</mat-chip-option>
+                }
+              </mat-chip-listbox>
+            </div>
+
+            <div class="links">
+              @if (project()?.sourceCodeLink) {
+                <a class="chip" target="_blank"
+                   [href]="project()?.sourceCodeLink">
+                  <mat-icon fontIcon="code" />
+                  Source Code
+                </a>
+              }
+              @if (project()?.livePreviewLink) {
+                <a class="chip" target="_blank"
+                   [href]="project()?.livePreviewLink">
+                  <mat-icon fontIcon="preview" />
+                  Demo
+                </a>
+              }
+            </div>
+
+            <div class="updated-created-container">
+              @if (project()?.updated) {
+                <small>{{projectLastUpdatedText()}}</small>
+              }
+              <small>{{projectCreatedText()}}</small>
+            </div>
+          }
+
+          <button mat-button type="button" (click)="onShowMoreToggle()">
+            Show
+            @if (showMore()) { less } @else { more }
+          </button>
+        </div>
+
         <mat-divider />
+
         <p class="ck-content" [innerHTML]="project()?.content"></p>
       </div>
     </article>
@@ -133,7 +173,7 @@
   <div class="article-container">
     <article class="flex-col app-gap">
       <picture>
-        <aj-skeleton [styles]="{width: '600px', height: '300px'}" />
+        <aj-skeleton [styles]="{width: '600px', height: '400px'}" />
       </picture>
 
       <div class="flex-col app-gap content">

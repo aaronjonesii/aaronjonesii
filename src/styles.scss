@@ -81,3 +81,12 @@ picture {
     object-fit: cover;
   }
 }
+
+a:not(.default) {
+  text-decoration: none;
+  color: currentColor;
+}
+
+dl { margin: 0; }
+
+figure { margin: 0; }

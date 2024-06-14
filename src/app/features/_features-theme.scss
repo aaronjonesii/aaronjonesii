@@ -10,6 +10,7 @@
 @use './admin/admin-theme' as admin;
 @use './errors/errors-theme' as errors;
 @use './contact/contact-theme' as contact;
+@use './book-appointment/book-appointment-theme' as bookAppointment;
 
 @mixin componentColorMixins($theme) {
   @include about.color($theme);
@@ -21,6 +22,7 @@
   @include admin.color($theme);
   @include errors.color($theme);
   @include contact.color($theme);
+  @include bookAppointment.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -33,6 +35,7 @@
   @include admin.typography($theme);
   @include errors.typography($theme);
   @include contact.typography($theme);
+  @include bookAppointment.typography($theme);
 }
 
 @mixin color($theme) {

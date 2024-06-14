@@ -1,18 +1,16 @@
 import {
-  ChangeDetectionStrategy, ViewEncapsulation,
-  ChangeDetectorRef, OnDestroy,
+  ChangeDetectionStrategy, ViewEncapsulation, OnDestroy,
   Component, computed, signal, OnInit,
 } from '@angular/core';
 import {
   Observable, Subscription,
   of, switchMap,
-  first, map, filter,
+  map, filter,
 } from 'rxjs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import {
   AsyncPipe,
-  DatePipe,
+  DatePipe, NgClass,
   NgOptimizedImage,
   NgTemplateOutlet,
 } from '@angular/common';
@@ -37,10 +35,6 @@ import {
 } from '../../../shared/components/top-app-bar/top-app-bar.service';
 import { appInformation } from '../../../information';
 import { UserWithID } from '../../../shared/interfaces/user';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogContract,
-} from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { navPath } from '../../../app.routes';
 import { AuthService } from '../../../shared/services/auth.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -52,6 +46,11 @@ import {
 import { ProjectsService } from '../../../shared/services/projects.service';
 import { UsersService } from '../../../shared/services/users.service';
 import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
+import { MatChipsModule } from '@angular/material/chips';
+import { DateAgoPipe } from '../../../shared/pipes/date-ago.pipe';
+import {
+  ConsoleLoggerService,
+} from '../../../shared/services/console-logger.service';
 
 @Component({
   selector: 'aj-project-detail',
@@ -62,12 +61,15 @@ import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  providers: [DatePipe, DateAgoPipe],
   imports: [
+    NgClass,
     DatePipe,
     AsyncPipe,
     RouterLink,
     MatTabsModule,
     MatIconModule,
+    MatChipsModule,
     MatButtonModule,
     LoadingComponent,
     NgOptimizedImage,
@@ -87,6 +89,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   projectFetchStatus = this.projectFetchStatusSignal.asReadonly();
   private loadedSignal = signal(false);
   isBrowser = signal(this.ssrSafeService.isBrowser);
+  showMore = signal(false);
 
   loaded = this.loadedSignal.asReadonly();
   protected readonly navPath = navPath;
@@ -111,15 +114,48 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
       this.projectsService.getRelatedProjectsByTags$(project.id, project.tags) :
       of(null);
   });
+  projectViewsText = computed(() => {
+    const projectViews = this.project()?.views ?? 0;
+    return `${projectViews} ${this.project()?.views === 1 ? 'view' : 'views'}`;
+  });
+  projectLastUpdatedText = computed(() => {
+    const project = this.project();
+    if (!project?.updated) return 'Unknown updated date';
+    const lastUpdatedDate = this.datePipe
+      .transform(project.updated.seconds * 1000);
+    return `Last updated on ${lastUpdatedDate}`;
+  });
+  projectCreatedText = computed(() => {
+    const project = this.project();
+    if (!project?.created) return 'Unknown created date';
+    const createdDate = this.datePipe
+      .transform(project.created.seconds * 1000);
+    return `Created on ${createdDate}`;
+  });
+  projectCreatedOrLastUpdatedText = computed(() => {
+    const project = this.project();
+    if (project?.updated) {
+      const lastUpdatedDateAgo = this.dateAgoPipe
+        .transform(project.updated.seconds * 1000);
+      return `Last updated ${lastUpdatedDateAgo}`;
+    } else if (project?.created) {
+      const createdDateAgo = this.dateAgoPipe
+        .transform(project.created.seconds * 1000);
+      return `Created ${createdDateAgo}`;
+    } else {
+      return 'Unknown created date';
+    }
+  });
 
   constructor(
     private auth: AuthService,
-    private dialog: MatDialog,
+    private datePipe: DatePipe,
     private route: ActivatedRoute,
     private seoService: SeoService,
     private routing: RoutingService,
-    private cdRef: ChangeDetectorRef,
+    private dateAgoPipe: DateAgoPipe,
     private usersService: UsersService,
+    private logger: ConsoleLoggerService,
     private ssrSafeService: SSRSafeService,
     private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
@@ -190,38 +226,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  async updateFollowingStatus() {
-    const user = this.user();
-    this.auth.assertUser(user);
-
-    if (user?.following) {
-      const confirmDialogContract: ConfirmDialogContract = {
-        description: `Unfollow from ${appInformation.name}?`,
-        buttonText: `Unfollow`,
-      };
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        id: 'confirm-unfollow-dialog',
-        data: confirmDialogContract,
-      });
-
-      dialogRef.afterClosed().pipe(first()).forEach(async (confirm) => {
-        return confirm ? await this._updateFollowStatus(user) : undefined;
-      });
-    } else await this._updateFollowStatus(user);
-  }
-
-  private async _updateFollowStatus(user: UserWithID): Promise<void> {
-    if (!user) return;
-
-    await this.usersService.updateUserFollowingStatus(user)
-      .then(() => {
-        this.userSignal.set({ ...user, following: !user.following });
-      });
-  }
-
   async openComments(): Promise<void> {
     const project = this.project();
-    if (!project || !this.user()) return;
+    if (!project) return;
+    if (!this.user()) {
+      this.auth.navigateToSignInWithRedirectUrl();
+      this.logger.warn('Must be signed in to add/view comments');
+      return;
+    }
     this.projectsService.openProjectCommentsDialogById(
       project.id,
       this.user$() as Observable<UserWithID>,
@@ -230,5 +242,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
   onTryLoadAgain() {
     window.location.reload();
+  }
+
+  onShowMoreToggle() {
+    this.showMore.set(!this.showMore());
+  }
+
+  async onShareBtnClick() {
+    if (!this.project()) return;
+
+    return this.projectsService.shareProject(<ProjectWithID> this.project());
   }
 }

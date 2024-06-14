@@ -20,12 +20,7 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-projects {
-    .project-name:hover {
-      color: mat.get-color-from-palette($primary-palette);
-      text-decoration-color: mat.get-color-from-palette($primary-palette);
-    }
-  }
+  aj-projects {}
 
   @include componentColorMixins($theme);
 }

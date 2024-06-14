@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: column;
 }
+.flex-wrap { flex-wrap: wrap; }
 .align-items-center { align-items: center; }
 .justify-content-center { justify-content: center; }
 .justify-content-end { justify-content: end; }
@@ -62,4 +63,17 @@
 }
 .overflow-wrap-anywhere {
   overflow-wrap: anywhere;
+}
+.text-decoration-none {
+  text-decoration: none;
+}
+.align-self-center {
+  align-self: center;
+}
+.placeholder {
+  display: inherit;
+  flex-direction: inherit;
+  gap: inherit;
+  width: inherit;
+  height: inherit;
 }

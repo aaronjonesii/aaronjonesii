@@ -1,0 +1,8 @@
+<section class="masonry-grid" (window:resize)="onResize()">
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @for (project of projects(); track project.id) {
+    <div class="masonry-item">
+      <aj-project-card class="masonry-content" [project]="project" />
+    </div>
+  }
+</section>

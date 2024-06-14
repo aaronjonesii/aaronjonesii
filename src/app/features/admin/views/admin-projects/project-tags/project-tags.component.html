@@ -15,7 +15,8 @@
          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
          (matChipInputTokenEnd)="add($event)"/>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (tag of filteredTags$ | async; track tag) {
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    @for (tag of filteredTags(); track tag) {
       <mat-option [value]="tag">{{tag}}</mat-option>
     }
   </mat-autocomplete>

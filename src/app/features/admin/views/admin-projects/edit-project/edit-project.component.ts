@@ -8,12 +8,8 @@ import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import {
   BehaviorSubject,
-  catchError,
-  Observable,
-  of, Subscription,
-  throwError,
+  Subscription,
 } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -53,6 +49,8 @@ import {
 import {
   TopAppBarService,
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
+import { AuthService } from '../../../../../shared/services/auth.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'aj-edit-project',
@@ -88,8 +86,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   readonly projectVisibilities = ProjectVisibility;
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
-  allTags$: Observable<Tag[]> = of([]);
-  private allTags: Tag[] = [];
+  tagsSignal = toSignal(this.db.col$<Tag>(`tags`));
   editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {
@@ -103,6 +100,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     },
   };
   private subscriptions = new Subscription();
+  private user = toSignal(this.authService.loadUser);
 
   constructor(
     private router: Router,
@@ -110,6 +108,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     private db: FirestoreService,
     private route: ActivatedRoute,
     private tagsService: TagsService,
+    private authService: AuthService,
     private logger: ConsoleLoggerService,
     private topAppBarService: TopAppBarService,
   ) {
@@ -134,14 +133,6 @@ export class EditProjectComponent implements OnInit, OnDestroy {
             `Something went wrong loading project`, this.projectID,
           );
         } else {
-          this.allTags$ = (this.db.col$(`tags`) as Observable<Tag[]>)
-            .pipe(
-              tap((tags) => this.allTags = tags),
-              catchError((error) => {
-                this.logger.error(`Something went wrong loading tags`, error);
-                return throwError(error);
-              })
-            );
           const project = docSnapshot.data() as ReadProject;
           this.projectSnapshot = project;
           this.project = project;
@@ -243,6 +234,8 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   }
 
   async save() {
+    const user = this.user();
+    if (!user || this.editForm.invalid) return;
     this.loadingSubject.next(true);
 
     this.editForm.disable();
@@ -298,42 +291,50 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         /** update tags added to project */
         for (let i = 0; i < addedTags.length; i++) {
           const addTag = addedTags[i];
-          if (this.allTags.some((tag) => tag.slug == addTag)) {
+          if (this.tagsSignal()?.find((tag) => tag.slug == addTag)) {
             const tagUpdates: Partial<Tag> = {
               projects: arrayUnion(project.slug),
               updated: this.db.timestamp,
             };
             batch.update(this.db.doc(`tags/${addTag}`), tagUpdates);
           } else {
-            const newTag: Tag = {
+            const newTag: Partial<Tag> = {
               slug: addTag,
               projects: arrayRemove(project.slug),
               created: this.db.timestamp,
               featured: false,
             };
-            batch.update(this.db.doc(`tags/${addTag}`), newTag);
+            batch.set(this.db.doc(`tags/${addTag}`), newTag);
           }
         }
       }
 
       /** save project changes */
-      const projectRef = this.db.doc(`projects/${project.slug}`);
+      const projectRef = this.db.doc(`projects/${this.projectSnapshot?.slug}`);
       batch.update(projectRef, project);
 
       /** check project slug for changes */
       if (this.projectSnapshot?.slug != project.slug) {
-        /* create new project */
+        /** create new project */
+        project.roles = this.projectSnapshot?.roles || { [user.uid]: 'owner' };
         batch.set(this.db.doc(`projects/${project.slug}`), project);
 
         /** remove old slug and add new slug to tags */
         if (project.tags?.length) {
           for (const tag of project.tags) {
-            const tagRef = this.db.doc(`tags/${tag}`);
-            batch.update(
+            const tagRef = this.db.doc<Tag>(`tags/${tag}`);
+            batch.update<Tag, Partial<Tag>>(
               tagRef,
-              { products: arrayRemove(this.projectSnapshot?.slug) },
+              {
+                projects: arrayRemove(this.projectSnapshot?.slug),
+              },
             );
-            batch.update(tagRef, { products: arrayUnion(project.slug) });
+            batch.update<Tag, Partial<Tag>>(
+              tagRef,
+              {
+                projects: arrayUnion(project.slug),
+              },
+            );
           }
         }
 

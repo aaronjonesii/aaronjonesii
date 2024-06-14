@@ -28,18 +28,45 @@ aj-project-detail {
   }
   .article-container article picture {}
   .article-container article img.project-image {
+    width: 100%;
+    height: auto;
     position: relative !important;
-    aspect-ratio: 16/9;
-    object-fit: cover;
+    object-fit: contain;
   }
 
+  .show-more-container {
+    padding: $app-padding;
+    border-radius: $app-border-radius;
+    display: flex;
+    flex-direction: column;
+    gap: calc(#{$app-gap} / 2);
+  }
+  .show-more-container .updated-created-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $app-gap;
+  }
+  .links .chip {
+    display: flex;
+    align-items: center;
+    gap: calc(#{$app-gap} / 2);
+    border-radius: $app-border-radius;
+    border-width: 1px;
+    border-style: solid;
+    width: fit-content;
+    padding: calc(#{$app-padding} / 4) calc(#{$app-padding} / 2);
+  }
   .author-follow-container {
     display: flex;
     flex-direction: column;
     gap: $app-gap;
   }
 
-  .follow-btn {
+  .share-btn {
     min-height: 36px;
     padding: 1rem 2rem;
   }

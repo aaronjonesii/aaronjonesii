@@ -1,8 +1,7 @@
 import { firebaseTimestamp } from './timestamp';
 import { FieldValue } from '@angular/fire/firestore/firebase';
-import { DocumentData } from '@angular/fire/compat/firestore/interfaces';
 
-export interface Tag extends DocumentData{
+export interface Tag {
   id?: string;
   name?: string;
   description?: string;

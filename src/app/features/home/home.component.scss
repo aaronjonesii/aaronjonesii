@@ -3,6 +3,9 @@
 @import "../../../assets/scss/partials/mixins";
 
 :host {
+  display: flex;
+  flex-direction: column;
+  gap: calc(#{$app-gap} * 2);
   max-width: $large;
   @media (min-width: $large) {
     align-self: center;
@@ -12,7 +15,7 @@
 .hero {
   display: grid;
   grid-template-columns: minmax($app-padding, 1fr) repeat(8, 1fr) minmax($app-padding, 1fr);
-  grid-template-rows: repeat(22, minmax(24px, auto));
+  grid-template-rows: repeat(21, minmax(24px, auto));
   gap: $app-gap;
 
   * {
@@ -48,7 +51,7 @@
 .hero .image {
   display: flex;
   align-items: center;
-  grid-area: 12 / 2 / 22 / 10;
+  grid-area: 11 / 2 / 22 / 10;
   z-index: 3;
   width: 100%;
 }
@@ -60,6 +63,22 @@
 
 .hero .image picture img {
   position: unset !important;
+}
+
+.book-appointment {
+  display: flex;
+  justify-content: center;
+}
+.book-appointment button {
+  height: 60px;
+  border-radius: calc(#{$app-border-radius} * 2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.memoji {
+  display: flex;
+  justify-content: center;
 }
 
 @media (min-width: 768px) {

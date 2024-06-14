@@ -1,5 +1,6 @@
 @import "../../../assets/scss/partials/extras";
 @import "../../../assets/scss/partials/media_queries";
+@import "../../../assets/scss/partials/animations";
 
 :host {
   display: flex;
@@ -9,11 +10,114 @@
   max-width: $desktop;
   align-self: center;
 }
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+* { transition: all $emphasizedDecelerate; }
 picture { width: 100%; }
-picture img { position: relative !important; }
+picture img {
+  position: relative !important;
+}
 .connect-btn {
   height: 50px;
   font-size: 1.25rem;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  @media (min-width: $tabletLandscape) {
+    flex-direction: row;
+    .column {
+      flex-basis: 50%;
+    }
+  }
+}
+.sections .column {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: calc(#{$app-gap} / 2);
+}
+section .heading {
+  border-radius: calc(#{$app-border-radius} * 2);
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: $app-gap;
+  padding: calc(#{$app-padding} / 2);
+}
+section .content {
+  padding-left: $app-padding;
+}
+
+section.socials {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+section.skills .content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $app-gap;
+}
+section.skills .content dl {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.skills .content ul .skill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.hobbies ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $app-gap;
+  justify-content: center;
+}
+section.hobbies ul li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100px;
+  text-align: center;
+  mat-icon {
+    $icon-size: 50px;
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+  }
+}
+
+section.projects .heading {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+section.projects .heading .heading-container {
+  display: flex;
+  align-items: center;
+  gap: $app-gap;
+}
+section.projects mat-list {
+  display: grid;
 }
 
 @media (min-width: $tabletLandscape) {

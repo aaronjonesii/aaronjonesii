@@ -11,6 +11,25 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
+  aj-about {
+    section.skills .content ul .skill .rating:hover mat-icon:not(.material-icons-outlined) {
+      color: mat.get-color-from-palette($primary-palette);
+    }
+
+    section.hobbies .content .hobby:hover mat-icon{
+      color: mat.get-color-from-palette($primary-palette);
+    }
+
+    section:hover {
+      .heading {
+        background-color: mat.get-color-from-palette($primary-palette, 50);
+      }
+      .heading mat-icon {
+        color: mat.get-color-from-palette($primary-palette);
+      }
+    }
+  }
+
 }
 
 @mixin typography($theme) {
@@ -34,6 +53,25 @@
     }
     .text {
       @include mat.typography-level($typography-config, 'headline-6');
+    }
+
+    section .heading h3 {
+      @include mat.typography-level($typography-config, 'headline-5');
+    }
+    section .content p {
+      @include mat.typography-level($typography-config, 'body-1')
+    }
+    section.skills .content .skill-category {
+      @include mat.typography-level($typography-config, 'headline-6');
+    }
+    section.skills .content ul .skill .name {
+      @include mat.typography-level($typography-config, 'body-1');
+    }
+    section.projects ul .project .name {
+      @include mat.typography-level($typography-config, 'headline-6');
+    }
+    section.projects ul .project .description {
+      @include mat.typography-level($typography-config, 'body-1');
     }
   }
 }

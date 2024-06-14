@@ -1,56 +1,78 @@
-import { Component } from '@angular/core';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { appInformation } from '../../information';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
 import { navPath } from '../../app.routes';
 import { SeoService } from '../../shared/services/seo.service';
-import {
-  SlideInFromRightAnimation,
-} from '../../shared/animations/slide-in-from-right.animations';
-import {
-  SlideInFromBottomAnimation,
-} from '../../shared/animations/slide-in-from-bottom.animations';
-import { StrengthsService } from '../../shared/services/strengths.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  SlideInFromLeftAnimation,
-} from '../../shared/animations/slide-in-from-left.animations';
-import { Router } from '@angular/router';
-import {
   SkeletonComponent,
 } from '../../shared/components/skeleton/skeleton.component';
+import {
+  FadeInOutAnimation,
+} from '../../shared/animations/fade-in-out.animations';
+import { SkillsService } from '../../shared/services/skills.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { HobbiesService } from '../../shared/services/hobbies.service';
+import { ProjectsService } from '../../shared/services/projects.service';
+import { ProjectsFilter } from '../../shared/enums/projects-filter';
+import { RouterLink } from '@angular/router';
+import { SocialsService } from '../../shared/services/socials.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
+import {
+  generateRandomNumber,
+} from '../../shared/utils/generate-random-number';
 
 @Component({
   selector: 'aj-about',
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    NgClass,
     AsyncPipe,
+    RouterLink,
+    MatListModule,
     MatIconModule,
     MatButtonModule,
     NgOptimizedImage,
+    MatTooltipModule,
     SkeletonComponent,
   ],
-  animations: [
-    SlideInFromLeftAnimation,
-    SlideInFromRightAnimation,
-    SlideInFromBottomAnimation,
-  ],
+  animations: [FadeInOutAnimation],
 })
-export class AboutComponent {
+export class AboutComponent implements OnInit {
   private readonly title = appInformation.title;
-  readonly strengths$ = this.strengthsService.strengths$;
+  protected readonly navPath = navPath;
+  protected readonly generateRandomNumber = (
+    min: number,
+    max: number,
+  ) => generateRandomNumber(min, max);
 
-  constructor(
-    private router: Router,
-    private seoService: SeoService,
-    private strengthsService: StrengthsService,
-    private topAppBarService: TopAppBarService,
-  ) {
+  private seoService = inject(SeoService);
+  private skillsService = inject(SkillsService);
+  private topAppBarService = inject(TopAppBarService);
+  private hobbiesService = inject(HobbiesService);
+  private projectsService = inject(ProjectsService);
+  private socialsService = inject(SocialsService);
+
+  skills = toSignal(this.skillsService.getSkills$);
+  hobbies = toSignal(this.hobbiesService.getHobbies$);
+  projects =
+    toSignal(this.projectsService.getFilteredProjects$(ProjectsFilter.ACTIVE));
+  socials = toSignal(this.socialsService.getSocials$);
+
+  ngOnInit() {
     this.topAppBarService.setOptions({
       title: this.title,
       showBackBtn: false,
@@ -58,9 +80,5 @@ export class AboutComponent {
     });
 
     this.seoService.generateTags({ route: navPath.about });
-  }
-
-  async onConnectBtnClick() {
-    await this.router.navigate([navPath.contact]);
   }
 }
