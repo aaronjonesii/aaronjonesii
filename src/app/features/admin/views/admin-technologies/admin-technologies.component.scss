@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+}
+.technology {
+  width: 50px;
+  height: 50px;
+}

@@ -21,6 +21,12 @@ export default [
         loadChildren: () => import('./views/admin-projects/routes'),
       },
       {
+        path: 'technologies',
+        // eslint-disable-next-line max-len
+        loadComponent: () => import('./views/admin-technologies/admin-technologies.component')
+          .then((c) => c.AdminTechnologiesComponent),
+      },
+      {
         path: 'users',
         loadChildren: () => import('./views/admin-users/routes'),
       },

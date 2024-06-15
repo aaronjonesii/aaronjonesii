@@ -54,7 +54,7 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // users
+    // users collection
     match /users/{uid} {
       // users functions
       function isValidUpdate() { return hasRequestRsc() && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reported', 'following', 'updated'])); }
@@ -63,25 +63,31 @@ service cloud.firestore {
       allow update: if isSignedIn() && request.auth.uid == uid && isValidUpdate();
     }
 
-    // contact
+    // contact collection
     match /contact/{contactID} {
       allow read: if isAdmin();
       allow create: if verifyFields(['name', 'company', 'email', 'message', 'created'], []);
     }
 
-    // mail
+    // mail collection
     match /mail/{mailID} {
       allow read: if isAdmin();
       allow create: if verifyFields(['message'], ['template', 'to', 'toUids', 'cc', 'ccUids', 'bcc', 'bccUids', 'from', 'replyTo', 'headers', 'attachments']);
     }
 
-    // reports
+    // reports collection
     match /reports/{reportID} {
       // reports functions
       function isValidReport() { return hasRequestRsc() && request.resource.data.by == /databases/$(database)/documents/users/$(request.auth.uid) }
 
       allow create: if isValidReport() && verifyFields(['created', 'by', 'reason', 'document'], ['updated']);
       allow read: if isAdmin();
+    }
+
+    // technologies collection
+    match /technologies/{technology} {
+      allow write: if isAdmin();
+      allow read;
     }
   }
 }

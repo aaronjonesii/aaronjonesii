@@ -1,0 +1,19 @@
+<h1 class="mat-headline-3">{{title}}</h1>
+
+<section class="technologies">
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  @for (technology of technologies(); track technology.id) {
+    <div class="technology">
+      @if (technology.logoImage) {
+        <picture>
+          <img width="25" height="25"
+               [ngSrc]="technology.logoImage" [alt]="technology.name" />
+        </picture>
+      }
+
+      <span class="name">{{technology.name}}</span>
+    </div>
+  } @empty {
+    No technologies yet.
+  }
+</section>

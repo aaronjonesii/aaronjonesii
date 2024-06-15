@@ -15,4 +15,5 @@ export const adminNavPath = {
   ...adminProjectsNavPath,
   adminFileManager: '/admin/file-manager',
   ...adminUsersNavPath,
+  adminTechnologies: '/admin/technologies',
 };
