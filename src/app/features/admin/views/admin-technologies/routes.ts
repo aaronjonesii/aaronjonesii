@@ -13,10 +13,9 @@ export default [
     loadComponent: () => import('./create-technology/create-technology.component')
       .then((m) => m.CreateTechnologyComponent),
   },
-  // {
-  //   path: ':technologyId/edit',
-  // eslint-disable-next-line max-len
-  //   loadComponent: () => import('./edit-technology/edit-technology.component')
-  //     .then((m) => m.EditTechnologyComponent),
-  // },
+  {
+    path: ':technologyId/edit',
+    loadComponent: () => import('./edit-technology/edit-technology.component')
+      .then((m) => m.EditTechnologyComponent),
+  },
 ] satisfies Route[];

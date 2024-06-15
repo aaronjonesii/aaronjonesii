@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { FirestoreService } from './firestore.service';
 import { Technology } from '../interfaces/technology';
 import { ConsoleLoggerService } from './console-logger.service';
-import { catchError, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnologiesService {
@@ -12,7 +12,10 @@ export class TechnologiesService {
   private readonly collectionName = 'technologies';
 
   get getTechnologies$() {
-    return this.db.col$<Technology>(this.collectionName).pipe(
+    return this.db.col$<Technology>(
+      this.collectionName,
+      { idField: 'id' },
+    ).pipe(
       catchError((error: unknown) => {
         this.logger.error('Error handled getting technologies', error);
         return of(null);
@@ -22,6 +25,7 @@ export class TechnologiesService {
 
   getTechnology$(id: string) {
     return this.db.doc$<Technology>(`${this.collectionName}/${id}`).pipe(
+      map((technology) => ({ ...technology, id })),
       catchError((error: unknown) => {
         this.logger.error(`Error handled getting technology: ${id}`, error);
         return of(null);

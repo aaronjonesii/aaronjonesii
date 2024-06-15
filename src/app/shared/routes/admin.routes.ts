@@ -12,6 +12,7 @@ const adminUsersNavPath = {
 const adminTechnologiesNavPath = {
   adminTechnologies: '/admin/technologies',
   adminCreateTechnology: '/admin/technologies/create',
+  adminEditTechnology: (id: string) => `/admin/technologies/${id}/edit`,
 };
 
 export const adminNavPath = {

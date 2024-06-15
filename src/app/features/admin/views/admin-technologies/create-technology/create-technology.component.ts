@@ -59,11 +59,11 @@ export class CreateTechnologyComponent implements OnInit {
 
     this.loading.set(true);
 
-    const technologyRef = await this.technologiesService.createTechnology(
+    const createdTechnology = await this.technologiesService.createTechnology(
       this.createTechnologyForm.technology,
     );
 
-    if (technologyRef) {
+    if (createdTechnology) {
       this.logger.info('Technology created');
       await this.router.navigate([navPath.adminTechnologies]);
     }

@@ -5,7 +5,7 @@ import { TechnologyFormGroup } from '../interfaces/technology-form';
 export class TechnologyForm {
   formGroup: FormGroup<TechnologyFormGroup>;
 
-  constructor(technology?: Technology) {
+  constructor(technology?: Technology | null) {
     this.formGroup = this._buildForm(technology);
   }
 
@@ -46,7 +46,11 @@ export class TechnologyForm {
     };
   }
 
-  private _buildForm(technology?: Technology) {
+  updateForm(technology?: Technology | null) {
+    this.formGroup = this._buildForm(technology);
+  }
+
+  private _buildForm(technology?: Technology | null) {
     return new FormGroup<TechnologyFormGroup>({
       id: new FormControl(technology?.id || null),
       name: new FormControl(
