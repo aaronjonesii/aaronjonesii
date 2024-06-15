@@ -27,6 +27,7 @@ export class ProjectImageComponent {
   @Input() imageFormControl = new FormControl<string | null>(null);
   imageError: ErrorEvent | null = null;
   @Input() allowedFileTypes = [
+    'image/webp',
     'image/gif',
     'image/jpeg',
     'image/png',

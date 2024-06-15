@@ -30,10 +30,8 @@ export class TechnologiesService {
   }
 
   createTechnology(item: Technology) {
-    return this.db.add(
-      `${this.collectionName}/${this.db.newDocumentID}`,
-      item,
-    ).catch((error: unknown) => {
+    delete item.id;
+    return this.db.add(this.collectionName, item).catch((error: unknown) => {
       this.logger.error('Error handled creating technology', error);
       return null;
     });

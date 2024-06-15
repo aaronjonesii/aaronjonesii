@@ -1,6 +1,6 @@
 export interface Technology {
-  id?: string,
+  id?: string | null,
   name: string,
-  description?: string,
-  logoImage?: string,
+  description?: string | null,
+  logoImage?: string | null,
 }

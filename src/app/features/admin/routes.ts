@@ -22,9 +22,7 @@ export default [
       },
       {
         path: 'technologies',
-        // eslint-disable-next-line max-len
-        loadComponent: () => import('./views/admin-technologies/admin-technologies.component')
-          .then((c) => c.AdminTechnologiesComponent),
+        loadChildren: () => import('./views/admin-technologies/routes'),
       },
       {
         path: 'users',

@@ -1,5 +1,10 @@
 <h1 class="mat-headline-3">{{title}}</h1>
 
+<button mat-button type="button" [routerLink]="navPath.adminCreateTechnology">
+  <mat-icon fontIcon="add" />
+  <span>Create Technology</span>
+</button>
+
 <section class="technologies">
   <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
   @for (technology of technologies(); track technology.id) {

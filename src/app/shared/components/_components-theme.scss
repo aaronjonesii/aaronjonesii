@@ -1,18 +1,29 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use './components/components-theme' as components;
-@use './libraries/libraries-theme' as libraries;
-
+@use './layout/layout-theme' as layout;
+@use './masonry-cards/masonry-cards-theme' as masonryCards;
+@use './skeleton/skeleton-theme' as skeleton;
+@use './carousel/carousel-theme' as carousel;
+@use './project-card/project-card-theme' as projectCard;
+@use './select-image/select-image-theme' as selectImage;
 
 @mixin componentColorMixins($theme) {
-  @include components.color($theme);
-  @include libraries.color($theme);
+  @include layout.color($theme);
+  @include masonryCards.color($theme);
+  @include skeleton.color($theme);
+  @include carousel.color($theme);
+  @include projectCard.color($theme);
+  @include selectImage.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
-  @include components.typography($theme);
-  @include libraries.typography($theme);
+  @include layout.typography($theme);
+  @include masonryCards.typography($theme);
+  @include skeleton.typography($theme);
+  @include carousel.typography($theme);
+  @include projectCard.typography($theme);
+  @include selectImage.typography($theme);
 }
 
 @mixin color($theme) {
@@ -38,5 +49,5 @@
   @if $color-config != null { @include color($theme); }
 
   $typography-config: mat.get-typography-config($theme);
-  @if $typography-config != null {  @include typography($theme); }
+  @if $typography-config != null { @include typography($theme); }
 }

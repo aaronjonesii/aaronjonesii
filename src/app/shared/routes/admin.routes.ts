@@ -9,11 +9,16 @@ const adminUsersNavPath = {
   adminUserDetail: (id: string) => `/admin/users/${id}`,
 };
 
+const adminTechnologiesNavPath = {
+  adminTechnologies: '/admin/technologies',
+  adminCreateTechnology: '/admin/technologies/create',
+};
+
 export const adminNavPath = {
   admin: '/admin',
   adminDashboard: '/admin/dashboard',
   ...adminProjectsNavPath,
   adminFileManager: '/admin/file-manager',
   ...adminUsersNavPath,
-  adminTechnologies: '/admin/technologies',
+  ...adminTechnologiesNavPath,
 };

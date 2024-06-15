@@ -7,6 +7,10 @@ import {
   TopAppBarService,
 } from '../../../../shared/components/top-app-bar/top-app-bar.service';
 import { NgOptimizedImage } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { navPath } from '../../../../app.routes';
 
 @Component({
   selector: 'aj-admin-technologies',
@@ -15,6 +19,9 @@ import { NgOptimizedImage } from '@angular/common';
   standalone: true,
   imports: [
     NgOptimizedImage,
+    MatButton,
+    MatIcon,
+    RouterLink,
   ],
 })
 export class AdminTechnologiesComponent implements OnInit {
@@ -32,4 +39,6 @@ export class AdminTechnologiesComponent implements OnInit {
       showBackBtn: true,
     });
   }
+
+  protected readonly navPath = navPath;
 }
