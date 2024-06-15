@@ -311,7 +311,7 @@ export class FirestoreService {
 
   /**
    * Adds a new document to a Firestore collection. Automatically sets
-   * 'created' and 'updated' timestamps using `serverTimestamp()`.
+   * 'created' timestamp using `serverTimestamp()`.
    *
    * @param {CollectionPredicate} ref A string path or CollectionReference
    * to the collection.
@@ -324,7 +324,7 @@ export class FirestoreService {
     data: WithFieldValue<T>,
   ): Promise<DocumentReference<T>> {
     const timestamp = this.timestamp;
-    data = Object.assign({ created: timestamp, updated: timestamp }, data);
+    data = Object.assign({ created: timestamp }, data);
     return addDoc(this.col(ref), data);
   }
 
@@ -338,6 +338,10 @@ export class FirestoreService {
    * @param {PartialWithFieldValue} data The data for the document.
    * @param {SetOptions} options (Optional) Options for the set operation
    * (e.g., merge, mergeFields).
+   * @param {boolean} overwriteOperation - (Optional, default: false) If true,
+   * indicates it is an overwrite operation; otherwise, it's treated as a
+   * create. This determines which timestamp field (`created` or `updated`)
+   * is set automatically.
    * @return {Promise<void>} A Promise resolving upon successful completion
    * of the set operation.
    */
@@ -345,9 +349,13 @@ export class FirestoreService {
     ref: DocumentPredicate<T>,
     data: PartialWithFieldValue<T>,
     options: SetOptions = {},
+    overwriteOperation: boolean = false,
   ): Promise<void> {
     const timestamp = this.timestamp;
-    data = Object.assign({ created: timestamp, updated: timestamp }, data);
+    data = Object.assign(
+      { [overwriteOperation ? 'updated' : 'created']: timestamp },
+      data,
+    );
     return setDoc(this.doc(ref), data, options);
   }
 
