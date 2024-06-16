@@ -8,7 +8,7 @@
 <section class="technologies">
   <!-- eslint-disable @angular-eslint/template/no-call-expression -->
   @for (technology of technologies(); track technology.id) {
-    <div class="technology" [routerLink]="[navPath.adminEditTechnology(technology.id || '')]">
+    <div class="technology" [routerLink]="[navPath.adminDetailTechnology(technology.id || '')]">
       @if (technology.logoImage) {
         <picture>
           <img width="25" height="25"

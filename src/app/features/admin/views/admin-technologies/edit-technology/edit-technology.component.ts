@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   effect,
-  inject, signal,
+  inject, OnInit, signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,6 +23,9 @@ import { navPath } from '../../../../../app.routes';
 import {
   ConsoleLoggerService,
 } from '../../../../../shared/services/console-logger.service';
+import {
+  TopAppBarService,
+} from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 
 @Component({
   selector: 'aj-edit-technology',
@@ -39,7 +42,8 @@ import {
     MatLabel,
   ],
 })
-export class EditTechnologyComponent {
+export class EditTechnologyComponent implements OnInit {
+  private topAppBarService = inject(TopAppBarService);
   private route = inject(ActivatedRoute);
   private technologyService = inject(TechnologiesService);
   private location = inject(Location);
@@ -47,6 +51,7 @@ export class EditTechnologyComponent {
   private logger = inject(ConsoleLoggerService);
   private cdRef = inject(ChangeDetectorRef);
 
+  protected readonly title = 'Edit Technology';
   private routeTechnologyId$ = this.route.paramMap.pipe(
     map((paramMap) => paramMap.get('technologyId')),
   );
@@ -64,6 +69,14 @@ export class EditTechnologyComponent {
     this.editTechnologyForm.updateForm(technology);
     this.cdRef.markForCheck();
   });
+
+  ngOnInit() {
+    this.topAppBarService.setOptions({
+      title: `Admin ${this.title}`,
+      loading: false,
+      showBackBtn: true,
+    });
+  }
 
   async onSaveBtnClick() {
     const technology = this.editTechnologyForm.technology;

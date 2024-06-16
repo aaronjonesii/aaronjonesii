@@ -9,6 +9,7 @@
 @use '../../shared/components/navigation-bar/navigation-bar-theme' as navigationBar;
 @use '../../shared/components/navigation-rail/navigation-rail-theme' as navigationRail;
 @use '../../shared/components/navigation-drawer/navigation-drawer-theme' as navigationDrawer;
+@use './views/admin-technologies/admin-technologies-theme' as adminTechnologies;
 
 @mixin componentColorMixins($theme) {
   @include addProject.color($theme);
@@ -19,6 +20,7 @@
   @include navigationBar.color($theme);
   @include navigationRail.color($theme);
   @include navigationDrawer.color($theme);
+  @include adminTechnologies.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -30,6 +32,7 @@
   @include navigationBar.typography($theme);
   @include navigationRail.typography($theme);
   @include navigationDrawer.typography($theme);
+  @include adminTechnologies.typography($theme);
 }
 
 @mixin color($theme) {

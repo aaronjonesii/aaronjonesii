@@ -1,0 +1,30 @@
+<section class="header">
+  @if (technology()?.logoImage; as image) {
+    <picture>
+      <img fill [ngSrc]="image" [alt]="technology()?.name" />
+    </picture>
+  }
+
+  <div class="content">
+    <h3 class="name">{{technology()?.name}}</h3>
+    <p class="description">{{technology()?.description}}</p>
+  </div>
+</section>
+
+<section class="projects">
+  <mat-nav-list>
+    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+    @for (project of projects(); track project.id) {
+      <mat-list-item>
+        @if (project.image) {
+          <img matListItemAvatar width="25" height="25"
+               [ngSrc]="project.image" [alt]="project.name" />
+        }
+        <span matListItemTitle>{{project.name}}</span>
+        <span matListItemLine>{{project.description}}</span>
+      </mat-list-item>
+    } @empty {
+      No projects use this technology yet.
+    }
+  </mat-nav-list>
+</section>

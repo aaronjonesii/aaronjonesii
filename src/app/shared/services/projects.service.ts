@@ -270,4 +270,12 @@ export class ProjectsService {
       this.logger.error('Error sharing project', error);
     }
   }
+
+  getProjectsByTechnology$(id: string) {
+    return this.db.colQuery$<ProjectWithID>(
+      this.collectionName,
+      { idField: 'id' },
+      where('technologies', 'in', id),
+    );
+  }
 }

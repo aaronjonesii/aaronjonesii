@@ -14,6 +14,12 @@ export default [
       .then((m) => m.CreateTechnologyComponent),
   },
   {
+    path: ':technologyId',
+    // eslint-disable-next-line max-len
+    loadComponent: () => import('./technology-detail/technology-detail.component')
+      .then((m) => m.TechnologyDetailComponent),
+  },
+  {
     path: ':technologyId/edit',
     loadComponent: () => import('./edit-technology/edit-technology.component')
       .then((m) => m.EditTechnologyComponent),
