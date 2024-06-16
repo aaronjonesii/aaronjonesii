@@ -87,7 +87,9 @@ export class EditTechnologyComponent implements OnInit {
     await this.technologyService.updateTechnology(technology.id, technology)
       .then(() => {
         this.logger.info('Technology updated');
-        this.router.navigate([navPath.adminTechnologies]);
+        if (technology.id) {
+          this.router.navigate([navPath.adminDetailTechnology(technology.id)]);
+        }
       });
 
     this.loading.set(false);

@@ -20,7 +20,11 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-technologies {}
+  aj-admin-technologies {
+    .technology:hover {
+      background-color: mat.get-color-from-palette($primary-palette, 50);
+    }
+  }
 
   @include componentColorMixins($theme);
 }

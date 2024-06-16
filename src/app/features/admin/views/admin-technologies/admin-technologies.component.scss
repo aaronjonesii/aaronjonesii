@@ -1,3 +1,6 @@
+@import "../../../../../assets/scss/partials/extras";
+@import "../../../../../assets/scss/partials/animations";
+
 :host {
   display: flex;
   flex-direction: column;
@@ -6,8 +9,15 @@
 .technologies {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: $app-gap;
 }
 .technology {
-  width: 50px;
-  height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100px;
+  transition: all $emphasizedDecelerate;
+  border-radius: $app-border-radius;
+  cursor: pointer;
 }
