@@ -41,7 +41,7 @@ export enum ProjectVisibility {
 export interface WriteProject extends Project {
   created: FieldValue,
   updated: FieldValue | null,
-  technologies?: FieldValue,
+  technologies?: FieldValue | DocumentReference<Technology>[],
 }
 
 export interface ReadProject extends Project {

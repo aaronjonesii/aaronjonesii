@@ -23,8 +23,12 @@
            aria-label="Project Description"></textarea>
   </mat-form-field>
 
-  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  <!-- eslint-disable @angular-eslint/template/no-call-expression -->
+  <aj-project-technologies [selectedTechnologiesFormArray]="technologiesCtrl"
+                           [allTechnologies]="technologiesSignal() || []" />
+
   <aj-project-tags [selectedTagsFormArray]="tags" [allTags]="tagsSignal()" />
+  <!-- eslint-enable @angular-eslint/template/no-call-expression -->
 
   <mat-form-field appearance="outline">
     <mat-label>Live Preview Link</mat-label>

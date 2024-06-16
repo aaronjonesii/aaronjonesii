@@ -349,14 +349,18 @@ export class ProjectsService {
     });
   }
 
-  private projectWihTechnologies$(
+  projectWihTechnologies$(
     project: ProjectWithID,
   ): Observable<ProjectWithTech> {
     return of(project).pipe(
       switchMap((project) => {
         const technologies = project?.technologies || [];
         const technologies$ = from(technologies).pipe(
-          mergeMap((techRef) => this.db.doc$(techRef)),
+          mergeMap((techRef) => {
+            return this.db.doc$(techRef).pipe(
+              map((t) => ({ ...t, id: techRef.id })),
+            );
+          }),
           take(technologies.length),
           toArray(),
           map((t) => t.filter((t) => !!t) as Technology[]),

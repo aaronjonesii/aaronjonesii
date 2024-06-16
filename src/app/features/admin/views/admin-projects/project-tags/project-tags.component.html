@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline">
   <mat-label>Tags</mat-label>
-  <mat-chip-grid #chipGrid aria-label="Fruit selection">
+  <mat-chip-grid #chipGrid aria-label="Tag selection">
     @for (tag of selectedTagsFormArray.value; track tag) {
       <mat-chip-row (removed)="remove(tag)">
         {{tag}}
@@ -13,7 +13,7 @@
   <input #tagInput placeholder="New Tag..." [formControl]="tagCtrl"
          [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-         (matChipInputTokenEnd)="add($event)"/>
+         (matChipInputTokenEnd)="add($event)" />
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
     @for (tag of filteredTags(); track tag) {

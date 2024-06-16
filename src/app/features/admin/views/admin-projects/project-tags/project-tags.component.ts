@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, PERIOD, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import {
   MatAutocompleteModule,
@@ -43,7 +43,7 @@ export class ProjectTagsComponent {
   tags = computed(() => {
     return this.allTags()?.map((t) => t.slug) || [];
   });
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE, PERIOD];
   tagCtrl = new FormControl('');
   @ViewChild('tagInput') tagInput?: ElementRef<HTMLInputElement>;
   inputValue = toSignal(this.tagCtrl.valueChanges);

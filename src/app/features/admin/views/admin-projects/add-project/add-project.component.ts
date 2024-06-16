@@ -1,10 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import {
   BehaviorSubject,
   Subscription,
 } from 'rxjs';
 import { Router } from '@angular/router';
-import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
+import {
+  arrayRemove,
+  arrayUnion,
+  DocumentReference,
+} from '@angular/fire/firestore';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { User } from '@angular/fire/auth';
 import {
@@ -31,6 +35,7 @@ import {
 import { SlugifyPipe } from '../../../../../shared/pipes/slugify.pipe';
 import { ProjectForm } from '../../../../../shared/forms/project-form';
 import {
+  ProjectStats,
   ProjectStatus, ProjectVisibility, WriteProject,
 } from '../../../../../shared/interfaces/project';
 import { Tag } from '../../../../../shared/interfaces/tag';
@@ -46,6 +51,16 @@ import {
   TopAppBarService,
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Technology } from '../../../../../shared/interfaces/technology';
+import {
+  ProjectTechnologiesComponent,
+} from '../project-technologies/project-technologies.component';
+import {
+  TechnologiesService,
+} from '../../../../../shared/services/technologies.service';
+import {
+  ProjectsService,
+} from '../../../../../shared/services/projects.service';
 
 @Component({
   selector: 'aj-add-project',
@@ -67,6 +82,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MatSelectModule,
     MatCheckboxModule,
     AdminEditorComponent,
+    ProjectTechnologiesComponent,
   ],
   providers: [SlugifyPipe],
 })
@@ -108,6 +124,7 @@ export class AddProjectComponent implements OnDestroy {
       true,
       { nonNullable: true, validators: Validators.required },
     ),
+    technologies: new FormArray<FormControl<Technology>>([]),
   });
   readonly projectStatuses = ProjectStatus;
   readonly projectVisibilities = ProjectVisibility;
@@ -115,17 +132,13 @@ export class AddProjectComponent implements OnDestroy {
   editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {
-      onUpdate: (stats:{characters: number, words: number}) => {
-        const storyCharacterCount = stats.characters;
-        const storyWordCount = stats.words;
-        /** todo: use these values */
-        this.logger.log(`content character count`, storyCharacterCount);
-        this.logger.log(`content word count`, storyWordCount);
-      },
+      onUpdate: (stats: ProjectStats) => this.projectStats.set(stats),
     },
   };
   user$ = this.auth.loadUser;
   private subscriptions = new Subscription();
+  technologiesSignal = toSignal(this.technologiesService.getTechnologies$);
+  projectStats = signal<ProjectStats>({ characters: 0, words: 0 });
 
   constructor(
     private router: Router,
@@ -133,7 +146,9 @@ export class AddProjectComponent implements OnDestroy {
     private db: FirestoreService,
     private slugify: SlugifyPipe,
     private logger: ConsoleLoggerService,
+    private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
+    private technologiesService: TechnologiesService,
   ) {
     this.subscriptions.add(
       this.loading$.subscribe((loading) => {
@@ -156,6 +171,9 @@ export class AddProjectComponent implements OnDestroy {
   }
   get slug() {
     return this.addForm.controls.slug;
+  }
+  get technologiesCtrl() {
+    return this.addForm.controls.technologies;
   }
   get tags() {
     return this.addForm.controls.tags;
@@ -227,6 +245,7 @@ export class AddProjectComponent implements OnDestroy {
         true,
         { nonNullable: true, validators: Validators.required },
       ),
+      technologies: new FormArray<FormControl<Technology>>([]),
     });
   }
 
@@ -243,6 +262,8 @@ export class AddProjectComponent implements OnDestroy {
       this.addForm.enable();
       return;
     }
+
+    const technologies = this.technologiesCtrl.value;
 
     const project: WriteProject = {
       name: this.name.value,
@@ -287,6 +308,40 @@ export class AddProjectComponent implements OnDestroy {
         }
       }
 
+      if (technologies.length) {
+        const projectRef = this.projectsService
+          .getProjectReference(project.slug);
+        const technologyRefs: DocumentReference<Technology>[] = [];
+
+        for (let i = 0; i < technologies.length; i++) {
+          const technology = technologies[i];
+          if (technology.id) {
+            const technologyRef =
+              this.db.doc<Technology>(`technologies/${technology.id}`);
+            technologyRefs.push(technologyRef);
+            const technologyUpdates: Partial<Technology> = {
+              projects: arrayUnion(projectRef),
+              updated: this.db.timestamp,
+            };
+            batch.update(technologyRef, technologyUpdates);
+          } else {
+            const technologyRef =
+              this.db.doc<Technology>(`technologies/${this.db.newDocumentID}`);
+            technologyRefs.push(technologyRef);
+            const technologyDocument: Technology = {
+              name: technology.name,
+              description: null,
+              projects: arrayUnion(projectRef),
+              logoImage: null,
+              created: this.db.timestamp,
+            };
+            batch.set(technologyRef, technologyDocument);
+          }
+        }
+        /* add project technology refs */
+        project.technologies = technologyRefs;
+      }
+
       /** shards for counts */
       /** Initialize each shard */
       for (let i = 0; i < project.shards; i++) {
@@ -297,7 +352,7 @@ export class AddProjectComponent implements OnDestroy {
       }
 
       const projectRef = this.db.doc(`projects/${project.slug}`);
-      await batch.set(projectRef, project);
+      batch.set(projectRef, project);
     })
       .then(() => this.resetForm())
       .then(() => this.logger.log(`Project created`))

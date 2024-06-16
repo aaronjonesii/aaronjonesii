@@ -1,5 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatus, ProjectVisibility } from '../interfaces/project';
+import { Technology } from '../interfaces/technology';
 
 export interface ProjectForm {
   name: FormControl<string>,
@@ -14,6 +15,7 @@ export interface ProjectForm {
   visibility: FormControl<ProjectVisibility>,
   featured: FormControl<boolean>,
   allowComments: FormControl<boolean>
+  technologies: FormArray<FormControl<Technology>>,
 }
 
 export const initialProjectForm = new FormGroup<ProjectForm>({
@@ -50,4 +52,5 @@ export const initialProjectForm = new FormGroup<ProjectForm>({
     true,
     { nonNullable: true, validators: Validators.required },
   ),
+  technologies: new FormArray<FormControl<Technology>>([]),
 });
