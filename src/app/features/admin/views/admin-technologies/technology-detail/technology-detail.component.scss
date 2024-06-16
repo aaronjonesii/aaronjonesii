@@ -7,9 +7,9 @@
 }
 
 section {
-  border: 1px solid;
-  border-radius: $app-border-radius;
-  padding: $app-padding;
+  //border: 1px solid;
+  //border-radius: $app-border-radius;
+  //padding: $app-padding;
 }
 
 .header {
@@ -26,4 +26,10 @@ section {
 }
 .header .content {
   flex: 1
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }

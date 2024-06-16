@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
 <section class="header">
   @if (technology()?.logoImage; as image) {
     <picture>
@@ -11,11 +12,25 @@
   </div>
 </section>
 
+<section class="actions">
+  <button mat-button type="button"
+          [routerLink]="[
+            navPath.adminEditTechnology(technology()?.id || ''),
+          ]">
+    <mat-icon fontIcon="edit" />
+    <span>Edit</span>
+  </button>
+
+  <button mat-button type="button" (click)="onAssignProjectsBtnClick()">
+    <mat-icon fontIcon="article" />
+    <span>Assign projects</span>
+  </button>
+</section>
+
 <section class="projects">
   <mat-nav-list>
-    <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
     @for (project of projects(); track project.id) {
-      <mat-list-item>
+      <mat-list-item [routerLink]="[navPath.projectDetail(project.id)]">
         @if (project.image) {
           <img matListItemAvatar width="25" height="25"
                [ngSrc]="project.image" [alt]="project.name" />
@@ -28,3 +43,4 @@
     }
   </mat-nav-list>
 </section>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

@@ -1,0 +1,34 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+<h1 mat-dialog-title class="title">{{title()}}</h1>
+
+<mat-dialog-content>
+  @if (description()) {
+    <p class="description">{{description()}}</p>
+  }
+
+  <mat-selection-list [multiple]="true">
+    @for (project of projects(); track project.id) {
+      <mat-list-option [selected]="selectedModel.isSelected(project)"
+                       (click)="selectedModel.toggle(project)">
+        <span matListItemTitle>{{project.name}}</span>
+        @if (project.description) {
+          <span matListItemLine>{{project.description}}</span>
+        }
+        @if (project.image) {
+          <img matListItemAvatar width="25" height="25"
+               [ngSrc]="project.image" [alt]="project.name" />
+        }
+      </mat-list-option>
+    }
+  </mat-selection-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button type="button" color="warn" mat-dialog-close>Cancel</button>
+
+  <button mat-flat-button type="button" color="primary"
+          [disabled]="selectedModel.isEmpty()" (click)="onSelectProjects()">
+    {{selectBtnText()}}
+  </button>
+</mat-dialog-actions>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

@@ -6,6 +6,8 @@ import {
   ProjectVisibility, ProjectWithID, ReadProject,
 } from '../interfaces/project';
 import {
+  arrayRemove,
+  arrayUnion, DocumentData,
   DocumentReference,
   increment,
   QueryConstraint,
@@ -25,6 +27,7 @@ import { User, UserWithID } from '../interfaces/user';
 import { ProjectsFilter } from '../enums/projects-filter';
 import { appInformation } from '../../information';
 import { navPath } from '../../app.routes';
+import { Technology } from '../interfaces/technology';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectsService {
@@ -173,8 +176,13 @@ export class ProjectsService {
     });
   }
 
-  getProjectReference<T = Project>(projectId: string) {
-    return this.db.doc<T>(`${this.collectionName}/${projectId}`);
+  getProjectReference<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(projectId: string) {
+    return this.db.doc<AppModelType, DbModelType>(
+      `${this.collectionName}/${projectId}`,
+    );
   }
 
   async addProjectComment(
@@ -272,10 +280,79 @@ export class ProjectsService {
   }
 
   getProjectsByTechnology$(id: string) {
+    const technologyRef = this.db.doc<Technology>(`technologies/${id}`);
     return this.db.colQuery$<ProjectWithID>(
       this.collectionName,
       { idField: 'id' },
-      where('technologies', 'in', id),
+      where('technologies', 'array-contains', technologyRef),
     );
+  }
+
+  get getAllProjects$() {
+    return this.db.col$<ProjectWithID>(this.collectionName, { idField: 'id' });
+  }
+
+  async addTechnologiesToProjects(
+    technologyIds: string[],
+    projectIds: string[],
+  ) {
+    return this.db.batch(async (batch) => {
+      const technologyRefs = technologyIds.map((id) => {
+        return this.db.doc<Technology>(`technologies/${id}`);
+      });
+      const projectRefs = projectIds.map((id) => {
+        return this.getProjectReference(id);
+      });
+
+      /** add project to technologies */
+      for (let i = 0; i < technologyRefs.length; i++) {
+        const technologyRef = technologyRefs[i];
+        const technologyUpdates: Partial<Technology> = {
+          projects: arrayUnion(...projectRefs),
+        };
+        batch.update(technologyRef, technologyUpdates);
+      }
+
+      /** add technology to projects */
+      for (let j = 0; j < projectRefs.length; j++) {
+        const projectRef = projectRefs[j];
+        const projectUpdates: Partial<Project> = {
+          technologies: arrayUnion(...technologyRefs),
+        };
+        batch.update(projectRef, projectUpdates);
+      }
+    });
+  }
+
+  async removeTechnologiesFromProjects(
+    technologyIds: string[],
+    projectIds: string[],
+  ) {
+    return this.db.batch(async (batch) => {
+      const technologyRefs = technologyIds.map((id) => {
+        return this.db.doc<Technology>(`technologies/${id}`);
+      });
+      const projectRefs = projectIds.map((id) => {
+        return this.getProjectReference(id);
+      });
+
+      /** remove project to technologies */
+      for (let i = 0; i < technologyRefs.length; i++) {
+        const technologyRef = technologyRefs[i];
+        const technologyUpdates: Partial<Technology> = {
+          projects: arrayRemove(...projectRefs),
+        };
+        batch.update(technologyRef, technologyUpdates);
+      }
+
+      /** remove technology to projects */
+      for (let j = 0; j < projectRefs.length; j++) {
+        const projectRef = projectRefs[j];
+        const projectUpdates: Partial<Project> = {
+          technologies: arrayRemove(...technologyRefs),
+        };
+        batch.update(projectRef, projectUpdates);
+      }
+    });
   }
 }

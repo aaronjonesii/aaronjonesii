@@ -3,11 +3,11 @@ import {
   Component,
   inject, OnInit,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
   TechnologiesService,
 } from '../../../../../shared/services/technologies.service';
-import { map, of, switchMap } from 'rxjs';
+import { first, map, of, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   TopAppBarService,
@@ -21,6 +21,15 @@ import {
 import {
   ProjectsService,
 } from '../../../../../shared/services/projects.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { navPath } from '../../../../../app.routes';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  SelectProjectsDialogCloseContract,
+  SelectProjectsDialogComponent, SelectProjectsDialogContract,
+// eslint-disable-next-line max-len
+} from '../../../../../shared/components/select-projects-dialog/select-projects-dialog.component';
 
 @Component({
   selector: 'aj-technology-detail',
@@ -35,6 +44,9 @@ import {
     MatListItemTitle,
     MatListItemLine,
     MatListItemAvatar,
+    MatIcon,
+    MatButton,
+    RouterLink,
   ],
 })
 export class TechnologyDetailComponent implements OnInit {
@@ -42,7 +54,9 @@ export class TechnologyDetailComponent implements OnInit {
   private technologyService = inject(TechnologiesService);
   private topAppBarService = inject(TopAppBarService);
   private projectsService = inject(ProjectsService);
+  private dialog = inject(MatDialog);
 
+  protected readonly navPath = navPath;
   protected readonly title = 'Technology Detail';
   private technologyId$ = this.route.paramMap.pipe(
     map((paramMap) => paramMap.get('technologyId')),
@@ -69,5 +83,35 @@ export class TechnologyDetailComponent implements OnInit {
       loading: false,
       showBackBtn: true,
     });
+  }
+
+  onAssignProjectsBtnClick() {
+    const contract: SelectProjectsDialogContract = {
+      title: 'Select projects',
+      // eslint-disable-next-line max-len
+      description: `Assigning technology, '${this.technology()?.name}', to selected projects`,
+    };
+    const dialogRef = this.dialog.open(
+      SelectProjectsDialogComponent,
+      {
+        id: 'select-projects-to-assign-technology',
+        data: contract,
+      },
+    );
+
+    dialogRef.afterClosed().pipe(first()).forEach(
+      async (contract: SelectProjectsDialogCloseContract) => {
+        const technologyId = this.technology()?.id;
+        if (!contract || !technologyId) return;
+
+        const projectIds = contract.selectedProjects.map((p) => p.id);
+
+        await this.projectsService.addTechnologiesToProjects(
+          [technologyId],
+          projectIds,
+        );
+        console.debug('selected projects', contract);
+      },
+    );
   }
 }

@@ -1,5 +1,7 @@
 import { firebaseTimestamp, TimeStamp } from './timestamp';
 import { FieldValue } from '@angular/fire/firestore/firebase';
+import { DocumentReference } from '@angular/fire/firestore';
+import { Technology } from './technology';
 
 export interface Project {
   id?: string,
@@ -21,6 +23,7 @@ export interface Project {
   shards: number,
   views?: number, // sharded distributed counter
   author: { name: string, image: string | null },
+  technologies?: DocumentReference<Technology>[] | FieldValue,
 }
 /* eslint-disable no-unused-vars */
 export enum ProjectStatus {
@@ -38,11 +41,13 @@ export enum ProjectVisibility {
 export interface WriteProject extends Project {
   created: FieldValue,
   updated: FieldValue | null,
+  technologies?: FieldValue,
 }
 
 export interface ReadProject extends Project {
   created: TimeStamp,
   updated: TimeStamp | null,
+  technologies?: DocumentReference<Technology>[],
 }
 
 export interface ProjectWithID extends ReadProject { id: string; }

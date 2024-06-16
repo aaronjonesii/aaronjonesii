@@ -3,6 +3,7 @@ import { FirestoreService } from './firestore.service';
 import { readUser, User, UserWithID } from '../interfaces/user';
 import { User as FirebaseUser } from '@angular/fire/auth';
 import { ConsoleLoggerService } from './console-logger.service';
+import { DocumentData } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -13,7 +14,7 @@ export class UsersService {
     private logger: ConsoleLoggerService,
   ) {}
 
-  getUserReference<T = User>(userId: string) {
+  getUserReference<T extends DocumentData = User>(userId: string) {
     return this.db.doc<T>(`${this.collectionName}/${userId}`);
   }
 

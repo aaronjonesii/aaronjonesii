@@ -66,7 +66,7 @@ export class EditTechnologyComponent implements OnInit {
 
   private technologyEffect = effect(() => {
     const technology = this.technology();
-    this.editTechnologyForm.updateForm(technology);
+    this.editTechnologyForm.updateForm(technology ? technology : null);
     this.cdRef.markForCheck();
   });
 
