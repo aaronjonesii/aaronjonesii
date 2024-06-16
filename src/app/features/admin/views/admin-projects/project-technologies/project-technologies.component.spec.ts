@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectTechnologiesComponent } from './project-technologies.component';
-import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('ProjectTechnologiesComponent', () => {
   let component: ProjectTechnologiesComponent;
