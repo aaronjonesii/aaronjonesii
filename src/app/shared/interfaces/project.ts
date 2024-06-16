@@ -51,3 +51,8 @@ export interface ReadProject extends Project {
 }
 
 export interface ProjectWithID extends ReadProject { id: string; }
+
+export interface ProjectStats {
+  characters: number,
+  words: number,
+}

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormArray, FormControl, FormGroup,
@@ -32,6 +32,7 @@ import {
 } from '../../../../../shared/components/loading/loading.component';
 import { SlugifyPipe } from '../../../../../shared/pipes/slugify.pipe';
 import {
+  ProjectStats,
   ProjectStatus, ProjectVisibility, ReadProject, WriteProject,
 } from '../../../../../shared/interfaces/project';
 import {
@@ -90,15 +91,10 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {
-      onUpdate: (stats:{characters: number, words: number}) => {
-        const storyCharacterCount = stats.characters;
-        const storyWordCount = stats.words;
-        /** todo: use these values */
-        this.logger.log(`content character count`, storyCharacterCount);
-        this.logger.log(`content word count`, storyWordCount);
-      },
+      onUpdate: (stats: ProjectStats) => this.projectStats.set(stats),
     },
   };
+  projectStats = signal<ProjectStats>({ characters: 0, words: 0 });
   private subscriptions = new Subscription();
   private user = toSignal(this.authService.loadUser);
 
