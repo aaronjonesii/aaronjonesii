@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectProjectsDialogComponent } from './select-projects-dialog.component';
+import {
+  SelectProjectsDialogComponent,
+} from './select-projects-dialog.component';
 
 xdescribe('SelectProjectsDialogComponent', () => {
   let component: SelectProjectsDialogComponent;

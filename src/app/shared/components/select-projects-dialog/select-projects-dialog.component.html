@@ -8,8 +8,8 @@
 
   <mat-selection-list [multiple]="true">
     @for (project of projects(); track project.id) {
-      <mat-list-option [selected]="selectedModel.isSelected(project)"
-                       (click)="selectedModel.toggle(project)">
+      <mat-list-option [selected]="selectedProjectIdsModel.isSelected(project.id)"
+                       (click)="selectedProjectIdsModel.toggle(project.id)">
         <span matListItemTitle>{{project.name}}</span>
         @if (project.description) {
           <span matListItemLine>{{project.description}}</span>
@@ -27,8 +27,8 @@
   <button mat-button type="button" color="warn" mat-dialog-close>Cancel</button>
 
   <button mat-flat-button type="button" color="primary"
-          [disabled]="selectedModel.isEmpty()" (click)="onSelectProjects()">
-    {{selectBtnText()}}
+          (click)="onSaveBtnClick()">
+    {{buttonText()}}
   </button>
 </mat-dialog-actions>
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->

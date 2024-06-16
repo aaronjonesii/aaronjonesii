@@ -3,7 +3,7 @@ import { FirestoreService } from './firestore.service';
 import {
   Project,
   ProjectStatus,
-  ProjectVisibility, ProjectWithID, ReadProject,
+  ProjectVisibility, ProjectWithID, ProjectWithTech, ReadProject, WriteProject,
 } from '../interfaces/project';
 import {
   arrayRemove,
@@ -13,7 +13,13 @@ import {
   QueryConstraint,
   where,
 } from '@angular/fire/firestore';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError, combineLatest, from,
+  map, mergeMap,
+  Observable,
+  of,
+  switchMap, toArray,
+} from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { ConsoleLoggerService } from './console-logger.service';
 import { Comment, CommentWithID, WriteComment } from '../interfaces/comment';
@@ -28,6 +34,7 @@ import { ProjectsFilter } from '../enums/projects-filter';
 import { appInformation } from '../../information';
 import { navPath } from '../../app.routes';
 import { Technology } from '../interfaces/technology';
+import { take } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectsService {
@@ -177,7 +184,7 @@ export class ProjectsService {
   }
 
   getProjectReference<
-    AppModelType extends DocumentData,
+    AppModelType extends DocumentData = Project,
     DbModelType extends AppModelType = AppModelType,
   >(projectId: string) {
     return this.db.doc<AppModelType, DbModelType>(
@@ -212,7 +219,7 @@ export class ProjectsService {
 
   getFilteredProjects$(
     filter: ProjectsFilter,
-  ): Observable<ProjectWithID[]> {
+  ): Observable<ProjectWithTech[]> {
     const queryConstraints: QueryConstraint[] = [
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
@@ -241,6 +248,11 @@ export class ProjectsService {
       { idField: 'id' },
       ...queryConstraints,
     )).pipe(
+      switchMap((projects) => {
+        const projectsWithTech = projects
+          .map((p) => this.projectWihTechnologies$(p));
+        return combineLatest(projectsWithTech);
+      }),
       /** sort by featured projects */
       map((projects) => projects.sort((a, b) => {
         return b.featured.toString().localeCompare(a.featured.toString());
@@ -292,67 +304,73 @@ export class ProjectsService {
     return this.db.col$<ProjectWithID>(this.collectionName, { idField: 'id' });
   }
 
-  async addTechnologiesToProjects(
-    technologyIds: string[],
-    projectIds: string[],
+  async updateTechnologyProjects(
+    technologyId: string,
+    newProjectIds: string[],
+    removedProjectIds: string[],
   ) {
     return this.db.batch(async (batch) => {
-      const technologyRefs = technologyIds.map((id) => {
-        return this.db.doc<Technology>(`technologies/${id}`);
-      });
-      const projectRefs = projectIds.map((id) => {
-        return this.getProjectReference(id);
-      });
+      const technologyRef =
+        this.db.doc<Technology>(`technologies/${technologyId}`);
 
-      /** add project to technologies */
-      for (let i = 0; i < technologyRefs.length; i++) {
-        const technologyRef = technologyRefs[i];
-        const technologyUpdates: Partial<Technology> = {
-          projects: arrayUnion(...projectRefs),
+      const newProjectRefs = newProjectIds
+        .map((id) => this.getProjectReference(id));
+      const removedProjectRefs = removedProjectIds
+        .map((id) => this.getProjectReference(id));
+
+      /** add projects to technology  */
+      const addProjectsTechnologyUpdates: Partial<Technology> = {
+        projects: arrayUnion(...newProjectRefs),
+      };
+      batch.update(technologyRef, addProjectsTechnologyUpdates);
+      /** add technology to projects */
+      for (let i = 0; i < newProjectRefs.length; i++) {
+        const projectRef = newProjectRefs[i];
+        const projectUpdates: Partial<WriteProject> = {
+          technologies: arrayUnion(technologyRef),
         };
-        batch.update(technologyRef, technologyUpdates);
+        batch.update(projectRef, projectUpdates);
       }
 
-      /** add technology to projects */
-      for (let j = 0; j < projectRefs.length; j++) {
-        const projectRef = projectRefs[j];
-        const projectUpdates: Partial<Project> = {
-          technologies: arrayUnion(...technologyRefs),
+      /** remove projects from technology  */
+      const removedProjectsTechnologyUpdates: Partial<Technology> = {
+        projects: arrayRemove(...removedProjectRefs),
+      };
+      batch.update(technologyRef, removedProjectsTechnologyUpdates);
+
+      /** remove technology from projects */
+      for (let i = 0; i < removedProjectRefs.length; i++) {
+        const projectRef = removedProjectRefs[i];
+        const projectUpdates: Partial<WriteProject> = {
+          technologies: arrayRemove(technologyRef),
         };
         batch.update(projectRef, projectUpdates);
       }
     });
   }
 
-  async removeTechnologiesFromProjects(
-    technologyIds: string[],
-    projectIds: string[],
-  ) {
-    return this.db.batch(async (batch) => {
-      const technologyRefs = technologyIds.map((id) => {
-        return this.db.doc<Technology>(`technologies/${id}`);
-      });
-      const projectRefs = projectIds.map((id) => {
-        return this.getProjectReference(id);
-      });
+  private projectWihTechnologies$(
+    project: ProjectWithID,
+  ): Observable<ProjectWithTech> {
+    return of(project).pipe(
+      switchMap((project) => {
+        const technologies = project?.technologies || [];
+        const technologies$ = from(technologies).pipe(
+          mergeMap((techRef) => this.db.doc$(techRef)),
+          take(technologies.length),
+          toArray(),
+          map((t) => t.filter((t) => !!t) as Technology[]),
+        );
 
-      /** remove project to technologies */
-      for (let i = 0; i < technologyRefs.length; i++) {
-        const technologyRef = technologyRefs[i];
-        const technologyUpdates: Partial<Technology> = {
-          projects: arrayRemove(...projectRefs),
-        };
-        batch.update(technologyRef, technologyUpdates);
-      }
-
-      /** remove technology to projects */
-      for (let j = 0; j < projectRefs.length; j++) {
-        const projectRef = projectRefs[j];
-        const projectUpdates: Partial<Project> = {
-          technologies: arrayRemove(...technologyRefs),
-        };
-        batch.update(projectRef, projectUpdates);
-      }
-    });
+        return combineLatest([of(project), technologies$]).pipe(
+          map(([project, technologies]) => {
+            return {
+              ...project,
+              technologies,
+            } as ProjectWithTech;
+          }),
+        );
+      }),
+    );
   }
 }

@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   OnInit,
   signal,
@@ -17,7 +16,6 @@ import {
 import { ProjectsService } from '../../services/projects.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ProjectWithID } from '../../interfaces/project';
 import { MatButton } from '@angular/material/button';
 import {
   MatListItemAvatar,
@@ -30,10 +28,12 @@ import { NgOptimizedImage } from '@angular/common';
 
 export interface SelectProjectsDialogContract {
   title?: string,
+  buttonText?: string,
   description?: string,
+  initialSelectedProjectIds?: string[],
 }
 export interface SelectProjectsDialogCloseContract {
-  selectedProjects: ProjectWithID[],
+  selectedProjectIds: string[],
 }
 
 @Component({
@@ -63,35 +63,28 @@ export class SelectProjectsDialogComponent implements OnInit {
 
   protected readonly title = signal('Select Projects');
   description = signal<string | null>(null);
+  buttonText = signal('Save');
 
   projects = toSignal(this.projectsService.getAllProjects$);
 
-  selectedModel = new SelectionModel<ProjectWithID>(true, []);
-  selectedChangeSignal = toSignal(this.selectedModel.changed);
-
-  selectBtnText = computed(() => {
-    const selectedProjects = this.selectedChangeSignal()?.source.selected;
-    const defaultText = 'Select Project';
-    const isSingular = selectedProjects?.length === 1;
-    if (!selectedProjects || !selectedProjects.length || isSingular) {
-      return defaultText;
-    }
-
-    // eslint-disable-next-line max-len
-    return `Select ${selectedProjects.length} ${isSingular ? 'Project' : 'Projects'}`;
-  });
+  selectedProjectIdsModel = new SelectionModel<string>(true, []);
 
   ngOnInit() {
-    const { title, description } = this.contract;
+    const {
+      title, description,
+      initialSelectedProjectIds, buttonText,
+    } = this.contract;
     if (title) this.title.set(title);
     if (description) this.description.set(description);
+    if (buttonText) this.buttonText.set(buttonText);
+    if (initialSelectedProjectIds?.length) {
+      this.selectedProjectIdsModel.setSelection(...initialSelectedProjectIds);
+    }
   }
 
-  onSelectProjects() {
-    if (this.selectedModel.isEmpty()) return;
-
+  onSaveBtnClick() {
     const contract: SelectProjectsDialogCloseContract = {
-      selectedProjects: this.selectedModel.selected,
+      selectedProjectIds: this.selectedProjectIdsModel.selected,
     };
     this.dialogRef.close(contract);
   }

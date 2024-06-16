@@ -6,7 +6,11 @@ import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { navPath } from '../../../app.routes';
-import { ProjectWithID } from '../../interfaces/project';
+import {
+  ProjectWithTech,
+} from '../../interfaces/project';
+import { NgOptimizedImage } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'aj-project-card',
@@ -23,10 +27,12 @@ import { ProjectWithID } from '../../interfaces/project';
     MatDivider,
     MatIcon,
     RouterLink,
+    NgOptimizedImage,
+    MatTooltip,
   ],
 })
 export class ProjectCardComponent {
   protected readonly navPath = navPath;
 
-  project = input<ProjectWithID>();
+  project = input<ProjectWithTech>();
 }

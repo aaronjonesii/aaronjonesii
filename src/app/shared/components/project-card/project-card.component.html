@@ -5,7 +5,23 @@
        [routerLink]="[navPath.projectDetail(project()?.id || '')]">
       {{project()?.name}}
     </a>
+
     <p class="mat-body-1 m-0">{{project()?.description}}</p>
+
+    @if (project()?.technologies?.length) {
+      <div class="technologies">
+        @for (technology of project()?.technologies; track technology.id) {
+         @if (technology.logoImage) {
+           <picture class="technology" matTooltipShowDelay="100"
+                    [matTooltip]="'Built using '+technology.name">
+             <img width="25" height="25"
+                  [ngSrc]="technology.logoImage" [alt]="technology.name" />
+           </picture>
+         }
+        }
+      </div>
+    }
+
     @if (project()?.tags?.length) {
       <mat-chip-set role="list">
         @for (tag of project()?.tags; track tag) {

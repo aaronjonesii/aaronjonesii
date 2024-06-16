@@ -30,6 +30,9 @@ import {
   SelectProjectsDialogComponent, SelectProjectsDialogContract,
 // eslint-disable-next-line max-len
 } from '../../../../../shared/components/select-projects-dialog/select-projects-dialog.component';
+import {
+  ConsoleLoggerService,
+} from '../../../../../shared/services/console-logger.service';
 
 @Component({
   selector: 'aj-technology-detail',
@@ -55,6 +58,7 @@ export class TechnologyDetailComponent implements OnInit {
   private topAppBarService = inject(TopAppBarService);
   private projectsService = inject(ProjectsService);
   private dialog = inject(MatDialog);
+  private logger = inject(ConsoleLoggerService);
 
   protected readonly navPath = navPath;
   protected readonly title = 'Technology Detail';
@@ -86,10 +90,12 @@ export class TechnologyDetailComponent implements OnInit {
   }
 
   onAssignProjectsBtnClick() {
+    const initialSelectedProjectIds = (this.projects() || []).map((p) => p.id);
     const contract: SelectProjectsDialogContract = {
       title: 'Select projects',
       // eslint-disable-next-line max-len
       description: `Assigning technology, '${this.technology()?.name}', to selected projects`,
+      initialSelectedProjectIds,
     };
     const dialogRef = this.dialog.open(
       SelectProjectsDialogComponent,
@@ -100,17 +106,31 @@ export class TechnologyDetailComponent implements OnInit {
     );
 
     dialogRef.afterClosed().pipe(first()).forEach(
-      async (contract: SelectProjectsDialogCloseContract) => {
+      async (closeContract: SelectProjectsDialogCloseContract) => {
         const technologyId = this.technology()?.id;
-        if (!contract || !technologyId) return;
+        if (!closeContract || !technologyId) return;
 
-        const projectIds = contract.selectedProjects.map((p) => p.id);
+        const initialSelected = initialSelectedProjectIds;
+        const selected = closeContract.selectedProjectIds;
 
-        await this.projectsService.addTechnologiesToProjects(
-          [technologyId],
-          projectIds,
+        const newItems = selected.filter(
+          (id) => !initialSelected.includes(id),
         );
-        console.debug('selected projects', contract);
+
+        const removedItems = initialSelected.filter(
+          (id) => !selected.includes(id),
+        );
+
+        await this.projectsService.updateTechnologyProjects(
+          technologyId,
+          newItems,
+          removedItems,
+        ).then(() => {
+          this.logger.log('Successfully updated technology projects');
+        })
+          .catch((error: unknown) => {
+            this.logger.error('Error updating technology projects', error);
+          });
       },
     );
   }

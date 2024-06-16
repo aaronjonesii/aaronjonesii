@@ -15,7 +15,10 @@ import { RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ProjectWithID, ReadProject } from '../../shared/interfaces/project';
+import {
+  ProjectWithTech,
+  ReadProject,
+} from '../../shared/interfaces/project';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
@@ -66,7 +69,7 @@ export class ProjectsComponent implements OnDestroy {
   private filterSubject =
     new BehaviorSubject<ProjectsFilter>(ProjectsFilter.ACTIVE);
   filter$ = this.filterSubject.asObservable();
-  private projectsSignal = signal<ProjectWithID[]>([]);
+  private projectsSignal = signal<ProjectWithTech[]>([]);
   projects = this.projectsSignal.asReadonly();
   private subscriptions = new Subscription();
   private loadedSignal = signal(false);

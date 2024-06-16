@@ -23,7 +23,7 @@ export interface Project {
   shards: number,
   views?: number, // sharded distributed counter
   author: { name: string, image: string | null },
-  technologies?: DocumentReference<Technology>[] | FieldValue,
+  technologies?: (Technology | DocumentReference<Technology>)[] | FieldValue,
 }
 /* eslint-disable no-unused-vars */
 export enum ProjectStatus {
@@ -47,10 +47,17 @@ export interface WriteProject extends Project {
 export interface ReadProject extends Project {
   created: TimeStamp,
   updated: TimeStamp | null,
-  technologies?: DocumentReference<Technology>[],
+  technologies?: DocumentReference<Technology, Technology>[],
 }
 
 export interface ProjectWithID extends ReadProject { id: string; }
+
+export interface ProjectWithTech extends Project {
+  id: string,
+  created: TimeStamp,
+  updated: TimeStamp | null,
+  technologies: Technology[],
+}
 
 export interface ProjectStats {
   characters: number,
