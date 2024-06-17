@@ -5,13 +5,15 @@
        [routerLink]="[navPath.projectDetail(project()?.id || '')]">
       {{project()?.name}}
     </a>
+
     <p class="mat-body-1 m-0">{{project()?.description}}</p>
+
+    @if (project()?.technologies?.length) {
+      <aj-project-technologies [technologies]="project()?.technologies || []" />
+    }
+
     @if (project()?.tags?.length) {
-      <mat-chip-set role="list">
-        @for (tag of project()?.tags; track tag) {
-          <mat-chip role="listitem">{{tag}}</mat-chip>
-        }
-      </mat-chip-set>
+      <aj-project-tags [tags]="project()?.tags || []" />
     }
 
     <mat-divider />
@@ -30,7 +32,8 @@
         </button>
       }
 
-      <button mat-flat-button type="button" color="primary">
+      <button mat-flat-button type="button" color="primary"
+              (click)="shareProject.emit(project())">
         <mat-icon class="material-icons-outlined" fontIcon="share" /> Share
       </button>
     </mat-card-actions>

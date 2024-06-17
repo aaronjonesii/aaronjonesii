@@ -1,0 +1,25 @@
+<h1 class="mat-headline-3">{{title}}</h1>
+
+<button mat-button type="button" [routerLink]="navPath.adminCreateTechnology">
+  <mat-icon fontIcon="add" />
+  <span>Create Technology</span>
+</button>
+
+<section class="technologies">
+  <!-- eslint-disable @angular-eslint/template/no-call-expression -->
+  @for (technology of technologies(); track technology.id) {
+    <div class="technology" [routerLink]="[navPath.adminDetailTechnology(technology.id || '')]">
+      @if (technology.logoImage) {
+        <picture>
+          <img width="25" height="25"
+               [ngSrc]="technology.logoImage" [alt]="technology.name" />
+        </picture>
+      }
+
+      <span class="name">{{technology.name}}</span>
+    </div>
+  } @empty {
+    No technologies yet.
+  }
+  <!-- eslint-enable @angular-eslint/template/no-call-expression -->
+</section>

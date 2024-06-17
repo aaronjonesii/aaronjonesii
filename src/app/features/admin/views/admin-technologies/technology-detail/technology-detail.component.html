@@ -1,0 +1,46 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+<section class="header">
+  @if (technology()?.logoImage; as image) {
+    <picture>
+      <img fill [ngSrc]="image" [alt]="technology()?.name" />
+    </picture>
+  }
+
+  <div class="content">
+    <h3 class="name">{{technology()?.name}}</h3>
+    <p class="description">{{technology()?.description}}</p>
+  </div>
+</section>
+
+<section class="actions">
+  <button mat-button type="button"
+          [routerLink]="[
+            navPath.adminEditTechnology(technology()?.id || ''),
+          ]">
+    <mat-icon fontIcon="edit" />
+    <span>Edit</span>
+  </button>
+
+  <button mat-button type="button" (click)="onAssignProjectsBtnClick()">
+    <mat-icon fontIcon="article" />
+    <span>Assign projects</span>
+  </button>
+</section>
+
+<section class="projects">
+  <mat-nav-list>
+    @for (project of projects(); track project.id) {
+      <mat-list-item [routerLink]="[navPath.projectDetail(project.id)]">
+        @if (project.image) {
+          <img matListItemAvatar width="25" height="25"
+               [ngSrc]="project.image" [alt]="project.name" />
+        }
+        <span matListItemTitle>{{project.name}}</span>
+        <span matListItemLine>{{project.description}}</span>
+      </mat-list-item>
+    } @empty {
+      No projects use this technology yet.
+    }
+  </mat-nav-list>
+</section>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

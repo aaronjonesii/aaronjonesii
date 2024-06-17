@@ -1,0 +1,27 @@
+import { Route } from '@angular/router';
+
+export default [
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () => import('./admin-technologies.component')
+      .then((m) => m.AdminTechnologiesComponent),
+  },
+  {
+    path: 'create',
+    // eslint-disable-next-line max-len
+    loadComponent: () => import('./create-technology/create-technology.component')
+      .then((m) => m.CreateTechnologyComponent),
+  },
+  {
+    path: ':technologyId',
+    // eslint-disable-next-line max-len
+    loadComponent: () => import('./technology-detail/technology-detail.component')
+      .then((m) => m.TechnologyDetailComponent),
+  },
+  {
+    path: ':technologyId/edit',
+    loadComponent: () => import('./edit-technology/edit-technology.component')
+      .then((m) => m.EditTechnologyComponent),
+  },
+] satisfies Route[];

@@ -62,14 +62,21 @@
             <p class="mat-body-2">{{project()?.description}}</p>
           </div>
 
+          @if (project()?.technologies?.length) {
+            <div class="technologies">
+              @if (showMore()) {
+                <small>Built using</small>
+              }
+
+              <aj-project-technologies [technologies]="project()?.technologies || []" />
+            </div>
+          }
+
           @if (showMore()) {
             <div class="tags">
               <small>Tags</small>
-              <mat-chip-listbox [selectable]="false" [multiple]="false">
-                @for (tag of project()?.tags; track tag) {
-                  <mat-chip-option>{{tag}}</mat-chip-option>
-                }
-              </mat-chip-listbox>
+
+              <aj-project-tags [tags]="project()?.tags || []" />
             </div>
 
             <div class="links">

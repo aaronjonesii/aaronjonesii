@@ -21,6 +21,10 @@ export default [
         loadChildren: () => import('./views/admin-projects/routes'),
       },
       {
+        path: 'technologies',
+        loadChildren: () => import('./views/admin-technologies/routes'),
+      },
+      {
         path: 'users',
         loadChildren: () => import('./views/admin-users/routes'),
       },

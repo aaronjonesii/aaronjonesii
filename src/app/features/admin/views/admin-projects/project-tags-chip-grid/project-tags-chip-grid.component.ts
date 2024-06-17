@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, PERIOD, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import {
   MatAutocompleteModule,
@@ -22,9 +22,9 @@ import { Tag } from '../../../../../shared/interfaces/tag';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'aj-project-tags',
-  templateUrl: './project-tags.component.html',
-  styleUrl: './project-tags.component.scss',
+  selector: 'aj-project-tags-chip-grid',
+  templateUrl: './project-tags-chip-grid.component.html',
+  styleUrl: './project-tags-chip-grid.component.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -37,13 +37,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
     AsyncPipe,
   ],
 })
-export class ProjectTagsComponent {
+export class ProjectTagsChipGridComponent {
   @Input() selectedTagsFormArray = new FormArray<FormControl<string>>([]);
   allTags = input<Tag[] | null | undefined>(null);
   tags = computed(() => {
     return this.allTags()?.map((t) => t.slug) || [];
   });
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE, PERIOD];
   tagCtrl = new FormControl('');
   @ViewChild('tagInput') tagInput?: ElementRef<HTMLInputElement>;
   inputValue = toSignal(this.tagCtrl.valueChanges);

@@ -8,7 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import { ProjectWithID } from '../../../../shared/interfaces/project';
+import {
+  ProjectWithTech,
+} from '../../../../shared/interfaces/project';
 import {
   FirestoreService,
 } from '../../../../shared/services/firestore.service';
@@ -22,6 +24,9 @@ import {
 } from '../../../../shared/services/console-logger.service';
 import { first } from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
+import {
+  ProjectGridItemComponent,
+} from './project-grid-item/project-grid-item.component';
 
 @Component({
   selector: 'aj-admin-projects-grid',
@@ -37,12 +42,13 @@ import { FirebaseError } from '@angular/fire/app/firebase';
     MatMenuModule,
     RouterLink,
     NgOptimizedImage,
+    ProjectGridItemComponent,
   ],
 })
 export class AdminProjectsGridComponent {
-  @Input() projects: ProjectWithID[] = [];
+  @Input() projects: ProjectWithTech[] = [];
   readonly nav_path = navPath;
-  selectionModel = new SelectionModel<ProjectWithID>(true, []);
+  selectionModel = new SelectionModel<ProjectWithTech>(true, []);
   loading = false;
 
   constructor(

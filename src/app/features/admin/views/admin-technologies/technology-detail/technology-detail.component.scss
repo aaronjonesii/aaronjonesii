@@ -1,0 +1,35 @@
+@import "../../../../../../assets/scss/partials/extras";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: $app-gap;
+}
+
+section {
+  //border: 1px solid;
+  //border-radius: $app-border-radius;
+  //padding: $app-padding;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $app-gap;
+}
+.header picture {
+  $image-size: 50px;
+  min-width: $image-size;
+  width: $image-size;
+  height: $image-size;
+  img { object-fit: contain; }
+}
+.header .content {
+  flex: 1
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

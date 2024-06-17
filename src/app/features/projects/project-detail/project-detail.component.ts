@@ -28,7 +28,7 @@ import {
   LoadingComponent,
 } from '../../../shared/components/loading/loading.component';
 import {
-  ProjectStatus, ProjectWithID,
+  ProjectStatus, ProjectWithID, ProjectWithTech,
 } from '../../../shared/interfaces/project';
 import {
   TopAppBarService,
@@ -46,11 +46,14 @@ import {
 import { ProjectsService } from '../../../shared/services/projects.service';
 import { UsersService } from '../../../shared/services/users.service';
 import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
-import { MatChipsModule } from '@angular/material/chips';
 import { DateAgoPipe } from '../../../shared/pipes/date-ago.pipe';
 import {
   ConsoleLoggerService,
 } from '../../../shared/services/console-logger.service';
+// eslint-disable-next-line max-len
+import { ProjectTechnologiesComponent } from '../../../shared/components/project-technologies/project-technologies.component';
+// eslint-disable-next-line max-len
+import { ProjectTagsComponent } from '../../../shared/components/project-tags/project-tags.component';
 
 @Component({
   selector: 'aj-project-detail',
@@ -69,7 +72,6 @@ import {
     RouterLink,
     MatTabsModule,
     MatIconModule,
-    MatChipsModule,
     MatButtonModule,
     LoadingComponent,
     NgOptimizedImage,
@@ -78,10 +80,12 @@ import {
     SkeletonComponent,
     UserPhotoComponent,
     ProjectDetailCommentComponent,
+    ProjectTechnologiesComponent,
+    ProjectTagsComponent,
   ],
 })
 export class ProjectDetailComponent implements OnInit, OnDestroy {
-  private projectSignal = signal<ProjectWithID | null>(null);
+  private projectSignal = signal<ProjectWithTech | null>(null);
   project = this.projectSignal.asReadonly();
   private userSignal = signal<UserWithID | null>(null);
   user = this.userSignal.asReadonly();
@@ -178,6 +182,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
       switchMap((projectId) => {
         return this.projectsService.getProjectById$(projectId);
       }),
+      filter((project) => !!project),
+      switchMap((project) => {
+        return this.projectsService
+          .projectWihTechnologies$(<ProjectWithID>project);
+      }),
     );
 
     this.subscriptions.add(
@@ -249,8 +258,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   }
 
   async onShareBtnClick() {
-    if (!this.project()) return;
+    const project = this.project();
+    if (!project) return;
 
-    return this.projectsService.shareProject(<ProjectWithID> this.project());
+    return this.projectsService.shareProject(project);
   }
 }

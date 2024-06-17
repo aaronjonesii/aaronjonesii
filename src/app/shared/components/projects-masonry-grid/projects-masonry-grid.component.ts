@@ -4,9 +4,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
-  input,
+  input, output,
 } from '@angular/core';
-import { ProjectWithID } from '../../interfaces/project';
+import {
+  ProjectWithTech,
+} from '../../interfaces/project';
 import { DOCUMENT } from '@angular/common';
 import { navPath } from '../../../app.routes';
 import { ProjectCardComponent } from '../project-card/project-card.component';
@@ -24,7 +26,9 @@ import { SSRSafeService } from '../../services/ssr-safe.service';
 export class ProjectsMasonryGridComponent implements AfterViewChecked, AfterViewInit {
   protected readonly navPath = navPath;
 
-  projects = input<ProjectWithID[]>();
+  projects = input<ProjectWithTech[]>();
+
+  shareProject = output<ProjectWithTech | undefined>();
 
   constructor(
     @Inject(DOCUMENT) private document: Document,

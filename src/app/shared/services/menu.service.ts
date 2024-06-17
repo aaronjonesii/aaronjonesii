@@ -36,8 +36,16 @@ export class MenuService {
       name: 'Projects',
       icon: 'work_history',
       description: 'Create and manage the projects displayed here.',
-      routerLink: ['/admin/projects'],
+      routerLink: [navPath.adminProjects],
       tooltip: 'Projects',
+    },
+    {
+      id: 'technologies',
+      name: 'Technologies',
+      icon: 'code',
+      description: 'Technologies used in projects',
+      routerLink: [navPath.adminTechnologies],
+      tooltip: 'Technologies',
     },
     {
       id: 'users',

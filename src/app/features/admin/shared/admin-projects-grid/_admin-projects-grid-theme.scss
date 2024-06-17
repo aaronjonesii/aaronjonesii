@@ -1,6 +1,16 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
+@use './project-grid-item/project-grid-item-theme' as projectGridItem;
+
+@mixin componentColorMixins($theme) {
+  @include projectGridItem.color($theme);
+}
+
+@mixin componentTypographyMixins($theme) {
+  @include projectGridItem.typography($theme);
+}
+
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
   $primary-palette: mat.get-color-from-palette($color-config, 'primary');
@@ -11,24 +21,19 @@
   $grey-palette: mat.$gray-palette;
 
   aj-admin-projects-grid {
-    section.header .select-container, section.projects figure.project {
-      border-color: mat.get-color-from-palette($grey-palette, 300);
-    }
-    section.projects figure.project .unpublished {
-      color: mat.get-color-from-palette($accent-palette);
-    }
-    section.projects figure.project .actions {
-      border-top-color: inherit;
-    }
-    section.projects figure.project.selected {
+    section.projects .project.selected {
       border-color: mat.get-color-from-palette($primary-palette, 100);
       background-color: mat.get-color-from-palette($primary-palette, 50);
     }
   }
+
+  @include componentColorMixins($theme);
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
+
+  @include componentTypographyMixins($theme);
 }
 
 @mixin theme($theme) {

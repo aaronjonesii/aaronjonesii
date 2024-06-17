@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
 import { SeoService } from '../../shared/services/seo.service';
 import { navPath } from '../../app.routes';
+import {
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'aj-book-appointment',
@@ -11,9 +14,14 @@ import { navPath } from '../../app.routes';
   styleUrl: './book-appointment.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  imports: [
+    SkeletonComponent,
+  ],
 })
 export class BookAppointmentComponent {
   private readonly title = 'Book Appointment';
+
+  loading = signal(true);
 
   constructor(
     private seoService: SeoService,
@@ -29,5 +37,9 @@ export class BookAppointmentComponent {
       title: this.title,
       route: navPath.bookAppointment,
     });
+  }
+
+  onLoad(event: Event) {
+    console.debug('load event', event);
   }
 }

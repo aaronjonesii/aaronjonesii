@@ -1,13 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormArray, FormControl, FormGroup,
   ReactiveFormsModule, Validators,
 } from '@angular/forms';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import {
-  BehaviorSubject,
+  arrayRemove,
+  arrayUnion,
+  DocumentReference,
+} from '@angular/fire/firestore';
+import {
+  BehaviorSubject, lastValueFrom,
   Subscription,
 } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +21,6 @@ import {
 } from '../project-image/project-image.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ProjectTagsComponent } from '../project-tags/project-tags.component';
 import { MatSelectModule } from '@angular/material/select';
 import { AsyncPipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -32,7 +35,14 @@ import {
 } from '../../../../../shared/components/loading/loading.component';
 import { SlugifyPipe } from '../../../../../shared/pipes/slugify.pipe';
 import {
-  ProjectStatus, ProjectVisibility, ReadProject, WriteProject,
+  Project,
+  ProjectStats,
+  ProjectStatus,
+  ProjectVisibility,
+  ProjectWithID,
+  ProjectWithTech,
+  ReadProject,
+  WriteProject,
 } from '../../../../../shared/interfaces/project';
 import {
   initialProjectForm, ProjectForm,
@@ -51,6 +61,19 @@ import {
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+// eslint-disable-next-line max-len
+import { ProjectTechnologiesChipGridComponent } from '../project-technologies-chip-grid/project-technologies-chip-grid.component';
+import {
+  TechnologiesService,
+} from '../../../../../shared/services/technologies.service';
+import { Technology } from '../../../../../shared/interfaces/technology';
+import {
+  ProjectsService,
+} from '../../../../../shared/services/projects.service';
+import { tap } from 'rxjs/operators';
+import {
+  ProjectTagsChipGridComponent,
+} from '../project-tags-chip-grid/project-tags-chip-grid.component';
 
 @Component({
   selector: 'aj-edit-project',
@@ -66,21 +89,22 @@ import { toSignal } from '@angular/core/rxjs-interop';
     ProjectImageComponent,
     MatFormFieldModule,
     MatInputModule,
-    ProjectTagsComponent,
+    ProjectTagsChipGridComponent,
     MatSelectModule,
     KeyValuePipe,
     TitleCasePipe,
     MatCheckboxModule,
     AdminEditorComponent,
     AsyncPipe,
+    ProjectTechnologiesChipGridComponent,
   ],
   providers: [SlugifyPipe],
 })
 export class EditProjectComponent implements OnInit, OnDestroy {
   readonly title = 'Edit project';
   private readonly projectID: string | null = null;
-  private project?: ReadProject;
-  private projectSnapshot?: ReadProject;
+  private project?: ProjectWithTech;
+  private projectSnapshot?: ProjectWithTech;
   editForm = initialProjectForm;
   readonly projectStatuses = ProjectStatus;
   readonly projectVisibilities = ProjectVisibility;
@@ -90,17 +114,17 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   editorConfig = {
     placeholder: 'Write content here...',
     wordCount: {
-      onUpdate: (stats:{characters: number, words: number}) => {
-        const storyCharacterCount = stats.characters;
-        const storyWordCount = stats.words;
-        /** todo: use these values */
-        this.logger.log(`content character count`, storyCharacterCount);
-        this.logger.log(`content word count`, storyWordCount);
-      },
+      onUpdate: (stats: ProjectStats) => this.projectStats.set(stats),
     },
   };
+  projectStats = signal<ProjectStats>({ characters: 0, words: 0 });
   private subscriptions = new Subscription();
   private user = toSignal(this.authService.loadUser);
+  technologiesSignal = toSignal(
+    this.technologiesService.getTechnologies$.pipe(
+      tap((t) => console.debug(t)),
+    ),
+  );
 
   constructor(
     private router: Router,
@@ -110,7 +134,9 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     private tagsService: TagsService,
     private authService: AuthService,
     private logger: ConsoleLoggerService,
+    private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
+    private technologiesService: TechnologiesService,
   ) {
     this.subscriptions.add(
       this.loading$.subscribe((loading) => {
@@ -125,17 +151,24 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     this.projectID = this.route.snapshot.paramMap.get('projectID');
   }
   ngOnInit() {
-    this.db.docSnap(`projects/${this.projectID}`)
-      .then((docSnapshot) => {
+    this.db.docSnap<Project>(`projects/${this.projectID}`)
+      .then(async (docSnapshot) => {
         if (!docSnapshot.exists()) {
           this.router.navigate([navPath.adminProjects]);
           this.logger.error(
             `Something went wrong loading project`, this.projectID,
           );
         } else {
-          const project = docSnapshot.data() as ReadProject;
-          this.projectSnapshot = project;
-          this.project = project;
+          const project = docSnapshot.data();
+          const projectWithId = {
+            ...project,
+            id: this.projectID || '',
+          } as ReadProject as ProjectWithID;
+          const projectWithTech$ = this.projectsService
+            .projectWihTechnologies$(projectWithId);
+          const projectWithTech = await lastValueFrom(projectWithTech$);
+          this.projectSnapshot = projectWithTech;
+          this.project = projectWithTech;
           this.setForm(this.project);
           this.loadingSubject.next(false);
         }
@@ -156,6 +189,9 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   }
   get slug() {
     return this.editForm.controls.slug;
+  }
+  get technologiesCtrl() {
+    return this.editForm.controls.technologies;
   }
   get tags() {
     return this.editForm.controls.tags;
@@ -182,7 +218,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     return this.editForm.controls.visibility;
   }
 
-  private setForm(project: ReadProject) {
+  private setForm(project: ProjectWithTech) {
     this.editForm = new FormGroup<ProjectForm>({
       name: new FormControl<string>(
         project.name,
@@ -220,6 +256,10 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         project.allowComments,
         { nonNullable: true, validators: Validators.required },
       ),
+      technologies: new FormArray<FormControl<Technology>>(
+        <FormControl<Technology>[]>project.technologies
+          .map((t) => new FormControl(t))
+      ),
     });
   }
 
@@ -251,6 +291,10 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         return;
       }
     }
+
+    const technologies = this.technologiesCtrl.value.filter((t) => !!t.id);
+    const technologiesToBeCreated = this.technologiesCtrl.value
+      .filter((t) => !t.id);
 
     const project: Partial<WriteProject> = {
       name: this.name.value,
@@ -307,6 +351,75 @@ export class EditProjectComponent implements OnInit, OnDestroy {
             batch.set(this.db.doc(`tags/${addTag}`), newTag);
           }
         }
+      }
+
+      /** check technologies for changes */
+      const previousTechnologies = this.projectSnapshot?.technologies || [];
+      const newTechnologies = technologies;
+      const sameTechnologies =
+        previousTechnologies.length === newTechnologies.length &&
+        previousTechnologies.every((t, i) => {
+          return t.id === newTechnologies[i].id;
+        });
+      if (!sameTechnologies || technologiesToBeCreated.length) {
+        const removedTechnologies = previousTechnologies.filter((p) => {
+          return !newTechnologies.some((n) => p.id === n.id);
+        });
+        const addedTechnologies = newTechnologies.filter((n) => {
+          return !previousTechnologies.some((p) => n.id === p.id);
+        });
+        const projectRef =
+          this.projectsService.getProjectReference(<string>project.slug);
+
+        /* add project to technologies */
+        for (let i = 0; i < addedTechnologies.length; i++) {
+          const technology = addedTechnologies[i];
+          const technologyRef =
+            this.db.doc<Technology>(`technologies/${technology.id}`);
+          const technologyUpdates: Partial<Technology> = {
+            projects: arrayUnion(projectRef),
+            updated: this.db.timestamp,
+          };
+          batch.update(technologyRef, technologyUpdates);
+        }
+
+        /* remove project from technologies */
+        for (let i = 0; i < removedTechnologies.length; i++) {
+          const technology = removedTechnologies[i];
+          const technologyRef =
+            this.db.doc<Technology>(`technologies/${technology.id}`);
+          const technologyUpdates: Partial<Technology> = {
+            projects: arrayRemove(projectRef),
+            updated: this.db.timestamp,
+          };
+          batch.update(technologyRef, technologyUpdates);
+        }
+
+        /* create technologies that does not exist yet */
+        const createdTechnologyRefs:
+          DocumentReference<Technology, Technology>[] = [];
+        for (let i = 0; i < technologiesToBeCreated.length; i++) {
+          const technology = technologiesToBeCreated[i];
+          const technologyRef =
+            this.db.doc<Technology>(`technologies/${this.db.newDocumentID}`);
+          createdTechnologyRefs.push(technologyRef);
+          const newTechnologyDocument: Technology = {
+            name: technology.name,
+            description: null,
+            logoImage: null,
+            projects: arrayUnion(projectRef),
+            created: this.db.timestamp,
+          };
+          batch.set(technologyRef, newTechnologyDocument);
+        }
+
+        /* update project technology refs */
+        project.technologies = technologies
+          .map((t) => this.db.doc<Technology>(`technologies/${t.id}`))
+          .concat(createdTechnologyRefs);
+      } else {
+        project.technologies = (this.projectSnapshot?.technologies || [])
+          .map((t) => this.db.doc<Technology>(`technologies/${t.id}`));
       }
 
       /** save project changes */

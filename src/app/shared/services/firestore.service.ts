@@ -18,7 +18,10 @@ import { Injectable } from '@angular/core';
 
 type CollectionPredicate<T> = string | CollectionReference<T>;
 type CollectionGroupPredicate<T> = string | Query<T>;
-type DocumentPredicate<T> = string | DocumentReference<T>;
+type DocumentPredicate<
+  AppModelType extends DocumentData,
+  DbModelType extends DocumentData = AppModelType,
+> = string | DocumentReference<AppModelType, DbModelType>;
 
 type Col$Options<T, U> = {
   idField?: ((U | keyof T) & keyof NonNullable<T>);
@@ -73,10 +76,15 @@ export class FirestoreService {
    * @return {DocumentReference} A DocumentReference for the provided path
    * or reference.
    */
-  doc<T>(ref: DocumentPredicate<T>): DocumentReference<T> {
+  doc<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(
+    ref: DocumentPredicate<AppModelType, DbModelType>,
+  ): DocumentReference<AppModelType, DbModelType> {
     return (
       typeof ref === 'string' ? doc(this.db, ref) : ref
-    ) as DocumentReference<T>;
+    ) as DocumentReference<AppModelType, DbModelType>;
   }
 
   /**
@@ -120,8 +128,14 @@ export class FirestoreService {
    * @return {Observable} An Observable emitting the document data
    * (with type 'T').
    */
-  doc$<T>(ref: DocumentPredicate<T>): Observable<T> {
-    return docData(this.doc(ref)) as Observable<T>;
+  doc$<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(ref: DocumentPredicate<AppModelType, DbModelType>):
+    Observable<AppModelType | DbModelType | undefined> {
+    return docData<AppModelType, DbModelType>(
+      this.doc<AppModelType, DbModelType>(ref),
+    );
   }
 
   /**
@@ -132,8 +146,14 @@ export class FirestoreService {
    * @return {Promise<DocumentSnapshot>} A Promise resolving to a
    * DocumentSnapshot of the data.
    */
-  docSnap<T>(ref: DocumentPredicate<T>): Promise<DocumentSnapshot<T>> {
-    return getDoc(this.doc(ref));
+  docSnap<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(ref: DocumentPredicate<AppModelType, DbModelType>):
+    Promise<DocumentSnapshot<AppModelType, DbModelType>> {
+    return getDoc<AppModelType, DbModelType>(
+      this.doc<AppModelType, DbModelType>(ref),
+    );
   }
 
   /**
@@ -277,14 +297,17 @@ export class FirestoreService {
    * completes.
    * @return {Unsubscribe} A function to unsubscribe from the Firestore stream.
    */
-  snapshot<T>(
-    ref: DocumentPredicate<T>,
-    onNext: (snap: DocumentSnapshot<T>) => void,
+  snapshot<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(
+    ref: DocumentPredicate<AppModelType, DbModelType>,
+    onNext: (snap: DocumentSnapshot<AppModelType, DbModelType>) => void,
     onError: (error: FirebaseError) => void,
     onCompletion: () => void
   ): Unsubscribe {
-    return onSnapshot(
-      this.doc(ref),
+    return onSnapshot<AppModelType, DbModelType>(
+      this.doc<AppModelType, DbModelType>(ref),
       (doc) => onNext(doc),
       (error) => onError(error),
       () => onCompletion
@@ -311,7 +334,7 @@ export class FirestoreService {
 
   /**
    * Adds a new document to a Firestore collection. Automatically sets
-   * 'created' and 'updated' timestamps using `serverTimestamp()`.
+   * 'created' timestamp using `serverTimestamp()`.
    *
    * @param {CollectionPredicate} ref A string path or CollectionReference
    * to the collection.
@@ -324,7 +347,7 @@ export class FirestoreService {
     data: WithFieldValue<T>,
   ): Promise<DocumentReference<T>> {
     const timestamp = this.timestamp;
-    data = Object.assign({ created: timestamp, updated: timestamp }, data);
+    data = Object.assign({ created: timestamp }, data);
     return addDoc(this.col(ref), data);
   }
 
@@ -338,17 +361,32 @@ export class FirestoreService {
    * @param {PartialWithFieldValue} data The data for the document.
    * @param {SetOptions} options (Optional) Options for the set operation
    * (e.g., merge, mergeFields).
+   * @param {boolean} overwriteOperation - (Optional, default: false) If true,
+   * indicates it is an overwrite operation; otherwise, it's treated as a
+   * create. This determines which timestamp field (`created` or `updated`)
+   * is set automatically.
    * @return {Promise<void>} A Promise resolving upon successful completion
    * of the set operation.
    */
-  set<T>(
-    ref: DocumentPredicate<T>,
-    data: PartialWithFieldValue<T>,
+  set<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(
+    ref: DocumentPredicate<AppModelType, DbModelType>,
+    data: PartialWithFieldValue<DbModelType>,
     options: SetOptions = {},
+    overwriteOperation: boolean = false,
   ): Promise<void> {
     const timestamp = this.timestamp;
-    data = Object.assign({ created: timestamp, updated: timestamp }, data);
-    return setDoc(this.doc(ref), data, options);
+    data = Object.assign(
+      { [overwriteOperation ? 'updated' : 'created']: timestamp },
+      data,
+    );
+    return setDoc<AppModelType, DbModelType>(
+      this.doc<AppModelType, DbModelType>(ref),
+      data,
+      options,
+    );
   }
 
   /**
@@ -378,8 +416,13 @@ export class FirestoreService {
    * @return {Promise<boolean>} A Promise resolving to `true` if the document
    * exists, `false` otherwise.
    */
-  async docExists<T>(ref: DocumentPredicate<T>): Promise<boolean> {
-    const snapshot = await getDoc(this.doc(ref));
+  async docExists<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(ref: DocumentPredicate<AppModelType, DbModelType>): Promise<boolean> {
+    const snapshot = await getDoc<AppModelType, DbModelType>(
+      this.doc<AppModelType, DbModelType>(ref),
+    );
     return snapshot.exists();
   }
 
@@ -390,8 +433,13 @@ export class FirestoreService {
    * the document.
    * @return {Promise<void>} A Promise resolving upon successful deletion.
    */
-  delete<T>(ref: DocumentPredicate<T>): Promise<void> {
-    return deleteDoc(this.doc(ref));
+  delete<
+    AppModelType extends DocumentData,
+    DbModelType extends AppModelType = AppModelType,
+  >(ref: DocumentPredicate<AppModelType, DbModelType>): Promise<void> {
+    return deleteDoc<AppModelType, DbModelType>(
+      this.doc<AppModelType, DbModelType>(ref),
+    );
   }
 
   /**

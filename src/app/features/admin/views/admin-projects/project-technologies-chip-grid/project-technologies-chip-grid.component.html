@@ -1,0 +1,47 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+<mat-form-field appearance="outline">
+  <mat-label>Technologies</mat-label>
+  <mat-chip-grid #technologiesChipGrid aria-label="Technology selection">
+    @for (
+            technology of selectedTechnologiesFormArray().value;
+            track technology.id;
+            let i = $index;
+    ) {
+      <mat-chip-row (removed)="onRemove(i)">
+        @if (technology.logoImage) {
+          <img matChipAvatar width="25" height="25"
+               [ngSrc]="technology.logoImage" [alt]="technology.name" />
+        }
+
+        {{technology.name}}
+        <button matChipRemove type="button"
+                [attr.aria-label]="'remove ' + technology.name">
+          <mat-icon fontIcon="cancel" />
+        </button>
+      </mat-chip-row>
+    }
+  </mat-chip-grid>
+
+  <input #technologyInput placeholder="New Technology..."
+         [formControl]="technologyCtrl"
+         [matAutocomplete]="autocomplete"
+         [matChipInputFor]="technologiesChipGrid"
+         [matChipInputSeparatorKeyCodes]="separatorKeyCodes()"
+         (matChipInputTokenEnd)="onAdd($event)" />
+
+  <mat-autocomplete #autocomplete="matAutocomplete"
+                    (optionSelected)="onSelect($event)">
+    @for (technology of filteredTechnologies(); track technology.id) {
+      <mat-option [value]="technology">
+        <div class="flex-row app-gap align-items-center">
+          @if (technology.logoImage) {
+            <img height="25" width="25"
+                 [ngSrc]="technology.logoImage" [alt]="technology.name" />
+          }
+          <span>{{technology.name}}</span>
+        </div>
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

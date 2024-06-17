@@ -20,13 +20,23 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-projects {}
+  aj-projects {
+    .filter-description {
+      color: mat.get-color-from-palette($foreground-palette, secondary-text);
+    }
+  }
 
   @include componentColorMixins($theme);
 }
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
+
+  aj-projects {
+    .filter-description {
+      @include mat.typography-level($typography-config, headline-5);
+    }
+  }
 
   @include componentTypographyMixins($theme);
 }

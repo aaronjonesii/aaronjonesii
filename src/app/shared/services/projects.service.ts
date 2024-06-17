@@ -1,17 +1,25 @@
 import { Injectable } from '@angular/core';
 import { FirestoreService } from './firestore.service';
 import {
-  Project,
+  Project, ProjectDevelopmentStatus,
   ProjectStatus,
-  ProjectVisibility, ProjectWithID, ReadProject,
+  ProjectVisibility, ProjectWithID, ProjectWithTech, ReadProject, WriteProject,
 } from '../interfaces/project';
 import {
+  arrayRemove,
+  arrayUnion, DocumentData,
   DocumentReference,
   increment,
   QueryConstraint,
   where,
 } from '@angular/fire/firestore';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError, combineLatest, from,
+  map, mergeMap,
+  Observable,
+  of,
+  switchMap, toArray,
+} from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
 import { ConsoleLoggerService } from './console-logger.service';
 import { Comment, CommentWithID, WriteComment } from '../interfaces/comment';
@@ -25,6 +33,8 @@ import { User, UserWithID } from '../interfaces/user';
 import { ProjectsFilter } from '../enums/projects-filter';
 import { appInformation } from '../../information';
 import { navPath } from '../../app.routes';
+import { Technology } from '../interfaces/technology';
+import { take } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectsService {
@@ -173,8 +183,13 @@ export class ProjectsService {
     });
   }
 
-  getProjectReference<T = Project>(projectId: string) {
-    return this.db.doc<T>(`${this.collectionName}/${projectId}`);
+  getProjectReference<
+    AppModelType extends DocumentData = Project,
+    DbModelType extends AppModelType = AppModelType,
+  >(projectId: string) {
+    return this.db.doc<AppModelType, DbModelType>(
+      `${this.collectionName}/${projectId}`,
+    );
   }
 
   async addProjectComment(
@@ -204,7 +219,7 @@ export class ProjectsService {
 
   getFilteredProjects$(
     filter: ProjectsFilter,
-  ): Observable<ProjectWithID[]> {
+  ): Observable<ProjectWithTech[]> {
     const queryConstraints: QueryConstraint[] = [
       /** filter out private projects */
       where('visibility', '==', ProjectVisibility.PUBLIC),
@@ -223,6 +238,13 @@ export class ProjectsService {
         /** only show archived projects */
         queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED));
         break;
+      case ProjectsFilter.PLANNED:
+        /** only show planned projects */
+        queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
+        queryConstraints.push(
+          where('developmentStatus', '==', ProjectDevelopmentStatus.PLANNED),
+        );
+        break;
       default:
         this.logger.warn(`Something went wrong filtering projects`, filter);
         break;
@@ -233,14 +255,21 @@ export class ProjectsService {
       { idField: 'id' },
       ...queryConstraints,
     )).pipe(
+      switchMap((projects) => {
+        if (!projects.length) return of([]);
+
+        const projectsWithTech = projects
+          .map((p) => this.projectWihTechnologies$(p));
+        return combineLatest(projectsWithTech);
+      }),
       /** sort by featured projects */
-      map((projects) => projects.sort((a, b) => {
+      map((projects) => (projects || []).sort((a, b) => {
         return b.featured.toString().localeCompare(a.featured.toString());
       })),
     );
   }
 
-  async shareProject(project: ReadProject) {
+  async shareProject(project: ReadProject | ProjectWithTech) {
     const host = `https://${appInformation.website}`;
     const path = `${navPath.projects}/${project.slug}`;
     const url = host + path;
@@ -269,5 +298,92 @@ export class ProjectsService {
     } catch (error: unknown) {
       this.logger.error('Error sharing project', error);
     }
+  }
+
+  getProjectsByTechnology$(id: string) {
+    const technologyRef = this.db.doc<Technology>(`technologies/${id}`);
+    return this.db.colQuery$<ProjectWithID>(
+      this.collectionName,
+      { idField: 'id' },
+      where('technologies', 'array-contains', technologyRef),
+    );
+  }
+
+  get getAllProjects$() {
+    return this.db.col$<ProjectWithID>(this.collectionName, { idField: 'id' });
+  }
+
+  async updateTechnologyProjects(
+    technologyId: string,
+    newProjectIds: string[],
+    removedProjectIds: string[],
+  ) {
+    return this.db.batch(async (batch) => {
+      const technologyRef =
+        this.db.doc<Technology>(`technologies/${technologyId}`);
+
+      const newProjectRefs = newProjectIds
+        .map((id) => this.getProjectReference(id));
+      const removedProjectRefs = removedProjectIds
+        .map((id) => this.getProjectReference(id));
+
+      /** add projects to technology  */
+      const addProjectsTechnologyUpdates: Partial<Technology> = {
+        projects: arrayUnion(...newProjectRefs),
+      };
+      batch.update(technologyRef, addProjectsTechnologyUpdates);
+      /** add technology to projects */
+      for (let i = 0; i < newProjectRefs.length; i++) {
+        const projectRef = newProjectRefs[i];
+        const projectUpdates: Partial<WriteProject> = {
+          technologies: arrayUnion(technologyRef),
+        };
+        batch.update(projectRef, projectUpdates);
+      }
+
+      /** remove projects from technology  */
+      const removedProjectsTechnologyUpdates: Partial<Technology> = {
+        projects: arrayRemove(...removedProjectRefs),
+      };
+      batch.update(technologyRef, removedProjectsTechnologyUpdates);
+
+      /** remove technology from projects */
+      for (let i = 0; i < removedProjectRefs.length; i++) {
+        const projectRef = removedProjectRefs[i];
+        const projectUpdates: Partial<WriteProject> = {
+          technologies: arrayRemove(technologyRef),
+        };
+        batch.update(projectRef, projectUpdates);
+      }
+    });
+  }
+
+  projectWihTechnologies$(
+    project: ProjectWithID,
+  ): Observable<ProjectWithTech> {
+    return of(project).pipe(
+      switchMap((project) => {
+        const technologies = project?.technologies || [];
+        const technologies$ = from(technologies).pipe(
+          mergeMap((techRef) => {
+            return this.db.doc$(techRef).pipe(
+              map((t) => ({ ...t, id: techRef.id })),
+            );
+          }),
+          take(technologies.length),
+          toArray(),
+          map((t) => t.filter((t) => !!t) as Technology[]),
+        );
+
+        return combineLatest([of(project), technologies$]).pipe(
+          map(([project, technologies]) => {
+            return {
+              ...project,
+              technologies,
+            } as ProjectWithTech;
+          }),
+        );
+      }),
+    );
   }
 }

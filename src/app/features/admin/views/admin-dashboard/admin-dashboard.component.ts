@@ -32,6 +32,7 @@ export class AdminDashboardComponent {
     });
 
     this.adminPages = this.menuService.adminPages
+      /** Filter current page */
       .filter((menuItem) => menuItem.name != this.title);
   }
 }
