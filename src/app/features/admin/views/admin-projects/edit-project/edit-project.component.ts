@@ -218,6 +218,9 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   get developmentStatusCtrl() {
     return this.editForm.controls.developmentStatus;
   }
+  get figmaLinkCtrl() {
+    return this.editForm.controls.figmaLink;
+  }
 
   private setForm(project: ProjectWithTech) {
     this.editForm = new FormGroup<ProjectForm>({
@@ -262,6 +265,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
           .map((t) => new FormControl(t))
       ),
       developmentStatus: new FormControl(null),
+      figmaLink: new FormControl(null),
     });
   }
 
@@ -313,6 +317,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
       allowComments: this.allowComments.value,
       updated: this.db.timestamp,
       developmentStatus: this.developmentStatusCtrl.value || null,
+      figmaLink: this.figmaLinkCtrl.value || null,
     };
 
     await this.db.batch(async (batch) => {

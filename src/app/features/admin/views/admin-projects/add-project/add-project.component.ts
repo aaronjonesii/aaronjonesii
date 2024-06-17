@@ -131,6 +131,7 @@ export class AddProjectComponent implements OnDestroy {
     ),
     technologies: new FormArray<FormControl<Technology>>([]),
     developmentStatus: new FormControl(null),
+    figmaLink: new FormControl(null),
   });
   readonly projectStatuses = ProjectStatus;
   readonly projectVisibilities = ProjectVisibility;
@@ -208,6 +209,9 @@ export class AddProjectComponent implements OnDestroy {
   get developmentStatusCtrl() {
     return this.addForm.controls.developmentStatus;
   }
+  get figmaLinkCtrl() {
+    return this.addForm.controls.figmaLink;
+  }
 
   onProjectContentChange({ editor }: ChangeEvent) {
     if (editor) this.content?.setValue(editor.getData());
@@ -256,6 +260,7 @@ export class AddProjectComponent implements OnDestroy {
       ),
       technologies: new FormArray<FormControl<Technology>>([]),
       developmentStatus: new FormControl(null),
+      figmaLink: new FormControl(null),
     });
   }
 
@@ -294,6 +299,7 @@ export class AddProjectComponent implements OnDestroy {
       shards: 5, // Initialize number of shards
       author: { name: user.displayName ?? '', image: user.photoURL ?? null },
       developmentStatus: this.developmentStatusCtrl.value || null,
+      figmaLink: this.figmaLinkCtrl.value || null,
     };
 
     await this.db.batch(async (batch) => {

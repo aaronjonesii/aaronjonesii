@@ -25,6 +25,7 @@ export interface Project {
   author: { name: string, image: string | null },
   technologies?: (Technology | DocumentReference<Technology>)[] | FieldValue,
   developmentStatus: ProjectDevelopmentStatus | null,
+  figmaLink: string | null,
 }
 /* eslint-disable no-unused-vars */
 export enum ProjectStatus {
