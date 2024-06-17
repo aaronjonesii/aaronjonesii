@@ -5,8 +5,8 @@ import {
 import { SeoService } from '../../shared/services/seo.service';
 import { navPath } from '../../app.routes';
 import {
-  SkeletonComponent
-} from "../../shared/components/skeleton/skeleton.component";
+  SkeletonComponent,
+} from '../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'aj-book-appointment',
@@ -15,8 +15,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    SkeletonComponent
-  ]
+    SkeletonComponent,
+  ],
 })
 export class BookAppointmentComponent {
   private readonly title = 'Book Appointment';
