@@ -75,11 +75,8 @@
           @if (showMore()) {
             <div class="tags">
               <small>Tags</small>
-              <mat-chip-listbox [selectable]="false" [multiple]="false">
-                @for (tag of project()?.tags; track tag) {
-                  <mat-chip-option>{{tag}}</mat-chip-option>
-                }
-              </mat-chip-listbox>
+
+              <aj-project-tags [tags]="project()?.tags || []" />
             </div>
 
             <div class="links">

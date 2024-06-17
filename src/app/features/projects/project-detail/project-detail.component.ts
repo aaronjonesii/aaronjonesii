@@ -46,13 +46,14 @@ import {
 import { ProjectsService } from '../../../shared/services/projects.service';
 import { UsersService } from '../../../shared/services/users.service';
 import { SSRSafeService } from '../../../shared/services/ssr-safe.service';
-import { MatChipsModule } from '@angular/material/chips';
 import { DateAgoPipe } from '../../../shared/pipes/date-ago.pipe';
 import {
   ConsoleLoggerService,
 } from '../../../shared/services/console-logger.service';
 // eslint-disable-next-line max-len
 import { ProjectTechnologiesComponent } from '../../../shared/components/project-technologies/project-technologies.component';
+// eslint-disable-next-line max-len
+import { ProjectTagsComponent } from '../../../shared/components/project-tags/project-tags.component';
 
 @Component({
   selector: 'aj-project-detail',
@@ -71,7 +72,6 @@ import { ProjectTechnologiesComponent } from '../../../shared/components/project
     RouterLink,
     MatTabsModule,
     MatIconModule,
-    MatChipsModule,
     MatButtonModule,
     LoadingComponent,
     NgOptimizedImage,
@@ -81,6 +81,7 @@ import { ProjectTechnologiesComponent } from '../../../shared/components/project
     UserPhotoComponent,
     ProjectDetailCommentComponent,
     ProjectTechnologiesComponent,
+    ProjectTagsComponent,
   ],
 })
 export class ProjectDetailComponent implements OnInit, OnDestroy {

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions } from '@angular/material/card';
-import { MatChip, MatChipSet } from '@angular/material/chips';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -14,6 +13,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import {
   ProjectTechnologiesComponent,
 } from '../project-technologies/project-technologies.component';
+import { ProjectTagsComponent } from '../project-tags/project-tags.component';
 
 @Component({
   selector: 'aj-project-card',
@@ -25,14 +25,13 @@ import {
     MatButton,
     MatCard,
     MatCardActions,
-    MatChip,
-    MatChipSet,
     MatDivider,
     MatIcon,
     RouterLink,
     NgOptimizedImage,
     MatTooltip,
     ProjectTechnologiesComponent,
+    ProjectTagsComponent,
   ],
 })
 export class ProjectCardComponent {

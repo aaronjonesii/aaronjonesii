@@ -13,11 +13,7 @@
     }
 
     @if (project()?.tags?.length) {
-      <mat-chip-set role="list">
-        @for (tag of project()?.tags; track tag) {
-          <mat-chip role="listitem">{{tag}}</mat-chip>
-        }
-      </mat-chip-set>
+      <aj-project-tags [tags]="project()?.tags || []" />
     }
 
     <mat-divider />

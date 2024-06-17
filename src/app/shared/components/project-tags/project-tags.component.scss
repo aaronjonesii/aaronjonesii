@@ -1,0 +1,7 @@
+@import "../../../../assets/scss/partials/extras";
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $app-gap;
+}
