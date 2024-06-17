@@ -73,11 +73,13 @@
           }
 
           @if (showMore()) {
-            <div class="tags">
-              <small>Tags</small>
+            @if (project()?.tags?.length) {
+              <div class="tags">
+                <small>Tags</small>
 
-              <aj-project-tags [tags]="project()?.tags || []" />
-            </div>
+                <aj-project-tags [tags]="project()?.tags || []" />
+              </div>
+            }
 
             <div class="links">
               @if (project()?.sourceCodeLink) {
