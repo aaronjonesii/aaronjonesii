@@ -6,7 +6,7 @@
   -moz-hyphens: auto;
   hyphens: auto;
 }
-.truncate-text {
+.truncate-text, .text-ellipsis {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;

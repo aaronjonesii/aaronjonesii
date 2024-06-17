@@ -1,0 +1,114 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+<div class="details">
+  @if (project()?.image) {
+    <picture class="project-image"
+             [routerLink]="[navPath.adminEditProject(project()?.id || '')]">
+      <img fill priority
+           [alt]="project()?.name"
+           [ngSrc]="project()?.image || 'https://via.placeholder.com/1200'" />
+    </picture>
+  }
+
+  <h3 class="text-ellipsis project-name"
+      [routerLink]="[navPath.adminEditProject(project()?.id || '')]">
+    {{project()?.name}}
+  </h3>
+
+  <p class="text-ellipsis">{{project()?.description}}</p>
+
+  <ul class="technologies">
+    @for (technology of project()?.technologies; track technology.id) {
+      <li class="technology" [title]="technology.name"
+          [routerLink]="[navPath.adminDetailTechnology(technology.id || '')]">
+        @if (technology.logoImage) {
+          <picture>
+            <img width="25" height="25"
+                 [ngSrc]="technology.logoImage" [alt]="technology.name" />
+          </picture>
+        } @else {
+          <span class="truncate-text">{{technology.name}}</span>
+        }
+      </li>
+    }
+  </ul>
+
+  <div class="status">
+    @switch (project()?.status) {
+      @case (ProjectStatus.DRAFT) {
+        <mat-icon fontIcon="drafts" />
+      }
+      @case (ProjectStatus.ARCHIVED) {
+        <mat-icon class="material-icons-outlined" fontIcon="archive" />
+      }
+      @case (ProjectStatus.PUBLISHED) {
+        <mat-icon fontIcon="published_with_changes" />
+      }
+    }
+
+    <span>{{project()?.status}}</span>
+  </div>
+
+  <div class="visibility">
+    <mat-icon [fontIcon]="isPublic() ? 'public' : 'public_off'" />
+
+    <span class="small">{{project()?.visibility}}</span>
+  </div>
+
+  @if (!isPublished()) {
+    <p class="unpublished">
+      <mat-icon fontIcon="unpublished" />
+      &nbsp;<em>Unpublished</em>
+    </p>
+  }
+</div>
+
+<div class="actions">
+  <mat-checkbox [disabled]="loading()"
+                [checked]="isSelected()"
+                (change)="checkboxToggled.emit(project())" />
+  <button mat-icon-button type="button"
+          [disabled]="loading()"
+          [matTooltip]="featureBtnTooltip()"
+          [matTooltipShowDelay]="500"
+          (click)="featureBtnClick.emit(project())">
+    <mat-icon [color]="project()?.featured ? 'accent' : undefined"
+              [fontIcon]="project()?.featured ? 'star' : 'star_outline'" />
+  </button>
+
+  <button mat-icon-button type="button" [disabled]="loading()"
+          [matMenuTriggerFor]="projectSettings">
+    <mat-icon fontIcon="settings" />
+  </button>
+  <mat-menu #projectSettings="matMenu">
+    <button mat-menu-item type="button"
+            [routerLink]="[navPath.adminEditProject(project()?.id || '')]">
+      <mat-icon fontIcon="edit" />
+
+      <span>Edit</span>
+    </button>
+
+    @if (isUnpublished()) {
+      <button mat-menu-item type="button"
+              (click)="publishBtnClick.emit(project())">
+        <mat-icon fontIcon="public" />
+
+        <span>Publish</span>
+      </button>
+    }
+
+    <button mat-menu-item type="button"
+            [routerLink]="[navPath.projectDetail(project()?.slug || '')]">
+      <mat-icon fontIcon="store" />
+
+      <span>View project</span>
+    </button>
+
+    <button mat-menu-item type="button"
+            (click)="deleteBtnClick.emit(project())">
+      <mat-icon fontIcon="delete" />
+
+      <span>Delete</span>
+    </button>
+  </mat-menu>
+</div>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

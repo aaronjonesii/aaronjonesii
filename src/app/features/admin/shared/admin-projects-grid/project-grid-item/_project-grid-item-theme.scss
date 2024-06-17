@@ -1,15 +1,9 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@use './project-grid-item/project-grid-item-theme' as projectGridItem;
+@mixin componentColorMixins($theme) {}
 
-@mixin componentColorMixins($theme) {
-  @include projectGridItem.color($theme);
-}
-
-@mixin componentTypographyMixins($theme) {
-  @include projectGridItem.typography($theme);
-}
+@mixin componentTypographyMixins($theme) {}
 
 @mixin color($theme) {
   $color-config: mat.get-color-config($theme);
@@ -20,10 +14,26 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-admin-projects-grid {
-    section.projects .project.selected {
-      border-color: mat.get-color-from-palette($primary-palette, 100);
+  aj-project-grid-item {
+    border-color: mat.get-color-from-palette($grey-palette, 300);
+
+    .unpublished {
+      color: mat.get-color-from-palette($accent-palette);
+    }
+
+    .status, .visibility {
+      color: mat.get-color-from-palette($accent-palette);
+    }
+
+    .technologies .technology span {
+      border-color: mat.get-color-from-palette($foreground-palette, divider);
+    }
+    .technologies .technology:hover {
       background-color: mat.get-color-from-palette($primary-palette, 50);
+    }
+
+    .actions {
+      border-top-color: inherit;
     }
   }
 
@@ -32,6 +42,12 @@
 
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
+
+  aj-project-grid-item {
+    .technologies .technology span {
+      @include mat.typography-level($typography-config, caption);
+    }
+  }
 
   @include componentTypographyMixins($theme);
 }
