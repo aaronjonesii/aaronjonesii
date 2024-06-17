@@ -22,7 +22,6 @@ import {
 } from '../project-image/project-image.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ProjectTagsComponent } from '../project-tags/project-tags.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
@@ -61,6 +60,10 @@ import {
 import {
   ProjectsService,
 } from '../../../../../shared/services/projects.service';
+// eslint-disable-next-line max-len
+import {
+  ProjectTagsChipGridComponent,
+} from '../project-tags-chip-grid/project-tags-chip-grid.component';
 
 @Component({
   selector: 'aj-add-project',
@@ -76,7 +79,7 @@ import {
     ProjectImageComponent,
     MatFormFieldModule,
     MatInputModule,
-    ProjectTagsComponent,
+    ProjectTagsChipGridComponent,
     KeyValuePipe,
     TitleCasePipe,
     MatSelectModule,

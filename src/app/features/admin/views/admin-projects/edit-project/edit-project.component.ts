@@ -21,7 +21,6 @@ import {
 } from '../project-image/project-image.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ProjectTagsComponent } from '../project-tags/project-tags.component';
 import { MatSelectModule } from '@angular/material/select';
 import { AsyncPipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -73,6 +72,9 @@ import {
   ProjectsService,
 } from '../../../../../shared/services/projects.service';
 import { tap } from 'rxjs/operators';
+import {
+  ProjectTagsChipGridComponent,
+} from '../project-tags-chip-grid/project-tags-chip-grid.component';
 
 @Component({
   selector: 'aj-edit-project',
@@ -88,7 +90,7 @@ import { tap } from 'rxjs/operators';
     ProjectImageComponent,
     MatFormFieldModule,
     MatInputModule,
-    ProjectTagsComponent,
+    ProjectTagsChipGridComponent,
     MatSelectModule,
     KeyValuePipe,
     TitleCasePipe,

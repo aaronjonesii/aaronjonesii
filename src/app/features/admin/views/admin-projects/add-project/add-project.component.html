@@ -27,7 +27,7 @@
   <aj-project-technologies [selectedTechnologiesFormArray]="technologiesCtrl"
                            [allTechnologies]="technologiesSignal() || []" />
 
-  <aj-project-tags [selectedTagsFormArray]="tags" [allTags]="tagsSignal()" />
+  <aj-project-tags-chip-grid [selectedTagsFormArray]="tags" [allTags]="tagsSignal()" />
   <!-- eslint-enable @angular-eslint/template/no-call-expression -->
 
   <mat-form-field appearance="outline">
