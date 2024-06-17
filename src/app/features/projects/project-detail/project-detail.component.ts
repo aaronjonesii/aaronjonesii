@@ -54,6 +54,7 @@ import {
 import { ProjectTechnologiesComponent } from '../../../shared/components/project-technologies/project-technologies.component';
 // eslint-disable-next-line max-len
 import { ProjectTagsComponent } from '../../../shared/components/project-tags/project-tags.component';
+import { delay } from "../../../shared/utils/delay";
 
 @Component({
   selector: 'aj-project-detail',
@@ -222,14 +223,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     const maxTries = Math.floor(maxMillisecondsToWait / incrementMilliseconds);
     let i = 0;
     while (i < maxTries && !this.loaded()) {
-      await this.delay(incrementMilliseconds);
+      await delay(incrementMilliseconds);
       i++;
     }
   }
-
-  delay = (timeout: number) => new Promise<void>((resolve) => {
-    setTimeout(resolve, timeout);
-  });
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
