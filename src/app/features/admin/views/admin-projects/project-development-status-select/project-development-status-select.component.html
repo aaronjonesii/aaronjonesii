@@ -1,0 +1,14 @@
+<mat-form-field appearance="outline">
+  <mat-label>Development Status</mat-label>
+  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+  <mat-select [formControl]="developmentStatusFormControl()">
+    @for (
+        developmentStatus of ProjectDevelopmentStatus | keyvalue;
+        track developmentStatus.key;
+    ) {
+      <mat-option [value]="developmentStatus.value">
+        {{developmentStatus.value}}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

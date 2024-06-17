@@ -74,6 +74,9 @@ import { tap } from 'rxjs/operators';
 import {
   ProjectTagsChipGridComponent,
 } from '../project-tags-chip-grid/project-tags-chip-grid.component';
+import {
+  ProjectDevelopmentStatusSelectComponent
+} from "../project-development-status-select/project-development-status-select.component";
 
 @Component({
   selector: 'aj-edit-project',
@@ -97,6 +100,7 @@ import {
     AdminEditorComponent,
     AsyncPipe,
     ProjectTechnologiesChipGridComponent,
+    ProjectDevelopmentStatusSelectComponent,
   ],
   providers: [SlugifyPipe],
 })
@@ -120,11 +124,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   projectStats = signal<ProjectStats>({ characters: 0, words: 0 });
   private subscriptions = new Subscription();
   private user = toSignal(this.authService.loadUser);
-  technologiesSignal = toSignal(
-    this.technologiesService.getTechnologies$.pipe(
-      tap((t) => console.debug(t)),
-    ),
-  );
+  technologiesSignal = toSignal(this.technologiesService.getTechnologies$);
 
   constructor(
     private router: Router,
@@ -217,6 +217,9 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   get visibility() {
     return this.editForm.controls.visibility;
   }
+  get developmentStatusCtrl() {
+    return this.editForm.controls.developmentStatus;
+  }
 
   private setForm(project: ProjectWithTech) {
     this.editForm = new FormGroup<ProjectForm>({
@@ -260,6 +263,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         <FormControl<Technology>[]>project.technologies
           .map((t) => new FormControl(t))
       ),
+      developmentStatus: new FormControl(null),
     });
   }
 
@@ -310,6 +314,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
       featured: this.featured.value,
       allowComments: this.allowComments.value,
       updated: this.db.timestamp,
+      developmentStatus: this.developmentStatusCtrl.value || null,
     };
 
     await this.db.batch(async (batch) => {
