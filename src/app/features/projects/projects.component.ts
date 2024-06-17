@@ -49,7 +49,7 @@ import { ProjectsService } from '../../shared/services/projects.service';
 import { ProjectsMasonryGridComponent } from '../../shared/components/projects-masonry-grid/projects-masonry-grid.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SSRSafeService } from '../../shared/services/ssr-safe.service';
-import { delay } from "../../shared/utils/delay";
+import { delay } from '../../shared/utils/delay';
 
 @Component({
   selector: 'aj-projects',

@@ -54,7 +54,7 @@ import {
 import { ProjectTechnologiesComponent } from '../../../shared/components/project-technologies/project-technologies.component';
 // eslint-disable-next-line max-len
 import { ProjectTagsComponent } from '../../../shared/components/project-tags/project-tags.component';
-import { delay } from "../../../shared/utils/delay";
+import { delay } from '../../../shared/utils/delay';
 
 @Component({
   selector: 'aj-project-detail',
