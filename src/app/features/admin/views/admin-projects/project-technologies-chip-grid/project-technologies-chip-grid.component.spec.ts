@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectTechnologiesChipGridComponent } from './project-technologies-chip-grid.component';
+import {
+  ProjectTechnologiesChipGridComponent,
+} from './project-technologies-chip-grid.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('ProjectTechnologiesComponent', () => {
