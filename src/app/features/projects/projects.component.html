@@ -9,4 +9,5 @@
 </mat-chip-listbox>
 
 <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
-<aj-projects-masonry-grid [projects]="projects()" />
+<aj-projects-masonry-grid [projects]="projects()"
+                          (shareProject)="onShare($event)" />

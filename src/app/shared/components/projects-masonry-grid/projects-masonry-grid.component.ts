@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
-  input,
+  input, output,
 } from '@angular/core';
 import {
   ProjectWithTech,
@@ -27,6 +27,8 @@ export class ProjectsMasonryGridComponent implements AfterViewChecked, AfterView
   protected readonly navPath = navPath;
 
   projects = input<ProjectWithTech[]>();
+
+  shareProject = output<ProjectWithTech | undefined>();
 
   constructor(
     @Inject(DOCUMENT) private document: Document,

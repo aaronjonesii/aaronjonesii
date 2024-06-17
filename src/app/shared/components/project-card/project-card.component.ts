@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output
+} from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -38,4 +43,6 @@ export class ProjectCardComponent {
   protected readonly navPath = navPath;
 
   project = input<ProjectWithTech>();
+
+  shareProject = output<ProjectWithTech | undefined>();
 }

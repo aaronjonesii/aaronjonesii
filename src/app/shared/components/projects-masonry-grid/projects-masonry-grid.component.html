@@ -2,7 +2,8 @@
   <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
   @for (project of projects(); track project.id) {
     <div class="masonry-item">
-      <aj-project-card class="masonry-content" [project]="project" />
+      <aj-project-card class="masonry-content" [project]="project"
+                       (shareProject)="shareProject.emit(project)" />
     </div>
   }
 </section>

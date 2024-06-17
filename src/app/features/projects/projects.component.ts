@@ -129,8 +129,8 @@ export class ProjectsComponent implements OnDestroy {
     this.filterSubject.next(event.value);
   }
 
-  async onShare(project: ReadProject) {
-    return this.projectsService.shareProject(project);
+  async onShare(project?: ProjectWithTech) {
+    if (project) await this.projectsService.shareProject(project);
   }
 
   ngOnDestroy() {

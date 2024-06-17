@@ -32,7 +32,8 @@
         </button>
       }
 
-      <button mat-flat-button type="button" color="primary">
+      <button mat-flat-button type="button" color="primary"
+              (click)="shareProject.emit(project())">
         <mat-icon class="material-icons-outlined" fontIcon="share" /> Share
       </button>
     </mat-card-actions>
