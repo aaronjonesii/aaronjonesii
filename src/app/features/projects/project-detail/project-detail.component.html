@@ -62,13 +62,15 @@
             <p class="mat-body-2">{{project()?.description}}</p>
           </div>
 
-          <div class="technologies">
-            @if (showMore()) {
-              <small>Built with</small>
-            }
+          @if (project()?.technologies?.length) {
+            <div class="technologies">
+              @if (showMore()) {
+                <small>Built using</small>
+              }
 
-            <aj-project-technologies [technologies]="project()?.technologies || []" />
-          </div>
+              <aj-project-technologies [technologies]="project()?.technologies || []" />
+            </div>
+          }
 
           @if (showMore()) {
             <div class="tags">
