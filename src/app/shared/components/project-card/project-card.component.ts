@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
-  output
+  output,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions } from '@angular/material/card';

@@ -17,7 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
   ProjectWithTech,
-  ReadProject,
 } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
