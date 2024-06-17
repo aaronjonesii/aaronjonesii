@@ -1,5 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/no-call-expression -->
-<h1 mat-dialog-title>Select Image</h1>
+<h1 mat-dialog-title>Select an image</h1>
 
 <anon-file-manager mat-dialog-content [selection]="selectionModel()" />
 
@@ -9,7 +9,7 @@
   <button mat-flat-button type="button" color="primary"
           [disabled]="!selectedFile()"
           (click)="onSelectImage()">
-    Select {{selectedFile() ? selectedFile()?.name : 'File'}}
+    Select {{selectedFile() ? selectedFile()?.name : 'Image'}}
   </button>
 </mat-dialog-actions>
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->
