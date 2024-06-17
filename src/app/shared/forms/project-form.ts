@@ -21,6 +21,7 @@ export interface ProjectForm {
   allowComments: FormControl<boolean>
   technologies: FormArray<FormControl<Technology>>,
   developmentStatus: FormControl<ProjectDevelopmentStatus | null>,
+  figmaLink: FormControl<string | null>,
 }
 
 export const initialProjectForm = new FormGroup<ProjectForm>({
@@ -59,4 +60,5 @@ export const initialProjectForm = new FormGroup<ProjectForm>({
   ),
   technologies: new FormArray<FormControl<Technology>>([]),
   developmentStatus: new FormControl(null),
+  figmaLink: new FormControl(null),
 });
