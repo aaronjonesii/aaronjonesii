@@ -1,4 +1,12 @@
-<!-- Google Calendar Appointment Scheduling begin -->
-<iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3Ti-eA0dBPtCgswGRsdlaiRB6Of_tWywDFEW8szpTClEtLRdtRhbGRz9_RFpTl8fHW0bCdzWLq?gv=true"
-        class="google-appointment-booking" frameborder="0"></iframe>
-<!-- end Google Calendar Appointment Scheduling -->
+<!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+@if (loading()) {
+  Loading Appointment Scheduling...
+}
+
+<!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
+<div [class]="loading() ? 'hidden' : 'visible'">
+  <!-- Google Calendar Appointment Scheduling begin -->
+  <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3Ti-eA0dBPtCgswGRsdlaiRB6Of_tWywDFEW8szpTClEtLRdtRhbGRz9_RFpTl8fHW0bCdzWLq?gv=true"
+          class="google-appointment-booking" frameborder="0" (load)="loading.set(false)"></iframe>
+  <!-- end Google Calendar Appointment Scheduling -->
+</div>
