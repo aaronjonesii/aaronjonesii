@@ -260,7 +260,7 @@ export class ProjectsService {
     );
   }
 
-  async shareProject(project: ReadProject) {
+  async shareProject(project: ReadProject | ProjectWithTech) {
     const host = `https://${appInformation.website}`;
     const path = `${navPath.projects}/${project.slug}`;
     const url = host + path;

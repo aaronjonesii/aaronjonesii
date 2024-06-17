@@ -1,0 +1,11 @@
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+@for (technology of technologies(); track technology.id) {
+  @if (technology.logoImage) {
+    <picture class="technology" matTooltipShowDelay="100"
+             [matTooltip]="'Built using '+technology.name">
+      <img width="25" height="25"
+           [ngSrc]="technology.logoImage" [alt]="technology.name" />
+    </picture>
+  }
+}
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

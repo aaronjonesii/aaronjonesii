@@ -7,6 +7,7 @@
 @use './carousel/carousel-theme' as carousel;
 @use './project-card/project-card-theme' as projectCard;
 @use './select-image/select-image-theme' as selectImage;
+@use './project-technologies/project-technologies-theme' as projectTechnologies;
 
 @mixin componentColorMixins($theme) {
   @include layout.color($theme);
@@ -15,6 +16,7 @@
   @include carousel.color($theme);
   @include projectCard.color($theme);
   @include selectImage.color($theme);
+  @include projectTechnologies.color($theme);
 }
 
 @mixin componentTypographyMixins($theme) {
@@ -24,6 +26,7 @@
   @include carousel.typography($theme);
   @include projectCard.typography($theme);
   @include selectImage.typography($theme);
+  @include projectTechnologies.typography($theme);
 }
 
 @mixin color($theme) {

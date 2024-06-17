@@ -14,21 +14,7 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-project-grid-item {
-    border-color: mat.get-color-from-palette($grey-palette, 300);
-
-    .unpublished {
-      color: mat.get-color-from-palette($accent-palette);
-    }
-
-    .status, .visibility {
-      color: mat.get-color-from-palette($accent-palette);
-    }
-
-    .actions {
-      border-top-color: inherit;
-    }
-  }
+  aj-project-technologies {}
 
   @include componentColorMixins($theme);
 }
@@ -36,7 +22,7 @@
 @mixin typography($theme) {
   $typography-config: mat.get-typography-config($theme);
 
-  aj-project-grid-item {}
+  aj-project-technologies {}
 
   @include componentTypographyMixins($theme);
 }

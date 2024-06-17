@@ -9,17 +9,7 @@
     <p class="mat-body-1 m-0">{{project()?.description}}</p>
 
     @if (project()?.technologies?.length) {
-      <div class="technologies">
-        @for (technology of project()?.technologies; track technology.id) {
-         @if (technology.logoImage) {
-           <picture class="technology" matTooltipShowDelay="100"
-                    [matTooltip]="'Built using '+technology.name">
-             <img width="25" height="25"
-                  [ngSrc]="technology.logoImage" [alt]="technology.name" />
-           </picture>
-         }
-        }
-      </div>
+      <aj-project-technologies [technologies]="project()?.technologies || []" />
     }
 
     @if (project()?.tags?.length) {

@@ -1,0 +1,16 @@
+@import "../../../../assets/scss/partials/extras";
+@import "../../../../assets/scss/partials/animations";
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $app-gap;
+}
+.technology {
+  width: 25px;
+  height: 25px;
+  transition: all $emphasizedDecelerate;
+}
+.technology:hover {
+  transform: scale(1.2);
+}

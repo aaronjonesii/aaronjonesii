@@ -17,6 +17,8 @@ import {
 } from '../../../../../shared/interfaces/project';
 import { RouterLink } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
+// eslint-disable-next-line max-len
+import { ProjectTechnologiesComponent } from '../../../../../shared/components/project-technologies/project-technologies.component';
 
 @Component({
   selector: 'aj-project-grid-item',
@@ -33,6 +35,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     RouterLink,
     MatTooltip,
     MatMenuTrigger,
+    ProjectTechnologiesComponent,
   ],
 })
 export class ProjectGridItemComponent {

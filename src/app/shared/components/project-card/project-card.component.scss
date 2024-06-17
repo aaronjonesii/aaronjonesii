@@ -22,17 +22,3 @@
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
 }
-
-.technologies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $app-gap;
-}
-.technologies .technology {
-  width: 25px;
-  height: 25px;
-  transition: all $emphasizedDecelerate;
-}
-.technologies .technology:hover {
-  transform: scale(1.2);
-}

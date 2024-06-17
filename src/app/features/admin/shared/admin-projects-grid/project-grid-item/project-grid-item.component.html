@@ -16,21 +16,7 @@
 
   <p class="text-ellipsis">{{project()?.description}}</p>
 
-  <ul class="technologies">
-    @for (technology of project()?.technologies; track technology.id) {
-      <li class="technology" [title]="technology.name"
-          [routerLink]="[navPath.adminDetailTechnology(technology.id || '')]">
-        @if (technology.logoImage) {
-          <picture>
-            <img width="25" height="25"
-                 [ngSrc]="technology.logoImage" [alt]="technology.name" />
-          </picture>
-        } @else {
-          <span class="truncate-text">{{technology.name}}</span>
-        }
-      </li>
-    }
-  </ul>
+  <aj-project-technologies [technologies]="project()?.technologies || []" />
 
   <div class="status">
     @switch (project()?.status) {
