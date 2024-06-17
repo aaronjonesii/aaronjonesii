@@ -1,13 +1,24 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy,
-  Component, signal,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  OnDestroy,
+  signal,
 } from '@angular/core';
 import {
-  BehaviorSubject, Subscription,
-  catchError, switchMap, of,
+  BehaviorSubject,
+  catchError,
+  of,
+  Subscription,
+  switchMap,
 } from 'rxjs';
 import {
-  AsyncPipe, KeyValue, KeyValuePipe, LowerCasePipe, NgOptimizedImage,
+  AsyncPipe,
+  KeyValue,
+  KeyValuePipe,
+  LowerCasePipe,
+  NgOptimizedImage, NgTemplateOutlet,
 } from '@angular/common';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
@@ -15,9 +26,7 @@ import { RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  ProjectWithTech,
-} from '../../shared/interfaces/project';
+import { ProjectWithTech } from '../../shared/interfaces/project';
 import {
   TopAppBarService,
 } from '../../shared/components/top-app-bar/top-app-bar.service';
@@ -38,6 +47,8 @@ import { ProjectsFilter } from '../../shared/enums/projects-filter';
 import { ProjectsService } from '../../shared/services/projects.service';
 // eslint-disable-next-line max-len
 import { ProjectsMasonryGridComponent } from '../../shared/components/projects-masonry-grid/projects-masonry-grid.component';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { SSRSafeService } from '../../shared/services/ssr-safe.service';
 
 @Component({
   selector: 'aj-projects',
@@ -59,6 +70,7 @@ import { ProjectsMasonryGridComponent } from '../../shared/components/projects-m
     SkeletonComponent,
     LoadingOrErrorComponent,
     ProjectsMasonryGridComponent,
+    NgTemplateOutlet,
   ],
   animations: [...ProjectsAnimations],
 })
@@ -75,13 +87,30 @@ export class ProjectsComponent implements OnDestroy {
   loaded = this.loadedSignal.asReadonly();
   private errorSignal = signal<FirebaseError | undefined>(undefined);
   error = this.errorSignal.asReadonly();
-  readonly placeholders = Array(4).fill(() => '');
   protected readonly ProjectsFilter = ProjectsFilter;
+  private filterSignal = toSignal(this.filterSubject);
+  filterDescription = computed(() => {
+    const filter = this.filterSignal();
+    switch (filter) {
+      case ProjectsFilter.ALL:
+        return 'All projects developed and maintained both past and present.';
+      case ProjectsFilter.ACTIVE:
+        // eslint-disable-next-line max-len
+        return 'Projects currently in focus, under development and being actively maintained.';
+      case ProjectsFilter.ARCHIVED:
+        return 'Projects no longer being developed or maintained.';
+      case ProjectsFilter.PLANNED:
+        return 'Future projects planned to be developed or maintained.';
+      default: return 'Unknown filter option selected.';
+    }
+  });
+  isBrowser = signal(this.ssrSafeService.isBrowser);
 
   constructor(
     private seoService: SeoService,
     private cdRef: ChangeDetectorRef,
     private logger: ConsoleLoggerService,
+    private ssrSafeService: SSRSafeService,
     private projectsService: ProjectsService,
     private topAppBarService: TopAppBarService,
   ) {

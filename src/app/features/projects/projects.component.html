@@ -8,6 +8,31 @@
   }
 </mat-chip-listbox>
 
-<!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
-<aj-projects-masonry-grid [projects]="projects()"
-                          (shareProject)="onShare($event)" />
+<!-- eslint-disable @angular-eslint/template/no-call-expression -->
+<p class="filter-description">{{filterDescription()}}</p>
+
+@if (isBrowser()) {
+  @defer (when loaded()) {
+    <ng-template [ngTemplateOutlet]="projectsTmpl" />
+  } @placeholder (minimum 500ms) {
+    <aj-skeleton [styles]="{height: '400px'}" />
+  }
+} @else {
+  <ng-template [ngTemplateOutlet]="projectsTmpl" />
+}
+
+<ng-template #projectsTmpl>
+  @if (projects().length) {
+    <aj-projects-masonry-grid [projects]="projects()"
+                              (shareProject)="onShare($event)" />
+  } @else {
+    <h3 class="mat-headline-6 text-center font-weight-normal">
+      No
+      @if ((filter$ | async) !== ProjectsFilter.ALL) {
+        {{filter$ | async | lowercase}}
+      }
+      projects yet, check back soon.
+    </h3>
+  }
+</ng-template>
+<!-- eslint-enable @angular-eslint/template/no-call-expression -->

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FirestoreService } from './firestore.service';
 import {
-  Project,
+  Project, ProjectDevelopmentStatus,
   ProjectStatus,
   ProjectVisibility, ProjectWithID, ProjectWithTech, ReadProject, WriteProject,
 } from '../interfaces/project';
@@ -238,6 +238,13 @@ export class ProjectsService {
         /** only show archived projects */
         queryConstraints.push(where('status', '==', ProjectStatus.ARCHIVED));
         break;
+      case ProjectsFilter.PLANNED:
+        /** only show planned projects */
+        queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
+        queryConstraints.push(
+          where('developmentStatus', '==', ProjectDevelopmentStatus.PLANNED),
+        );
+        break;
       default:
         this.logger.warn(`Something went wrong filtering projects`, filter);
         break;
@@ -249,12 +256,14 @@ export class ProjectsService {
       ...queryConstraints,
     )).pipe(
       switchMap((projects) => {
+        if (!projects.length) return of([]);
+
         const projectsWithTech = projects
           .map((p) => this.projectWihTechnologies$(p));
         return combineLatest(projectsWithTech);
       }),
       /** sort by featured projects */
-      map((projects) => projects.sort((a, b) => {
+      map((projects) => (projects || []).sort((a, b) => {
         return b.featured.toString().localeCompare(a.featured.toString());
       })),
     );

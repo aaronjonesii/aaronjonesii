@@ -24,6 +24,7 @@ export interface Project {
   views?: number, // sharded distributed counter
   author: { name: string, image: string | null },
   technologies?: (Technology | DocumentReference<Technology>)[] | FieldValue,
+  developmentStatus?: ProjectDevelopmentStatus,
 }
 /* eslint-disable no-unused-vars */
 export enum ProjectStatus {
@@ -35,6 +36,15 @@ export enum ProjectStatus {
 export enum ProjectVisibility {
   PUBLIC = 'public',
   PRIVATE = 'private',
+}
+
+export enum ProjectDevelopmentStatus {
+  NOT_STARTED = 'Not Started',
+  PLANNED = 'Planned',
+  IN_DEVELOPMENT = 'In Development',
+  COMPLETE = 'Complete',
+  ON_HOLD = 'On Hold',
+  CANCELLED = 'Cancelled',
 }
 /* eslint-enable no-unused-vars */
 
