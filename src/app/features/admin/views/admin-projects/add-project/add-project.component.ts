@@ -63,6 +63,8 @@ import {
 import {
   ProjectTagsChipGridComponent,
 } from '../project-tags-chip-grid/project-tags-chip-grid.component';
+// eslint-disable-next-line max-len
+import { ProjectDevelopmentStatusSelectComponent } from '../project-development-status-select/project-development-status-select.component';
 
 @Component({
   selector: 'aj-add-project',
@@ -85,6 +87,7 @@ import {
     MatCheckboxModule,
     AdminEditorComponent,
     ProjectTechnologiesChipGridComponent,
+    ProjectDevelopmentStatusSelectComponent,
   ],
   providers: [SlugifyPipe],
 })
@@ -127,6 +130,7 @@ export class AddProjectComponent implements OnDestroy {
       { nonNullable: true, validators: Validators.required },
     ),
     technologies: new FormArray<FormControl<Technology>>([]),
+    developmentStatus: new FormControl(null),
   });
   readonly projectStatuses = ProjectStatus;
   readonly projectVisibilities = ProjectVisibility;
@@ -201,6 +205,9 @@ export class AddProjectComponent implements OnDestroy {
   get visibility() {
     return this.addForm.controls.visibility;
   }
+  get developmentStatusCtrl() {
+    return this.addForm.controls.developmentStatus;
+  }
 
   onProjectContentChange({ editor }: ChangeEvent) {
     if (editor) this.content?.setValue(editor.getData());
@@ -248,6 +255,7 @@ export class AddProjectComponent implements OnDestroy {
         { nonNullable: true, validators: Validators.required },
       ),
       technologies: new FormArray<FormControl<Technology>>([]),
+      developmentStatus: new FormControl(null),
     });
   }
 
@@ -285,6 +293,7 @@ export class AddProjectComponent implements OnDestroy {
       roles: { [user.uid]: 'owner' },
       shards: 5, // Initialize number of shards
       author: { name: user.displayName ?? '', image: user.photoURL ?? null },
+      developmentStatus: this.developmentStatusCtrl.value || null,
     };
 
     await this.db.batch(async (batch) => {

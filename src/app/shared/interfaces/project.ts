@@ -24,7 +24,7 @@ export interface Project {
   views?: number, // sharded distributed counter
   author: { name: string, image: string | null },
   technologies?: (Technology | DocumentReference<Technology>)[] | FieldValue,
-  developmentStatus?: ProjectDevelopmentStatus,
+  developmentStatus: ProjectDevelopmentStatus | null,
 }
 /* eslint-disable no-unused-vars */
 export enum ProjectStatus {

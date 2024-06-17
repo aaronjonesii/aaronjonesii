@@ -40,6 +40,9 @@
     <input matInput type="text" id="sourceCodeLink" name="sourceCodeLink" autocomplete="on" formControlName="sourceCodeLink" aria-label="Project Source Code link" />
   </mat-form-field>
 
+  <aj-project-development-status-select
+        [developmentStatusFormControl]="developmentStatusCtrl" />
+
   <mat-form-field appearance="outline">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status">

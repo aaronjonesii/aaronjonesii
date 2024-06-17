@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
-  OnDestroy,
+  OnDestroy, OnInit,
   signal,
 } from '@angular/core';
 import {
@@ -49,6 +49,7 @@ import { ProjectsService } from '../../shared/services/projects.service';
 import { ProjectsMasonryGridComponent } from '../../shared/components/projects-masonry-grid/projects-masonry-grid.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SSRSafeService } from '../../shared/services/ssr-safe.service';
+import { delay } from '../../shared/utils/delay';
 
 @Component({
   selector: 'aj-projects',
@@ -74,7 +75,7 @@ import { SSRSafeService } from '../../shared/services/ssr-safe.service';
   ],
   animations: [...ProjectsAnimations],
 })
-export class ProjectsComponent implements OnDestroy {
+export class ProjectsComponent implements OnInit, OnDestroy {
   private readonly title = 'Projects';
   readonly nav_path = navPath;
   private filterSubject =
@@ -142,6 +143,19 @@ export class ProjectsComponent implements OnDestroy {
         this.cdRef.markForCheck();
       }),
     );
+  }
+
+  /* eslint-disable-next-line @angular-eslint/no-async-lifecycle-method */
+  async ngOnInit() {
+    /** Wait to load on server */
+    const maxMillisecondsToWait = 2000;
+    const incrementMilliseconds = 100;
+    const maxTries = Math.floor(maxMillisecondsToWait / incrementMilliseconds);
+    let i = 0;
+    while (i < maxTries && !this.loaded()) {
+      await delay(incrementMilliseconds);
+      i++;
+    }
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
