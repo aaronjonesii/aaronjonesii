@@ -2,7 +2,8 @@
 @for (technology of technologies(); track technology.id) {
   @if (technology.logoImage) {
     <picture class="technology" matTooltipShowDelay="1000"
-             [matTooltip]="'Built using '+technology.name">
+             [matTooltip]="'Built using '+technology.name"
+             [title]="'Built using '+technology.name">
       <img width="25" height="25"
            [ngSrc]="technology.logoImage" [alt]="technology.name" />
     </picture>
