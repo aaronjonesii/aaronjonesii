@@ -32,7 +32,7 @@
     </mat-form-field>
 
     <!-- eslint-disable @angular-eslint/template/no-call-expression -->
-    <aj-project-technologies [selectedTechnologiesFormArray]="technologiesCtrl"
+    <aj-project-technologies-chip-grid [selectedTechnologiesFormArray]="technologiesCtrl"
                              [allTechnologies]="technologiesSignal() || []" />
 
     <aj-project-tags-chip-grid [selectedTagsFormArray]="tags" [allTags]="tagsSignal()" />

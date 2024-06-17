@@ -26,9 +26,9 @@ import { NgOptimizedImage } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'aj-project-technologies',
-  templateUrl: './project-technologies.component.html',
-  styleUrl: './project-technologies.component.scss',
+  selector: 'aj-project-technologies-chip-grid',
+  templateUrl: './project-technologies-chip-grid.component.html',
+  styleUrl: './project-technologies-chip-grid.component.scss',
   standalone: true,
   imports: [
     MatFormField,
@@ -46,7 +46,7 @@ import { Subscription } from 'rxjs';
     MatChipAvatar,
   ],
 })
-export class ProjectTechnologiesComponent implements OnDestroy {
+export class ProjectTechnologiesChipGridComponent implements OnDestroy {
   selectedTechnologiesFormArray =
     input(new FormArray<FormControl<Technology>>([]));
 

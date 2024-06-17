@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectTechnologiesComponent } from './project-technologies.component';
+import { ProjectTechnologiesChipGridComponent } from './project-technologies-chip-grid.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('ProjectTechnologiesComponent', () => {
-  let component: ProjectTechnologiesComponent;
-  let fixture: ComponentFixture<ProjectTechnologiesComponent>;
+  let component: ProjectTechnologiesChipGridComponent;
+  let fixture: ComponentFixture<ProjectTechnologiesChipGridComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProjectTechnologiesComponent],
+      imports: [ProjectTechnologiesChipGridComponent],
       providers: [
         provideAnimations(),
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProjectTechnologiesComponent);
+    fixture = TestBed.createComponent(ProjectTechnologiesChipGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

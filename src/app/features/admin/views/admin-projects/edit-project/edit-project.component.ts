@@ -61,9 +61,8 @@ import {
 } from '../../../../../shared/components/top-app-bar/top-app-bar.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  ProjectTechnologiesComponent,
-} from '../project-technologies/project-technologies.component';
+// eslint-disable-next-line max-len
+import { ProjectTechnologiesChipGridComponent } from '../project-technologies-chip-grid/project-technologies-chip-grid.component';
 import {
   TechnologiesService,
 } from '../../../../../shared/services/technologies.service';
@@ -97,7 +96,7 @@ import {
     MatCheckboxModule,
     AdminEditorComponent,
     AsyncPipe,
-    ProjectTechnologiesComponent,
+    ProjectTechnologiesChipGridComponent,
   ],
   providers: [SlugifyPipe],
 })
