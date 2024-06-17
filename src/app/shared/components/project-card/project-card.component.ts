@@ -12,8 +12,8 @@ import {
 import { NgOptimizedImage } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
-  ProjectTechnologiesComponent
-} from "../project-technologies/project-technologies.component";
+  ProjectTechnologiesComponent,
+} from '../project-technologies/project-technologies.component';
 
 @Component({
   selector: 'aj-project-card',
