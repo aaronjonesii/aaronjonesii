@@ -3,7 +3,8 @@
   "ignorePatterns": [
     "projects/**/*",
     "app.component.ts",
-    "src/app/shared/libraries/*"
+    "src/app/shared/libraries/*",
+    "src/environments/keys.ts"
   ],
   "overrides": [
     {
