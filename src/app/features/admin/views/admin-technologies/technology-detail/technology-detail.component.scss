@@ -1,4 +1,5 @@
 @import "../../../../../../assets/scss/partials/extras";
+@import "../../../../../../assets/scss/partials/media_queries";
 
 :host {
   display: flex;
@@ -6,19 +7,24 @@
   gap: $app-gap;
 }
 
-section {
-  //border: 1px solid;
-  //border-radius: $app-border-radius;
-  //padding: $app-padding;
-}
-
 .header {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  @media (min-width: $tabletPortrait) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   gap: $app-gap;
 }
 .header picture {
-  $image-size: 50px;
+  $image-size: 100px;
+  @media (min-width: $tabletLandscape) {
+    $new-image-size: 150px;
+    min-width: $new-image-size;
+    width: $new-image-size;
+    height: $new-image-size;
+  }
   min-width: $image-size;
   width: $image-size;
   height: $image-size;

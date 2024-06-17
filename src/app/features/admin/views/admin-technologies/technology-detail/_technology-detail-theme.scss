@@ -14,7 +14,11 @@
   $background-palette: mat.get-color-from-palette($color-config, background);
   $grey-palette: mat.$gray-palette;
 
-  aj-technology-detail {}
+  aj-technology-detail {
+    .projects .text {
+      color: mat.get-color-from-palette($foreground-palette, secondary-text);
+    }
+  }
 
   @include componentColorMixins($theme);
 }
@@ -25,6 +29,15 @@
   aj-technology-detail {
     .header .content .name {
       @include mat.typography-level($typography-config, headline-4);
+    }
+
+    .header .content .description {
+      @include mat.typography-level($typography-config, headline-6);
+      font-weight: normal;
+    }
+
+    .projects .text {
+      @include mat.typography-level($typography-config, headline-6)
     }
   }
 

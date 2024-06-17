@@ -28,6 +28,12 @@
 </section>
 
 <section class="projects">
+  <h3 class="text">
+    {{projects()?.length}}
+    {{ projects()?.length === 1 ? 'Project' : 'Projects'}}
+    built using '<em class="name">{{technology()?.name}}</em>'
+  </h3>
+
   <mat-nav-list>
     @for (project of projects(); track project.id) {
       <mat-list-item [routerLink]="[navPath.projectDetail(project.id)]">
