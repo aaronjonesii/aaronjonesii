@@ -264,8 +264,8 @@ export class EditProjectComponent implements OnInit, OnDestroy {
         <FormControl<Technology>[]>project.technologies
           .map((t) => new FormControl(t))
       ),
-      developmentStatus: new FormControl(null),
-      figmaLink: new FormControl(null),
+      developmentStatus: new FormControl(project.developmentStatus),
+      figmaLink: new FormControl(project.figmaLink),
     });
   }
 
