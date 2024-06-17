@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ProjectDevelopmentStatusSelectComponent,
 } from './project-development-status-select.component';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('ProjectDevelopmentStatusSelectComponent', () => {
   let component: ProjectDevelopmentStatusSelectComponent;
@@ -11,6 +12,9 @@ describe('ProjectDevelopmentStatusSelectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProjectDevelopmentStatusSelectComponent],
+      providers: [
+        provideAnimations(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProjectDevelopmentStatusSelectComponent);

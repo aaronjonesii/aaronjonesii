@@ -2,7 +2,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   ProjectDevelopmentStatus,
   ProjectStatus,
-  ProjectVisibility
+  ProjectVisibility,
 } from '../interfaces/project';
 import { Technology } from '../interfaces/technology';
 

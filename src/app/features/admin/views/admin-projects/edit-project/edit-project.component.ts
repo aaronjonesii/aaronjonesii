@@ -70,13 +70,11 @@ import { Technology } from '../../../../../shared/interfaces/technology';
 import {
   ProjectsService,
 } from '../../../../../shared/services/projects.service';
-import { tap } from 'rxjs/operators';
 import {
   ProjectTagsChipGridComponent,
 } from '../project-tags-chip-grid/project-tags-chip-grid.component';
-import {
-  ProjectDevelopmentStatusSelectComponent
-} from "../project-development-status-select/project-development-status-select.component";
+// eslint-disable-next-line max-len
+import { ProjectDevelopmentStatusSelectComponent } from '../project-development-status-select/project-development-status-select.component';
 
 @Component({
   selector: 'aj-edit-project',
