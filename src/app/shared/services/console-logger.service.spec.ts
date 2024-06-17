@@ -55,8 +55,7 @@ describe('ConsoleLoggerService', () => {
   });
 
   describe('info', () => {
-    it('should call console.info in development mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => true);
+    it('should call console.info', () => {
       spyOn(console, 'info');
 
       service.info('test');
@@ -64,8 +63,7 @@ describe('ConsoleLoggerService', () => {
       expect(console.info).toHaveBeenCalledWith('test: ', []);
     });
 
-    it('should call openSnackBar in production mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => false);
+    it('should call openSnackBar', () => {
       spyOn(service, 'openSnackBar');
       service.info('test');
 
@@ -78,8 +76,7 @@ describe('ConsoleLoggerService', () => {
   });
 
   describe('log', () => {
-    it('should call console.log in development mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => true);
+    it('should call console.log', () => {
       spyOn(console, 'log');
 
       service.log('test');
@@ -87,8 +84,7 @@ describe('ConsoleLoggerService', () => {
       expect(console.log).toHaveBeenCalledWith('test: ', []);
     });
 
-    it('should call openSnackBar in production mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => false);
+    it('should call openSnackBar', () => {
       spyOn(service, 'openSnackBar');
 
       service.log('test');
@@ -102,8 +98,7 @@ describe('ConsoleLoggerService', () => {
   });
 
   describe('warn', () => {
-    it('should call console.warn in development mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => true);
+    it('should call console.warn', () => {
       spyOn(console, 'warn');
 
       service.warn('test');
@@ -111,8 +106,7 @@ describe('ConsoleLoggerService', () => {
       expect(console.warn).toHaveBeenCalledWith('test: ', []);
     });
 
-    it('should call openSnackBar in production mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => false);
+    it('should call openSnackBar', () => {
       spyOn(service, 'openSnackBar');
 
       service.warn('test');
@@ -126,8 +120,7 @@ describe('ConsoleLoggerService', () => {
   });
 
   describe('error', () => {
-    it('should call console.error in development mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => true);
+    it('should call console.error', () => {
       spyOn(console, 'error');
 
       service.error('test');
@@ -137,8 +130,7 @@ describe('ConsoleLoggerService', () => {
       expect(console.error).toHaveBeenCalledWith(testError, []);
     });
 
-    it('should call openSnackBar in production mode', () => {
-      spyOn(service, 'isInDevelopmentMode').and.callFake(() => false);
+    it('should call openSnackBar', () => {
       spyOn(service, 'openSnackBar');
 
       service.error('test');
