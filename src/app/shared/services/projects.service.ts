@@ -233,6 +233,9 @@ export class ProjectsService {
       case ProjectsFilter.ACTIVE:
         /** only show published projects */
         queryConstraints.push(where('status', '==', ProjectStatus.PUBLISHED));
+        queryConstraints.push(
+          where('developmentStatus', '!=', ProjectDevelopmentStatus.PLANNED),
+        );
         break;
       case ProjectsFilter.ARCHIVED:
         /** only show archived projects */
