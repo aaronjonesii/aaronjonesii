@@ -127,6 +127,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     const projects$ = this.filter$.pipe(
       switchMap((filter) => {
+        this.loadedSignal.set(false);
         return this.projectsService.getFilteredProjects$(filter).pipe(
           catchError((error: FirebaseError) => {
             this.logger.error(`Something went wrong loading projects`, error);

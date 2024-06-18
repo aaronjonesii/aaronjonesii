@@ -15,26 +15,34 @@
   @defer (when loaded()) {
     <ng-template [ngTemplateOutlet]="projectsTmpl" />
   } @placeholder (minimum 500ms) {
-    <h3 class="mat-headline-6 text-center font-weight-normal">
-      Loading projects...
-    </h3>
+    <ng-template [ngTemplateOutlet]="loadingTmpl" />
   }
 } @else {
   <ng-template [ngTemplateOutlet]="projectsTmpl" />
 }
 
 <ng-template #projectsTmpl>
-  @if (projects().length) {
-    <aj-projects-masonry-grid [projects]="projects()"
-                              (shareProject)="onShare($event)" />
+  @if (loaded()) {
+    @if (projects().length) {
+      <aj-projects-masonry-grid [projects]="projects()"
+                                (shareProject)="onShare($event)" />
+    } @else {
+      <h3 class="mat-headline-6 text-center font-weight-normal">
+        No
+        @if ((filter$ | async) !== ProjectsFilter.ALL) {
+          {{filter$ | async | lowercase}}
+        }
+        projects yet, check back soon.
+      </h3>
+    }
   } @else {
-    <h3 class="mat-headline-6 text-center font-weight-normal">
-      No
-      @if ((filter$ | async) !== ProjectsFilter.ALL) {
-        {{filter$ | async | lowercase}}
-      }
-      projects yet, check back soon.
-    </h3>
+    <ng-template [ngTemplateOutlet]="loadingTmpl" />
   }
+</ng-template>
+
+<ng-template #loadingTmpl>
+  <h3 class="mat-headline-6 text-center font-weight-normal">
+    Loading projects...
+  </h3>
 </ng-template>
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->
