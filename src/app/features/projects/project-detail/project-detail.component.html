@@ -96,6 +96,13 @@
                   Demo
                 </a>
               }
+              @if (project()?.figmaLink) {
+                <a class="chip" target="_blank"
+                   [href]="project()?.figmaLink">
+                  <mat-icon fontIcon="design_services" />
+                  Figma
+                </a>
+              }
             </div>
 
             <div class="updated-created-container">
