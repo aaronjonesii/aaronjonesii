@@ -13,6 +13,7 @@ import {
 } from '../../animations/slide-in-from-left.animations';
 import { RoutingService } from '../../services/routing.service';
 import { User } from '@angular/fire/auth';
+import { FadeInOutAnimation } from '../../animations/fade-in-out.animations';
 
 @Component({
   selector: 'aj-top-app-bar',
@@ -27,7 +28,10 @@ import { User } from '@angular/fire/auth';
     RouterLinkActive,
     MatToolbarModule,
   ],
-  animations: [SlideInFromLeftAnimation],
+  animations: [
+    SlideInFromLeftAnimation,
+    FadeInOutAnimation,
+  ],
 })
 export class TopAppBarComponent implements OnDestroy {
   @Input() title = 'Title';

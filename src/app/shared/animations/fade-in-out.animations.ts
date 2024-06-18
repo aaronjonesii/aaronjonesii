@@ -42,4 +42,15 @@ export const FadeInOutAnimation = [
       ]),
     ],
   ),
+  trigger('fadeInAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(
+          /** Emphasized decelerate */
+          `2s cubic-bezier(0.05, 0.7, 0.1, 1.0)`,
+          style({ opacity: 1 }),
+        ),
+      ]),
+    ],
+  ),
 ];

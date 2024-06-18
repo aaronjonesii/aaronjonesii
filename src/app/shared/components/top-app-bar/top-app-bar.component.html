@@ -6,9 +6,10 @@
               (click)="onBackBtnClick()">
         <mat-icon class="material-icons-outlined" fontIcon="arrow_back" />
       </button>
+    } @else {
+      <h1 class="mat-headline-5 m-0 truncate-text"
+          [title]="title" [@fadeInAnimation]>{{title}}</h1>
     }
-
-    <h1 class="mat-headline-5 m-0">{{title}}</h1>
   </div>
 
   <div #content>
