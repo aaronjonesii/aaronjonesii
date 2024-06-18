@@ -15,7 +15,9 @@
   @defer (when loaded()) {
     <ng-template [ngTemplateOutlet]="projectsTmpl" />
   } @placeholder (minimum 500ms) {
-    <aj-skeleton [styles]="{height: '400px'}" />
+    <h3 class="mat-headline-6 text-center font-weight-normal">
+      Loading projects...
+    </h3>
   }
 } @else {
   <ng-template [ngTemplateOutlet]="projectsTmpl" />
