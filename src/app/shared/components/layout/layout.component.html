@@ -16,15 +16,16 @@
   <aj-top-app-bar [title]="title" />
 
   <!-- Content -->
-  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
-  <main class="page-padding flex-col" [ngClass]="{'mobile': isMobile()}"
+  <!-- eslint-disable @angular-eslint/template/no-call-expression -->
+  <main id="content" class="page-padding flex-col"
+        [ngClass]="{'mobile': isMobile()}"
         (scroll)="onContentScroll($event)">
     <router-outlet />
   </main>
 
   <!-- Bottom Navigation Bar -->
-  <!-- eslint-disable-next-line @angular-eslint/template/no-call-expression -->
   @if (showBottomBar()) {
     <aj-navigation-bar [@slideInFromBottomAnimation] [segments]="segments" />
   }
+  <!-- eslint-enable @angular-eslint/template/no-call-expression -->
 </div>
