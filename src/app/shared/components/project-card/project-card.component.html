@@ -19,24 +19,43 @@
     <mat-divider />
 
     <mat-card-actions class="actions-container">
-      @if (project()?.allowComments) {
-        <button mat-button type="button" color="primary" fragment="comments"
-                [routerLink]="[navPath.projectDetail(project()?.id || '')]">
-          <mat-icon class="material-icons-outlined" fontIcon="comment_bank" />
-          Comments
-        </button>
-      } @else {
-        <button mat-button type="button" color="primary"
-                [routerLink]="[navPath.projectDetail(project()?.id || '')]">
-          View
-        </button>
-      }
-
       <button mat-flat-button type="button" color="primary"
               (click)="shareProject.emit(project())">
         <mat-icon class="material-icons-outlined" fontIcon="share" /> Share
       </button>
+
+      @if (viewLinks().length > 1) {
+        <button mat-button type="button" color="primary"
+                [matMenuTriggerFor]="viewMenu">
+          <span class="flex-row align-items-center">
+            <span>View</span>
+
+            <mat-icon fontIcon="arrow_drop_down" />
+          </span>
+        </button>
+      } @else {
+        <button mat-button type="button" color="primary"
+                [routerLink]="[navPath.projectDetail(project()?.id || '')]">
+          View Project
+        </button>
+      }
     </mat-card-actions>
   </div>
 </mat-card>
+
+<mat-menu #viewMenu="matMenu">
+  @for (viewLink of viewLinks(); track viewLink.id) {
+    @if (viewLink.href) {
+      <a mat-menu-item type="button" target="_blank" [href]="viewLink.href">
+        <mat-icon class="material-icons-outlined" [fontIcon]="viewLink.icon" />
+        {{viewLink.name}}
+      </a>
+    } @else {
+      <button mat-menu-item type="button" [routerLink]="viewLink.routerLink">
+        <mat-icon class="material-icons-outlined" [fontIcon]="viewLink.icon" />
+        {{viewLink.name}}
+      </button>
+    }
+  }
+</mat-menu>
 <!-- eslint-enable @angular-eslint/template/no-call-expression -->

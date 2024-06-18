@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, computed,
   input,
   output,
 } from '@angular/core';
@@ -19,6 +19,8 @@ import {
   ProjectTechnologiesComponent,
 } from '../project-technologies/project-technologies.component';
 import { ProjectTagsComponent } from '../project-tags/project-tags.component';
+import { GenericItem } from '../../interfaces/generic-item';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'aj-project-card',
@@ -37,6 +39,9 @@ import { ProjectTagsComponent } from '../project-tags/project-tags.component';
     MatTooltip,
     ProjectTechnologiesComponent,
     ProjectTagsComponent,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
   ],
 })
 export class ProjectCardComponent {
@@ -45,4 +50,43 @@ export class ProjectCardComponent {
   project = input<ProjectWithTech>();
 
   shareProject = output<ProjectWithTech | undefined>();
+
+  viewLinks = computed(() => {
+    const project = this.project();
+    const projectViewLinks: GenericItem[] = [
+      {
+        id: 'view',
+        name: 'View Project',
+        icon: 'article',
+        routerLink: [navPath.projectDetail(project?.id || '')],
+      },
+    ];
+
+    if (project?.sourceCodeLink) {
+      projectViewLinks.push({
+        id: 'source-code',
+        name: 'View Source Code',
+        icon: 'code',
+        href: project.sourceCodeLink,
+      });
+    }
+    if (project?.livePreviewLink) {
+      projectViewLinks.push({
+        id: 'demo',
+        name: 'View Demo',
+        icon: 'preview',
+        href: project.livePreviewLink,
+      });
+    }
+    if (project?.figmaLink) {
+      projectViewLinks.push({
+        id: 'figma',
+        name: 'View Figma',
+        icon: 'design_services',
+        href: project.figmaLink,
+      });
+    }
+
+    return projectViewLinks;
+  });
 }
