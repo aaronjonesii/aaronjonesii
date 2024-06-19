@@ -16,9 +16,6 @@ import {
 } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  ProjectImageComponent,
-} from '../project-image/project-image.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -75,6 +72,8 @@ import {
 } from '../project-tags-chip-grid/project-tags-chip-grid.component';
 // eslint-disable-next-line max-len
 import { ProjectDevelopmentStatusSelectComponent } from '../project-development-status-select/project-development-status-select.component';
+// eslint-disable-next-line max-len
+import { SelectImageComponent } from '../../../../../shared/components/select-image/select-image.component';
 
 @Component({
   selector: 'aj-edit-project',
@@ -87,7 +86,6 @@ import { ProjectDevelopmentStatusSelectComponent } from '../project-development-
     MatIconModule,
     LoadingComponent,
     ReactiveFormsModule,
-    ProjectImageComponent,
     MatFormFieldModule,
     MatInputModule,
     ProjectTagsChipGridComponent,
@@ -99,6 +97,7 @@ import { ProjectDevelopmentStatusSelectComponent } from '../project-development-
     AsyncPipe,
     ProjectTechnologiesChipGridComponent,
     ProjectDevelopmentStatusSelectComponent,
+    SelectImageComponent,
   ],
   providers: [SlugifyPipe],
 })
