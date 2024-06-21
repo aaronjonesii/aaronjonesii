@@ -21,7 +21,8 @@ export class SafePipe implements PipeTransform {
       case 'style': return this.sanitizer.bypassSecurityTrustStyle(content);
       case 'script': return this.sanitizer.bypassSecurityTrustScript(content);
       case 'url': return this.sanitizer.bypassSecurityTrustUrl(content);
-      case 'resourceUrl': return this.sanitizer.bypassSecurityTrustUrl(content);
+      case 'resourceUrl':
+        return this.sanitizer.bypassSecurityTrustResourceUrl(content);
     }
   }
 }
