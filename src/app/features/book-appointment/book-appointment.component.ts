@@ -7,6 +7,7 @@ import { navPath } from '../../app.routes';
 import {
   SkeletonComponent,
 } from '../../shared/components/skeleton/skeleton.component';
+import { SafePipe } from "../../shared/pipes/safe.pipe";
 
 @Component({
   selector: 'aj-book-appointment',
@@ -16,10 +17,12 @@ import {
   standalone: true,
   imports: [
     SkeletonComponent,
+    SafePipe,
   ],
 })
 export class BookAppointmentComponent {
   private readonly title = 'Book Appointment';
+  protected readonly googleAppointmentIframeUrl = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ3Ti-eA0dBPtCgswGRsdlaiRB6Of_tWywDFEW8szpTClEtLRdtRhbGRz9_RFpTl8fHW0bCdzWLq?gv=true';
 
   loading = signal(true);
 

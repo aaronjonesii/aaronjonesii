@@ -15,7 +15,7 @@
   $grey-palette: mat.$gray-palette;
 
   aj-book-appointment {
-    .google-appointment-booking {
+    #google-appointment-booking {
       border-color: mat.get-color-from-palette($foreground-palette, 'divider');
     }
   }
