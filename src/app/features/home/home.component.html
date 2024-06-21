@@ -40,14 +40,14 @@
 </section>
 
 <section class="featured-projects" [@fadeInOutStaggerAnimation]>
-  @defer (on viewport) {
+<!--  @defer (on viewport) {-->
     <h3 class="mat-headline-5 text-center" [@fadeInOutAnimation]>Featured Projects</h3>
     <aj-carousel [loaded]="featuredProjectsLoaded()"
                  [items]="featuredProjectsCarouselItems()"
                  [@fadeInOutAnimation] />
-  } @placeholder (minimum 500ms) {
-    <aj-skeleton [styles]="{width: '100%', height: '200px'}" />
-  }
+<!--  } @placeholder (minimum 500ms) {-->
+<!--    <aj-skeleton [styles]="{width: '100%', height: '200px'}" />-->
+<!--  }-->
 </section>
 
 <section class="memoji">
