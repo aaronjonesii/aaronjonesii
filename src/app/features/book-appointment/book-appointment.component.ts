@@ -7,7 +7,7 @@ import { navPath } from '../../app.routes';
 import {
   SkeletonComponent,
 } from '../../shared/components/skeleton/skeleton.component';
-import { SafePipe } from "../../shared/pipes/safe.pipe";
+import { SafePipe } from '../../shared/pipes/safe.pipe';
 
 @Component({
   selector: 'aj-book-appointment',
