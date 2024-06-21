@@ -12,7 +12,7 @@ export class SkillsService {
         { id: 'angular', name: 'Angular', rating: 5 },
         { id: 'django', name: 'Django', rating: 4 },
         { id: 'dotnet', name: '.NET', rating: 3 },
-        // { id: 'flutter', name: 'Flutter', rating: 0 },
+        { id: 'flutter', name: 'Flutter', rating: 3 },
         // { id: 'react', name: 'React', rating: 0 },
       ],
     },
@@ -35,6 +35,7 @@ export class SkillsService {
         { id: 'python', name: 'Python', rating: 4 },
         { id: 'php', name: 'PHP', rating: 3 },
         { id: 'c-cpp-csharp', name: 'C/C++/C#', rating: 3 },
+        { id: 'dart', name: 'Dart', rating: 3 },
       ],
     },
     // {
